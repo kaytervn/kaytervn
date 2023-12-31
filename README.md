@@ -1,9 +1,10 @@
-l![MasterHead](https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/banner.gif)
-<h1 align="center">Hi 👋, It's <i>Kayter</i> himself</h1>
-<h3 align="center">🧑🏾‍💻 An amateur developer from Mars​.</h3>
+![MasterHead](https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/banner.gif)
+<h2 align="center">Hi 👋, It's <i>Kayter</i> himself</h2>
 <img align="right" width="400" src="https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/fakecam.gif">
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=kaytercantfixbug&label=Profile%20views&color=0e75b6&style=flat" alt="kaytercantfixbug" /> </p>
+
+<p align="left">🧑🏾‍💻 An amateur developer from Mars​.</p>
 
 📫 Email: **kienductrong@gmail.com**
 
@@ -12,7 +13,7 @@ l![MasterHead](https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/ba
 
 <p><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=kaytercantfixbug&show_icons=true&locale=en&layout=compact" alt="kaytercantfixbug" /></p>
 
-<h2 align="left">📖 HCMUTE - IT Documents</h1>
+<h2 align="left">💻 HCMUTE - IT Documents</h1>
 
 |MÔ TẢ|LIÊN KẾT|MÔ TẢ|LIÊN KẾT|
 |------|:------:|------|:------:|
