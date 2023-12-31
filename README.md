@@ -21,7 +21,7 @@
 
 <h2 align="left">📖 HCMUTE - IT Documents</h1>
 
-|💾 NOTES|LIÊN KẾT|📠 MACHINE/ DEEP LEARNING - AI|LIÊN KẾT|
+|MÔ TẢ|LIÊN KẾT|MÔ TẢ|LIÊN KẾT|
 |------|:------:|------|:------:|
 |Tài liệu số [HCMUTE]|[LINK](http://csdl.hcmute.edu.vn/)|Nhập môn ngành CNTT|[LINK](http://tiny.cc/QTUTE-INTRO2IT)|
 |Chương trình đào tạo|[LINK](https://docs.google.com/document/d/1msjP47esB1HsFP5lNdApdgLO0qNDnV5d/edit?usp=drive_link&ouid=115186877765088019765&rtpof=true&sd=true)|Học máy|[LINK](http://tiny.cc/QTUTE-MACHINELEARNING)|
