@@ -19,7 +19,7 @@
 
 <p><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=kaytercantfixbug&show_icons=true&locale=en&layout=compact" alt="kaytercantfixbug" /></p>
 
-<h1 align="center">📖 HCMUTE - IT Documents</h1>
+<h2 align="left">📖 HCMUTE - IT Documents</h1>
 
 |💾 NOTES|LIÊN KẾT|📠 MACHINE/ DEEP LEARNING - AI|LIÊN KẾT|
 |------|:------:|------|:------:|
@@ -31,7 +31,7 @@
 |300 Bài Code Thiếu Nhi|[LINK](https://docs.google.com/document/u/0/d/1WmKuC807QwSa7Q7oz6I6bWYPIkk6oBL1k5RKvnRb8nw/mobilebasic?fbclid=IwAR2zm7hrKqbMezxEXGq3bzC3Kjg_0wNufDkf9TznaqbWoS-EggF7FQ2BuL0)|Trí tuệ nhân tạo|[LINK](http://tiny.cc/QTUTE-AI)|
 |Hướng dẫn Tin học Văn phòng|[LINK](https://terabox.com/s/1VcolKeQJqjaDBaGXmJ0f3Q)|**Lỗi "Connection is not private"**: *Advance > Access*
 
-<h1 align="center">📓 ENGLISH Documents</h1>
+<h2 align="left">📓 ENGLISH Documents</h1>
 
 |MÔ TẢ|LIÊN KẾT|MÔ TẢ|LIÊN KẾT|
 |------|:------:|------|:------:|
