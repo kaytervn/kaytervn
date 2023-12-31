@@ -19,11 +19,10 @@
 <p><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=kaytercantfixbug&show_icons=true&locale=en&layout=compact" alt="kaytercantfixbug" /></p>
 
 <h1 align="center">📖 HCMUTE - IT Documents</h1>
-<h3 align="center">💾 NOTES</h1>
 
 |MÔ TẢ|LIÊN KẾT|
 |------|:------:|
-|Bản đồ trường UTE|[🔗](http://goo.gl/n5TPgO)|
+|Bản đồ trường UTE|[LINK](http://goo.gl/n5TPgO)|
 |Tài liệu số|[LINK](http://csdl.hcmute.edu.vn/)|
 |Chương trình đào tạo|[LINK](https://docs.google.com/document/d/1msjP47esB1HsFP5lNdApdgLO0qNDnV5d/edit?usp=drive_link&ouid=115186877765088019765&rtpof=true&sd=true)|
 |IT - All Subjects|[LINK](https://drive.google.com/drive/folders/1qQZV3-SkIRd-Ph6HC1m-3hkVZZ7MqNr8?usp=sharing)|
