@@ -25,7 +25,7 @@
 |------|:------:|------|:------:|
 |Tài liệu số [HCMUTE]|[LINK](http://csdl.hcmute.edu.vn/)|Nhập môn ngành CNTT|[LINK](http://tiny.cc/QTUTE-INTRO2IT)|
 |Chương trình đào tạo|[LINK](https://docs.google.com/document/d/1msjP47esB1HsFP5lNdApdgLO0qNDnV5d/edit?usp=drive_link&ouid=115186877765088019765&rtpof=true&sd=true)|Học máy|[LINK](http://tiny.cc/QTUTE-MACHINELEARNING)|
-|IT - All Subjects|[LINK](https://drive.google.com/drive/folders/1qQZV3-SkIRd-Ph6HC1m-3hkVZZ7MqNr8?usp=sharing)|Học sâu|[LINK](http://tiny.cc/QTUTE-DEEPLEARNING)|
+|IT - All Subjects [KTR]|[LINK](https://drive.google.com/drive/folders/1qQZV3-SkIRd-Ph6HC1m-3hkVZZ7MqNr8?usp=sharing)|Học sâu|[LINK](http://tiny.cc/QTUTE-DEEPLEARNING)|
 |IT Books|[LINK](https://drive.google.com/drive/folders/16x-GZrRzqr1pyqjzDwQ2tt3s5NRbv2RO?usp=sharing)|IT for Mechatronics, Computer Programming 1|[LINK](http://tiny.cc/QTUTE-TINKYTHUAT)|
 |101 Thuật toán và chương trình C|[LINK](https://drive.google.com/file/d/13y4XjNz48q6RyXJcdACsvt6zjB63tU0D/view?usp=sharing)|Matlab Language Programming|[LINK](http://tiny.cc/QTUTE-MATLAB)|
 |300 Bài Code Thiếu Nhi|[LINK](https://docs.google.com/document/u/0/d/1WmKuC807QwSa7Q7oz6I6bWYPIkk6oBL1k5RKvnRb8nw/mobilebasic?fbclid=IwAR2zm7hrKqbMezxEXGq3bzC3Kjg_0wNufDkf9TznaqbWoS-EggF7FQ2BuL0)|Trí tuệ nhân tạo|[LINK](http://tiny.cc/QTUTE-AI)|
