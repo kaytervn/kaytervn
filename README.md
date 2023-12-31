@@ -1,7 +1,10 @@
+
 ![MasterHead](https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/banner.gif)
 <h1 align="center">Hi 👋, It's Kayter himself</h1>
 <h3 align="center">An amateur developer from Mars.</h3>
-<img align="right" alt="Coding" width="400" src="https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/fakecam.gif" style="border-radius: 10px;">
+<img align="right" alt="Coding" width="400" src="https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/fakecam.gif">
+
+<img align="right" alt="Coding" width="400" src="https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/fakecam.gif">
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=kaytercantfixbug&label=Profile%20views&color=0e75b6&style=flat" alt="kaytercantfixbug" /> </p>
 
