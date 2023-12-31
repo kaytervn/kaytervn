@@ -19,7 +19,7 @@
 <p><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=kaytercantfixbug&show_icons=true&locale=en&layout=compact" alt="kaytercantfixbug" /></p>
 
 <h1 align="center">📖 HCMUTE - IT Documents</h1>
-<h3 align="left">💾 NOTES</h1>
+<h3 align="center">💾 NOTES</h1>
 
 |MÔ TẢ|LIÊN KẾT|
 |------|:------:|
@@ -36,7 +36,7 @@
 |Vẽ lưu đồ khối trực tuyến|[LINK](http://draw.io/)|
 |Process scheduling solver|[LINK](https://boonsuen.com/process-scheduling-solver)|
 
-<h3 align="left">📠 MACHINE LEARING - DEEP LEARNING - AI</h1>
+<h3 align="center">📠 MACHINE LEARING - DEEP LEARNING - AI</h1>
 
 |MÔ TẢ|LIÊN KẾT|
 |------|:------:|
