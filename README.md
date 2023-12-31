@@ -20,51 +20,21 @@
 
 <h1 align="center">📖 HCMUTE - IT Documents</h1>
 
-|MÔ TẢ|LIÊN KẾT|
-|------|:------:|
-|Bản đồ trường UTE|[LINK](http://goo.gl/n5TPgO)|
-|Tài liệu số|[LINK](http://csdl.hcmute.edu.vn/)|
-|Chương trình đào tạo|[LINK](https://docs.google.com/document/d/1msjP47esB1HsFP5lNdApdgLO0qNDnV5d/edit?usp=drive_link&ouid=115186877765088019765&rtpof=true&sd=true)|
-|IT - All Subjects|[LINK](https://drive.google.com/drive/folders/1qQZV3-SkIRd-Ph6HC1m-3hkVZZ7MqNr8?usp=sharing)|
-|IT Books|[LINK](https://drive.google.com/drive/folders/16x-GZrRzqr1pyqjzDwQ2tt3s5NRbv2RO?usp=sharing)|
-|Tổng hợp một vài CHEATSHEETS về lập trình|[LINK](https://www.codecademy.com/resources/cheatsheets/all)|
-|101 Thuật toán và chương trình bằng ngôn ngữ C|[LINK](https://drive.google.com/file/d/13y4XjNz48q6RyXJcdACsvt6zjB63tU0D/view?usp=sharing)|
-|300 Bài Code Thiếu Nhi|[LINK](https://docs.google.com/document/u/0/d/1WmKuC807QwSa7Q7oz6I6bWYPIkk6oBL1k5RKvnRb8nw/mobilebasic?fbclid=IwAR2zm7hrKqbMezxEXGq3bzC3Kjg_0wNufDkf9TznaqbWoS-EggF7FQ2BuL0)|
-|Những web học lập trình MIỄN PHÍ có cấp CHỨNG CHỈ|[LINK](https://intech.vietnamworks.com/article/8-trang-web-hoc-lap-trinh-mien-phi-cap-chung-chi?fbclid=IwAR21Db9P_1dAb-lRS5xBipSIgB5jjlozGSIKsczo3MBNesyOfeXGowTomHA)|
-|Hướng dẫn Tin học văn phòng|[LINK](https://terabox.com/s/1VcolKeQJqjaDBaGXmJ0f3Q)|
-
-<h3 align="center">📠 MACHINE LEARING - DEEP LEARNING - AI</h1>
-
-|MÔ TẢ|LIÊN KẾT|
-|------|:------:|
-|NHẬP MÔN NGÀNH CÔNG NGHỆ THÔNG TIN|[LINK](http://tiny.cc/QTUTE-INTRO2IT)|
-|HỌC MÁY (MACHINE LEARNING)|[LINK](http://tiny.cc/QTUTE-MACHINELEARNING)|
-|HỌC SÂU (DEEP LEARNING)|[LINK](http://tiny.cc/QTUTE-DEEPLEARNING)|
-|TIN HỌC TRONG KỸ THUẬT (COMPUTER PROGRAMMING 1, IT FOR MECHATRONICS)|[LINK](http://tiny.cc/QTUTE-TINKYTHUAT)|
-|MATLAB LANGUAGE PROGRAMMING|[LINK](http://tiny.cc/QTUTE-MATLAB)|
-|TRÍ TUỆ NHÂN TẠO (AI)|[LINK](http://tiny.cc/QTUTE-AI)|
-**CHÚ Ý:** *Nếu link bị lỗi "Connection is not private", bạn chọn Advance > Access*
+|💾 NOTES|LIÊN KẾT|📠 MACHINE/ DEEP LEARNING - AI|LIÊN KẾT|
+|------|:------:|------|:------:|
+|Tài liệu số [HCMUTE]|[LINK](http://csdl.hcmute.edu.vn/)|Nhập môn ngành CNTT|[LINK](http://tiny.cc/QTUTE-INTRO2IT)|
+|Chương trình đào tạo|[LINK](https://docs.google.com/document/d/1msjP47esB1HsFP5lNdApdgLO0qNDnV5d/edit?usp=drive_link&ouid=115186877765088019765&rtpof=true&sd=true)|Học máy|[LINK](http://tiny.cc/QTUTE-MACHINELEARNING)|
+|IT - All Subjects|[LINK](https://drive.google.com/drive/folders/1qQZV3-SkIRd-Ph6HC1m-3hkVZZ7MqNr8?usp=sharing)|Học sâu|[LINK](http://tiny.cc/QTUTE-DEEPLEARNING)|
+|IT Books|[LINK](https://drive.google.com/drive/folders/16x-GZrRzqr1pyqjzDwQ2tt3s5NRbv2RO?usp=sharing)|Tin học trong kỹ thuật, Computer Programming 1|[LINK](http://tiny.cc/QTUTE-TINKYTHUAT)|
+|101 Thuật toán và chương trình bằng ngôn ngữ C|[LINK](https://drive.google.com/file/d/13y4XjNz48q6RyXJcdACsvt6zjB63tU0D/view?usp=sharing)|Matlab Language Programming|[LINK](http://tiny.cc/QTUTE-MATLAB)|
+|300 Bài Code Thiếu Nhi|[LINK](https://docs.google.com/document/u/0/d/1WmKuC807QwSa7Q7oz6I6bWYPIkk6oBL1k5RKvnRb8nw/mobilebasic?fbclid=IwAR2zm7hrKqbMezxEXGq3bzC3Kjg_0wNufDkf9TznaqbWoS-EggF7FQ2BuL0)|Trí tuệ nhân tạo|[LINK](http://tiny.cc/QTUTE-AI)|
+|Hướng dẫn Tin học Văn phòng|[LINK](https://terabox.com/s/1VcolKeQJqjaDBaGXmJ0f3Q)|**Lỗi "Connection is not private"**: *Chọn Advance > Access*
 
 <h1 align="center">📓 ENGLISH Documents</h1>
 
-|MÔ TẢ|LIÊN KẾT|
-|------|:------:|
-|MOTTIENGANH - Sách IELTS từ MẤT GỐC đến 7.5+|[LINK](https://tailieu.mottienganh.com/?utm_source=page_nhachoc&utm_medium=giaitri&utm_campaign=cpc)|
-|PMP - Bộ từ vựng CHUYÊN NGÀNH)|[LINK](https://drive.google.com/drive/folders/1tfYX7cPwqF5zVmlckJiMKj3FL2v2LcH1?usp=sharing)|
-|Tài liệu tiếng Anh cho người mất gốc|[LINK](https://drive.google.com/drive/folders/1Qfg4nvYWxeAuHmZeK-PZvw2Q7uEAUYGB?usp=sharing)|
-|8415 Tài liệu Cambridge|[LINK](https://terabox.com/s/1frh6q5zHsj8lw7lR-TstAw)|
+|MÔ TẢ|LIÊN KẾT|MÔ TẢ|LIÊN KẾT|
+|------|:------:|------|:------:|
+|MOTTIENGANH - Sách IELTS từ MẤT GỐC đến 7.5+|[LINK](https://tailieu.mottienganh.com/?utm_source=page_nhachoc&utm_medium=giaitri&utm_campaign=cpc)|Tra câu VIỆT - ANH|[LINK](https://tracau.vn/)|
+|PMP - Bộ từ vựng CHUYÊN NGÀNH)|[LINK](https://drive.google.com/drive/folders/1tfYX7cPwqF5zVmlckJiMKj3FL2v2LcH1?usp=sharing)|Tài liệu tiếng Anh cho người mất gốc|[LINK](https://drive.google.com/drive/folders/1Qfg4nvYWxeAuHmZeK-PZvw2Q7uEAUYGB?usp=sharing)|
+|8415 Tài liệu Cambridge|[LINK](https://terabox.com/s/1frh6q5zHsj8lw7lR-TstAw)|KHO TRUYỆN - TIỂU THUYẾT - SONG NGỮ|[LINK](https://drive.google.com/drive/folders/1me4JjJ3J7yj_PmoDjc2KjtkY3xJYBsWA?usp=sharing)|
 |Hack não 1500 từ TIẾNG ANH - Bản đẹp|[LINK](https://drive.google.com/file/d/140Gzf7C4wCcTNwFRrXecwxpjacg8FiiZ/view?usp=sharing)|
-|Tra câu VIỆT - ANH|[LINK](https://tracau.vn/)|
-
-<h1 align="center">🔗 OTHERS</h1>
-
-|MÔ TẢ|LIÊN KẾT|
-|------|:------:|
-|PowerPoint Templates|https://slidesmania.com/
-||https://presentationgo.com/|
-|Kho ảnh PNG/ Vector miễn phí|https://www.pngwing.com/|
-||https://www.freepik.com/|
-|Icons|[https://www.flaticon.com/|
-||https://icons8.com/|
-||https://www.iconfinder.com/|
-|KHO TRUYỆN - TIỂU THUYẾT - SONG NGỮ|[LINK](https://drive.google.com/drive/folders/1me4JjJ3J7yj_PmoDjc2KjtkY3xJYBsWA?usp=sharing)|
