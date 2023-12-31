@@ -35,7 +35,7 @@
 
 |MÔ TẢ|LIÊN KẾT|MÔ TẢ|LIÊN KẾT|
 |------|:------:|------|:------:|
-|MOTTIENGANH - Sách IELTS từ MẤT GỐC đến 7.5+|[LINK](https://tailieu.mottienganh.com/?utm_source=page_nhachoc&utm_medium=giaitri&utm_campaign=cpc)|Tra câu VIỆT - ANH|[LINK](https://tracau.vn/)|
-|PMP - Bộ từ vựng CHUYÊN NGÀNH)|[LINK](https://drive.google.com/drive/folders/1tfYX7cPwqF5zVmlckJiMKj3FL2v2LcH1?usp=sharing)|Tài liệu tiếng Anh cho người mất gốc|[LINK](https://drive.google.com/drive/folders/1Qfg4nvYWxeAuHmZeK-PZvw2Q7uEAUYGB?usp=sharing)|
-|8415 Tài liệu Cambridge|[LINK](https://terabox.com/s/1frh6q5zHsj8lw7lR-TstAw)|KHO TRUYỆN - TIỂU THUYẾT - SONG NGỮ|[LINK](https://drive.google.com/drive/folders/1me4JjJ3J7yj_PmoDjc2KjtkY3xJYBsWA?usp=sharing)|
+|MotTiengAnh - Sách IELTS từ MẤT GỐC đến 7.5+|[LINK](https://tailieu.mottienganh.com/?utm_source=page_nhachoc&utm_medium=giaitri&utm_campaign=cpc)|Tra câu VIỆT - ANH|[LINK](https://tracau.vn/)|
+|PMP - Bộ từ vựng CHUYÊN NGÀNH|[LINK](https://drive.google.com/drive/folders/1tfYX7cPwqF5zVmlckJiMKj3FL2v2LcH1?usp=sharing)|Tài liệu tiếng Anh cho người mất gốc|[LINK](https://drive.google.com/drive/folders/1Qfg4nvYWxeAuHmZeK-PZvw2Q7uEAUYGB?usp=sharing)|
+|8415 Tài liệu Cambridge|[LINK](https://terabox.com/s/1frh6q5zHsj8lw7lR-TstAw)|Kho truyện - Tiểu thuyết [song ngữ]|[LINK](https://drive.google.com/drive/folders/1me4JjJ3J7yj_PmoDjc2KjtkY3xJYBsWA?usp=sharing)|
 |Hack não 1500 từ TIẾNG ANH - Bản đẹp|[LINK](https://drive.google.com/file/d/140Gzf7C4wCcTNwFRrXecwxpjacg8FiiZ/view?usp=sharing)|
