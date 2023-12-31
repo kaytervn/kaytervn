@@ -1,6 +1,6 @@
 
 ![MasterHead](https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/banner.gif)
-<h1 align="center">Hi 👋, It's Kayter himself</h1>
+<h1 align="center">Hi 👋, It's <i>Kayter</i> himself</h1>
 <h3 align="center">An amateur developer from Mars.</h3>
 <img align="right" alt="Coding" width="400" src="https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/fakecam.gif">
 
