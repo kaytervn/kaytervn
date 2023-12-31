@@ -13,7 +13,7 @@
 
 <p><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=kaytercantfixbug&show_icons=true&locale=en&layout=compact" alt="kaytercantfixbug" /></p>
 
-<h2 align="left">💻 HCMUTE - IT Documents</h2>
+<details><summary><h2 align="left">💻 HCMUTE - IT Documents</h2></summary>
 
 |MÔ TẢ|LIÊN KẾT|MÔ TẢ|LIÊN KẾT|
 |------|:------:|------|:------:|
@@ -25,7 +25,9 @@
 |300 Bài Code Thiếu Nhi|[LINK](https://docs.google.com/document/u/0/d/1WmKuC807QwSa7Q7oz6I6bWYPIkk6oBL1k5RKvnRb8nw/mobilebasic?fbclid=IwAR2zm7hrKqbMezxEXGq3bzC3Kjg_0wNufDkf9TznaqbWoS-EggF7FQ2BuL0)|Trí tuệ nhân tạo|[LINK](http://tiny.cc/QTUTE-AI)|
 |Hướng dẫn Tin học Văn phòng|[LINK](https://terabox.com/s/1VcolKeQJqjaDBaGXmJ0f3Q)|**Lỗi "Connection is not private"**: *Advance > Access*
 
-<h2 align="left">📓 ENGLISH Documents</h2>
+</details>
+
+<details><summary><h2 align="left">📓 ENGLISH Documents</h2></summary>
 
 |MÔ TẢ|LIÊN KẾT|MÔ TẢ|LIÊN KẾT|
 |------|:------:|------|:------:|
@@ -33,3 +35,5 @@
 |PMP - Bộ từ vựng CHUYÊN NGÀNH|[LINK](https://drive.google.com/drive/folders/1tfYX7cPwqF5zVmlckJiMKj3FL2v2LcH1?usp=sharing)|Tài liệu tiếng Anh cho người mất gốc|[LINK](https://drive.google.com/drive/folders/1Qfg4nvYWxeAuHmZeK-PZvw2Q7uEAUYGB?usp=sharing)|
 |8415 Tài liệu Cambridge|[LINK](https://terabox.com/s/1frh6q5zHsj8lw7lR-TstAw)|Kho Truyện - Tiểu thuyết [Song ngữ]|[LINK](https://drive.google.com/drive/folders/1me4JjJ3J7yj_PmoDjc2KjtkY3xJYBsWA?usp=sharing)|
 |Hack não 1500 từ TIẾNG ANH - Bản đẹp|[LINK](https://drive.google.com/file/d/140Gzf7C4wCcTNwFRrXecwxpjacg8FiiZ/view?usp=sharing)|
+
+</details>
