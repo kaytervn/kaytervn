@@ -1,4 +1,4 @@
-![MasterHead](https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/banner.gif)
+![MasterHead](https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/dragon.gif)
 <h1 align="center">Hi 👋, It's <i>Kayter</i> himself</h1>
 <img align="right" width="400" src="https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/robot.gif">
 
