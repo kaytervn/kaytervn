@@ -1,6 +1,8 @@
-![MasterHead](https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/dragon.gif)
+![MasterHead](https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/robot.gif)
+
 <h1 align="center">Hi 👋, It's <i>Kayter</i> himself</h1>
-<img align="right" width="400" src="https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/robot.gif">
+
+<img align="right" width="400" src="https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/dragon.gif">
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=kaytercantfixbug&label=Profile%20views&color=0e75b6&style=flat" alt="kaytercantfixbug" /> </p>
 
