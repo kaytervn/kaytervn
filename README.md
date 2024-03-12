@@ -6,7 +6,7 @@
 
 </h1>
 
-<img align="right" src="https://github-readme-stats.vercel.app/api/top-langs?username=kaytercantfixbug&show_icons=true&locale=en&layout=compact" alt="kaytercantfixbug" />
+<img align="right" src="https://github-readme-stats.vercel.app/api/top-langs?username=kaytercantfixbug&theme=algolia&show_icons=true&locale=en&layout=compact" alt="kaytercantfixbug" />
 
 <h3 align="left">🧰 Languages And Tools</h3>
 <p align="left">
