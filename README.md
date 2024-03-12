@@ -6,7 +6,7 @@
 
 </h1>
 
-<img align="right" width="510" src="https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/dragon.gif">
+<img align="right" width="500" src="https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/dragon.gif">
 
 <p align="left">🧑🏾‍💻 An amateur developer from <b>Mars​</b>.</p>
 
