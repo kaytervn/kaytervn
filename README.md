@@ -2,7 +2,7 @@
 
 <h1 align="center">
   
-[![Typing SVG](https://readme-typing-svg.demolab.com/?font-Righteous&size=35&center=true&vCenter=true&width=500&height=70&duration=5000&lines=Hi+there👋;It's+Kayter+himself🌚)]
+![Typing SVG](https://readme-typing-svg.demolab.com/?font-Righteous&size=35&center=true&vCenter=true&width=500&height=70&duration=5000&lines=Hi+there👋;It's+Kayter+himself🌚)
 
 </h1>
 
