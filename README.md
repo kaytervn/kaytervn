@@ -6,18 +6,14 @@
 
 </h1>
 
-<img align="right" width="500" src="https://github.com/KayterCantFixBug/KayterCantFixBug/blob/main/dragon.gif">
+<img align="right" src="https://github-readme-stats.vercel.app/api/top-langs?username=kaytercantfixbug&show_icons=true&locale=en&layout=compact" alt="kaytercantfixbug" />
 
-<p align="left">🧑🏾‍💻 An amateur developer from <b>Mars​</b>.</p>
-
-<p><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=kaytercantfixbug&show_icons=true&locale=en&layout=compact" alt="kaytercantfixbug" /></p>
-
-<p align="right"> <img src="https://komarev.com/ghpvc/?username=kaytercantfixbug&label=Profile%20views&color=0e75b6&style=flat" alt="kaytercantfixbug" /> </p>
-
-<h2 align="center">🧰 Languages And Tools</h2>
-<p align="center">
+<h3 align="left">🧰 Languages And Tools</h3>
+<p align="left">
   <a href="https://skillicons.dev">
     <img src="https://skillicons.dev/icons?i=cs,cpp,js,java,kotlin,nodejs,py,react" /><br>
     <img src="https://skillicons.dev/icons?i=androidstudio,bootstrap,eclipse,git,mongodb,mysql,postman" />
   </a>
 </p>
+
+<p align="right"> <img src="https://komarev.com/ghpvc/?username=kaytercantfixbug&label=Profile%20views&color=0e75b6&style=flat" alt="kaytercantfixbug" /> </p>
