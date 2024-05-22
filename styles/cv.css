@@ -1,0 +1,18 @@
+@media print {
+  @page {
+    size: A4;
+  }
+  header,
+  footer {
+    display: none;
+  }
+}
+
+.container {
+  width: 210mm;
+  min-height: 297mm;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
