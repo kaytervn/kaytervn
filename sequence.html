@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/images/cookiedu_logo.png" />
+    <title>Sequence UML Handler</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+      .container {
+        display: flex;
+        gap: 20px;
+      }
+      .column {
+        flex: 1;
+      }
+      textarea {
+        width: 100%;
+        height: 400px;
+        margin-bottom: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      h1,
+      h2 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Xử Lý PlantUML Sequence Diagram</h1>
+    <div class="container">
+      <div class="column">
+        <h2>Nhập PlantUML</h2>
+        <textarea
+          id="inputPUML"
+          placeholder="Nhập đoạn mã PlantUML sequence diagram"
+        ></textarea>
+      </div>
+      <div class="column">
+        <h2>Kết Quả</h2>
+        <textarea
+          id="outputPUML"
+          readonly
+          placeholder="Kết quả sẽ hiện ở đây"
+        ></textarea>
+      </div>
+    </div>
+    <button onclick="processPUML()">Xử Lý Diagram</button>
+
+    <script>
+      function processPUML() {
+        const inputPUML = document.getElementById("inputPUML").value;
+        const lines = inputPUML
+          .split("\n")
+          .filter((line) => line.trim() !== "");
+        const processedLines = processActivation(
+          lines.filter(
+            (line) =>
+              !line.startsWith("activate ") && !line.startsWith("deactivate ")
+          )
+        );
+        document.getElementById("outputPUML").value = processedLines.join("\n");
+      }
+
+      function processActivation(lines) {
+        const processedLines = [];
+        const activeObjects = new Set();
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          const arrowMatch = line.match(/(\w+)\s*(?:->|-->)\s*(\w+)\s*:/);
+          if (arrowMatch) {
+            const sourceObject = arrowMatch[1];
+            const selfArrowMatch = line.match(/(\w+)\s*(?:->|-->)\s*\1\s*:/);
+            const returnArrowMatch = line.match(/(\w+)\s*(-->)\s*(\w+)\s*:/);
+            const nextLine = lines[i + 1];
+            const next2Line = lines[i + 2];
+            const isNextArrow = (line) =>
+              line && line.match(/(\w+)\s*(?:->|-->)\s*(\w+)\s*:/);
+            const isOptLine = (line) => line && line.startsWith("opt ");
+            if (!activeObjects.has(sourceObject)) {
+              if (selfArrowMatch) {
+                const selfObject = selfArrowMatch[1];
+                processedLines.push(`activate ${selfObject}`, line);
+                if (
+                  !isOptLine(nextLine) &&
+                  (isNextArrow(nextLine) || isNextArrow(next2Line))
+                ) {
+                  activeObjects.add(sourceObject);
+                  continue;
+                }
+                processedLines.push(
+                  `activate ${selfObject}`,
+                  `deactivate ${selfObject}`,
+                  `deactivate ${selfObject}`
+                );
+                continue;
+              }
+              if (returnArrowMatch) {
+                const targetObject = returnArrowMatch[1];
+                processedLines.push(
+                  `activate ${targetObject}`,
+                  line,
+                  `deactivate ${targetObject}`
+                );
+                continue;
+              }
+              processedLines.push(`activate ${sourceObject}`);
+              activeObjects.add(sourceObject);
+            } else {
+              if (selfArrowMatch) {
+                const selfObject = selfArrowMatch[1];
+                processedLines.push(line);
+                if (
+                  !isOptLine(nextLine) &&
+                  (isNextArrow(nextLine) || isNextArrow(next2Line))
+                )
+                  continue;
+                processedLines.push(
+                  `activate ${selfObject}`,
+                  `deactivate ${selfObject}`,
+                  `deactivate ${selfObject}`
+                );
+                activeObjects.delete(selfObject);
+                continue;
+              }
+              if (returnArrowMatch) {
+                const targetObject = returnArrowMatch[1];
+                processedLines.push(line, `deactivate ${targetObject}`);
+                activeObjects.delete(targetObject);
+                continue;
+              }
+            }
+          }
+          processedLines.push(line);
+        }
+        return processedLines;
+      }
+    </script>
+  </body>
+</html>
