@@ -235,7 +235,7 @@ public class ${label}Validation implements ConstraintValidator<${label}, Integer
 
 const generateDtoClass = (modelName, fields) => {
   let dtoFields = [];
-  const dtoClassName = `${modelName}AdminDto`;
+  const dtoClassName = `${modelName}Dto`;
 
   let result = `@Data
 public class ${dtoClassName} extends ABasicAdminDto {`;
