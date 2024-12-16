@@ -484,6 +484,33 @@ ${autowiredRepos}
     .toLowerCase()} success");
     }
 
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('${modelPrefix}_L')")
+    public ApiMessageDto<ResponseListDto<List<${upperModelName}Dto>>> list(${upperModelName}Criteria ${lowerModelName}Criteria, Pageable pageable) {
+        Page<${upperModelName}> ${lowerModelName}s = ${lowerModelName}Repository.findAll(${lowerModelName}Criteria.getCriteria(), pageable);
+        ResponseListDto<List<${upperModelName}Dto>> responseListObj = new ResponseListDto<>();
+        responseListObj.setContent(${lowerModelName}Mapper.fromEntityListTo${upperModelName}DtoList(${lowerModelName}s.getContent()));
+        responseListObj.setTotalPages(${lowerModelName}s.getTotalPages());
+        responseListObj.setTotalElements(${lowerModelName}s.getTotalElements());
+        return makeSuccessResponse(responseListObj, "Get list ${lowerModelName
+          .replace(/([a-z])([A-Z])/g, "$1 $2")
+          .toLowerCase()}s success");
+    }
+
+    @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<ResponseListDto<List<${upperModelName}Dto>>> autoComplete(${upperModelName}Criteria ${lowerModelName}Criteria) {
+        Pageable pageable = PageRequest.of(0, 10);
+        ${lowerModelName}Criteria.setStatus(TenantConstant.STATUS_ACTIVE);
+        Page<${upperModelName}> ${lowerModelName}s = ${lowerModelName}Repository.findAll(${lowerModelName}Criteria.getCriteria(), pageable);
+        ResponseListDto<List<${upperModelName}Dto>> responseListObj = new ResponseListDto<>();
+        responseListObj.setContent(${lowerModelName}Mapper.fromEntityListTo${upperModelName}DtoListAutoComplete(${lowerModelName}s.getContent()));
+        responseListObj.setTotalPages(${lowerModelName}s.getTotalPages());
+        responseListObj.setTotalElements(${lowerModelName}s.getTotalElements());
+        return makeSuccessResponse(responseListObj, "Get list ${lowerModelName
+          .replace(/([a-z])([A-Z])/g, "$1 $2")
+          .toLowerCase()}s success");
+    }
+
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('${modelPrefix}_C')")
     public ApiMessageDto<String> create(@Valid @RequestBody Create${upperModelName}Form ${lowerModelName}Form, BindingResult bindingResult) {
