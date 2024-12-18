@@ -248,9 +248,7 @@ public class ${dtoClassName} extends ABasicAdminDto {`;
         );
       } else {
         dtoFields.push(
-          `    @ApiModelProperty(name = "${
-            field.name
-          }")\n    private ${capitalize(field.name)}Dto ${field.name};`
+          `    @ApiModelProperty(name = "${field.name}")\n    private ${field.dataType}Dto ${field.name};`
         );
       }
     }
