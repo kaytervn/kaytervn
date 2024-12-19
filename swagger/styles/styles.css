@@ -1,0 +1,154 @@
+body {
+  background-color: #f0f2f5;
+}
+.container {
+  max-width: 800px;
+}
+.card {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+.btn-primary {
+  background-color: #4e73df;
+  border-color: #4e73df;
+}
+.btn-primary:hover {
+  background-color: #2e59d9;
+  border-color: #2e59d9;
+}
+#outputContainer {
+  height: 368px;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  background-color: #282c34;
+}
+#outputContainer::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+#outputJson {
+  white-space: pre;
+  font-family: "Consolas", "Monaco", "Andale Mono", "Ubuntu Mono", monospace;
+  padding: 15px;
+  min-height: 100%;
+}
+.hljs-punctuation {
+  color: #56b6c2 !important;
+}
+.hljs-attr {
+  color: #e06c75 !important;
+}
+.hljs-string {
+  color: #98c379 !important;
+}
+.floating-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 350px;
+  background-color: #fff;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: none;
+  overflow: hidden;
+  animation: slideIn 0.3s ease-out;
+}
+.alert-content {
+  display: flex;
+  padding: 20px;
+}
+.alert-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f8d7da;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+.alert-icon i {
+  color: #dc3545;
+  font-size: 20px;
+}
+.alert-message h4 {
+  margin: 0 0 5px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.alert-message p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #999;
+}
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.invalid-feedback {
+  display: none;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
+}
+.is-invalid {
+  border-color: #dc3545;
+}
+.is-invalid ~ .invalid-feedback {
+  display: block;
+}
+.csv-output {
+  font-family: "Consolas", "Monaco", "Andale Mono", "Ubuntu Mono", monospace;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: #fff;
+  overflow-x: auto;
+  overflow-y: auto;
+  height: 250px;
+}
+.csv-row {
+  white-space: nowrap;
+  margin-bottom: 2px;
+}
+.highlight {
+  display: inline-block;
+  padding: 2px 2px;
+  margin: 2px;
+  border-radius: 3px;
+}
+.highlight:nth-of-type(4n + 1) {
+  background-color: #ffdddd;
+}
+.highlight:nth-of-type(4n + 2) {
+  background-color: #ddffdd;
+}
+.highlight:nth-of-type(4n + 3) {
+  background-color: #ddddff;
+}
+.highlight:nth-of-type(4n) {
+  background-color: #ffffdd;
+}

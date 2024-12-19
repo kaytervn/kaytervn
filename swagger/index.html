@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="cookiedu_logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gorgeous Swagger</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/json.min.js"></script>
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+  <body>
+    <div class="container my-5">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title text-center mb-4 fw-light">
+            Gorgeous Swagger Converter
+          </h1>
+          <form class="row g-3">
+            <div class="col-md-12">
+              <label for="inputJson" class="form-label"
+                >API Documentation URL <span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                id="inputJson"
+                placeholder="Paste your API documentation URL here..."
+                required
+              />
+              <div class="invalid-feedback" id="inputJsonError">
+                API documentation URL is required
+              </div>
+            </div>
+            <div class="col-md-12">
+              <label for="inputName" class="form-label"
+                >Collection Name <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                placeholder="Enter your collection name..."
+                class="form-control"
+                id="inputName"
+                required
+              />
+              <div class="invalid-feedback" id="inputNameError">
+                Collection name is required
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="enableLocalUrl"
+                />
+                <label class="form-check-label" for="enableLocalUrl">
+                  Local URL
+                </label>
+              </div>
+              <div class="input-group">
+                <span class="input-group-text">localhost:</span>
+                <input
+                  type="text"
+                  placeholder="Port..."
+                  class="form-control"
+                  id="inputLocalUrl"
+                  aria-describedby="basic-addon3 basic-addon4"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="enableRemoteUrl"
+                />
+                <label class="form-check-label" for="enableRemoteUrl">
+                  Remote URL
+                </label>
+              </div>
+              <div class="input-group">
+                <span class="input-group-text">https://</span>
+                <input
+                  type="text"
+                  placeholder="Remote URL..."
+                  class="form-control"
+                  id="inputRemoteUrl"
+                  aria-describedby="basic-addon3 basic-addon4"
+                />
+              </div>
+            </div>
+            <div class="col-md-12 mb-3"></div>
+          </form>
+          <div class="d-grid gap-2 mb-3">
+            <button onclick="convertJson()" class="btn btn-primary">
+              <i class="fas fa-exchange-alt me-2"></i> Convert
+            </button>
+          </div>
+          <div id="outputBlock" style="display: none">
+            <ul class="nav nav-tabs mb-3" id="outputTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="output-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#outputJsonBlock"
+                  type="button"
+                  role="tab"
+                  aria-controls="outputJsonBlock"
+                  aria-selected="true"
+                >
+                  Output JSON
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="permission-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#permissionGenerator"
+                  type="button"
+                  role="tab"
+                  aria-controls="permissionGenerator"
+                  aria-selected="false"
+                >
+                  Permission Generator
+                </button>
+              </li>
+            </ul>
+
+            <div class="tab-content" id="outputTabContent">
+              <div
+                class="tab-pane fade show active"
+                id="outputJsonBlock"
+                role="tabpanel"
+                aria-labelledby="output-tab"
+              >
+                <div class="mb-3">
+                  <div id="outputContainer">
+                    <pre><code id="outputJson" class="json"></code></pre>
+                  </div>
+                </div>
+                <div class="d-grid gap-2">
+                  <button
+                    id="copyJsonButton"
+                    data-copy-target="outputJson"
+                    class="btn btn-secondary copy-button"
+                  >
+                    <i
+                      class="fas fa-copy me-2 copy-icon"
+                      data-copy-target="outputJson"
+                    ></i>
+                    <span class="copy-text" data-copy-target="outputJson"
+                      >Copy</span
+                    >
+                  </button>
+                </div>
+              </div>
+              <div
+                class="tab-pane fade"
+                id="permissionGenerator"
+                role="tabpanel"
+                aria-labelledby="permission-tab"
+              >
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="prefixSelect" class="form-label"
+                      >Prefix Code</label
+                    >
+                    <select class="form-select" id="prefixSelect">
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="groupNameSelect" class="form-label"
+                      >Group Name</label
+                    >
+                    <select class="form-select" id="groupNameSelect"></select>
+                  </div>
+                </div>
+                <label for="permissionOutput" class="form-label"
+                  >Permissions CSV</label
+                >
+                <div id="permissionOutput" class="csv-output mb-3"></div>
+                <div class="d-grid gap-2">
+                  <button
+                    id="copyPermissionButton"
+                    data-copy-target="permissionOutput"
+                    class="btn btn-secondary copy-button"
+                  >
+                    <i
+                      class="fas fa-copy me-2 copy-icon"
+                      data-copy-target="permissionOutput"
+                    ></i>
+                    <span class="copy-text" data-copy-target="permissionOutput"
+                      >Copy</span
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="floatingAlert" class="floating-alert">
+        <div class="alert-content">
+          <div class="alert-icon">
+            <i class="fas fa-exclamation-circle"></i>
+          </div>
+          <div class="alert-message">
+            <h4>ERROR!</h4>
+            <p id="alertMessage"></p>
+          </div>
+        </div>
+        <button id="closeAlert" class="close-btn">&times;</button>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/permissions.js"></script>
+    <script src="scripts/converter.js"></script>
+    <script src="scripts/main.js"></script>
+    <script></script>
+  </body>
+</html>

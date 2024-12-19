@@ -1,0 +1,314 @@
+<head>
+  <title>3D Racing Game</title>
+  <link rel="icon" href="cookiedu_logo.png" type="image/x-icon" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./styles/style.css" />
+
+  <script
+    async
+    src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
+  ></script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.150.1/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.150.1/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="score">0</div>
+  <div id="results">
+    <div class="content">
+      <h1>You hit another vehicle</h1>
+      <p>Press F5 to reset the game</p>
+    </div>
+  </div>
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+    import { Car } from "./js/Car.js";
+    import { Truck } from "./js/Truck.js";
+    import { Box } from "./js/Box.js";
+    import { boxCollision } from "./js/utils.js";
+
+    const scoreElement = document.getElementById("score");
+    const resultsElement = document.getElementById("results");
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    camera.position.set(4.61, 2.74, 8);
+
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: true,
+    });
+    renderer.shadowMap.enabled = true;
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+
+    const keys = {
+      a: {
+        pressed: false,
+      },
+      d: {
+        pressed: false,
+      },
+      s: {
+        pressed: false,
+      },
+      w: {
+        pressed: false,
+      },
+    };
+
+    const car = new Car({
+      velocity: {
+        x: 0,
+        y: -0.01,
+        z: 0,
+      },
+    });
+    scene.add(car);
+
+    const ground = new Box({
+      width: 10,
+      height: 0.5,
+      depth: 50,
+      color: "#212121",
+      position: {
+        x: 0,
+        y: -2,
+        z: 0,
+      },
+    });
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    const line = new Box({
+      width: 0.15,
+      height: 0.5,
+      depth: 50,
+      color: "yellow",
+      position: {
+        x: 0,
+        y: -1.99,
+        z: 0,
+      },
+    });
+    line.receiveShadow = true;
+    scene.add(line);
+
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.y = 3;
+    light.position.z = 1;
+    light.castShadow = true;
+    scene.add(light);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+
+    camera.position.z = 5;
+
+    window.addEventListener("keydown", (event) => {
+      switch (event.code) {
+        case "KeyA":
+          keys.a.pressed = true;
+          break;
+        case "KeyD":
+          keys.d.pressed = true;
+          break;
+        case "KeyS":
+          keys.s.pressed = true;
+          break;
+        case "KeyW":
+          keys.w.pressed = true;
+          break;
+        case "Space":
+          const yCollision = car.hitBox.bottom - 0.001 <= ground.top;
+          if (car.hitBox.bottom <= -1.745) {
+            car.velocity.y = 0.08;
+          }
+          break;
+      }
+    });
+
+    window.addEventListener("keyup", (event) => {
+      switch (event.code) {
+        case "KeyA":
+          keys.a.pressed = false;
+          break;
+        case "KeyD":
+          keys.d.pressed = false;
+          break;
+        case "KeyS":
+          keys.s.pressed = false;
+          break;
+        case "KeyW":
+          keys.w.pressed = false;
+          break;
+      }
+    });
+
+    const enemies = [];
+    const dashLines = [];
+
+    let frames = 0;
+    let spawnRate = 300;
+    let speedMultiplier = 1;
+
+    const colorPairs = [
+      { main: "#A93226", sub: "#F1948A" },
+      { main: "#884EA0", sub: "#BB8FCE" },
+      { main: "#2471A3", sub: "#85C1E9" },
+      { main: "#229954", sub: "#82E0AA" },
+      { main: "#D68910", sub: "#F7DC6F" },
+      { main: "#BA4A00", sub: "#F0B27A" },
+      { main: "#273746", sub: "#85929E" },
+    ];
+
+    for (let i = -20; i <= 20; i += 5) {
+      const dashLine1 = new Box({
+        width: 0.15,
+        height: 0.5,
+        depth: 1.5,
+        color: "yellow",
+        position: {
+          x: 2.5,
+          y: -1.99,
+          z: i,
+        },
+        velocity: {
+          x: 0,
+          y: 0,
+          z: 0.1,
+        },
+      });
+      dashLine1.receiveShadow = true;
+      scene.add(dashLine1);
+
+      const dashLine2 = new Box({
+        width: 0.15,
+        height: 0.5,
+        depth: 1.5,
+        color: "yellow",
+        position: {
+          x: -2.5,
+          y: -1.99,
+          z: i,
+        },
+        velocity: {
+          x: 0,
+          y: 0,
+          z: 0.1,
+        },
+      });
+      dashLine2.receiveShadow = true;
+      scene.add(dashLine2);
+
+      dashLines.push(dashLine1);
+      dashLines.push(dashLine2);
+    }
+
+    function animate() {
+      const animationId = requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+
+      scoreElement.innerText = `Score ${parseInt(frames * speedMultiplier)}`;
+
+      car.update(ground);
+
+      if (car.position.y < -10) {
+        resultsElement.querySelector(".content h1").innerText =
+          "You're falling into hell";
+        resultsElement.style.display = "flex";
+        cancelAnimationFrame(animationId);
+      }
+
+      car.velocity.x = 0;
+      car.velocity.z = 0;
+
+      if (speedMultiplier < 3) speedMultiplier = 1 + frames / 30000;
+
+      if (keys.a.pressed) car.velocity.x = -0.05 * speedMultiplier;
+      else if (keys.d.pressed) car.velocity.x = 0.05 * speedMultiplier;
+
+      if (keys.s.pressed) car.velocity.z = 0.05 * speedMultiplier;
+      else if (keys.w.pressed) car.velocity.z = -0.05 * speedMultiplier;
+
+      enemies.forEach((enemy) => {
+        enemy.update(ground);
+        if (
+          boxCollision({
+            box1: car.hitBox,
+            box2: enemy.hitBox,
+            velocityY: car.velocity.y,
+          })
+        ) {
+          resultsElement.style.display = "flex";
+          cancelAnimationFrame(animationId);
+        }
+      });
+
+      dashLines.forEach((dashLine) => {
+        dashLine.update();
+      });
+
+      if (frames % spawnRate === 0) {
+        if (spawnRate > 40) spawnRate -= 20;
+
+        const isTruck = Math.random() < 0.25;
+        const enemy = isTruck
+          ? new Truck({
+              velocity: {
+                x: 0,
+                y: -0.05 * speedMultiplier,
+                z: 0.005,
+              },
+              position: {
+                x: (Math.random() - 0.5) * 10,
+                y: 0,
+                z: -20,
+              },
+              zAcceleration: true,
+              flipped: -1,
+              color: colorPairs[Math.floor(Math.random() * colorPairs.length)],
+            })
+          : new Car({
+              velocity: {
+                x: 0,
+                y: -0.05 * speedMultiplier,
+                z: 0.005,
+              },
+              position: {
+                x: (Math.random() - 0.5) * 10,
+                y: 0,
+                z: -20,
+              },
+              zAcceleration: true,
+              flipped: -1,
+              color: colorPairs[Math.floor(Math.random() * colorPairs.length)],
+            });
+
+        scene.add(enemy);
+        enemies.push(enemy);
+      }
+      frames++;
+    }
+
+    animate();
+
+    scoreElement.style.cssText = `
+      left: 100;
+      top: 75;
+    `;
+  </script>
+</body>
