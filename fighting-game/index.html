@@ -1,0 +1,137 @@
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+  />
+
+  <title>Fighting Game</title>
+  <link rel="icon" href="img/cookiedu_logo.png" type="image/x-icon" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Press Start 2P", system-ui;
+    }
+    body {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <div
+    style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    "
+  >
+    <div style="position: relative; display: inline-block">
+      <div
+        style="
+          position: absolute;
+          display: flex;
+          width: 100%;
+          align-items: center;
+          padding: 50px;
+        "
+      >
+        <div
+          style="
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 5px solid white;
+            border-bottom: 5px solid white;
+            border-left: 5px solid white;
+          "
+        >
+          <div style="background-color: red; height: 40px; width: 100%"></div>
+          <div
+            id="playerHealth"
+            style="
+              background-color: #818cf8;
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              width: 100%;
+              right: 0;
+            "
+          ></div>
+        </div>
+        <div
+          id="timer"
+          style="
+            background-color: black;
+            height: 70px;
+            width: 140px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: 5px solid white;
+          "
+        >
+          60
+        </div>
+        <div
+          style="
+            position: relative;
+            width: 100%;
+            border-top: 5px solid white;
+            border-bottom: 5px solid white;
+            border-right: 5px solid white;
+          "
+        >
+          <div style="background-color: red; height: 40px"></div>
+          <div
+            id="enemyHealth"
+            style="
+              background-color: #818cf8;
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              right: 0;
+            "
+          ></div>
+        </div>
+      </div>
+
+      <div
+        id="displayText"
+        style="
+          position: absolute;
+          color: white;
+          display: none;
+          align-items: center;
+          justify-content: center;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+        "
+      >
+        Tie
+      </div>
+
+      <canvas style="border-radius: 50px"></canvas>
+    </div>
+  </div>
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+
+  <script src="js/utils.js"></script>
+  <script src="js/classes.js"></script>
+  <script src="js/characters.js"></script>
+  <script src="index.js"></script>
+</body>
