@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>COOKIEDU</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link rel="icon"
+	href="images/cookiedu_logo.png">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet"
+	href="/styles/style.css" />
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+.card:hover {
+	transform: scale(1.05);
+	box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
+}
+</style>
+
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 fixed-top">
+		<div class="container">
+			<a href="#" class="navbar-brand"> <img width="40"
+				src="images/cookiedu_logo.png">
+				<span class="text-warning">COOKI</span>EDU
+			</a>
+
+			<button class="navbar-toggler" data-bs-toggle="collapse"
+				data-bs-target="#navmenu">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navmenu">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a
+						href="index.html"
+						class="nav-link"> Home</a></li>
+					<li class="nav-item"><a
+						href="course.html"
+						class="nav-link"> Course</a></li>
+					<li class="nav-item"><a href="error_404.html" class="nav-link">
+							Instructor</a></li>
+					<li class="nav-item"><a href="error_404.html" class="nav-link">
+							Community</a></li>
+				</ul>
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item">
+						<button class="btn btn-outline-light">
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart <span
+								class="badge bg-danger">0</span>
+						</button>
+					</li>
+					<li class="nav-item"><a href="error_404.html" class="nav-link"> Teach
+							on COOKIEDU</a></li>
+					<li class="nav-item"><a href="error_404.html"
+						class="nav-link text-warning"><i class="fa fa-sign-in"
+							aria-hidden="true"></i> Sign in</a></li>
+					<li class="nav-item">
+						<button class="btn btn-primary">Register</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+<section
+	class="bg-dark text-light p-lg-0 pt-lg-5 text-center text-sm-start">
+	<div class="container">
+		<div class="d-sm-flex align-items-center justify-content-between">
+			<div>
+				<h1>
+					<span class="text-warning">COOKI</span>EDU Courses
+				</h1>
+				<p class="lead my-4">Choosing suitable courses is essential for
+					connecting with the world of technology:</p>
+				<ul class="list-group list-group-flush" style="width: 500px;">
+					<li class="list-group-item bg-dark text-light"><b>1.</b>
+						Explore programming languages for software development.</li>
+					<li class="list-group-item bg-dark text-light"><b>2.</b> Dive
+						into data science for valuable insights.</li>
+					<li class="list-group-item bg-dark text-light"><b>3.</b> Learn
+						about emerging technologies like AI and cybersecurity.</li>
+					<li class="list-group-item bg-dark text-light"><b>4.</b> Gain
+						skills in digital marketing for global connectivity.</li>
+					<li class="list-group-item bg-dark text-light"><b>5.</b>
+						Explore entrepreneurship for leveraging technology in business.</li>
+				</ul>
+				<p class="my-4">By selecting courses strategically, individuals
+					can bridge the gap between aspirations and achievements in the tech
+					industry, shaping a brighter future together.</p>
+			</div>
+			<img class="img-fluid w-50 d-none d-sm-block d-md-block"
+				src="images/course.png"
+				alt="" />
+		</div>
+	</div>
+</section>
+
+<section class="bg-primary text-light p-5">
+	<div class="container">
+		<div class="d-md-flex justify-content-between align-items-center">
+			<h2 class="mb-3 mb-md-0">
+				What are you <span class="text-warning">looking</span> for?
+			</h2>
+
+			<div class="input-group news-input">
+				<span class="input-group-text"><i class="fa fa-search"
+					aria-hidden="true"></i></span> <input type="text" class="form-control"
+					id="searchInput" placeholder="Search..." oninput="executeFilter()" />
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="p-5">
+	<div class="container">
+		<div class="row">
+			<div class="col-3">
+				<div class="input-group pb-4">
+					<span class="input-group-text bg-warning text-light"><i
+						class="fa fa-sort" aria-hidden="true"></i> </span> <select
+						onchange="executeFilter()" class="form-select"
+						aria-label="Default select example">
+						<option value="mostWishlisted" selected>Most Wishlisted</option>
+						<option value="mostReviewed">Most Reviewed</option>
+						<option value="bestSellers">Best Sellers</option>
+						<option value="newest">Newest</option>
+						<option value="oldest">Oldest</option>
+						<option value="highestPrice">Highest Price</option>
+						<option value="lowestPrice">Lowest Price</option>
+					</select>
+				</div>
+				<ul class="list-group pb-4">
+					<li class="list-group-item bg-warning text-light text-center"><b>Price</b></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Paid </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Free </label>
+						</div></li>
+				</ul>
+				<ul class="list-group pb-4">
+					<li class="list-group-item bg-warning text-light text-center"><b>Level</b></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> All Levels </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Beginner </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Intermediate </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Expert </label>
+						</div></li>
+				</ul>
+				<ul class="list-group pb-4">
+					<li class="list-group-item bg-warning text-light text-center"><b>Topic</b></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Python </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> JavaScript </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Unity </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> HTML/ CSS </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> MySQL </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> C++ </label>
+						</div></li>
+				</ul>
+				<ul class="list-group">
+					<li class="list-group-item bg-warning text-light text-center"><b>Subcategory</b></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Web Development </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Programming Languages </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Data Science </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Mobile Development </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Game Development </label>
+						</div></li>
+					<li class="list-group-item"><div class="form-check">
+							<input class="form-check-input" type="checkbox" value=""
+								id="flexCheckDefault"> <label class="form-check-label"
+								for="flexCheckDefault"> Software Engineering </label>
+						</div></li>
+				</ul>
+			</div>
+			<div class="col">
+				<div class="row row-cols-1 row-cols-md-3 g-4 pb-4" id="listCourse">
+					<div class="card" style="display: none;">
+						<div id="courseId">1</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">JavaScript Basics</div>
+						<div id="teacherName">John Smith</div>
+						<div id="date">2023-02-15</div>
+						<div id="level">Beginner</div>
+						<div id="price">49</div>
+						<div id="joined">523</div>
+						<div id="reviews">192</div>
+						<div id="wishlisted">821</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">2</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Python for Data Science</div>
+						<div id="teacherName">Jane Doe</div>
+						<div id="date">2023-03-01</div>
+						<div id="level">Intermediate</div>
+						<div id="price">99</div>
+						<div id="joined">1823</div>
+						<div id="reviews">492</div>
+						<div id="wishlisted">1334</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">3</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Java Programming</div>
+						<div id="teacherName">Bob Wilson</div>
+						<div id="date">2023-04-15</div>
+						<div id="level">Intermediate</div>
+						<div id="price">199</div>
+						<div id="joined">842</div>
+						<div id="reviews">338</div>
+						<div id="wishlisted">1112</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">4</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Machine Learning</div>
+						<div id="teacherName">Sarah Lee</div>
+						<div id="date">2023-05-01</div>
+						<div id="level">Expert</div>
+						<div id="price">299</div>
+						<div id="joined">524</div>
+						<div id="reviews">203</div>
+						<div id="wishlisted">934</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">5</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Web Development</div>
+						<div id="teacherName">Michael Chen</div>
+						<div id="date">2023-06-01</div>
+						<div id="level">Beginner</div>
+						<div id="price">159</div>
+						<div id="joined">1334</div>
+						<div id="reviews">533</div>
+						<div id="wishlisted">844</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">6</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Photoshop</div>
+						<div id="teacherName">Mary Thomas</div>
+						<div id="date">2023-07-15</div>
+						<div id="level">Intermediate</div>
+						<div id="price">129</div>
+						<div id="joined">712</div>
+						<div id="reviews">192</div>
+						<div id="wishlisted">503</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">7</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Digital Marketing</div>
+						<div id="teacherName">James Williams</div>
+						<div id="date">2023-08-01</div>
+						<div id="level">Beginner</div>
+						<div id="price">99</div>
+						<div id="joined">923</div>
+						<div id="reviews">401</div>
+						<div id="wishlisted">734</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">8</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">AWS Certification</div>
+						<div id="teacherName">Emma Taylor</div>
+						<div id="date">2023-09-01</div>
+						<div id="level">Expert</div>
+						<div id="price">299</div>
+						<div id="joined">512</div>
+						<div id="reviews">192</div>
+						<div id="wishlisted">821</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">9</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Cyber Security</div>
+						<div id="teacherName">David Lee</div>
+						<div id="date">2023-10-15</div>
+						<div id="level">Intermediate</div>
+						<div id="price">199</div>
+						<div id="joined">934</div>
+						<div id="reviews">412</div>
+						<div id="wishlisted">823</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">10</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Animation</div>
+						<div id="teacherName">Jenny Wilson</div>
+						<div id="date">2023-11-01</div>
+						<div id="level">Beginner</div>
+						<div id="price">129</div>
+						<div id="joined">823</div>
+						<div id="reviews">203</div>
+						<div id="wishlisted">714</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">11</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Game Development</div>
+						<div id="teacherName">Tom Hill</div>
+						<div id="date">2023-12-01</div>
+						<div id="level">Intermediate</div>
+						<div id="price">249</div>
+						<div id="joined">934</div>
+						<div id="reviews">384</div>
+						<div id="wishlisted">1034</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">12</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">AutoCAD</div>
+						<div id="teacherName">Sandra Martinez</div>
+						<div id="date">2024-01-15</div>
+						<div id="level">Beginner</div>
+						<div id="price">99</div>
+						<div id="joined">823</div>
+						<div id="reviews">201</div>
+						<div id="wishlisted">612</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">13</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Content Writing</div>
+						<div id="teacherName">Nancy Allen</div>
+						<div id="date">2024-02-01</div>
+						<div id="level">All Levels</div>
+						<div id="price">49</div>
+						<div id="joined">734</div>
+						<div id="reviews">304</div>
+						<div id="wishlisted">521</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">14</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Excel Advanced</div>
+						<div id="teacherName">Anthony Martin</div>
+						<div id="date">2024-03-01</div>
+						<div id="level">Expert</div>
+						<div id="price">149</div>
+						<div id="joined">402</div>
+						<div id="reviews">172</div>
+						<div id="wishlisted">292</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">15</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Video Editing</div>
+						<div id="teacherName">Erica Rodriguez</div>
+						<div id="date">2024-04-01</div>
+						<div id="level">Beginner</div>
+						<div id="price">99</div>
+						<div id="joined">823</div>
+						<div id="reviews">193</div>
+						<div id="wishlisted">512</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">16</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Project Management</div>
+						<div id="teacherName">Mark Taylor</div>
+						<div id="date">2024-05-15</div>
+						<div id="level">All Levels</div>
+						<div id="price">79</div>
+						<div id="joined">823</div>
+						<div id="reviews">233</div>
+						<div id="wishlisted">614</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">17</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">UX/UI Design</div>
+						<div id="teacherName">Olivia Brown</div>
+						<div id="date">2024-06-01</div>
+						<div id="level">Intermediate</div>
+						<div id="price">149</div>
+						<div id="joined">734</div>
+						<div id="reviews">284</div>
+						<div id="wishlisted">523</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">18</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Graphic Design</div>
+						<div id="teacherName">Emily Davis</div>
+						<div id="date">2024-07-15</div>
+						<div id="level">Beginner</div>
+						<div id="price">129</div>
+						<div id="joined">823</div>
+						<div id="reviews">192</div>
+						<div id="wishlisted">723</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">19</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Logo Design</div>
+						<div id="teacherName">Jacob Moore</div>
+						<div id="date">2024-08-01</div>
+						<div id="level">Intermediate</div>
+						<div id="price">149</div>
+						<div id="joined">634</div>
+						<div id="reviews">214</div>
+						<div id="wishlisted">503</div>
+					</div>
+					<div class="card" style="display: none;">
+						<div id="courseId">20</div>
+						<div id="image">images/blank.png</div>
+						<div id="courseName">Web Design</div>
+						<div id="teacherName">Sophia Thomas</div>
+						<div id="date">2024-09-15</div>
+						<div id="level">Beginner</div>
+						<div id="price">99</div>
+						<div id="joined">723</div>
+						<div id="reviews">232</div>
+						<div id="wishlisted">414</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">21</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Data Visualization</div>
+					<div id="teacherName">Alex Johnson</div>
+					<div id="date">2024-10-01</div>
+					<div id="level">Intermediate</div>
+					<div id="price">149</div>
+					<div id="joined">812</div>
+					<div id="reviews">312</div>
+					<div id="wishlisted">621</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">22</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Android App Development</div>
+					<div id="teacherName">Kevin Brown</div>
+					<div id="date">2024-11-15</div>
+					<div id="level">Intermediate</div>
+					<div id="price">199</div>
+					<div id="joined">732</div>
+					<div id="reviews">282</div>
+					<div id="wishlisted">513</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">23</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">iOS App Development</div>
+					<div id="teacherName">Linda Wilson</div>
+					<div id="date">2024-12-01</div>
+					<div id="level">Intermediate</div>
+					<div id="price">199</div>
+					<div id="joined">924</div>
+					<div id="reviews">423</div>
+					<div id="wishlisted">802</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">24</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Blockchain Fundamentals</div>
+					<div id="teacherName">William Clark</div>
+					<div id="date">2025-01-15</div>
+					<div id="level">Intermediate</div>
+					<div id="price">199</div>
+					<div id="joined">512</div>
+					<div id="reviews">192</div>
+					<div id="wishlisted">921</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">25</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Blockchain Applications</div>
+					<div id="teacherName">Michael Taylor</div>
+					<div id="date">2025-02-01</div>
+					<div id="level">Intermediate</div>
+					<div id="price">249</div>
+					<div id="joined">734</div>
+					<div id="reviews">312</div>
+					<div id="wishlisted">621</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">26</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">UI Design Principles</div>
+					<div id="teacherName">Sophie Johnson</div>
+					<div id="date">2025-03-15</div>
+					<div id="level">Beginner</div>
+					<div id="price">99</div>
+					<div id="joined">823</div>
+					<div id="reviews">282</div>
+					<div id="wishlisted">512</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">27</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Introduction to AI</div>
+					<div id="teacherName">Ryan Miller</div>
+					<div id="date">2025-04-01</div>
+					<div id="level">Beginner</div>
+					<div id="price">129</div>
+					<div id="joined">934</div>
+					<div id="reviews">402</div>
+					<div id="wishlisted">723</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">28</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Cloud Computing Basics</div>
+					<div id="teacherName">Emma Harris</div>
+					<div id="date">2025-05-15</div>
+					<div id="level">Beginner</div>
+					<div id="price">99</div>
+					<div id="joined">624</div>
+					<div id="reviews">192</div>
+					<div id="wishlisted">423</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">29</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Ethical Hacking</div>
+					<div id="teacherName">David Brown</div>
+					<div id="date">2025-06-01</div>
+					<div id="level">Intermediate</div>
+					<div id="price">199</div>
+					<div id="joined">512</div>
+					<div id="reviews">312</div>
+					<div id="wishlisted">821</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">30</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Natural Language Processing</div>
+					<div id="teacherName">Sarah Johnson</div>
+					<div id="date">2025-07-15</div>
+					<div id="level">Intermediate</div>
+					<div id="price">249</div>
+					<div id="joined">734</div>
+					<div id="reviews">282</div>
+					<div id="wishlisted">512</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">31</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Deep Learning</div>
+					<div id="teacherName">Daniel Smith</div>
+					<div id="date">2025-08-01</div>
+					<div id="level">Advanced</div>
+					<div id="price">299</div>
+					<div id="joined">934</div>
+					<div id="reviews">482</div>
+					<div id="wishlisted">1034</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">32</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">React.js Fundamentals</div>
+					<div id="teacherName">Emily White</div>
+					<div id="date">2025-09-15</div>
+					<div id="level">Intermediate</div>
+					<div id="price">149</div>
+					<div id="joined">823</div>
+					<div id="reviews">372</div>
+					<div id="wishlisted">714</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">33</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Vue.js Basics</div>
+					<div id="teacherName">Michael Brown</div>
+					<div id="date">2025-10-01</div>
+					<div id="level">Beginner</div>
+					<div id="price">99</div>
+					<div id="joined">512</div>
+					<div id="reviews">242</div>
+					<div id="wishlisted">921</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">34</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Angular.js Fundamentals</div>
+					<div id="teacherName">Jessica Lee</div>
+					<div id="date">2025-11-15</div>
+					<div id="level">Intermediate</div>
+					<div id="price">149</div>
+					<div id="joined">734</div>
+					<div id="reviews">312</div>
+					<div id="wishlisted">621</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">35</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Django Basics</div>
+					<div id="teacherName">David Miller</div>
+					<div id="date">2025-12-01</div>
+					<div id="level">Beginner</div>
+					<div id="price">99</div>
+					<div id="joined">924</div>
+					<div id="reviews">382</div>
+					<div id="wishlisted">802</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">36</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Express.js Fundamentals</div>
+					<div id="teacherName">Sarah Wilson</div>
+					<div id="date">2026-01-15</div>
+					<div id="level">Intermediate</div>
+					<div id="price">149</div>
+					<div id="joined">512</div>
+					<div id="reviews">292</div>
+					<div id="wishlisted">731</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">37</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Spring Boot Basics</div>
+					<div id="teacherName">Thomas Davis</div>
+					<div id="date">2026-02-01</div>
+					<div id="level">Beginner</div>
+					<div id="price">99</div>
+					<div id="joined">823</div>
+					<div id="reviews">252</div>
+					<div id="wishlisted">512</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">38</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Linux Administration</div>
+					<div id="teacherName">Laura Jones</div>
+					<div id="date">2026-03-15</div>
+					<div id="level">Intermediate</div>
+					<div id="price">199</div>
+					<div id="joined">734</div>
+					<div id="reviews">312</div>
+					<div id="wishlisted">621</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">39</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Data Structures and Algorithms</div>
+					<div id="teacherName">Christopher Brown</div>
+					<div id="date">2026-04-01</div>
+					<div id="level">Advanced</div>
+					<div id="price">299</div>
+					<div id="joined">924</div>
+					<div id="reviews">402</div>
+					<div id="wishlisted">802</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">40</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Shell Scripting</div>
+					<div id="teacherName">Ethan Martinez</div>
+					<div id="date">2026-05-15</div>
+					<div id="level">Intermediate</div>
+					<div id="price">149</div>
+					<div id="joined">512</div>
+					<div id="reviews">292</div>
+					<div id="wishlisted">731</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">41</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Ruby Programming</div>
+					<div id="teacherName">Ava Garcia</div>
+					<div id="date">2026-06-01</div>
+					<div id="level">Beginner</div>
+					<div id="price">99</div>
+					<div id="joined">823</div>
+					<div id="reviews">252</div>
+					<div id="wishlisted">512</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">42</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">C++ Programming</div>
+					<div id="teacherName">Noah Hernandez</div>
+					<div id="date">2026-07-15</div>
+					<div id="level">Intermediate</div>
+					<div id="price">149</div>
+					<div id="joined">734</div>
+					<div id="reviews">312</div>
+					<div id="wishlisted">621</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">43</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Unity Game Development</div>
+					<div id="teacherName">Logan Moore</div>
+					<div id="date">2026-08-01</div>
+					<div id="level">Intermediate</div>
+					<div id="price">199</div>
+					<div id="joined">924</div>
+					<div id="reviews">402</div>
+					<div id="wishlisted">802</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">44</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Kotlin for Android Development</div>
+					<div id="teacherName">Aiden Rodriguez</div>
+					<div id="date">2026-09-15</div>
+					<div id="level">Intermediate</div>
+					<div id="price">199</div>
+					<div id="joined">512</div>
+					<div id="reviews">292</div>
+					<div id="wishlisted">731</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">45</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Data Analysis with R</div>
+					<div id="teacherName">Emma Martinez</div>
+					<div id="date">2026-10-01</div>
+					<div id="level">Intermediate</div>
+					<div id="price">149</div>
+					<div id="joined">823</div>
+					<div id="reviews">252</div>
+					<div id="wishlisted">512</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">46</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">SQL Fundamentals</div>
+					<div id="teacherName">Sophia Rodriguez</div>
+					<div id="date">2026-11-15</div>
+					<div id="level">Beginner</div>
+					<div id="price">99</div>
+					<div id="joined">734</div>
+					<div id="reviews">312</div>
+					<div id="wishlisted">621</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">47</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Artificial Intelligence Ethics</div>
+					<div id="teacherName">Liam Brown</div>
+					<div id="date">2026-12-01</div>
+					<div id="level">Intermediate</div>
+					<div id="price">199</div>
+					<div id="joined">924</div>
+					<div id="reviews">402</div>
+					<div id="wishlisted">802</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">48</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Data Science with Spark</div>
+					<div id="teacherName">Olivia Wilson</div>
+					<div id="date">2027-01-15</div>
+					<div id="level">Advanced</div>
+					<div id="price">299</div>
+					<div id="joined">512</div>
+					<div id="reviews">292</div>
+					<div id="wishlisted">731</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">49</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">Flutter Mobile Development</div>
+					<div id="teacherName">Lucas Thomas</div>
+					<div id="date">2027-02-01</div>
+					<div id="level">Intermediate</div>
+					<div id="price">199</div>
+					<div id="joined">823</div>
+					<div id="reviews">252</div>
+					<div id="wishlisted">512</div>
+					</div>
+					<div class="card" style="display: none;">
+					<div id="courseId">50</div>
+					<div id="image">images/blank.png</div>
+					<div id="courseName">GraphQL Fundamentals</div>
+					<div id="teacherName">Aria Johnson</div>
+					<div id="date">2027-03-15</div>
+					<div id="level">Intermediate</div>
+					<div id="price">149</div>
+					<div id="joined">734</div>
+					<div id="reviews">312</div>
+					<div id="wishlisted">621</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-center">
+					<ul class="pagination">
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script
+	src="/js/course_filter.js"></script>
+
+<footer class="p-5 bg-dark text-white text-center position-relative">
+	<div class="container">
+		<p class="lead">
+			Copyright &copy;
+			<script>
+				document.write(new Date().getFullYear());
+			</script>
+			COOKIEDU - All Rights Reserved.
+		</p>
+	</div>
+</footer>
+
+<div class="position-fixed bottom-0 end-0 p-3"
+	style="bottom: 10px; right: 10px;">
+	<button class="btn rounded-pill btn-lg btn-info" id="liveToastBtn">
+		<i class="fa fa-comments" aria-hidden="true"></i>
+	</button>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+	<div id="liveToast" class="toast" role="alert" aria-live="assertive"
+		aria-atomic="true" data-bs-autohide="false">
+		<div class="toast-header text-bg-info" style="height: 60px;">
+			<img
+				src="images/cookiedu_logo.png"
+				style="width: 30px;" class="rounded me-2" alt="..."> <strong
+				class="me-auto">COOKIEDU <small class="text-success"><i
+					class="fa fa-circle fa-2xs"></i></small>
+			</strong> <small>Just now</small>
+			<button type="button" class="btn-close" data-bs-dismiss="toast"
+				aria-label="Close"></button>
+		</div>
+		<div class="toast-body bg-light" style="height: 500px;">
+			<div class="overflow-y-scroll overflow-x-hidden"
+				style="height: 420px; width: 335px;" id="boxChat"></div>
+			<div class="input-group mt-3">
+				<input class="form-control" placeholder="Chat..." id="chatInput"></input>
+				<button class="btn btn-primary" id="sendChatButton"
+					onclick="sendMessage()">
+					<i class="fa fa-paper-plane fa-lg" aria-hidden="true"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+	crossorigin="anonymous"></script>
+<script src="/js/chat_toast.js"
+	defer></script>
+
+</body>
+</html>
