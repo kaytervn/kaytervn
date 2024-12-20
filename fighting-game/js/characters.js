@@ -4,7 +4,7 @@ samuraiMack = new Fighter({
     y: 100,
   },
   velocity: { x: 0, y: 0 },
-  imageSrc: "./img/samuraiMack/Idle.png",
+  imageSrc: "img/samuraiMack/Idle.png",
   framesMax: 8,
   scale: 3,
   offset: {
@@ -13,35 +13,35 @@ samuraiMack = new Fighter({
   },
   sprites: {
     idle: {
-      imageSrc: "./img/samuraiMack/Idle.png",
+      imageSrc: "img/samuraiMack/Idle.png",
       framesMax: 8,
     },
     run: {
-      imageSrc: "./img/samuraiMack/Run.png",
+      imageSrc: "img/samuraiMack/Run.png",
       framesMax: 8,
     },
     jump: {
-      imageSrc: "./img/samuraiMack/Jump.png",
+      imageSrc: "img/samuraiMack/Jump.png",
       framesMax: 2,
     },
     fall: {
-      imageSrc: "./img/samuraiMack/Fall.png",
+      imageSrc: "img/samuraiMack/Fall.png",
       framesMax: 2,
     },
     attack1: {
-      imageSrc: "./img/samuraiMack/Attack1.png",
+      imageSrc: "img/samuraiMack/Attack1.png",
       framesMax: 6,
     },
     attack2: {
-      imageSrc: "./img/samuraiMack/Attack2.png",
+      imageSrc: "img/samuraiMack/Attack2.png",
       framesMax: 6,
     },
     takeHit: {
-      imageSrc: "./img/samuraiMack/Take hit.png",
+      imageSrc: "img/samuraiMack/Take hit.png",
       framesMax: 4,
     },
     death: {
-      imageSrc: "./img/samuraiMack/Death.png",
+      imageSrc: "img/samuraiMack/Death.png",
       framesMax: 6,
     },
   },
@@ -68,7 +68,7 @@ yangLee = new Fighter({
     y: 100,
   },
   velocity: { x: 0, y: 0 },
-  imageSrc: "./img/yangLee/Idle.png",
+  imageSrc: "img/yangLee/Idle.png",
   framesMax: 10,
   scale: 3.5,
   offset: {
@@ -77,35 +77,35 @@ yangLee = new Fighter({
   },
   sprites: {
     idle: {
-      imageSrc: "./img/yangLee/Idle.png",
+      imageSrc: "img/yangLee/Idle.png",
       framesMax: 10,
     },
     run: {
-      imageSrc: "./img/yangLee/Run.png",
+      imageSrc: "img/yangLee/Run.png",
       framesMax: 8,
     },
     jump: {
-      imageSrc: "./img/yangLee/Going up.png",
+      imageSrc: "img/yangLee/Going up.png",
       framesMax: 3,
     },
     fall: {
-      imageSrc: "./img/yangLee/Going down.png",
+      imageSrc: "img/yangLee/Going down.png",
       framesMax: 3,
     },
     attack1: {
-      imageSrc: "./img/yangLee/Attack1.png",
+      imageSrc: "img/yangLee/Attack1.png",
       framesMax: 7,
     },
     attack2: {
-      imageSrc: "./img/yangLee/Attack2.png",
+      imageSrc: "img/yangLee/Attack2.png",
       framesMax: 6,
     },
     takeHit: {
-      imageSrc: "./img/yangLee/Take hit.png",
+      imageSrc: "img/yangLee/Take hit.png",
       framesMax: 3,
     },
     death: {
-      imageSrc: "./img/yangLee/Death.png",
+      imageSrc: "img/yangLee/Death.png",
       framesMax: 11,
     },
   },
@@ -132,7 +132,7 @@ robin = new Fighter({
     y: 100,
   },
   velocity: { x: 0, y: 0 },
-  imageSrc: "./img/robin/Idle.png",
+  imageSrc: "img/robin/Idle.png",
   framesMax: 10,
   scale: 3.5,
   offset: {
@@ -141,35 +141,35 @@ robin = new Fighter({
   },
   sprites: {
     idle: {
-      imageSrc: "./img/robin/Idle.png",
+      imageSrc: "img/robin/Idle.png",
       framesMax: 10,
     },
     run: {
-      imageSrc: "./img/robin/Run.png",
+      imageSrc: "img/robin/Run.png",
       framesMax: 8,
     },
     jump: {
-      imageSrc: "./img/robin/Jump.png",
+      imageSrc: "img/robin/Jump.png",
       framesMax: 3,
     },
     fall: {
-      imageSrc: "./img/robin/Fall.png",
+      imageSrc: "img/robin/Fall.png",
       framesMax: 3,
     },
     attack1: {
-      imageSrc: "./img/robin/Attack2.png",
+      imageSrc: "img/robin/Attack2.png",
       framesMax: 7,
     },
     attack2: {
-      imageSrc: "./img/robin/Attack3.png",
+      imageSrc: "img/robin/Attack3.png",
       framesMax: 8,
     },
     takeHit: {
-      imageSrc: "./img/robin/Take hit.png",
+      imageSrc: "img/robin/Take hit.png",
       framesMax: 3,
     },
     death: {
-      imageSrc: "./img/robin/Death.png",
+      imageSrc: "img/robin/Death.png",
       framesMax: 7,
     },
   },
@@ -203,39 +203,39 @@ kenji = new Fighter({
     x: 215,
     y: 229,
   },
-  imageSrc: "./img/kenji/Idle.png",
+  imageSrc: "img/kenji/Idle.png",
   framesMax: 4,
   sprites: {
     idle: {
-      imageSrc: "./img/kenji/Idle.png",
+      imageSrc: "img/kenji/Idle.png",
       framesMax: 4,
     },
     run: {
-      imageSrc: "./img/kenji/Run.png",
+      imageSrc: "img/kenji/Run.png",
       framesMax: 8,
     },
     jump: {
-      imageSrc: "./img/kenji/Jump.png",
+      imageSrc: "img/kenji/Jump.png",
       framesMax: 2,
     },
     fall: {
-      imageSrc: "./img/kenji/Fall.png",
+      imageSrc: "img/kenji/Fall.png",
       framesMax: 2,
     },
     attack1: {
-      imageSrc: "./img/kenji/Attack1.png",
+      imageSrc: "img/kenji/Attack1.png",
       framesMax: 4,
     },
     attack2: {
-      imageSrc: "./img/kenji/Attack2.png",
+      imageSrc: "img/kenji/Attack2.png",
       framesMax: 4,
     },
     takeHit: {
-      imageSrc: "./img/kenji/Take hit.png",
+      imageSrc: "img/kenji/Take hit.png",
       framesMax: 3,
     },
     death: {
-      imageSrc: "./img/kenji/Death.png",
+      imageSrc: "img/kenji/Death.png",
       framesMax: 7,
     },
   },
@@ -267,39 +267,39 @@ kingRichard = new Fighter({
     x: 150,
     y: 160,
   },
-  imageSrc: "./img/kingRichard/Idle.png",
+  imageSrc: "img/kingRichard/Idle.png",
   framesMax: 8,
   sprites: {
     idle: {
-      imageSrc: "./img/kingRichard/Idle.png",
+      imageSrc: "img/kingRichard/Idle.png",
       framesMax: 8,
     },
     run: {
-      imageSrc: "./img/kingRichard/Run.png",
+      imageSrc: "img/kingRichard/Run.png",
       framesMax: 8,
     },
     jump: {
-      imageSrc: "./img/kingRichard/Jump.png",
+      imageSrc: "img/kingRichard/Jump.png",
       framesMax: 2,
     },
     fall: {
-      imageSrc: "./img/kingRichard/Fall.png",
+      imageSrc: "img/kingRichard/Fall.png",
       framesMax: 2,
     },
     attack1: {
-      imageSrc: "./img/kingRichard/Attack2.png",
+      imageSrc: "img/kingRichard/Attack2.png",
       framesMax: 4,
     },
     attack2: {
-      imageSrc: "./img/kingRichard/Attack3.png",
+      imageSrc: "img/kingRichard/Attack3.png",
       framesMax: 4,
     },
     takeHit: {
-      imageSrc: "./img/kingRichard/Take hit.png",
+      imageSrc: "img/kingRichard/Take hit.png",
       framesMax: 4,
     },
     death: {
-      imageSrc: "./img/kingRichard/Death.png",
+      imageSrc: "img/kingRichard/Death.png",
       framesMax: 6,
     },
   },
@@ -332,39 +332,39 @@ poorGuy = new Fighter({
     x: 190,
     y: 178,
   },
-  imageSrc: "./img/poorGuy/Idle.png",
+  imageSrc: "img/poorGuy/Idle.png",
   framesMax: 8,
   sprites: {
     idle: {
-      imageSrc: "./img/poorGuy/Idle.png",
+      imageSrc: "img/poorGuy/Idle.png",
       framesMax: 8,
     },
     run: {
-      imageSrc: "./img/poorGuy/Run.png",
+      imageSrc: "img/poorGuy/Run.png",
       framesMax: 8,
     },
     jump: {
-      imageSrc: "./img/poorGuy/Jump.png",
+      imageSrc: "img/poorGuy/Jump.png",
       framesMax: 2,
     },
     fall: {
-      imageSrc: "./img/poorGuy/Fall.png",
+      imageSrc: "img/poorGuy/Fall.png",
       framesMax: 2,
     },
     attack1: {
-      imageSrc: "./img/poorGuy/Attack2.png",
+      imageSrc: "img/poorGuy/Attack2.png",
       framesMax: 4,
     },
     attack2: {
-      imageSrc: "./img/poorGuy/Attack3.png",
+      imageSrc: "img/poorGuy/Attack3.png",
       framesMax: 4,
     },
     takeHit: {
-      imageSrc: "./img/poorGuy/Take hit.png",
+      imageSrc: "img/poorGuy/Take hit.png",
       framesMax: 4,
     },
     death: {
-      imageSrc: "./img/poorGuy/Death.png",
+      imageSrc: "img/poorGuy/Death.png",
       framesMax: 6,
     },
   },
