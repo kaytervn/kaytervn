@@ -137,7 +137,7 @@ public class ${modelName}Criteria {
   result += `
             return cb.and(predicates.toArray(new Predicate[0]));
         };
-    };
+    }
 }`;
 
   return result;
@@ -408,7 +408,7 @@ ${
 const generateErrorCode = (modelName) => {
   return `public class ErrorCode {
     /**
-     * Starting error code ${modelName}
+     * Starting error code ${modelName.replace(/([a-z])([A-Z])/g, "$1 $2")}
      */
     public static final String ${modelName
       .replace(/([a-z])([A-Z])/g, "$1_$2")
