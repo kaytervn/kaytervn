@@ -126,7 +126,9 @@ public class ${modelName}Criteria {
     } else {
       result += `
             if (get${capitalize(field.name)}Id() != null) {
-                Join<${modelName}, Group> join = root.join("group", JoinType.INNER);
+                Join<${modelName}, ${field.dataType}> join = root.join("${
+        field.name
+      }", JoinType.INNER);
                 predicates.add(cb.equal(join.get("id"), get${capitalize(
                   field.name
                 )}Id()));
@@ -498,7 +500,7 @@ ${autowiredRepos}
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListDto<List<${upperModelName}Dto>>> autoComplete(${upperModelName}Criteria ${lowerModelName}Criteria) {
         Pageable pageable = PageRequest.of(0, 10);
-        ${lowerModelName}Criteria.setStatus(TenantConstant.STATUS_ACTIVE);
+        ${lowerModelName}Criteria.setStatus(AppConstant.STATUS_ACTIVE);
         Page<${upperModelName}> ${lowerModelName}s = ${lowerModelName}Repository.findAll(${lowerModelName}Criteria.getCriteria(), pageable);
         ResponseListDto<List<${upperModelName}Dto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(${lowerModelName}Mapper.fromEntityListTo${upperModelName}DtoListAutoComplete(${lowerModelName}s.getContent()));
