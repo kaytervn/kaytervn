@@ -69,10 +69,10 @@ function animate() {
   player.velocity.x = 0;
   enemy.velocity.x = 0;
 
-  if (key.a.pressed && player.lastKey == "a") {
+  if (key.a.pressed && player.lastKey === "a") {
     player.velocity.x = -5;
     player.switchSprite("run");
-  } else if (key.d.pressed && player.lastKey == "d") {
+  } else if (key.d.pressed && player.lastKey === "d") {
     player.velocity.x = 5;
     player.switchSprite("run");
   } else {
@@ -85,10 +85,10 @@ function animate() {
     player.switchSprite("fall");
   }
 
-  if (key.ArrowLeft.pressed && enemy.lastKey == "ArrowLeft") {
+  if (key.ArrowLeft.pressed && enemy.lastKey === "ArrowLeft") {
     enemy.velocity.x = -5;
     enemy.switchSprite("run");
-  } else if (key.ArrowRight.pressed && enemy.lastKey == "ArrowRight") {
+  } else if (key.ArrowRight.pressed && enemy.lastKey === "ArrowRight") {
     enemy.velocity.x = 5;
     enemy.switchSprite("run");
   } else {
@@ -101,7 +101,7 @@ function animate() {
     enemy.switchSprite("fall");
   }
 
-  if (player.isAttacking && player.framesCurrent == player.attackFrame) {
+  if (player.isAttacking && player.framesCurrent === player.attackFrame) {
     player.isAttacking = false;
     if (
       !end &&
@@ -114,7 +114,7 @@ function animate() {
     }
   }
 
-  if (enemy.isAttacking && enemy.framesCurrent == enemy.attackFrame) {
+  if (enemy.isAttacking && enemy.framesCurrent === enemy.attackFrame) {
     enemy.isAttacking = false;
     if (
       !end &&
