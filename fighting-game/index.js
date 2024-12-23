@@ -153,6 +153,20 @@ async function initGame() {
     }
   }
   await Promise.all(loadPromises);
+
+  background = new Sprite({
+    position: { x: 0, y: 0 },
+    imageSrc: "img/background.png",
+    scale: 1.34,
+  });
+
+  shop = new Sprite({
+    position: { x: 850, y: 195 },
+    imageSrc: "img/shop.png",
+    scale: 3.5,
+    framesMax: 6,
+  });
+
   animate();
 }
 
