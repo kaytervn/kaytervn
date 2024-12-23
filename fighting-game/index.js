@@ -132,7 +132,31 @@ function animate() {
   }
 }
 
-animate();
+async function initGame() {
+  const loadPromises = [];
+
+  const backgroundImg = ImageLoader.load("img/background.png");
+  const shopImg = ImageLoader.load("img/shop.png");
+  loadPromises.push(
+    new Promise((resolve) => (backgroundImg.onload = resolve)),
+    new Promise((resolve) => (shopImg.onload = resolve))
+  );
+
+  for (const character of [...listPlayer, ...listEnemy]) {
+    for (const sprite in character.sprites) {
+      const img = ImageLoader.load(character.sprites[sprite].imageSrc);
+      loadPromises.push(
+        new Promise((resolve) => {
+          img.onload = resolve;
+        })
+      );
+    }
+  }
+  await Promise.all(loadPromises);
+  animate();
+}
+
+initGame();
 
 window.addEventListener("keydown", (event) => {
   if (!player.dead) {
