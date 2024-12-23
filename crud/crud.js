@@ -422,10 +422,26 @@ const generateErrorCode = (modelName) => {
 
 // ======================================================== CONTROLLER
 
+const getModelPrefix = (modelName) => {
+  const words = modelName.split(" ");
+  if (words.length === 1) {
+    return modelName.length <= 3
+      ? modelName.toUpperCase()
+      : modelName.slice(0, 3).toUpperCase();
+  } else {
+    const firstPart = words[0].slice(0, 3).toUpperCase();
+    const restPart = words
+      .slice(1)
+      .map((word) => word[0].toUpperCase())
+      .join("_");
+    return `${firstPart}_${restPart}`;
+  }
+};
+
 const generateController = (modelName, fields) => {
   const upperModelName = modelName.charAt(0).toUpperCase() + modelName.slice(1);
   const lowerModelName = modelName.charAt(0).toLowerCase() + modelName.slice(1);
-  const modelPrefix = modelName.slice(0, 3).toUpperCase();
+  const modelPrefix = getModelPrefix(modelName);
   const relatedEntities = fields.filter(
     (field) => !javaDatatypes.includes(field.dataType)
   );
