@@ -135,13 +135,6 @@ function animate() {
 async function initGame() {
   const loadPromises = [];
 
-  const backgroundImg = ImageLoader.load("img/background.png");
-  const shopImg = ImageLoader.load("img/shop.png");
-  loadPromises.push(
-    new Promise((resolve) => (backgroundImg.onload = resolve)),
-    new Promise((resolve) => (shopImg.onload = resolve))
-  );
-
   for (const character of [...listPlayer, ...listEnemy]) {
     for (const sprite in character.sprites) {
       const img = ImageLoader.load(character.sprites[sprite].imageSrc);
@@ -153,19 +146,6 @@ async function initGame() {
     }
   }
   await Promise.all(loadPromises);
-
-  background = new Sprite({
-    position: { x: 0, y: 0 },
-    imageSrc: "img/background.png",
-    scale: 1.34,
-  });
-
-  shop = new Sprite({
-    position: { x: 850, y: 195 },
-    imageSrc: "img/shop.png",
-    scale: 3.5,
-    framesMax: 6,
-  });
 
   animate();
 }
