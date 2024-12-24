@@ -423,7 +423,7 @@ const generateErrorCode = (modelName) => {
 // ======================================================== CONTROLLER
 
 const getModelPrefix = (modelName) => {
-  const words = modelName.split(" ");
+  const words = modelName.replace(/([a-z])([A-Z])/g, "$1 $2").split(" ");
   if (words.length === 1) {
     return modelName.length <= 3
       ? modelName.toUpperCase()
@@ -510,7 +510,7 @@ ${autowiredRepos}
         responseListObj.setTotalElements(${lowerModelName}s.getTotalElements());
         return makeSuccessResponse(responseListObj, "Get list ${lowerModelName
           .replace(/([a-z])([A-Z])/g, "$1 $2")
-          .toLowerCase()}s success");
+          .toLowerCase()} success");
     }
 
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -524,7 +524,7 @@ ${autowiredRepos}
         responseListObj.setTotalElements(${lowerModelName}s.getTotalElements());
         return makeSuccessResponse(responseListObj, "Get list ${lowerModelName
           .replace(/([a-z])([A-Z])/g, "$1 $2")
-          .toLowerCase()}s success");
+          .toLowerCase()} success");
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
