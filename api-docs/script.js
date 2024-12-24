@@ -123,7 +123,7 @@ const getDataTypeByFormat = (value) => {
   } else if (value.format === "float") {
     return `Float`;
   } else if (value.format === "date-time") {
-    return `Date (Format: 'DD/MM/YYYY HH:mm:ss')`;
+    return `Date (DD/MM/YYYY HH:mm:ss)`;
   } else if (value.type === "string") {
     return `String`;
   } else if (value.type === "boolean") {
@@ -145,7 +145,7 @@ const getDataTypeByType = (type) => {
   } else if (type === "float") {
     return `Float`;
   } else if (type === "date-time") {
-    return `Date (Format: 'DD/MM/YYYY HH:mm:ss')`;
+    return `Date (DD/MM/YYYY HH:mm:ss)`;
   } else if (type === "string") {
     return `String`;
   } else if (type === "boolean") {
@@ -249,7 +249,7 @@ const getQueryParamValue = (param) => {
   } else if (param.format === "float") {
     result = `Float`;
   } else if (param.format === "date-time") {
-    result = `Date (Format: 'DD/MM/YYYY HH:mm:ss')`;
+    result = `Date ('DD/MM/YYYY HH:mm:ss')`;
   } else if (param.type === "string") {
     result = `String`;
   } else {
@@ -289,7 +289,7 @@ const getPropertyValue = (key, value, required) => {
   const isRequired = required && required.includes(key);
 
   if (value.format === "date-time")
-    return `Date (Format: 'DD/MM/YYYY HH:mm:ss')${
+    return `Date (DD/MM/YYYY HH:mm:ss)${
       isRequired ? ", required: true" : ""
     }`;
   if (value.type === "boolean")
