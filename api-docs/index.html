@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="cookiedu_logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Documentation</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Times New Roman", Times, serif;
+      }
+
+      body {
+        padding: 2rem;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header {
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        color: #1a1a1a;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .api-url-input {
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 1rem;
+      }
+
+      .fetch-button {
+        background-color: #2563eb;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.2s;
+      }
+
+      .fetch-button:hover {
+        background-color: #1d4ed8;
+      }
+
+      .api-group {
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 1rem;
+        font-size: 17px;
+      }
+
+      .endpoint {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+        padding: 1rem;
+      }
+
+      .endpoint-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .method {
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 0.875rem;
+      }
+
+      .method.get {
+        color: #00aa5b;
+      }
+      .method.post {
+        color: #ffcd00;
+      }
+      .method.put {
+        color: #1e40af;
+      }
+      .method.delete {
+        color: #ff1c1c;
+      }
+
+      .params-section h3 {
+        font-size: 17px;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .params-content {
+        padding: 1rem;
+        border-radius: 4px;
+        font-family: "Times New Roman", Times, serif;
+        font-size: 17px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>API Documentation</h1>
+        <input
+          type="text"
+          id="apiUrl"
+          class="api-url-input"
+          placeholder="Enter API-docs URL"
+        />
+        <button onclick="fetchAndConvert()" class="fetch-button">
+          Fetch and Convert
+        </button>
+      </div>
+
+      <div id="apiContent"></div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+      async function fetchAndConvert() {
+        const url = document.getElementById("apiUrl").value;
+        const content = document.getElementById("apiContent");
+        content.innerHTML = "Loading...";
+
+        try {
+          const data = await convertJson(url);
+          renderApiDocs(data);
+        } catch (error) {
+          content.innerHTML = `<div style="color: #dc2626;">Error: ${error.message}</div>`;
+        }
+      }
+
+      function renderApiDocs(endpoints) {
+        const content = document.getElementById("apiContent");
+        content.innerHTML = "";
+
+        endpoints.forEach((group, index) => {
+          const groupElement = document.createElement("div");
+          groupElement.className = "api-group";
+
+          groupElement.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; cursor: pointer"
+             onclick="toggleGroup(${index})">
+          <h2>${group.name}</h2>
+          <span>▼</span>
+        </div>
+        <div id="group-${index}" style="display: none">
+          ${group.item
+            .map(
+              (endpoint) => `
+            <div class="endpoint">
+              <p><strong>Endpoint:</strong> ${endpoint.url}</p>
+              <p><strong>Method:</strong> <span class="method ${endpoint.method.toLowerCase()}">${
+                endpoint.method
+              }</span></p>
+            ${
+              endpoint.query || endpoint.body
+                ? `
+              <p><strong>Payload ${
+                endpoint.query ? "(Query)" : "(Body)"
+              }:</strong></p>
+              <div class="params-content">
+                <pre>${
+                  endpoint.query
+                    ? formatQueryParams(endpoint.query)
+                    : JSON.stringify(endpoint.body, null, 2)
+                }</pre>
+              </div>
+            `
+                : ""
+            }
+              <p><strong>Description:</strong> <em>None</em></p>
+              <p><strong>Response:</strong></p>
+              <div class="params-content">
+                <pre>${JSON.stringify(endpoint.response, null, 2)}</pre>
+              </div>
+            </div>
+          `
+            )
+            .join("")}
+        </div>
+      `;
+          content.appendChild(groupElement);
+        });
+      }
+
+      function formatQueryParams(query) {
+        if (!Array.isArray(query)) return JSON.stringify(query, null, 2);
+        return query
+          .map((param) => `- ${param.key}: ${param.value}`)
+          .join("\n");
+      }
+
+      function toggleGroup(index) {
+        const group = document.getElementById(`group-${index}`);
+        const arrow = group.previousElementSibling.querySelector("span");
+        const isHidden = group.style.display === "none";
+        group.style.display = isHidden ? "block" : "none";
+        arrow.textContent = isHidden ? "▲" : "▼";
+      }
+    </script>
+  </body>
+</html>
