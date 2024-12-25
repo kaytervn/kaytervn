@@ -522,7 +522,7 @@ ${autowiredRepos}
         responseListObj.setContent(${lowerModelName}Mapper.fromEntityListTo${upperModelName}DtoListAutoComplete(${lowerModelName}s.getContent()));
         responseListObj.setTotalPages(${lowerModelName}s.getTotalPages());
         responseListObj.setTotalElements(${lowerModelName}s.getTotalElements());
-        return makeSuccessResponse(responseListObj, "Get list ${lowerModelName
+        return makeSuccessResponse(responseListObj, "Get list auto-complete ${lowerModelName
           .replace(/([a-z])([A-Z])/g, "$1 $2")
           .toLowerCase()} success");
     }
