@@ -4,8 +4,7 @@ function generatePermissions(json) {
     for (const [method, operation] of Object.entries(methods)) {
       const controllerName = operation.tags[0].replace("-controller", "");
       const permission = generatePermissionsBodyJson(controllerName, path, 2);
-      const excludedNames = ["autoComplete"];
-      if (!excludedNames.includes(operation.summary)) {
+      if (!path.includes("auto-complete")) {
         permissions.push(permission);
       }
     }
