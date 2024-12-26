@@ -15,7 +15,7 @@ const background = new Sprite({
     x: 0,
     y: 0,
   },
-  imageSrc: "img/background.png",
+  imageSrc: initImage("img/background.png"),
   scale: 1.34,
 });
 
@@ -24,7 +24,7 @@ const shop = new Sprite({
     x: 850,
     y: 195,
   },
-  imageSrc: "img/shop.png",
+  imageSrc: initImage("img/shop.png"),
   scale: 3.5,
   framesMax: 6,
 });
@@ -132,25 +132,7 @@ function animate() {
   }
 }
 
-async function initGame() {
-  const loadPromises = [];
-
-  for (const character of [...listPlayer, ...listEnemy]) {
-    for (const sprite in character.sprites) {
-      const img = ImageLoader.load(character.sprites[sprite].imageSrc);
-      loadPromises.push(
-        new Promise((resolve) => {
-          img.onload = resolve;
-        })
-      );
-    }
-  }
-  await Promise.all(loadPromises);
-
-  animate();
-}
-
-initGame();
+animate();
 
 window.addEventListener("keydown", (event) => {
   if (!player.dead) {

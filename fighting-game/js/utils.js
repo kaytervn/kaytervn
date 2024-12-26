@@ -38,3 +38,9 @@ function decreaseTimer() {
     determineWinner();
   }
 }
+
+const initImage = (src) => {
+  let image = new Image();
+  image.src = src;
+  return image;
+};

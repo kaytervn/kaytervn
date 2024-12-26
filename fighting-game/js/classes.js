@@ -1,16 +1,3 @@
-const ImageLoader = {
-  cache: new Map(),
-  load(src) {
-    if (this.cache.has(src)) {
-      return this.cache.get(src);
-    }
-    const img = new Image();
-    img.src = src;
-    this.cache.set(src, img);
-    return img;
-  },
-};
-
 class Sprite {
   constructor({
     position,
@@ -21,7 +8,7 @@ class Sprite {
     flip = false,
   }) {
     this.position = position;
-    this.image = ImageLoader.load(imageSrc);
+    this.image = imageSrc;
     this.scale = scale;
     this.framesMax = framesMax;
     this.framesCurrent = 0;
@@ -120,7 +107,7 @@ class Fighter extends Sprite {
     this.framesHold = 5;
     this.sprites = sprites;
     for (const sprite in this.sprites) {
-      this.sprites[sprite].image = ImageLoader.load(sprites[sprite].imageSrc);
+      this.sprites[sprite].image = sprites[sprite].imageSrc;
     }
     this.dead = false;
     this.nameBox = {
