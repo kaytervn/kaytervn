@@ -202,8 +202,14 @@
 
       function formatQueryParams(query) {
         if (!Array.isArray(query)) return JSON.stringify(query, null, 2);
+
         return query
-          .map((param) => `- ${param.key}: ${param.value}`)
+          .map((param) => {
+            if (param.value && param.value.includes("required: true")) {
+              return `- ${param.key}: <strong style="color: red;">${param.value}</strong>`;
+            }
+            return `- ${param.key}: ${param.value}`;
+          })
           .join("\n");
       }
 
