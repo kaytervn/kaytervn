@@ -91,6 +91,14 @@ const resolveArrayProperties = (json, property) => {
   for (const h in property) {
     property[h] = resolveProperties(json, property[h]);
     property[h] = getDataTypeByFormat(property[h]);
+    for (const k in property[h]) {
+      property[h][k] = resolveProperties(json, property[h][k]);
+      property[h][k] = getDataTypeByFormat(property[h][k]);
+      for (const q in property[h][k]) {
+        property[h][k][q] = resolveProperties(json, property[h][k][q]);
+        property[h][k][q] = getDataTypeByFormat(property[h][k][q]);
+      }
+    }
   }
   return property;
 };
@@ -187,6 +195,12 @@ const createResponse = (json, responses) => {
                 properties[key][k][h] = getDataTypeByFormat(
                   properties[key][k][h]
                 );
+                if (typeof properties[key][k][h] === "object") {
+                  console.log(properties[key][k][h]);
+                  // for (const h in value) {
+                  //   console.log(value[h]);
+                  // }
+                }
               }
             }
           }
@@ -289,9 +303,7 @@ const getPropertyValue = (key, value, required) => {
   const isRequired = required && required.includes(key);
 
   if (value.format === "date-time")
-    return `Date (DD/MM/YYYY HH:mm:ss)${
-      isRequired ? ", required: true" : ""
-    }`;
+    return `Date (DD/MM/YYYY HH:mm:ss)${isRequired ? ", required: true" : ""}`;
   if (value.type === "boolean")
     return `Boolean (true/false)${isRequired ? ", required: true" : ""}`;
   if (value.format === "int64")
