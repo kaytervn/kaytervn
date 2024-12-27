@@ -138,6 +138,8 @@ const getDataTypeByFormat = (value) => {
     return `Boolean`;
   } else if (value.type === "array") {
     return [];
+  } else if (value.type === "object") {
+    return "Object";
   } else {
     return value;
   }
@@ -162,6 +164,8 @@ const getDataTypeByType = (type) => {
     return `Integer`;
   } else if (type === "array") {
     return [];
+  } else if (type === "object") {
+    return "Object";
   } else {
     return null;
   }
