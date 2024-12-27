@@ -1,7 +1,7 @@
 samuraiMack = new Fighter({
   position: {
     x: 100,
-    y: 100,
+    y: -200,
   },
   velocity: { x: 0, y: 0 },
   imageSrc: initImage("img/samuraiMack/Idle.png"),
@@ -65,7 +65,7 @@ samuraiMack = new Fighter({
 yangLee = new Fighter({
   position: {
     x: 100,
-    y: 100,
+    y: -200,
   },
   velocity: { x: 0, y: 0 },
   imageSrc: initImage("img/yangLee/Idle.png"),
@@ -129,7 +129,7 @@ yangLee = new Fighter({
 robin = new Fighter({
   position: {
     x: 100,
-    y: 100,
+    y: -200,
   },
   velocity: { x: 0, y: 0 },
   imageSrc: initImage("img/robin/Idle.png"),
@@ -195,7 +195,7 @@ robin = new Fighter({
 kenji = new Fighter({
   position: {
     x: 1100,
-    y: 100,
+    y: -200,
   },
   velocity: { x: 0, y: 0 },
   scale: 3,
@@ -259,7 +259,7 @@ kenji = new Fighter({
 kingRichard = new Fighter({
   position: {
     x: 1100,
-    y: 100,
+    y: -200,
   },
   velocity: { x: 0, y: 0 },
   scale: 3,
@@ -324,7 +324,7 @@ kingRichard = new Fighter({
 poorGuy = new Fighter({
   position: {
     x: 1100,
-    y: 100,
+    y: -200,
   },
   velocity: { x: 0, y: 0 },
   scale: 3.5,
