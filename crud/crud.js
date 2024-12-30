@@ -35,7 +35,7 @@ const extractFields = (input, requiredFields) => {
     );
 
   const processedFields = lines
-    .filter((line) => line.startsWith("private "))
+    .filter((line) => line.startsWith("private ") && !line.includes("List<"))
     .map((line) => {
       const cleanedLine = line.replace(/\s*=\s*[^;]+/, "");
       const [_, dataType, name] =
