@@ -189,6 +189,31 @@ const createResponse = (json, responses) => {
                   json,
                   properties[key][k]
                 );
+                properties[key][k] = getDataTypeByFormat(properties[key][k]);
+                for (const q in properties[key][k]) {
+                  properties[key][k][q] = resolveProperties(
+                    json,
+                    properties[key][k][q]
+                  );
+                  properties[key][k][q] = getDataTypeByFormat(
+                    properties[key][k][q]
+                  );
+                  for (const j in properties[key][k][q]) {
+                    properties[key][k][q][j] = resolveProperties(
+                      json,
+                      properties[key][k][q][j]
+                    );
+                    properties[key][k][q][j] = getDataTypeByFormat(
+                      properties[key][k][q][j]
+                    );
+                    for (const m in properties[key][k][q][j]) {
+                      properties[key][k][q][j][m] = resolveProperties(
+                        json,
+                        properties[key][k][q][j][m]
+                      );
+                    }
+                  }
+                }
               } else if (properties[key][k].type === "array") {
                 properties[key][k] = [
                   resolveArrayProperties(json, properties[key][k]),
@@ -199,12 +224,6 @@ const createResponse = (json, responses) => {
                 properties[key][k][h] = getDataTypeByFormat(
                   properties[key][k][h]
                 );
-                if (typeof properties[key][k][h] === "object") {
-                  console.log(properties[key][k][h]);
-                  // for (const h in value) {
-                  //   console.log(value[h]);
-                  // }
-                }
               }
             }
           }
