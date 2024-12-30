@@ -63,7 +63,10 @@ const ensureFieldsExist = (fields, requiredFields) => {
 // ========================================= Repository
 
 const generateRepositoryClass = (modelName) => {
-  return `public interface ${modelName}Repository extends JpaRepository<${modelName}, Long>, JpaSpecificationExecutor<${modelName}> {
+  return `import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+public interface ${modelName}Repository extends JpaRepository<${modelName}, Long>, JpaSpecificationExecutor<${modelName}> {
 }`;
 };
 
@@ -71,7 +74,11 @@ const generateRepositoryClass = (modelName) => {
 
 const generateCriteriaClass = (modelName, fields) => {
   let classFields = [];
-  let result = `
+  let result = `import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.jpa.domain.Specification;
+import javax.persistence.criteria.Predicate;
+
 @Getter
 @Setter
 public class ${modelName}Criteria {
@@ -199,7 +206,10 @@ const generateValidation = (modelName, integerField) => {
     modelName.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase()
   );
 
-  const annotation = `
+  const annotation = `import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.*;
+
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ${label}Validation.class)
@@ -211,9 +221,14 @@ public @interface ${label} {
     .toLowerCase()} is invalid";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-}`;
+}
 
-  const implementation = `
+/* =========================================================== */`;
+
+  const implementation = `import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import java.util.List;
+
 public class ${label}Validation implements ConstraintValidator<${label}, Integer> {
     private boolean allowNull;
 
@@ -228,7 +243,9 @@ public class ${label}Validation implements ConstraintValidator<${label}, Integer
                 ${constants.join(",\n                ")}
         ).contains(value);
     }
-}`;
+}
+
+/* =========================================================== */`;
 
   return { annotation, implementation };
 };
@@ -239,19 +256,17 @@ const generateDtoClass = (modelName, fields) => {
   let dtoFields = [];
   const dtoClassName = `${modelName}Dto`;
 
-  let result = `@Data
+  let result = `import lombok.Data;
+
+@Data
 public class ${dtoClassName} extends ABasicAdminDto {`;
 
   fields.forEach((field) => {
     if (field.name !== "id" && field.name !== "status") {
       if (javaDatatypes.includes(field.dataType)) {
-        dtoFields.push(
-          `    @ApiModelProperty(name = "${field.name}")\n    private ${field.dataType} ${field.name};`
-        );
+        dtoFields.push(`    private ${field.dataType} ${field.name};`);
       } else {
-        dtoFields.push(
-          `    @ApiModelProperty(name = "${field.name}")\n    private ${field.dataType}Dto ${field.name};`
-        );
+        dtoFields.push(`    private ${field.dataType}Dto ${field.name};`);
       }
     }
   });
@@ -274,22 +289,18 @@ const generateFormClasses = (modelName, fields) => {
     const fieldName = javaDatatypes.includes(dataType) ? name : `${name}Id`;
 
     if (isCreate && fieldName === "id") return null;
-    if (fieldName === "id")
+    if (comment && comment.includes(":")) {
+      const customValidation = `${modelName}${capitalize(name)}`;
+      annotations.push(`@${customValidation}`);
+    } else if (fieldName === "id")
       annotations.push(`@NotNull(message = "id cannot be null")`);
     else if (["String"].includes(dataType)) {
-      annotations.push(`@NotBlank(message = "${fieldName} cannot be null")`);
+      annotations.push(`@NotBlank(message = "${fieldName} cannot be blank")`);
     } else {
       annotations.push(`@NotNull(message = "${fieldName} cannot be null")`);
     }
 
-    if (comment && comment.includes(":")) {
-      const customValidation = `${modelName}${capitalize(name)}`;
-      annotations.push(`@${customValidation}`);
-    }
-
-    annotations.push(
-      `@ApiModelProperty(name = "${fieldName}", required = true)`
-    );
+    annotations.push(`@ApiModelProperty(required = true)`);
 
     const fieldType = javaDatatypes.includes(dataType) ? dataType : "Long";
 
@@ -307,12 +318,18 @@ const generateFormClasses = (modelName, fields) => {
     .map((field) => generateFieldAnnotation(field, false))
     .join("\n    ");
 
-  const createForm = `@Data
+  const createForm = `import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+@Data
 public class ${createFormName} {
     ${createFormFields}
 }`;
 
-  const updateForm = `@Data
+  const updateForm = `import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+@Data
 public class ${updateFormName} {
     ${updateFormFields}
 }`;
@@ -377,7 +394,10 @@ const generateMapper = (modelName, fields) => {
     )
     .join("\n");
 
-  return `@Mapper(componentModel = "spring", ${uses}
+  return `import org.mapstruct.*;
+import java.util.List;
+
+@Mapper(componentModel = "spring", ${uses}
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ${modelName}Mapper {
@@ -457,7 +477,7 @@ const generateController = (modelName, fields) => {
     findRelatedEntities += `    
         ${field.dataType} ${
       field.name
-    } = ${lowerRepoName}Repository.findById(${lowerModelName}Form.get${
+    } = ${lowerRepoName}Repository.findById(form.get${
       field.name.charAt(0).toUpperCase() + field.name.slice(1)
     }Id()).orElse(null);
         if (${field.name} == null) {
@@ -472,7 +492,17 @@ const generateController = (modelName, fields) => {
     }(${field.name});`;
   });
 
-  return `@Slf4j
+  return `import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
+import java.awt.print.Pageable;
+
+@Slf4j
 @RestController
 @RequestMapping("/v1/${lowerModelName
     .replace(/([a-z])([A-Z])/g, "$1-$2")
@@ -503,11 +533,11 @@ ${autowiredRepos}
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('${modelPrefix}_L')")
     public ApiMessageDto<ResponseListDto<List<${upperModelName}Dto>>> list(${upperModelName}Criteria ${lowerModelName}Criteria, Pageable pageable) {
-        Page<${upperModelName}> ${lowerModelName}s = ${lowerModelName}Repository.findAll(${lowerModelName}Criteria.getCriteria(), pageable);
+        Page<${upperModelName}> list${upperModelName} = ${lowerModelName}Repository.findAll(${lowerModelName}Criteria.getCriteria(), pageable);
         ResponseListDto<List<${upperModelName}Dto>> responseListObj = new ResponseListDto<>();
-        responseListObj.setContent(${lowerModelName}Mapper.fromEntityListTo${upperModelName}DtoList(${lowerModelName}s.getContent()));
-        responseListObj.setTotalPages(${lowerModelName}s.getTotalPages());
-        responseListObj.setTotalElements(${lowerModelName}s.getTotalElements());
+        responseListObj.setContent(${lowerModelName}Mapper.fromEntityListTo${upperModelName}DtoList(list${upperModelName}.getContent()));
+        responseListObj.setTotalPages(list${upperModelName}.getTotalPages());
+        responseListObj.setTotalElements(list${upperModelName}.getTotalElements());
         return makeSuccessResponse(responseListObj, "Get list ${lowerModelName
           .replace(/([a-z])([A-Z])/g, "$1 $2")
           .toLowerCase()} success");
@@ -517,11 +547,11 @@ ${autowiredRepos}
     public ApiMessageDto<ResponseListDto<List<${upperModelName}Dto>>> autoComplete(${upperModelName}Criteria ${lowerModelName}Criteria) {
         Pageable pageable = PageRequest.of(0, 10);
         ${lowerModelName}Criteria.setStatus(AppConstant.STATUS_ACTIVE);
-        Page<${upperModelName}> ${lowerModelName}s = ${lowerModelName}Repository.findAll(${lowerModelName}Criteria.getCriteria(), pageable);
+        Page<${upperModelName}> list${upperModelName} = ${lowerModelName}Repository.findAll(${lowerModelName}Criteria.getCriteria(), pageable);
         ResponseListDto<List<${upperModelName}Dto>> responseListObj = new ResponseListDto<>();
-        responseListObj.setContent(${lowerModelName}Mapper.fromEntityListTo${upperModelName}DtoListAutoComplete(${lowerModelName}s.getContent()));
-        responseListObj.setTotalPages(${lowerModelName}s.getTotalPages());
-        responseListObj.setTotalElements(${lowerModelName}s.getTotalElements());
+        responseListObj.setContent(${lowerModelName}Mapper.fromEntityListTo${upperModelName}DtoListAutoComplete(list${upperModelName}.getContent()));
+        responseListObj.setTotalPages(list${upperModelName}.getTotalPages());
+        responseListObj.setTotalElements(list${upperModelName}.getTotalElements());
         return makeSuccessResponse(responseListObj, "Get list auto-complete ${lowerModelName
           .replace(/([a-z])([A-Z])/g, "$1 $2")
           .toLowerCase()} success");
@@ -529,8 +559,8 @@ ${autowiredRepos}
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('${modelPrefix}_C')")
-    public ApiMessageDto<String> create(@Valid @RequestBody Create${upperModelName}Form ${lowerModelName}Form, BindingResult bindingResult) {
-        ${upperModelName} ${lowerModelName} = ${lowerModelName}Mapper.fromCreate${upperModelName}FormToEntity(${lowerModelName}Form);
+    public ApiMessageDto<String> create(@Valid @RequestBody Create${upperModelName}Form form, BindingResult bindingResult) {
+        ${upperModelName} ${lowerModelName} = ${lowerModelName}Mapper.fromCreate${upperModelName}FormToEntity(form);
         ${findRelatedEntities}
         ${lowerModelName}Repository.save(${lowerModelName});
         return makeSuccessResponse(null, "Create ${lowerModelName
@@ -540,8 +570,8 @@ ${autowiredRepos}
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('${modelPrefix}_U')")
-    public ApiMessageDto<String> update(@Valid @RequestBody Update${upperModelName}Form ${lowerModelName}Form, BindingResult bindingResult) {
-        ${upperModelName} ${lowerModelName} = ${lowerModelName}Repository.findById(${lowerModelName}Form.getId()).orElse(null);
+    public ApiMessageDto<String> update(@Valid @RequestBody Update${upperModelName}Form form, BindingResult bindingResult) {
+        ${upperModelName} ${lowerModelName} = ${lowerModelName}Repository.findById(form.getId()).orElse(null);
         if (${lowerModelName} == null) {
             throw new BadRequestException(ErrorCode.${upperModelName
               .replace(/([a-z])([A-Z])/g, "$1_$2")
@@ -549,7 +579,7 @@ ${autowiredRepos}
     .replace(/([a-z])([A-Z])/g, "$1 $2")
     .toLowerCase()}");
         }
-        ${lowerModelName}Mapper.fromUpdate${upperModelName}FormToEntity(${lowerModelName}Form, ${lowerModelName});
+        ${lowerModelName}Mapper.fromUpdate${upperModelName}FormToEntity(form, ${lowerModelName});
 ${findRelatedEntities}
         ${lowerModelName}Repository.save(${lowerModelName});
         return makeSuccessResponse(null, "Update ${lowerModelName
