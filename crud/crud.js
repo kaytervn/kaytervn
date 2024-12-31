@@ -160,29 +160,32 @@ const capitalize = (str) => {
 
 const generateAppConstant = (modelName, fields) => {
   const prefix = modelName.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase();
-  const constants = fields
+  const constantsByGroup = fields
     .filter((field) => field.dataType === "Integer" && field.comment)
-    .flatMap((field) => {
+    .reduce((acc, field) => {
       const regex = /(\d+)\s*:\s*(\w+)/g;
-      const matches = [];
       let match;
+      const fieldGroup = field.name
+        .replace(/([a-z])([A-Z])/g, "$1_$2")
+        .toUpperCase();
+
       while ((match = regex.exec(field.comment)) !== null) {
-        matches.push({
-          value: match[1],
-          label: match[2],
-        });
+        const value = match[1];
+        const label = match[2].toUpperCase();
+        const constant = `    public static final Integer ${prefix}_${fieldGroup}_${label} = ${value};`;
+        if (!acc[fieldGroup]) acc[fieldGroup] = [];
+        acc[fieldGroup].push(constant);
       }
-      return matches.map(
-        ({ value, label }) =>
-          `    public static final Integer ${prefix}_${field.name
-            .replace(/([a-z])([A-Z])/g, "$1_$2")
-            .toUpperCase()}_${label.toUpperCase()} = ${value};`
-      );
-    });
+      return acc;
+    }, {});
 
-  if (constants.length === 0) return null;
+  if (Object.keys(constantsByGroup).length === 0) return null;
 
-  return `public class AppConstant {\n${constants.join("\n")}\n}`;
+  const groupedConstants = Object.entries(constantsByGroup)
+    .map(([group, constants]) => constants.join("\n"))
+    .join("\n\n");
+
+  return `public class AppConstant {\n${groupedConstants}\n}`;
 };
 
 const generateValidation = (modelName, integerField) => {
@@ -494,13 +497,14 @@ const generateController = (modelName, fields) => {
 
   return `import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.awt.print.Pageable;
 
 @Slf4j
 @RestController
