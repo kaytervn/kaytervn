@@ -1,4 +1,4 @@
-async function fetchJsonInput(url) {
+const fetchJsonInput = async (url) => {
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -16,7 +16,7 @@ async function fetchJsonInput(url) {
   } catch (error) {
     throw new Error(error.message);
   }
-}
+};
 
 const convertJson = async (url) => {
   let inputJson;
