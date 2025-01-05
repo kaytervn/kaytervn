@@ -130,7 +130,6 @@
         margin-right: 0.5rem;
       }
     </style>
-    <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="qrcode.js"></script>
   </head>
   <body>
@@ -197,8 +196,8 @@
       const downloadQRCode = () => {
         const customSize = parseInt(widthInput.value, 10);
 
-        if (isNaN(customSize) || customSize < 100) {
-          customSize = 250;
+        if (!widthInput.value || isNaN(customSize) || customSize < 100) {
+          customSize = 100;
           return;
         }
 
