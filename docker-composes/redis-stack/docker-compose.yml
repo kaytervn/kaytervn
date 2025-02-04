@@ -1,0 +1,26 @@
+services:
+  redis-spos:
+    image: redis/redis-stack:7.2.0-v14
+    container_name: redis-stack-spos
+    restart: always
+    environment:
+      - REDIS_ARGS=--requirepass admin123654
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    volumes:
+      - spos-data:/data
+  redis-nails:
+    image: redis/redis-stack:7.2.0-v14
+    container_name: redis-stack-nails
+    restart: always
+    environment:
+      - REDIS_ARGS=--requirepass admin123654
+    ports:
+      - "6479:6379"
+      - "8002:8001"
+    volumes:
+      - nails-data:/data
+volumes:
+  spos-data:
+  nails-data:

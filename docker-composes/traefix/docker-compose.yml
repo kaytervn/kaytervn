@@ -1,0 +1,13 @@
+services:
+  spring-boot-app:
+    image: nails-tenant
+    container_name: nails-tenant
+    ports:
+      - "7203:7203"
+  ngrok:
+    image: wernight/ngrok
+    container_name: ngrok
+    environment:
+      - NGROK_AUTHTOKEN=2kxaz0kkPesbzglykkitMr9YbDB_2UYEnvMfCMhT9N357voEV
+      - NGROK_PORT=nails-tenant:7203
+    command: ngrok http nails-tenant:7203 --log=stdout

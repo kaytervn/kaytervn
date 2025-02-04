@@ -1,0 +1,16 @@
+services:
+  mysql:
+    image: mysql:9.2.0
+    container_name: mysql
+    ports:
+      - "3307:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456@a
+    volumes:
+      - data:/var/lib/mysql
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+volumes:
+  data:
