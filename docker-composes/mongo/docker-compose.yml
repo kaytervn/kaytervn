@@ -1,0 +1,19 @@
+services:
+  mongo:
+    image: mongo:8.0.4
+    container_name: mongo
+    restart: always
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456@a
+    volumes:
+      - data:/data/db
+      - config:/data/configdb
+
+volumes:
+  data:
+  config:
+
+# URI Connect to Compass: mongodb://root:123456@a@localhost:27018
