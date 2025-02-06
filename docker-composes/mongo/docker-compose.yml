@@ -6,8 +6,8 @@ services:
     ports:
       - "27018:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: 123456@a
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123654
     volumes:
       - data:/data/db
       - config:/data/configdb
@@ -15,5 +15,4 @@ services:
 volumes:
   data:
   config:
-
-# URI Connect to Compass: mongodb://root:123456@a@localhost:27018
+# URI Connect to Compass: mongodb://admin:admin123654@localhost:27018
