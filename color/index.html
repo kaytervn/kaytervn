@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Building Color Picker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .control-panel {
+        backdrop-filter: blur(10px);
+        background-color: rgba(255, 255, 255, 0.8);
+      }
+
+      input[type="range"] {
+        -webkit-appearance: none;
+        width: 150px;
+        height: 4px;
+        background: #e2e8f0;
+        border-radius: 2px;
+        outline: none;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 16px;
+        height: 16px;
+        background: #3b82f6;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.1);
+      }
+
+      input[type="color"] {
+        -webkit-appearance: none;
+        border: none;
+        padding: 0;
+        border-radius: 50%;
+      }
+
+      input[type="color"]::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      input[type="color"]::-webkit-color-swatch {
+        border: 2px solid #e2e8f0;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body class="flex min-h-screen bg-gray-100">
+    <div
+      id="building"
+      class="relative flex-1 h-screen transition-colors duration-300"
+      style="background-color: #3498db"
+    >
+      <div
+        class="control-panel absolute bottom-6 left-1/2 p-4 rounded-xl shadow-lg flex items-center gap-6"
+      >
+        <div class="flex flex-col items-center gap-2">
+          <input
+            type="color"
+            id="colorPicker"
+            value="#3498db"
+            class="w-8 h-8 cursor-pointer"
+          />
+          <span id="colorCode" class="text-xs font-medium">#3498db</span>
+        </div>
+
+        <div class="flex flex-col items-center gap-2">
+          <input
+            type="range"
+            id="intensitySlider"
+            min="0"
+            max="100"
+            value="100"
+            class="cursor-pointer"
+          />
+          <span id="intensityValue" class="text-xs font-medium">100%</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const building = document.getElementById("building");
+      const colorPicker = document.getElementById("colorPicker");
+      const intensitySlider = document.getElementById("intensitySlider");
+      const colorCode = document.getElementById("colorCode");
+      const intensityValue = document.getElementById("intensityValue");
+
+      function updateBuildingColor() {
+        let color = colorPicker.value;
+        let intensity = intensitySlider.value / 100;
+        let rgb = hexToRgb(color);
+        let adjustedColor = `rgb(${rgb.r * intensity}, ${rgb.g * intensity}, ${
+          rgb.b * intensity
+        })`;
+        building.style.backgroundColor = adjustedColor;
+        colorCode.textContent = rgbToHex(
+          Math.round(rgb.r * intensity),
+          Math.round(rgb.g * intensity),
+          Math.round(rgb.b * intensity)
+        );
+        intensityValue.textContent = intensitySlider.value + "%";
+      }
+
+      function rgbToHex(r, g, b) {
+        return (
+          "#" +
+          ((1 << 24) | (r << 16) | (g << 8) | b)
+            .toString(16)
+            .slice(1)
+            .toUpperCase()
+        );
+      }
+
+      function hexToRgb(hex) {
+        let bigint = parseInt(hex.substring(1), 16);
+        return {
+          r: (bigint >> 16) & 255,
+          g: (bigint >> 8) & 255,
+          b: bigint & 255,
+        };
+      }
+
+      colorPicker.addEventListener("input", updateBuildingColor);
+      intensitySlider.addEventListener("input", updateBuildingColor);
+    </script>
+  </body>
+</html>
