@@ -3,7 +3,7 @@ services:
     image: mysql:9.2.0
     container_name: mysql
     ports:
-      - "3307:3306"
+      - "3306:3306"
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 123456@a
