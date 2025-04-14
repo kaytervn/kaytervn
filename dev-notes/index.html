@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Notes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --sidebar-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f5f7fa;
+            padding-top: 60px;
+            color: #333;
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.7rem 1rem;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+
+        .sidebar-toggle {
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            color: white;
+            font-size: 1.2rem;
+            margin-left: 15px;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 60px;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 0;
+            width: 280px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform var(--transition-speed) ease;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-collapsed {
+            transform: translateX(-280px);
+        }
+
+        .content {
+            margin-left: 280px;
+            padding: 20px;
+            transition: margin-left var(--transition-speed) ease;
+        }
+
+        .content-expanded {
+            margin-left: 0;
+        }
+
+        .search-container {
+            padding: 15px;
+            position: relative;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border-radius: 50px;
+            border: 1px solid #ced4da;
+            background-color: white;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        #searchInput:focus {
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+            border-color: var(--accent-color);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 30px;
+            top: 24px;
+            color: #777;
+        }
+
+        #clearSearch {
+            position: absolute;
+            right: 30px;
+            top: 24px;
+            cursor: pointer;
+            color: #999;
+            display: none;
+            width: 18px;
+            height: 18px;
+            text-align: center;
+            line-height: 18px;
+            background-color: #e6e6e6;
+            border-radius: 50%;
+        }
+
+        #clearSearch:hover {
+            background-color: #d4d4d4;
+            color: #333;
+        }
+
+        .sidebar-heading {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: 0;
+            margin: 0;
+            padding: 15px;
+            color: #555;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: background-color 0.2s;
+        }
+
+        .sidebar-heading:hover {
+            background-color: rgba(0, 0, 0, 0.06);
+        }
+
+        .chevron-icon {
+            font-size: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .rotate-icon {
+            transform: rotate(-90deg);
+        }
+
+        .nav-link {
+            font-weight: 400;
+            color: #444;
+            padding: 12px 20px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(52, 152, 219, 0.08);
+            color: var(--accent-color);
+            border-left-color: rgba(52, 152, 219, 0.5);
+        }
+
+        .nav-link.active {
+            color: var(--accent-color);
+            background-color: rgba(52, 152, 219, 0.1);
+            border-left-color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .note-content {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+            background-color: transparent;
+            padding: 0;
+        }
+
+        pre {
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        code {
+            border-radius: 4px;
+            padding: 2px 5px;
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--accent-color);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .note-meta {
+            margin-bottom: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .note-meta i {
+            margin-right: 5px;
+        }
+
+        .note-meta span {
+            margin-right: 15px;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 99;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #loadingIndicator {
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .search-result {
+            padding: 15px;
+            border-radius: 8px;
+            background-color: white;
+            margin-bottom: 15px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.2s;
+        }
+
+        .search-result:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-result h5 {
+            margin-top: 0;
+        }
+
+        .search-result mark {
+            background-color: rgba(255, 230, 0, 0.4);
+            padding: 0 3px;
+            border-radius: 3px;
+        }
+
+        .badge-group {
+            font-size: 0.75rem;
+            background-color: #f0f4f8;
+            color: #516f90;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        .table-of-contents {
+            background-color: rgba(0, 0, 0, 0.02);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .table-of-contents h5 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .toc-list {
+            list-style-type: none;
+            padding-left: 10px;
+        }
+
+        .toc-list li {
+            margin-bottom: 5px;
+        }
+
+        .toc-list a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .toc-list a:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        /* Actions toolbar */
+        .actions-toolbar {
+            position: sticky;
+            top: 20px;
+            z-index: 90;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+            opacity: 0.97;
+        }
+
+        .toolbar-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+        }
+
+        .toolbar-buttons .btn {
+            margin-left: 5px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .toolbar-buttons .btn i {
+            margin-right: 5px;
+        }
+
+        /* Bookmarks feature */
+        .bookmark-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .bookmark-remove {
+            color: #dc3545;
+            cursor: pointer;
+        }
+
+        /* Recent Notes */
+        .recent-notes {
+            padding: 15px;
+        }
+
+        .recent-note-item {
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+        }
+
+        .recent-note-item:hover {
+            background-color: rgba(52, 152, 219, 0.08);
+        }
+
+        .recent-note-item a {
+            color: #333;
+            text-decoration: none;
+            flex-grow: 1;
+        }
+
+        .recent-note-time {
+            font-size: 0.75rem;
+            color: #777;
+        }
+
+        /* Tabs for content organization */
+        .content-tabs {
+            margin-bottom: 20px;
+        }
+
+        .content-tabs .nav-link {
+            border-radius: 6px 6px 0 0;
+            padding: 10px 20px;
+            font-weight: 500;
+        }
+
+        .content-tabs .nav-link.active {
+            background-color: white;
+            border-bottom-color: white;
+            color: var(--accent-color);
+        }
+
+        /* Print-friendly styles */
+        @media print {
+            .sidebar, .navbar, .actions-toolbar, .back-to-top {
+                display: none !important;
+            }
+
+            .content {
+                margin-left: 0 !important;
+                padding: 0 !important;
+            }
+
+            .note-content {
+                box-shadow: none !important;
+                padding: 0 !important;
+            }
+
+            body {
+                background-color: white !important;
+                padding-top: 0 !important;
+            }
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        .dark-mode .navbar {
+            background: #121212;
+        }
+
+        .dark-mode .sidebar {
+            background-color: #212121;
+            border-right-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .dark-mode .sidebar-heading {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            border-bottom-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .dark-mode .sidebar-heading:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .dark-mode .nav-link {
+            color: #c0c0c0;
+        }
+
+        .dark-mode .nav-link:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--accent-color);
+        }
+
+        .dark-mode .nav-link.active {
+            background-color: rgba(52, 152, 219, 0.15);
+        }
+
+        .dark-mode .note-content,
+        .dark-mode .actions-toolbar,
+        .dark-mode .search-result {
+            background-color: #252525;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode code {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #4fc3f7;
+        }
+
+        .dark-mode h1, .dark-mode h2, .dark-mode h3, 
+        .dark-mode h4, .dark-mode h5, .dark-mode h6 {
+            color: #e0e0e0;
+        }
+
+        .dark-mode #searchInput {
+            background-color: #333;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+
+        .dark-mode .table-of-contents {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .dark-mode .recent-note-item,
+        .dark-mode .bookmark-item {
+            background-color: #2d2d2d;
+        }
+
+        .dark-mode .recent-note-item a {
+            color: #e0e0e0;
+        }
+
+        .dark-mode h1 {
+            border-bottom-color: #333;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-280px);
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .sidebar-toggle-open {
+                display: block;
+            }
+
+            .sidebar-expanded {
+                transform: translateX(0);
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center">
+                <button id="sidebarToggle" class="sidebar-toggle border-0 bg-transparent">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-code"></i>
+                    DevNotes
+                </a>
+            </div>
+            <div class="d-flex">
+                <div class="dropdown me-3">
+                    <button class="btn btn-dark dropdown-toggle" type="button" id="moreOptionsMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreOptionsMenu">
+                        <li><a class="dropdown-item" href="#" id="exportPDF"><i class="fas fa-file-pdf me-2"></i>Export as PDF</a></li>
+                        <li><a class="dropdown-item" href="#" id="copyLink"><i class="fas fa-link me-2"></i>Copy Link</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="showBookmarks"><i class="fas fa-bookmark me-2"></i>Bookmarks</a></li>
+                        <li><a class="dropdown-item" href="#" id="openSettings"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                    </ul>
+                </div>
+                <button id="themeToggle" class="theme-toggle border-0 bg-transparent">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebar" class="sidebar">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search notes...">
+                    <i class="fas fa-search search-icon"></i>
+                    <span id="clearSearch" title="Clear search">×</span>
+                </div>
+
+                <div class="sidebar-tabs">
+                    <ul class="nav nav-tabs nav-fill" id="sidebarTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-content" type="button" role="tab" aria-controls="notes-content" aria-selected="true">Notes</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="recent-tab" data-bs-toggle="tab" data-bs-target="#recent-content" type="button" role="tab" aria-controls="recent-content" aria-selected="false">Recent</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="bookmarks-tab" data-bs-toggle="tab" data-bs-target="#bookmarks-content" type="button" role="tab" aria-controls="bookmarks-content" aria-selected="false">Bookmarks</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-content" id="sidebarTabContent">
+                    <div class="tab-pane fade show active" id="notes-content" role="tabpanel" aria-labelledby="notes-tab">
+                        <div class="position-sticky pt-3" id="notesList">
+                            <!-- Notes list will be populated dynamically -->
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="recent-content" role="tabpanel" aria-labelledby="recent-tab">
+                        <div class="recent-notes" id="recentNotesList">
+                            <!-- Recent notes will be populated dynamically -->
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="bookmarks-content" role="tabpanel" aria-labelledby="bookmarks-tab">
+                        <div class="p-3" id="bookmarksList">
+                            <!-- Bookmarks will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <main class="content" id="mainContent">
+                <div class="tab-content" id="notesContent">
+                    <!-- Actions toolbar -->
+                    <div class="actions-toolbar d-none" id="actionsToolbar">
+                        <div class="toolbar-inner">
+                            <div class="current-note-title">
+                                <h5 class="mb-0" id="currentNoteTitle"></h5>
+                            </div>
+                            <div class="toolbar-buttons">
+                                <button class="btn btn-sm btn-outline-secondary" id="toggleTOC" title="Toggle Table of Contents">
+                                    <i class="fas fa-list"></i> TOC
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary" id="toggleBookmark" title="Bookmark this note">
+                                    <i class="far fa-bookmark"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary" id="printNote" title="Print this note">
+                                    <i class="fas fa-print"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loading indicator -->
+                    <div id="loadingIndicator" class="text-center">
+                        <div class="loading-spinner mb-3"></div>
+                        <p>Loading notes...</p>
+                    </div>
+
+                    <!-- Note content will be loaded here -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Back to top button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Bookmarks modal -->
+    <div class="modal fade" id="bookmarksModal" tabindex="-1" aria-labelledby="bookmarksModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookmarksModalLabel">My Bookmarks</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="bookmarksModalList">
+                        <!-- Bookmarks will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label d-flex justify-content-between">
+                            <span>Dark Mode</span>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="darkModeSwitch">
+                            </div>
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label d-flex justify-content-between">
+                            <span>Auto-generate Table of Contents</span>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="autoTocSwitch" checked>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fontSizeSelect" class="form-label">Font Size</label>
+                        <select class="form-select" id="fontSizeSelect">
+                            <option value="small">Small</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="codeThemeSelect" class="form-label">Code Theme</label>
+                        <select class="form-select" id="codeThemeSelect">
+                            <option value="prism-tomorrow" selected>Tomorrow (Dark)</option>
+                            <option value="prism-okaidia">Okaidia</option>
+                            <option value="prism-solarizedlight">Solarized Light</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveSettings">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copy link toast notification -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+        <div id="linkCopiedToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="fas fa-link me-2 text-primary"></i>
+                <strong class="me-auto">Link Copied</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Note link has been copied to clipboard.
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-docker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-xml.min.js"></script>
+    <script src="js/app.js"></script>
+    </body>
+    
+    </html>
+    
