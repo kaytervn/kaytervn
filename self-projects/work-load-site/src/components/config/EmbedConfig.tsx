@@ -10,7 +10,7 @@ import {
   VideoIcon,
 } from "lucide-react";
 
-const BASE_EMBED_URL = "https://kaytervn.github.io/kaytervn/";
+const BASE_EMBED_URL = "https://kaytervn.github.io/kaytervn/static/";
 
 const EMBED_LIST = [
   {
