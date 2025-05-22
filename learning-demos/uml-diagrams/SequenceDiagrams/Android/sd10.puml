@@ -1,0 +1,30 @@
+@startuml Sq
+
+autonumber
+title SD10. Đăng xuất
+
+actor "Student"
+boundary "ProfileActivity"
+boundary "LoginActivity"
+
+activate Student
+Student -> ProfileActivity: click "Log out" text
+activate ProfileActivity
+
+alt confirm log out
+Student -> ProfileActivity: click "OK"
+ProfileActivity -> LoginActivity: redirect to
+ref over LoginActivity
+**UC-9 Đăng nhập**
+end ref
+else
+Student -> ProfileActivity: click "NO"
+deactivate Student
+ProfileActivity -> ProfileActivity: remain state
+activate ProfileActivity
+deactivate ProfileActivity
+deactivate ProfileActivity
+end
+
+
+@enduml

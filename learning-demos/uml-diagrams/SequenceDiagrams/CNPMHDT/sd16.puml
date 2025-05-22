@@ -1,0 +1,40 @@
+@startuml SQ
+
+autonumber
+
+title SD16. Tạo khóa học
+
+actor "Instructor" as Actor
+boundary "CreateCoursePage" as CreateCoursePage
+boundary "MyCreatedCoursesPage" as MyCreatedCoursesPage
+control "CourseService"
+control "CourseController"
+entity "CourseModel"
+database "Database" as Database
+
+activate Actor
+Actor -> CreateCoursePage: input title, topic, image, description
+deactivate Actor
+activate CreateCoursePage
+CreateCoursePage -> CourseService: createCourse({title, price, description, topic, picture})
+activate CourseService
+CourseService -> CourseController: router.post("/createCourse", auth, createCourse)
+activate CourseController
+CourseController -> CourseModel: call model
+activate CourseModel
+CourseModel -> Database: Course.create({userId, title, picture,\ndescription, price, topic})
+deactivate CourseModel
+activate Database
+Database --> CourseController: callback
+deactivate Database
+CourseController --> CourseService: send res.json
+deactivate CourseController
+CourseService --> CreateCoursePage: callback
+deactivate CourseService
+CreateCoursePage -> MyCreatedCoursesPage: navigate("/created-courses")
+deactivate CreateCoursePage
+ref over MyCreatedCoursesPage
+**SD17. Quản lý danh sách khóa học đã tạo**
+end ref
+
+@enduml

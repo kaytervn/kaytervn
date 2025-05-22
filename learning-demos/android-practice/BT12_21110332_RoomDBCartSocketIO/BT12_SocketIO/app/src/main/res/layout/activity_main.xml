@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:id="@+id/mainLayout"
+    android:background="#000000">
+
+    <ImageView
+        android:id="@+id/imageLight"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/light_off">
+    </ImageView>
+
+    <Button
+        android:id="@+id/buttonOn"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:text="On"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_marginTop="500dp"
+        android:layout_marginStart="50dp"
+        android:backgroundTint="#009688"/>
+
+    <Button
+        android:id="@+id/buttonOff"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:text="Off"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_marginTop="500dp"
+        android:layout_marginStart="260dp"
+        android:backgroundTint="#E91E63"/>
+</RelativeLayout>

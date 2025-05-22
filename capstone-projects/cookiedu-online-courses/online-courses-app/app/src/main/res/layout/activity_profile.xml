@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context=".activity.ProfileActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/top_background1" />
+
+        <FrameLayout
+            android:id="@+id/p1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imagePicture"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:padding="5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/user"
+                app:shapeAppearanceOverlay="@style/circular"
+                app:strokeColor="#673AB7"
+                app:strokeWidth="5dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/buttonUpload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="150dp"
+                android:layout_marginTop="130dp"
+                android:backgroundTint="#FFEB3B"
+                android:clickable="true"
+                android:contentDescription="Upload Image"
+                android:src="@drawable/ic_photo_camera_black_48dp" />
+        </FrameLayout>
+
+        <TableLayout
+            android:id="@+id/p2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/p1"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="20dp"
+            android:stretchColumns="*">
+
+            <TableRow>
+
+                <TextView
+                    android:layout_column="0"
+                    android:padding="10dp"
+                    android:text="Name"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textName"
+                    android:layout_column="1"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
+                    android:text="text"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_column="0"
+                    android:padding="10dp"
+                    android:text="Role"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textRole"
+                    android:layout_column="1"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
+                    android:text="text"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_column="0"
+                    android:padding="10dp"
+                    android:text="Email"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textEmail"
+                    android:layout_column="1"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
+                    android:text="text"
+                    android:textSize="20dp" />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/buttonChangeName"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/p2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#009688"
+            android:text="Change Name"
+            android:textSize="20dp"></Button>
+
+        <Button
+            android:id="@+id/buttonChangePassword"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/buttonChangeName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#040404"
+            android:text="Change Password"
+            android:textSize="20dp"></Button>
+
+        <TextView
+            android:id="@+id/textLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonChangePassword"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Log out"
+            android:textColor="#FF1100"
+            android:textSize="20dp"
+            android:textStyle="bold"></TextView>
+
+    </RelativeLayout>
+
+    <include
+        layout="@layout/footer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"></include>
+</LinearLayout>

@@ -1,0 +1,33 @@
+@startuml CD
+
+title CD16. Cập nhật chi tiết khóa học
+
+actor "Instructor"
+boundary "UpdateCourseDetails"
+boundary "UpdateLessonDetails"
+boundary "UpdateLesson"
+boundary "CreateLesson"
+control "LessonService"
+control "LessonController"
+entity "LessonModel"
+boundary "MyCreatedCourses"
+control "CourseService"
+control "CourseController"
+entity "CourseModel"
+
+Instructor --- UpdateCourseDetails: \l<&arrow-bottom>1. clickCreateLesson()\n<&arrow-bottom>8. clickEditLesson()\n<&arrow-bottom>10. clickEditOnLesson()\n<&arrow-bottom>17. clickDeleteOnLesson()\n<&arrow-bottom>21. clickDeleteCourse()
+UpdateCourseDetails -- UpdateLessonDetails: \l<&arrow-bottom>9. navigate("/update-lesson-details")
+UpdateLesson - UpdateCourseDetails: \l<&arrow-left>11. navigate("/update-lesson")\n16. navigate("/update-course-details")<&arrow-right>
+Instructor --- CreateLesson: \l<&arrow-bottom>3. inputData()
+UpdateCourseDetails - CreateLesson: \l2. navigate("/create-lesson")<&arrow-right>\n<&arrow-left>7. navigate("/update-course-details")
+CreateLesson --- LessonService: \l<&arrow-bottom>4. handleCreate()
+LessonService -- LessonController: \l<&arrow-bottom>5. createLesson()\n<&arrow-bottom>14. updateLesson()\n<&arrow-bottom>19. deleteLesson()
+LessonController - LessonModel: \l6. Lesson.create()<&arrow-right>\n15. Lesson.updateOne()<&arrow-right>\n20. Lesson.updateOne()<&arrow-right>
+Instructor --- UpdateLesson: \l12.<&arrow-bottom>inputData()
+UpdateLesson ---- LessonService: \l<&arrow-bottom>13. handleUpdate()
+UpdateCourseDetails -- LessonService: \l<&arrow-bottom>18. handleDeleteLesson()
+UpdateCourseDetails -- CourseService: \l<&arrow-bottom>22. handleDeleteCourse()
+CourseService - CourseController: \l23. deleteCourse()<&arrow-right>
+CourseController -- CourseModel: \l<&arrow-bottom>24. Course.updateOne()
+UpdateCourseDetails -- MyCreatedCourses: \l<&arrow-bottom>25. navigate("/")
+@enduml

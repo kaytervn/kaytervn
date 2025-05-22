@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CanCuocCongDanDS" targetNamespace="http://tempuri.org/CanCuocCongDanDS.xsd" xmlns:mstns="http://tempuri.org/CanCuocCongDanDS.xsd" xmlns="http://tempuri.org/CanCuocCongDanDS.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection ConnectionStringObject="Data Source=(localdb)\mssqllocaldb;Initial Catalog=QuanLyCongDanThanhPho;Integrated Security=True" IsAppSettingsProperty="false" Modifier="Assembly" Name="msi\localdb#a71fd1e4.QuanLyCongDanThanhPho.dbo" ParameterPrefix="@" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="vCanCuocCongDanTableAdapter" GeneratorDataComponentClassName="vCanCuocCongDanTableAdapter" Name="vCanCuocCongDan" UserDataComponentName="vCanCuocCongDanTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="msi\localdb#a71fd1e4.QuanLyCongDanThanhPho.dbo" DbObjectName="QuanLyCongDanThanhPho.dbo.vCanCuocCongDan" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT CCCD, MaCD, HoTen, NgaySinh, NoiSinh, GioiTinh, NgayDangKy FROM dbo.vCanCuocCongDan</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="CCCD" DataSetColumn="CCCD" />
+              <Mapping SourceColumn="MaCD" DataSetColumn="MaCD" />
+              <Mapping SourceColumn="HoTen" DataSetColumn="HoTen" />
+              <Mapping SourceColumn="NgaySinh" DataSetColumn="NgaySinh" />
+              <Mapping SourceColumn="NoiSinh" DataSetColumn="NoiSinh" />
+              <Mapping SourceColumn="GioiTinh" DataSetColumn="GioiTinh" />
+              <Mapping SourceColumn="NgayDangKy" DataSetColumn="NgayDangKy" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="CanCuocCongDanDS" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_UserDSName="CanCuocCongDanDS" msprop:Generator_DataSetName="CanCuocCongDanDS">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="vCanCuocCongDan" msprop:Generator_RowEvHandlerName="vCanCuocCongDanRowChangeEventHandler" msprop:Generator_RowDeletedName="vCanCuocCongDanRowDeleted" msprop:Generator_RowDeletingName="vCanCuocCongDanRowDeleting" msprop:Generator_RowEvArgName="vCanCuocCongDanRowChangeEvent" msprop:Generator_TablePropName="vCanCuocCongDan" msprop:Generator_RowChangedName="vCanCuocCongDanRowChanged" msprop:Generator_RowChangingName="vCanCuocCongDanRowChanging" msprop:Generator_TableClassName="vCanCuocCongDanDataTable" msprop:Generator_RowClassName="vCanCuocCongDanRow" msprop:Generator_TableVarName="tablevCanCuocCongDan" msprop:Generator_UserTableName="vCanCuocCongDan">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CCCD" msprop:Generator_ColumnPropNameInRow="CCCD" msprop:Generator_ColumnPropNameInTable="CCCDColumn" msprop:Generator_ColumnVarNameInTable="columnCCCD" msprop:Generator_UserColumnName="CCCD">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MaCD" msprop:Generator_ColumnPropNameInRow="MaCD" msprop:Generator_ColumnPropNameInTable="MaCDColumn" msprop:Generator_ColumnVarNameInTable="columnMaCD" msprop:Generator_UserColumnName="MaCD" type="xs:int" />
+              <xs:element name="HoTen" msprop:Generator_ColumnPropNameInRow="HoTen" msprop:Generator_ColumnPropNameInTable="HoTenColumn" msprop:Generator_ColumnVarNameInTable="columnHoTen" msprop:Generator_UserColumnName="HoTen">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NgaySinh" msprop:Generator_ColumnPropNameInRow="NgaySinh" msprop:Generator_ColumnPropNameInTable="NgaySinhColumn" msprop:Generator_ColumnVarNameInTable="columnNgaySinh" msprop:Generator_UserColumnName="NgaySinh" type="xs:dateTime" />
+              <xs:element name="NoiSinh" msprop:Generator_ColumnPropNameInRow="NoiSinh" msprop:Generator_ColumnPropNameInTable="NoiSinhColumn" msprop:Generator_ColumnVarNameInTable="columnNoiSinh" msprop:Generator_UserColumnName="NoiSinh">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="GioiTinh" msprop:Generator_ColumnPropNameInRow="GioiTinh" msprop:Generator_ColumnPropNameInTable="GioiTinhColumn" msprop:Generator_ColumnVarNameInTable="columnGioiTinh" msprop:Generator_UserColumnName="GioiTinh" type="xs:int" />
+              <xs:element name="NgayDangKy" msprop:Generator_ColumnPropNameInRow="NgayDangKy" msprop:Generator_ColumnPropNameInTable="NgayDangKyColumn" msprop:Generator_ColumnVarNameInTable="columnNgayDangKy" msprop:Generator_UserColumnName="NgayDangKy" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:vCanCuocCongDan" />
+      <xs:field xpath="mstns:CCCD" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,174 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Spring DEMO" id="1719115736848-1">
+        <createTable tableName="users">
+            <column name="date_of_birth" type="date"/>
+            <column name="enabled" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="points" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="created_by_id" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="gender" type="VARCHAR(255)"/>
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="updated_by_id" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-2">
+        <createTable tableName="verification_tokens">
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiry_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="created_by_id" type="VARCHAR(255)"/>
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="verification_tokens_pkey"/>
+            </column>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="updated_by_id" type="VARCHAR(255)"/>
+            <column name="user_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-3">
+        <addUniqueConstraint columnNames="email" constraintName="users_email_key" tableName="users"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-4">
+        <addUniqueConstraint columnNames="username" constraintName="users_username_key" tableName="users"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-5">
+        <addUniqueConstraint columnNames="user_id" constraintName="verification_tokens_user_id_key" tableName="verification_tokens"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-6">
+        <createTable tableName="permissions">
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="created_by_id" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="permissions_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="updated_by_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-7">
+        <createTable tableName="posts">
+            <column name="dislikes" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="favorites" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="likes" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="content" type="VARCHAR(255)"/>
+            <column name="created_by_id" type="VARCHAR(255)"/>
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="posts_pkey"/>
+            </column>
+            <column name="updated_by_id" type="VARCHAR(255)"/>
+            <column name="user_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-8">
+        <createTable tableName="roles">
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="created_by_id" type="VARCHAR(255)"/>
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="roles_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="updated_by_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-9">
+        <createTable tableName="roles_permissions">
+            <column name="permissions_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="roles_permissions_pkey"/>
+            </column>
+            <column name="role_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="roles_permissions_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-10">
+        <createTable tableName="users_roles">
+            <column name="roles_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_roles_pkey"/>
+            </column>
+            <column name="user_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_roles_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-11">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="users_roles" constraintName="fk2o0jvgh89lemvvo17cbqvdxaa" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-12">
+        <addForeignKeyConstraint baseColumnNames="created_by_id" baseTableName="posts" constraintName="fk2pi26lplw3d2i5w7ueidhb981" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-13">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="verification_tokens" constraintName="fk54y8mqsnq1rtyf581sfmrbp4f" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-14">
+        <addForeignKeyConstraint baseColumnNames="permissions_id" baseTableName="roles_permissions" constraintName="fk570wuy6sacdnrw8wdqjfh7j0q" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="permissions" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-15">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="posts" constraintName="fk5lidm6cqbc7u4xhqpxm898qme" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-16">
+        <addForeignKeyConstraint baseColumnNames="updated_by_id" baseTableName="users" constraintName="fk6nm9u1qpw9xxphk70xr614m7n" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-17">
+        <addForeignKeyConstraint baseColumnNames="created_by_id" baseTableName="users" constraintName="fk8nakkftyppd62ke6tv7oo5a92" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-18">
+        <addForeignKeyConstraint baseColumnNames="updated_by_id" baseTableName="posts" constraintName="fk96om7kvihl27ud3k6r27k0i2y" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-19">
+        <addForeignKeyConstraint baseColumnNames="roles_id" baseTableName="users_roles" constraintName="fka62j07k5mhgifpp955h37ponj" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="roles" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-20">
+        <addForeignKeyConstraint baseColumnNames="created_by_id" baseTableName="permissions" constraintName="fkd47ga816o7ne1vb2mtba16o89" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-21">
+        <addForeignKeyConstraint baseColumnNames="created_by_id" baseTableName="roles" constraintName="fkdmkr4ngbb21kad02beprkxghs" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-22">
+        <addForeignKeyConstraint baseColumnNames="created_by_id" baseTableName="verification_tokens" constraintName="fklacilu8ijpm0pvbitjojjxo2u" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-23">
+        <addForeignKeyConstraint baseColumnNames="updated_by_id" baseTableName="verification_tokens" constraintName="fknqd6u3x12n5fmuge6ws8n1duf" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-24">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="roles_permissions" constraintName="fkqi9odri6c1o81vjox54eedwyh" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="roles" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-25">
+        <addForeignKeyConstraint baseColumnNames="updated_by_id" baseTableName="permissions" constraintName="fks62xowtqodbl88tmkor1xjdk3" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115736848-26">
+        <addForeignKeyConstraint baseColumnNames="updated_by_id" baseTableName="roles" constraintName="fkt2a1nghc5c62645o7m6udmvd" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

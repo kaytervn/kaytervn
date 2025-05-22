@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="ON">
+
+    <Properties>
+        <Property name="LOG_LOC">logs</Property>
+        <Property name="MAX">5</Property>
+        <Property name="LOG_PATTERN">%d{yyyy.MM.dd HH:mm:ss.SSS} [%p] %c: %m%n
+        </Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="FILE" fileName="${LOG_LOC}/log.log"
+                     filePattern="${LOG_LOC}/log.%i.log">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <OnStartupTriggeringPolicy />
+            </Policies>
+
+            <DefaultRolloverStrategy max="${MAX}" />
+        </RollingFile>
+
+        <Console name="STDOUT" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.roytuts" level="debug" />
+
+        <Logger name="org.springframework.web" level="info"
+                additivity="false" />
+
+        <Logger name="file" level="debug" additivity="false">
+            <appender-ref ref="FILE" />
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="FILE" />
+            <AppenderRef ref="STDOUT" />
+        </Root>
+    </Loggers>
+
+</Configuration>

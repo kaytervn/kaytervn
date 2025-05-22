@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="KetHonDS" targetNamespace="http://tempuri.org/KetHonDS.xsd" xmlns:mstns="http://tempuri.org/KetHonDS.xsd" xmlns="http://tempuri.org/KetHonDS.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection ConnectionStringObject="Data Source=(localdb)\mssqllocaldb;Initial Catalog=QuanLyCongDanThanhPho;Integrated Security=True" IsAppSettingsProperty="false" Modifier="Assembly" Name="msi\localdb#a71fd1e4.QuanLyCongDanThanhPho.dbo" ParameterPrefix="@" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="vKetHonTableAdapter" GeneratorDataComponentClassName="vKetHonTableAdapter" Name="vKetHon" UserDataComponentName="vKetHonTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="msi\localdb#a71fd1e4.QuanLyCongDanThanhPho.dbo" DbObjectName="QuanLyCongDanThanhPho.dbo.vKetHon" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT MaKH, CCCDChong, HoTenChong, NgaySinhChong, NoiSinhChong, CCCDVo, HoTenVo, NgaySinhVo, NoiSinhVo, NgayDangKy FROM dbo.vKetHon</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="MaKH" DataSetColumn="MaKH" />
+              <Mapping SourceColumn="CCCDChong" DataSetColumn="CCCDChong" />
+              <Mapping SourceColumn="HoTenChong" DataSetColumn="HoTenChong" />
+              <Mapping SourceColumn="NgaySinhChong" DataSetColumn="NgaySinhChong" />
+              <Mapping SourceColumn="NoiSinhChong" DataSetColumn="NoiSinhChong" />
+              <Mapping SourceColumn="CCCDVo" DataSetColumn="CCCDVo" />
+              <Mapping SourceColumn="HoTenVo" DataSetColumn="HoTenVo" />
+              <Mapping SourceColumn="NgaySinhVo" DataSetColumn="NgaySinhVo" />
+              <Mapping SourceColumn="NoiSinhVo" DataSetColumn="NoiSinhVo" />
+              <Mapping SourceColumn="NgayDangKy" DataSetColumn="NgayDangKy" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="KetHonDS" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_UserDSName="KetHonDS" msprop:Generator_DataSetName="KetHonDS">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="vKetHon" msprop:Generator_RowEvHandlerName="vKetHonRowChangeEventHandler" msprop:Generator_RowDeletedName="vKetHonRowDeleted" msprop:Generator_RowDeletingName="vKetHonRowDeleting" msprop:Generator_RowEvArgName="vKetHonRowChangeEvent" msprop:Generator_TablePropName="vKetHon" msprop:Generator_RowChangedName="vKetHonRowChanged" msprop:Generator_RowChangingName="vKetHonRowChanging" msprop:Generator_TableClassName="vKetHonDataTable" msprop:Generator_RowClassName="vKetHonRow" msprop:Generator_TableVarName="tablevKetHon" msprop:Generator_UserTableName="vKetHon">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MaKH" msprop:Generator_ColumnPropNameInRow="MaKH" msprop:Generator_ColumnPropNameInTable="MaKHColumn" msprop:Generator_ColumnVarNameInTable="columnMaKH" msprop:Generator_UserColumnName="MaKH" type="xs:int" />
+              <xs:element name="CCCDChong" msprop:Generator_ColumnPropNameInRow="CCCDChong" msprop:Generator_ColumnPropNameInTable="CCCDChongColumn" msprop:Generator_ColumnVarNameInTable="columnCCCDChong" msprop:Generator_UserColumnName="CCCDChong">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="HoTenChong" msprop:Generator_ColumnPropNameInRow="HoTenChong" msprop:Generator_ColumnPropNameInTable="HoTenChongColumn" msprop:Generator_ColumnVarNameInTable="columnHoTenChong" msprop:Generator_UserColumnName="HoTenChong">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NgaySinhChong" msprop:Generator_ColumnPropNameInRow="NgaySinhChong" msprop:Generator_ColumnPropNameInTable="NgaySinhChongColumn" msprop:Generator_ColumnVarNameInTable="columnNgaySinhChong" msprop:Generator_UserColumnName="NgaySinhChong" type="xs:dateTime" />
+              <xs:element name="NoiSinhChong" msprop:Generator_ColumnPropNameInRow="NoiSinhChong" msprop:Generator_ColumnPropNameInTable="NoiSinhChongColumn" msprop:Generator_ColumnVarNameInTable="columnNoiSinhChong" msprop:Generator_UserColumnName="NoiSinhChong">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CCCDVo" msprop:Generator_ColumnPropNameInRow="CCCDVo" msprop:Generator_ColumnPropNameInTable="CCCDVoColumn" msprop:Generator_ColumnVarNameInTable="columnCCCDVo" msprop:Generator_UserColumnName="CCCDVo">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="HoTenVo" msprop:Generator_ColumnPropNameInRow="HoTenVo" msprop:Generator_ColumnPropNameInTable="HoTenVoColumn" msprop:Generator_ColumnVarNameInTable="columnHoTenVo" msprop:Generator_UserColumnName="HoTenVo">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NgaySinhVo" msprop:Generator_ColumnPropNameInRow="NgaySinhVo" msprop:Generator_ColumnPropNameInTable="NgaySinhVoColumn" msprop:Generator_ColumnVarNameInTable="columnNgaySinhVo" msprop:Generator_UserColumnName="NgaySinhVo" type="xs:dateTime" />
+              <xs:element name="NoiSinhVo" msprop:Generator_ColumnPropNameInRow="NoiSinhVo" msprop:Generator_ColumnPropNameInTable="NoiSinhVoColumn" msprop:Generator_ColumnVarNameInTable="columnNoiSinhVo" msprop:Generator_UserColumnName="NoiSinhVo">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NgayDangKy" msprop:Generator_ColumnPropNameInRow="NgayDangKy" msprop:Generator_ColumnPropNameInTable="NgayDangKyColumn" msprop:Generator_ColumnVarNameInTable="columnNgayDangKy" msprop:Generator_UserColumnName="NgayDangKy" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

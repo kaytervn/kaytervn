@@ -1,0 +1,34 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Spring DEMO" id="1719115795865-5">
+        <addColumn tableName="posts">
+            <column name="is_banned" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115795865-6">
+        <createIndex indexName="IX_roles_permissionsPK" tableName="roles_permissions" unique="true">
+            <column name="role_id"/>
+            <column name="permissions_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115795865-7">
+        <createIndex indexName="IX_users_rolesPK" tableName="users_roles" unique="true">
+            <column name="user_id"/>
+            <column name="roles_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115795865-1">
+        <dropPrimaryKey tableName="roles_permissions"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115795865-2">
+        <addPrimaryKey columnNames="role_id, permissions_id" constraintName="roles_permissionsPK" tableName="roles_permissions"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115795865-3">
+        <dropPrimaryKey tableName="users_roles"/>
+    </changeSet>
+    <changeSet author="Spring DEMO" id="1719115795865-4">
+        <addPrimaryKey columnNames="user_id, roles_id" constraintName="users_rolesPK" tableName="users_roles"/>
+    </changeSet>
+</databaseChangeLog>

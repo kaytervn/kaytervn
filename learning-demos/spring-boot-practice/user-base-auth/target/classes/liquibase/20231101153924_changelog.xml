@@ -1,0 +1,206 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="phongla (generated)" id="1698853173385-1">
+        <createTable tableName="db_user_base_address">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_user_base_addressPK"/>
+            </column>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="province_id" type="BIGINT"/>
+            <column name="district_id" type="BIGINT"/>
+            <column name="ward_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="phongla (generated)" id="1698853173385-2">
+        <createTable tableName="db_user_base_category">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_user_base_categoryPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="image" type="VARCHAR(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="description" type="TEXT"/>
+            <column name="ordering" type="INT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="phongla (generated)" id="1698853173385-3">
+        <createTable tableName="db_user_base_nation">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_user_base_nationPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="post_code" type="VARCHAR(255)"/>
+            <column name="parent_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="phongla (generated)" id="1698853173385-4">
+        <createTable tableName="db_user_base_news">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_user_base_newsPK"/>
+            </column>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="category_id" type="BIGINT"/>
+            <column name="avatar" type="VARCHAR(255)"/>
+            <column name="banner" type="VARCHAR(255)"/>
+            <column name="content" type="TEXT"/>
+            <column name="description" type="TEXT"/>
+            <column name="pin_top" type="INT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="phongla (generated)" id="1698853173385-5">
+        <createTable tableName="db_user_base_settings">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_user_base_settingsPK"/>
+            </column>
+            <column name="setting_key" type="VARCHAR(255)"/>
+            <column name="group_name" type="VARCHAR(255)"/>
+            <column name="setting_value" type="TEXT"/>
+            <column name="description" type="TEXT"/>
+            <column name="is_editable" type="INT"/>
+            <column name="is_system" type="INT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="phongla (generated)" id="1698853173385-6">
+        <createTable tableName="db_user_base_user">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_user_base_userPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="avatar" type="VARCHAR(255)"/>
+            <column name="birthday" type="datetime"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="phongla (generated)" id="1698853173385-7">
+        <addUniqueConstraint columnNames="setting_key" constraintName="UC_DB_USER_BASE_SETTINGSSETTING_KEY_COL"
+                             tableName="db_user_base_settings"/>
+    </changeSet>
+    <changeSet author="phongla (generated)" id="1698853173385-8">
+        <addForeignKeyConstraint baseColumnNames="ward_id" baseTableName="db_user_base_address"
+                                 constraintName="FK8qmry5dwhndr3nd58d8tc4gas" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_user_base_nation" validate="true"/>
+    </changeSet>
+    <changeSet author="phongla (generated)" id="1698853173385-9">
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="db_user_base_nation"
+                                 constraintName="FKfm7hrua7hasbf38ienyysm4ts" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_user_base_nation" validate="true"/>
+    </changeSet>
+    <changeSet author="phongla (generated)" id="1698853173385-10">
+        <addForeignKeyConstraint baseColumnNames="province_id" baseTableName="db_user_base_address"
+                                 constraintName="FKim4vth9cpbdrqunanc0h5oh5c" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_user_base_nation" validate="true"/>
+    </changeSet>
+    <changeSet author="phongla (generated)" id="1698853173385-11">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="db_user_base_news"
+                                 constraintName="FKk59lu60nces75j1n4amm9ipw4" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_user_base_category" validate="true"/>
+    </changeSet>
+    <changeSet author="phongla (generated)" id="1698853173385-12">
+        <addForeignKeyConstraint baseColumnNames="district_id" baseTableName="db_user_base_address"
+                                 constraintName="FKo4m6xptceftxjfepiy01e1k0i" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_user_base_nation" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

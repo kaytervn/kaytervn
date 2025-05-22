@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="75dp"
+    android:padding="4dp"
+    android:orientation="vertical"
+    android:layout_height="75dp">
+    <ImageView
+        android:id="@+id/ivTmgIcon"
+        android:src="@drawable/ic_baseline_person_24"
+        android:layout_gravity="center"
+        android:layout_width="40dp"
+        android:layout_height="40dp"/>
+    <TextView
+        android:id="@+id/tvIcon"
+        android:layout_marginTop="4dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="icon dfdf"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content">
+    </TextView>
+</LinearLayout>

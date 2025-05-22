@@ -1,0 +1,15 @@
+@startuml CD
+
+title CD16. Tạo khóa học
+
+actor "Instructor" as Actor
+boundary "CreateCoursePage"
+boundary "MyCreatedCoursesPage"
+control "CourseController"
+entity "CourseModel"
+
+Actor - CreateCoursePage: \l1. clickCreateCourse()<&arrow-right>
+CreateCoursePage - CourseController: \l2. handleCreate()<&arrow-right>
+CourseController -- CourseModel: \l<&arrow-bottom>3. Course.create({userId, title, picture,\ndescription, price, topic})
+CreateCoursePage -- MyCreatedCoursesPage: \l<&arrow-bottom>4. navigate("/created-courses")
+@enduml

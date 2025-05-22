@@ -1,0 +1,41 @@
+server:
+  port: 8080
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+multitenancy:
+  datasource-cache:
+    maximumSize: 100
+    expireAfterAccess: 10
+  master:
+    repository:
+      packages: se.callista.blog.service.multitenancy.repository
+    entityManager:
+      packages: se.callista.blog.service.multitenancy.domain
+    datasource:
+      url: jdbc:postgresql://localhost:5432/master
+      username: postgres
+      password: secret
+    liquibase:
+      enabled: false
+  tenant:
+    repository:
+      packages: se.callista.blog.service.repository
+    entityManager:
+      packages: se.callista.blog.service.domain
+    datasource:
+      url-prefix: jdbc:postgresql://localhost:5432/
+      hikari:
+        maximumPoolSize: 2
+        minimumIdle: 0
+        idleTimeout: 30000
+    liquibase:
+      changeLog: classpath:db/changelog/db.changelog-tenant.yaml
+encryption:
+  secret: verySecret
+  salt: jozo

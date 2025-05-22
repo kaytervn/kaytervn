@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "173507733313",
+    "firebase_url": "https://videoshort-36754-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "videoshort-36754",
+    "storage_bucket": "videoshort-36754.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173507733313:android:29bbd347e8f3f95dc223c0",
+        "android_client_info": {
+          "package_name": "vn.kayterandroid.videoshortfirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqK6PE1eW8f2S4pTP_jpRsVBpnWixQKOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173507733313:android:abb2ed7698a858eec223c0",
+        "android_client_info": {
+          "package_name": "vn.kayterandroid.videoshortfirebase_21110332"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqK6PE1eW8f2S4pTP_jpRsVBpnWixQKOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

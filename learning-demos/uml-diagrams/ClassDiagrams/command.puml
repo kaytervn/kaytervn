@@ -1,0 +1,39 @@
+@startuml CD
+
+title "TV Control System"
+
+interface Command {
+	void execute()
+}
+
+class TurnOnCommand {
+	- tv: TV
+	+ TurnOnCommand(TV)
+	+ void execute()
+}
+
+class TurnOffCommand {
+	- tv: TV
+	+ TurnOffCommand(TV)
+	+ void execute()
+}
+
+class TV {
+	+ void turnOn()
+	+ void turnOff()
+}
+
+class RemoteControl {
+	- command: Command
+	+ void setCommand(Command)
+	+ void pressButton()
+}
+
+class CommandPatternExample {
+	+ void main(String[])
+}
+
+Command <|.. TurnOnCommand
+Command <|.. TurnOffCommand
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml CD
+
+title "Light System"
+
+class Light {
+    - state: LightState
+    + Light()
+    + void setState(LightState)
+    + void turnOn()
+    + void turnOff()
+}
+
+interface LightState {
+    void turnOn();
+    void turnOff();
+}
+
+class OnState {
+    + void turnOn()
+    + void turnOff()
+}
+
+class OffState {
+    + void turnOn()
+    + void turnOff()
+}
+
+class Main {
+    + void main(String[])
+}
+
+LightState <|.. OnState
+LightState <|.. OffState
+
+@enduml

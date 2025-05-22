@@ -1,0 +1,19 @@
+# Eclipse project files
+.classpath
+.project
+.settings/
+
+# Output folders
+bin/
+build/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Maven
+target/
+
+# Gradle
+.gradle/
+build/

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#3F51B5">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="#3F51B5"
+        android:drawableTop="@drawable/home_icon"
+        android:text="Home"
+        app:cornerRadius="0dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonMyCourses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="#3F51B5"
+        android:drawableTop="@drawable/graduate_hat_icon"
+        android:text="My Courses"
+        app:cornerRadius="0dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="#3F51B5"
+        android:drawableTop="@drawable/cart_icon"
+        android:text="Cart"
+        app:cornerRadius="0dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="#3F51B5"
+        android:drawableTop="@drawable/user_icon"
+        android:text="Profile"
+        app:cornerRadius="0dp" />
+
+</LinearLayout>

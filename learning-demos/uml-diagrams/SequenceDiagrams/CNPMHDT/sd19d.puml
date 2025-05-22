@@ -1,0 +1,28 @@
+@startuml SQ
+autonumber
+title SD19d. Create lesson
+boundary "views/\nUpdateCourseDetailPage" as UpdateCourseDetailPage
+control "LessonService"
+control "LessonController"
+entity "LessonModel"
+database "Database" as Database
+activate UpdateCourseDetailPage
+UpdateCourseDetailPage -> LessonService: createLesson(courseId, title, description)
+activate LessonService
+LessonService -> LessonController: router.post("/createLesson", createLesson)
+activate LessonController
+LessonController -> LessonModel: call model
+activate LessonModel
+LessonModel -> Database: Lesson.create({courseId, title, description})
+deactivate LessonModel
+activate Database
+Database --> LessonController: return lesson
+deactivate Database
+LessonController --> LessonService: send res.json
+deactivate LessonController
+LessonService --> UpdateCourseDetailPage: return lesson
+deactivate LessonService
+UpdateCourseDetailPage-> UpdateCourseDetailPage: update display
+
+
+@enduml

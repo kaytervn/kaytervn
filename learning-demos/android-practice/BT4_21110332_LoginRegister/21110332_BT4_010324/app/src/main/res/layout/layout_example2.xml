@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="10"
+        android:background="@drawable/layout_border">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:background="@drawable/layout_border">
+            <TextView
+                android:background="#F44336"
+                android:gravity="center"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:text="1"
+                android:textColor="#FFFFFF"
+                android:textSize="40sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="8"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <LinearLayout
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:background="@drawable/layout_border">
+                <TextView
+                    android:background="#FFEB3B"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="5"
+                    android:text="2"
+                    android:textColor="#FFFFFF"
+                    android:textSize="40sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0sp"
+                android:layout_weight="7"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="10">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="8"
+                    android:layout_height="0sp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/layout_border">
+                    <TextView
+                        android:background="#03A9F4"
+                        android:gravity="center"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:text="3"
+                        android:textColor="#FFFFFF"
+                        android:textSize="40sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="2"
+                    android:layout_height="0sp"
+                    android:orientation="horizontal"
+                    android:weightSum="11">
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_weight="6"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:background="@drawable/layout_border">
+                        <TextView
+                            android:background="#FF81F2"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="4"
+                            android:textColor="#FFFFFF"
+                            android:textSize="40sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_weight="5"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:background="@drawable/layout_border">
+                        <TextView
+                            android:background="#9C27B0"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="5"
+                            android:textColor="#FFFFFF"
+                            android:textSize="40sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

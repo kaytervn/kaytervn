@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">OnlineCoursesApp</string>
+    <string-array name="sort_options">
+        <item>Newest</item>
+        <item>Oldest</item>
+        <item>Highest Price</item>
+        <item>Lowest Price</item>
+    </string-array>
+
+    <string-array name="topic_options">
+        <item>ALL</item>
+        <item>WEB</item>
+        <item>AI</item>
+        <item>DATA</item>
+        <item>MOBILE</item>
+        <item>GAME</item>
+        <item>SOFTWARE</item>
+    </string-array>
+</resources>

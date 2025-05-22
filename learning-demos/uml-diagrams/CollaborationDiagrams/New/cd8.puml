@@ -1,0 +1,21 @@
+@startuml CD
+
+ 
+title CD8. Xem thông tin chi tiết khóa học
+
+Actor Student
+boundary "CourseDetails"
+boundary "LessonDetails"
+boundary "CreateComment"
+control "CommentService"
+control "CommentController"
+entity "CommentModel"
+
+Student - CourseDetails: \l1. clickViewDetails()<&arrow-right>
+CourseDetails -- LessonDetails: \l<&arrow-bottom>2. navigate("/lesson-details")
+Student --- CreateComment: \l<&arrow-bottom>4. clickCreateComment()
+LessonDetails -- CreateComment: \l<&arrow-bottom>3. navigate("/create-comment")\n<&arrow-top>7. navigate("/lesson-details")
+CreateComment -- CommentService: \l<&arrow-bottom>5. handleCreate()
+CommentService - CommentController: \l6. createComment()<&arrow-right>
+CommentController -- CommentModel: \l<&arrow-bottom>6. Comment.create()
+@enduml

@@ -1,0 +1,31 @@
+## Build output
+bin/
+obj/
+Debug/
+Release/
+*.user
+*.suo
+*.cache
+*.log
+
+## Visual Studio
+.vscode/
+.vs/
+*.csproj.user
+*.sln.docstates
+
+## NuGet
+*.nupkg
+*.snupkg
+packages/
+*.nuspec
+project.lock.json
+
+## Rider/JetBrains
+.idea/
+*.sln.iml
+
+## OS junk
+.DS_Store
+Thumbs.db
+desktop.ini

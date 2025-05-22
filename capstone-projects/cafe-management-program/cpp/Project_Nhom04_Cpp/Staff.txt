@@ -1,0 +1,12 @@
+AD1;Trung;07900002;Male;18/2/1999;01200002;Da Lat;Admin;trung;trung123
+AD0;Trong;07900001;Male;23/8/1999;01200001;HCM City;Admin;trong;trong123
+ST0;Linh;07900006;Female;9/2/2004;01200006;HCM City;Staff;linh;linh123
+ST1;Khoa;07900005;Male;14/2/2003;01200003;Ha Noi;Staff;khoa;khoa123
+ST2;Xuan;07900008;Female;3/4/1998;01200008;Ha Noi;Staff;xuan;xuan123
+ST3;Chung1;079000011;Male;2/3/2005;012000011;Hung Yen;Staff;chung;chung123
+ST4;Giao;07900004;Female;12/5/2004;01200004;Kien Giang;Staff;giao;giao123
+ST5;Tri;07900009;Male;23/4/2000;01200009;Thu Duc;Staff;tri;tri123
+ST6;Hao;1234;Female;12/9/2004;1234;Bien Hoa;Staff;hao;hao123
+ST7;Tinh;12345;Female;26/12/2002;12345;Dong Nai;Staff;tinh;tinh123
+ST8;Ngan;123456;Female;9/2/2002;123456;Gia Lai;Staff;ngan;ngan123
+ST9;Hoai;1234;Female;12/12/12;12345;Kien Giang;Staff;hoai;hoai123

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" href="./styles/cookiedu_logo.png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat UI</title>
+    <link rel="stylesheet" href="./styles/styles.css" />
+    <script
+      src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+      integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="join-form">
+        <input
+          type="text"
+          id="conversationId"
+          placeholder="Enter Conversation ID"
+        />
+        <button id="joinButton">Join</button>
+      </div>
+      <div class="messages" id="messages"></div>
+    </div>
+    <script src="./scripts/scripts.js"></script>
+  </body>
+</html>

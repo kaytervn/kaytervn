@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  
+  .react-datepicker__month-dropdown-container select {
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    color: #374151;
+  }
+  
+  .react-datepicker__year-dropdown-container select {
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    color: #374151;
+  }
+  
+  .react-datepicker__month-dropdown-container select:hover,
+  .react-datepicker__year-dropdown-container select:hover {
+    border-color: #9ca3af;
+  }
+  

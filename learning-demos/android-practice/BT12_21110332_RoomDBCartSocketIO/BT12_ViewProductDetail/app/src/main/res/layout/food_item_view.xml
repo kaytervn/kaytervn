@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/square"
+        android:src="@drawable/sqbg" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imagePicture"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="5dp"
+        android:padding="5dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"
+        app:shapeAppearanceOverlay="@style/circular"
+        app:strokeColor="@color/white"
+        app:strokeWidth="5dp" />
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imagePicture"
+        android:layout_centerHorizontal="true"
+        android:text="Name"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:shadowColor="#000000"
+        android:shadowDx="5"
+        android:shadowDy="5"
+        android:shadowRadius="10"
+        android:padding="3dp"
+        android:textStyle="bold" />
+</RelativeLayout>

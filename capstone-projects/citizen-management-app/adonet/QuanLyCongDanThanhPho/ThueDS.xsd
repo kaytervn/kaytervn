@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ThueDS" targetNamespace="http://tempuri.org/ThueDS.xsd" xmlns:mstns="http://tempuri.org/ThueDS.xsd" xmlns="http://tempuri.org/ThueDS.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection ConnectionStringObject="Data Source=(localdb)\mssqllocaldb;Initial Catalog=QuanLyCongDanThanhPho;Integrated Security=True" IsAppSettingsProperty="false" Modifier="Assembly" Name="msi\localdb#a71fd1e4.QuanLyCongDanThanhPho.dbo" ParameterPrefix="@" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="vThueTableAdapter" GeneratorDataComponentClassName="vThueTableAdapter" Name="vThue" UserDataComponentName="vThueTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="msi\localdb#a71fd1e4.QuanLyCongDanThanhPho.dbo" DbObjectName="QuanLyCongDanThanhPho.dbo.vThue" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT MaThue, TenThue, MucThue, CCCD, HoTen, NgaySinh, ThuNhap, Ngay FROM dbo.vThue</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="MaThue" DataSetColumn="MaThue" />
+              <Mapping SourceColumn="TenThue" DataSetColumn="TenThue" />
+              <Mapping SourceColumn="MucThue" DataSetColumn="MucThue" />
+              <Mapping SourceColumn="CCCD" DataSetColumn="CCCD" />
+              <Mapping SourceColumn="HoTen" DataSetColumn="HoTen" />
+              <Mapping SourceColumn="NgaySinh" DataSetColumn="NgaySinh" />
+              <Mapping SourceColumn="ThuNhap" DataSetColumn="ThuNhap" />
+              <Mapping SourceColumn="Ngay" DataSetColumn="Ngay" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="ThueDS" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_UserDSName="ThueDS" msprop:Generator_DataSetName="ThueDS">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="vThue" msprop:Generator_RowEvHandlerName="vThueRowChangeEventHandler" msprop:Generator_RowDeletedName="vThueRowDeleted" msprop:Generator_RowDeletingName="vThueRowDeleting" msprop:Generator_RowEvArgName="vThueRowChangeEvent" msprop:Generator_TablePropName="vThue" msprop:Generator_RowChangedName="vThueRowChanged" msprop:Generator_RowChangingName="vThueRowChanging" msprop:Generator_TableClassName="vThueDataTable" msprop:Generator_RowClassName="vThueRow" msprop:Generator_TableVarName="tablevThue" msprop:Generator_UserTableName="vThue">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MaThue" msprop:Generator_ColumnPropNameInRow="MaThue" msprop:Generator_ColumnPropNameInTable="MaThueColumn" msprop:Generator_ColumnVarNameInTable="columnMaThue" msprop:Generator_UserColumnName="MaThue" type="xs:int" />
+              <xs:element name="TenThue" msprop:Generator_ColumnPropNameInRow="TenThue" msprop:Generator_ColumnPropNameInTable="TenThueColumn" msprop:Generator_ColumnVarNameInTable="columnTenThue" msprop:Generator_UserColumnName="TenThue">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MucThue" msprop:Generator_ColumnPropNameInRow="MucThue" msprop:Generator_ColumnPropNameInTable="MucThueColumn" msprop:Generator_ColumnVarNameInTable="columnMucThue" msprop:Generator_UserColumnName="MucThue" type="xs:double" />
+              <xs:element name="CCCD" msprop:Generator_ColumnPropNameInRow="CCCD" msprop:Generator_ColumnPropNameInTable="CCCDColumn" msprop:Generator_ColumnVarNameInTable="columnCCCD" msprop:Generator_UserColumnName="CCCD">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="HoTen" msprop:Generator_ColumnPropNameInRow="HoTen" msprop:Generator_ColumnPropNameInTable="HoTenColumn" msprop:Generator_ColumnVarNameInTable="columnHoTen" msprop:Generator_UserColumnName="HoTen">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NgaySinh" msprop:Generator_ColumnPropNameInRow="NgaySinh" msprop:Generator_ColumnPropNameInTable="NgaySinhColumn" msprop:Generator_ColumnVarNameInTable="columnNgaySinh" msprop:Generator_UserColumnName="NgaySinh" type="xs:dateTime" />
+              <xs:element name="ThuNhap" msprop:Generator_ColumnPropNameInRow="ThuNhap" msprop:Generator_ColumnPropNameInTable="ThuNhapColumn" msprop:Generator_ColumnVarNameInTable="columnThuNhap" msprop:Generator_UserColumnName="ThuNhap" type="xs:double" />
+              <xs:element name="Ngay" msprop:Generator_ColumnPropNameInRow="Ngay" msprop:Generator_ColumnPropNameInTable="NgayColumn" msprop:Generator_ColumnVarNameInTable="columnNgay" msprop:Generator_UserColumnName="Ngay" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:vThue" />
+      <xs:field xpath="mstns:MaThue" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

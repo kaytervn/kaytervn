@@ -1,0 +1,75 @@
+.solar {
+	font-size: 10px;
+	width: 40em;
+	height: 40em;
+	position: relative;
+	margin: 0 auto;
+}
+
+.sun {
+	position: absolute;
+	top: 15em;
+	left: 15em;
+	width: 10em;
+	height: 10em;
+	background: rgb(238, 160, 13);
+	background: radial-gradient(circle, rgba(238, 160, 13, 1) 0%, rgba(246, 232, 24, 1) 35%);
+	border-radius: 50%;
+	box-shadow: 0 0 3em orange;
+}
+
+.earth,
+.moon {
+	position: absolute;
+	border-style: solid;
+	border-color: rgb(255, 255, 255) transparent transparent transparent;
+	border-width: 0.1em 0.1em 0 0;
+	border-radius: 50%;
+}
+
+.earth {
+	top: 5em;
+	left: 5em;
+	width: 30em;
+	height: 30em;
+	animation: orbit 36.5s linear infinite;
+}
+
+.moon {
+	top: 0;
+	right: 0;
+	width: 8em;
+	height: 8em;
+	animation: orbit 2.7s linear infinite;
+}
+
+.earth::before,
+.moon::before {
+	content: '';
+	position: absolute;
+	border-radius: 50%;
+}
+
+.earth::before {
+	top: 2.8em;
+	right: 2.8em;
+	width: 3em;
+	height: 3em;
+	background: rgb(2, 0, 36);
+	background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+}
+
+.moon::before {
+	top: 0.8em;
+	right: 0.2em;
+	width: 1.6em;
+	height: 1.6em;
+	background: rgb(244, 236, 239);
+	background: radial-gradient(circle, rgba(244, 236, 239, 1) 0%, rgba(138, 134, 136, 1) 45%, rgba(243, 246, 250, 1) 100%);
+}
+
+@keyframes orbit {
+	to {
+		transform: rotate(360deg);
+	}
+}

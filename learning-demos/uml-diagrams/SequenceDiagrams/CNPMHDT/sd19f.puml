@@ -1,0 +1,27 @@
+@startuml SQ
+autonumber
+title SD19f. Create document
+boundary "views/\nUpdateLessonPage" as UpdateLessonPage
+control "DocumentService"
+control "DocumentController"
+entity "DocumentModel"
+database "Database" as Database
+activate UpdateLessonPage
+UpdateLessonPage -> DocumentService: createDocument(lessonId, title, type, description)
+activate DocumentService
+DocumentService -> DocumentController: router.post("/createDocument", createDocument)
+activate DocumentController
+DocumentController -> DocumentModel: call model
+activate DocumentModel
+DocumentModel -> Database: Document.create({lessonId, title, type, description})
+deactivate DocumentModel
+activate Database
+Database --> DocumentController: callback
+deactivate Database
+DocumentController --> DocumentService: send res.json
+deactivate DocumentController
+DocumentService --> UpdateLessonPage: callback
+deactivate DocumentService
+UpdateLessonPage -> UpdateLessonPage: update display
+
+@enduml

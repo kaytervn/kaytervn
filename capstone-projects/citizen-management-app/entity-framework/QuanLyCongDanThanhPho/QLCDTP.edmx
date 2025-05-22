@@ -1,0 +1,1915 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="QLCDTPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CanCuocCongDan">
+          <Key>
+            <PropertyRef Name="CCCD" />
+          </Key>
+          <Property Name="CCCD" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="MaCD" Type="int" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CongDan">
+          <Key>
+            <PropertyRef Name="MaCD" />
+          </Key>
+          <Property Name="MaCD" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgaySinh" Type="date" Nullable="false" />
+          <Property Name="NoiSinh" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="GioiTinh" Type="int" Nullable="false" />
+          <Property Name="NgheNghiep" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="DanToc" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TonGiao" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TinhTrang" Type="int" Nullable="false" />
+          <Property Name="HonNhan" Type="int" Nullable="false" />
+          <Property Name="TenTK" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MatKhau" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="LoaiTK" Type="int" Nullable="false" />
+          <Property Name="SoDu" Type="float" Nullable="false" />
+          <Property Name="Hinh" Type="image" />
+        </EntityType>
+        <EntityType Name="HoKhau">
+          <Key>
+            <PropertyRef Name="MaHo" />
+          </Key>
+          <Property Name="MaHo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ChuHo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TinhThanh" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="QuanHuyen" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="PhuongXa" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KetHon">
+          <Key>
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaKH" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CCCDChong" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CCCDVo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KhaiSinh">
+          <Key>
+            <PropertyRef Name="MaCD" />
+          </Key>
+          <Property Name="MaCD" Type="int" Nullable="false" />
+          <Property Name="MaKH" Type="int" Nullable="false" />
+          <Property Name="NgayKhai" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KhaiTu">
+          <Key>
+            <PropertyRef Name="MaCD" />
+          </Key>
+          <Property Name="MaCD" Type="int" Nullable="false" />
+          <Property Name="NguyenNhan" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgayTu" Type="date" Nullable="false" />
+          <Property Name="NgayKhai" Type="date" Nullable="false" />
+          <Property Name="NguoiKhai" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="QuanHeVoiNguoiDuocKhai" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LyHon">
+          <Key>
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaKH" Type="int" Nullable="false" />
+          <Property Name="LyDo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TamTruTamVang">
+          <Key>
+            <PropertyRef Name="MaHo" />
+            <PropertyRef Name="MaCD" />
+          </Key>
+          <Property Name="MaHo" Type="int" Nullable="false" />
+          <Property Name="MaCD" Type="int" Nullable="false" />
+          <Property Name="TinhTrangCuTru" Type="int" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Thue">
+          <Key>
+            <PropertyRef Name="MaThue" />
+          </Key>
+          <Property Name="MaThue" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenThue" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MucThue" Type="float" Nullable="false" />
+          <Property Name="CCCD" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ThuNhap" Type="float" Nullable="false" />
+          <Property Name="Ngay" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ThuongTru">
+          <Key>
+            <PropertyRef Name="MaCD" />
+          </Key>
+          <Property Name="MaCD" Type="int" Nullable="false" />
+          <Property Name="MaHo" Type="int" Nullable="false" />
+          <Property Name="QuanHeVoiChuHo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCongDanThanhPho.dbo.vCanCuocCongDan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vCanCuocCongDan">
+          <Key>
+            <PropertyRef Name="CCCD" />
+            <PropertyRef Name="MaCD" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="NoiSinh" />
+            <PropertyRef Name="GioiTinh" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="CCCD" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="MaCD" Type="int" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgaySinh" Type="date" Nullable="false" />
+          <Property Name="NoiSinh" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="GioiTinh" Type="int" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCongDanThanhPho.dbo.vHoKhau' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vHoKhau">
+          <Key>
+            <PropertyRef Name="MaHo" />
+            <PropertyRef Name="CCCDChuHo" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="TinhThanh" />
+            <PropertyRef Name="QuanHuyen" />
+            <PropertyRef Name="PhuongXa" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="MaHo" Type="int" Nullable="false" />
+          <Property Name="CCCDChuHo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TinhThanh" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="QuanHuyen" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="PhuongXa" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCongDanThanhPho.dbo.vKetHon' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vKetHon">
+          <Key>
+            <PropertyRef Name="MaKH" />
+            <PropertyRef Name="CCCDChong" />
+            <PropertyRef Name="HoTenChong" />
+            <PropertyRef Name="NgaySinhChong" />
+            <PropertyRef Name="NoiSinhChong" />
+            <PropertyRef Name="CCCDVo" />
+            <PropertyRef Name="HoTenVo" />
+            <PropertyRef Name="NgaySinhVo" />
+            <PropertyRef Name="NoiSinhVo" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="MaKH" Type="int" Nullable="false" />
+          <Property Name="CCCDChong" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="HoTenChong" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgaySinhChong" Type="date" Nullable="false" />
+          <Property Name="NoiSinhChong" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CCCDVo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="HoTenVo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgaySinhVo" Type="date" Nullable="false" />
+          <Property Name="NoiSinhVo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCongDanThanhPho.dbo.vKhaiSinh' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vKhaiSinh">
+          <Key>
+            <PropertyRef Name="MaCD" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="NoiSinh" />
+            <PropertyRef Name="GioiTinh" />
+            <PropertyRef Name="MaKH" />
+            <PropertyRef Name="HoTenCha" />
+            <PropertyRef Name="HoTenMe" />
+            <PropertyRef Name="NgayKhai" />
+          </Key>
+          <Property Name="MaCD" Type="int" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgaySinh" Type="date" Nullable="false" />
+          <Property Name="NoiSinh" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="GioiTinh" Type="int" Nullable="false" />
+          <Property Name="MaKH" Type="int" Nullable="false" />
+          <Property Name="HoTenCha" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="HoTenMe" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgayKhai" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCongDanThanhPho.dbo.vKhaiTu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vKhaiTu">
+          <Key>
+            <PropertyRef Name="MaCD" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="NoiSinh" />
+            <PropertyRef Name="GioiTinh" />
+            <PropertyRef Name="NguyenNhan" />
+            <PropertyRef Name="CCCDNguoiKhai" />
+            <PropertyRef Name="NguoiKhai" />
+            <PropertyRef Name="QuanHeVoiNguoiDuocKhai" />
+            <PropertyRef Name="NgayTu" />
+            <PropertyRef Name="NgayKhai" />
+          </Key>
+          <Property Name="MaCD" Type="int" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgaySinh" Type="date" Nullable="false" />
+          <Property Name="NoiSinh" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="GioiTinh" Type="int" Nullable="false" />
+          <Property Name="NguyenNhan" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CCCDNguoiKhai" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="NguoiKhai" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="QuanHeVoiNguoiDuocKhai" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgayTu" Type="date" Nullable="false" />
+          <Property Name="NgayKhai" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCongDanThanhPho.dbo.vLyHon' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vLyHon">
+          <Key>
+            <PropertyRef Name="MaKH" />
+            <PropertyRef Name="CCCDChong" />
+            <PropertyRef Name="HoTenChong" />
+            <PropertyRef Name="CCCDVo" />
+            <PropertyRef Name="HoTenVo" />
+            <PropertyRef Name="LyDo" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="MaKH" Type="int" Nullable="false" />
+          <Property Name="CCCDChong" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="HoTenChong" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CCCDVo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="HoTenVo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="LyDo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCongDanThanhPho.dbo.vTamTruTamVang' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vTamTruTamVang">
+          <Key>
+            <PropertyRef Name="MaHo" />
+            <PropertyRef Name="TinhThanh" />
+            <PropertyRef Name="QuanHuyen" />
+            <PropertyRef Name="PhuongXa" />
+            <PropertyRef Name="MaCD" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="TinhTrangCuTru" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="MaHo" Type="int" Nullable="false" />
+          <Property Name="TinhThanh" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="QuanHuyen" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="PhuongXa" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MaCD" Type="int" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgaySinh" Type="date" Nullable="false" />
+          <Property Name="TinhTrangCuTru" Type="int" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCongDanThanhPho.dbo.vThue' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vThue">
+          <Key>
+            <PropertyRef Name="MaThue" />
+            <PropertyRef Name="TenThue" />
+            <PropertyRef Name="MucThue" />
+            <PropertyRef Name="CCCD" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="ThuNhap" />
+            <PropertyRef Name="Ngay" />
+          </Key>
+          <Property Name="MaThue" Type="int" Nullable="false" />
+          <Property Name="TenThue" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MucThue" Type="float" Nullable="false" />
+          <Property Name="CCCD" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgaySinh" Type="date" Nullable="false" />
+          <Property Name="ThuNhap" Type="float" Nullable="false" />
+          <Property Name="Ngay" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCongDanThanhPho.dbo.vThuongTru' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vThuongTru">
+          <Key>
+            <PropertyRef Name="MaHo" />
+            <PropertyRef Name="MaCD" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="NoiSinh" />
+            <PropertyRef Name="GioiTinh" />
+            <PropertyRef Name="QuanHeVoiChuHo" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="MaHo" Type="int" Nullable="false" />
+          <Property Name="MaCD" Type="int" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgaySinh" Type="date" Nullable="false" />
+          <Property Name="NoiSinh" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="GioiTinh" Type="int" Nullable="false" />
+          <Property Name="QuanHeVoiChuHo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__CanCuocCon__MaCD__2A4B4B5E">
+          <End Role="CongDan" Type="Self.CongDan" Multiplicity="1" />
+          <End Role="CanCuocCongDan" Type="Self.CanCuocCongDan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongDan">
+              <PropertyRef Name="MaCD" />
+            </Principal>
+            <Dependent Role="CanCuocCongDan">
+              <PropertyRef Name="MaCD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HoKhau__ChuHo__31EC6D26">
+          <End Role="CanCuocCongDan" Type="Self.CanCuocCongDan" Multiplicity="1" />
+          <End Role="HoKhau" Type="Self.HoKhau" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CanCuocCongDan">
+              <PropertyRef Name="CCCD" />
+            </Principal>
+            <Dependent Role="HoKhau">
+              <PropertyRef Name="ChuHo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KetHon__CCCDChon__3C69FB99">
+          <End Role="CanCuocCongDan" Type="Self.CanCuocCongDan" Multiplicity="1" />
+          <End Role="KetHon" Type="Self.KetHon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CanCuocCongDan">
+              <PropertyRef Name="CCCD" />
+            </Principal>
+            <Dependent Role="KetHon">
+              <PropertyRef Name="CCCDChong" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KetHon__CCCDVo__3D5E1FD2">
+          <End Role="CanCuocCongDan" Type="Self.CanCuocCongDan" Multiplicity="1" />
+          <End Role="KetHon" Type="Self.KetHon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CanCuocCongDan">
+              <PropertyRef Name="CCCD" />
+            </Principal>
+            <Dependent Role="KetHon">
+              <PropertyRef Name="CCCDVo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KhaiSinh__MaCD__4316F928">
+          <End Role="CongDan" Type="Self.CongDan" Multiplicity="1" />
+          <End Role="KhaiSinh" Type="Self.KhaiSinh" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CongDan">
+              <PropertyRef Name="MaCD" />
+            </Principal>
+            <Dependent Role="KhaiSinh">
+              <PropertyRef Name="MaCD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KhaiSinh__MaKH__440B1D61">
+          <End Role="KetHon" Type="Self.KetHon" Multiplicity="1" />
+          <End Role="KhaiSinh" Type="Self.KhaiSinh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KetHon">
+              <PropertyRef Name="MaKH" />
+            </Principal>
+            <Dependent Role="KhaiSinh">
+              <PropertyRef Name="MaKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KhaiTu__MaCD__2D27B809">
+          <End Role="CongDan" Type="Self.CongDan" Multiplicity="1" />
+          <End Role="KhaiTu" Type="Self.KhaiTu" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CongDan">
+              <PropertyRef Name="MaCD" />
+            </Principal>
+            <Dependent Role="KhaiTu">
+              <PropertyRef Name="MaCD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KhaiTu__NguoiKha__2E1BDC42">
+          <End Role="CanCuocCongDan" Type="Self.CanCuocCongDan" Multiplicity="1" />
+          <End Role="KhaiTu" Type="Self.KhaiTu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CanCuocCongDan">
+              <PropertyRef Name="CCCD" />
+            </Principal>
+            <Dependent Role="KhaiTu">
+              <PropertyRef Name="NguoiKhai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LyHon__MaKH__403A8C7D">
+          <End Role="KetHon" Type="Self.KetHon" Multiplicity="1" />
+          <End Role="LyHon" Type="Self.LyHon" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="KetHon">
+              <PropertyRef Name="MaKH" />
+            </Principal>
+            <Dependent Role="LyHon">
+              <PropertyRef Name="MaKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TamTruTamV__MaCD__398D8EEE">
+          <End Role="CongDan" Type="Self.CongDan" Multiplicity="1" />
+          <End Role="TamTruTamVang" Type="Self.TamTruTamVang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongDan">
+              <PropertyRef Name="MaCD" />
+            </Principal>
+            <Dependent Role="TamTruTamVang">
+              <PropertyRef Name="MaCD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TamTruTamV__MaHo__38996AB5">
+          <End Role="HoKhau" Type="Self.HoKhau" Multiplicity="1" />
+          <End Role="TamTruTamVang" Type="Self.TamTruTamVang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HoKhau">
+              <PropertyRef Name="MaHo" />
+            </Principal>
+            <Dependent Role="TamTruTamVang">
+              <PropertyRef Name="MaHo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Thue__CCCD__46E78A0C">
+          <End Role="CanCuocCongDan" Type="Self.CanCuocCongDan" Multiplicity="1" />
+          <End Role="Thue" Type="Self.Thue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CanCuocCongDan">
+              <PropertyRef Name="CCCD" />
+            </Principal>
+            <Dependent Role="Thue">
+              <PropertyRef Name="CCCD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ThuongTru__MaCD__34C8D9D1">
+          <End Role="CongDan" Type="Self.CongDan" Multiplicity="1" />
+          <End Role="ThuongTru" Type="Self.ThuongTru" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CongDan">
+              <PropertyRef Name="MaCD" />
+            </Principal>
+            <Dependent Role="ThuongTru">
+              <PropertyRef Name="MaCD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ThuongTru__MaHo__35BCFE0A">
+          <End Role="HoKhau" Type="Self.HoKhau" Multiplicity="1" />
+          <End Role="ThuongTru" Type="Self.ThuongTru" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HoKhau">
+              <PropertyRef Name="MaHo" />
+            </Principal>
+            <Dependent Role="ThuongTru">
+              <PropertyRef Name="MaHo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fTimKiemCanCuocCongDan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tk" Type="nvarchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="CCCD" Type="nvarchar" MaxLength="10" Nullable="false" />
+                <Property Name="MaCD" Type="int" Nullable="false" />
+                <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgaySinh" Type="date" Nullable="false" />
+                <Property Name="NoiSinh" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="GioiTinh" Type="int" Nullable="false" />
+                <Property Name="NgayDangKy" Type="date" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fTimKiemHoKhau" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tk" Type="nvarchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="MaHo" Type="int" Nullable="false" />
+                <Property Name="CCCDChuHo" Type="nvarchar" MaxLength="10" Nullable="false" />
+                <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="TinhThanh" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="QuanHuyen" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="PhuongXa" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgayDangKy" Type="date" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fTimKiemKetHon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tk" Type="nvarchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="MaKH" Type="int" Nullable="false" />
+                <Property Name="CCCDChong" Type="nvarchar" MaxLength="10" Nullable="false" />
+                <Property Name="HoTenChong" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgaySinhChong" Type="date" Nullable="false" />
+                <Property Name="NoiSinhChong" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="CCCDVo" Type="nvarchar" MaxLength="10" Nullable="false" />
+                <Property Name="HoTenVo" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgaySinhVo" Type="date" Nullable="false" />
+                <Property Name="NoiSinhVo" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgayDangKy" Type="date" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fTimKiemKhaiSinh" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tk" Type="nvarchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="MaCD" Type="int" Nullable="false" />
+                <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgaySinh" Type="date" Nullable="false" />
+                <Property Name="NoiSinh" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="GioiTinh" Type="int" Nullable="false" />
+                <Property Name="HoTenCha" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="HoTenMe" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgayKhai" Type="date" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fTimKiemKhaiTu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tk" Type="nvarchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="MaCD" Type="int" Nullable="false" />
+                <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgaySinh" Type="date" Nullable="false" />
+                <Property Name="NoiSinh" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="GioiTinh" Type="int" Nullable="false" />
+                <Property Name="NguyenNhan" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="CCCDNguoiKhai" Type="nvarchar" MaxLength="10" Nullable="false" />
+                <Property Name="NguoiKhai" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="QuanHeVoiNguoiDuocKhai" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgayTu" Type="date" Nullable="false" />
+                <Property Name="NgayKhai" Type="date" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fTimKiemLyHon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tk" Type="nvarchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="MaKH" Type="int" Nullable="false" />
+                <Property Name="CCCDChong" Type="nvarchar" MaxLength="10" Nullable="false" />
+                <Property Name="HoTenChong" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="CCCDVo" Type="nvarchar" MaxLength="10" Nullable="false" />
+                <Property Name="HoTenVo" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="LyDo" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgayDangKy" Type="date" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fTimKiemTamTruTamVang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tk" Type="nvarchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="MaHo" Type="int" Nullable="false" />
+                <Property Name="TinhThanh" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="QuanHuyen" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="PhuongXa" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="MaCD" Type="int" Nullable="false" />
+                <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgaySinh" Type="date" Nullable="false" />
+                <Property Name="TinhTrangCuTru" Type="int" Nullable="false" />
+                <Property Name="NgayDangKy" Type="date" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fTimKiemThue" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tk" Type="nvarchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="MaThue" Type="int" Nullable="false" />
+                <Property Name="TenThue" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="MucThue" Type="float" Nullable="false" />
+                <Property Name="CCCD" Type="nvarchar" MaxLength="10" Nullable="false" />
+                <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgaySinh" Type="date" Nullable="false" />
+                <Property Name="ThuNhap" Type="float" Nullable="false" />
+                <Property Name="Ngay" Type="date" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fTimKiemThuongTru" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tk" Type="nvarchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="MaHo" Type="int" Nullable="false" />
+                <Property Name="MaCD" Type="int" Nullable="false" />
+                <Property Name="HoTen" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgaySinh" Type="date" Nullable="false" />
+                <Property Name="NoiSinh" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="GioiTinh" Type="int" Nullable="false" />
+                <Property Name="QuanHeVoiChuHo" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="NgayDangKy" Type="date" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <EntityContainer Name="QLCDTPModelStoreContainer">
+          <EntitySet Name="CanCuocCongDan" EntityType="Self.CanCuocCongDan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CongDan" EntityType="Self.CongDan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HoKhau" EntityType="Self.HoKhau" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KetHon" EntityType="Self.KetHon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KhaiSinh" EntityType="Self.KhaiSinh" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KhaiTu" EntityType="Self.KhaiTu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LyHon" EntityType="Self.LyHon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TamTruTamVang" EntityType="Self.TamTruTamVang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Thue" EntityType="Self.Thue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ThuongTru" EntityType="Self.ThuongTru" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vCanCuocCongDan" EntityType="Self.vCanCuocCongDan" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vCanCuocCongDan].[CCCD] AS [CCCD], 
+    [vCanCuocCongDan].[MaCD] AS [MaCD], 
+    [vCanCuocCongDan].[HoTen] AS [HoTen], 
+    [vCanCuocCongDan].[NgaySinh] AS [NgaySinh], 
+    [vCanCuocCongDan].[NoiSinh] AS [NoiSinh], 
+    [vCanCuocCongDan].[GioiTinh] AS [GioiTinh], 
+    [vCanCuocCongDan].[NgayDangKy] AS [NgayDangKy]
+    FROM [dbo].[vCanCuocCongDan] AS [vCanCuocCongDan]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vHoKhau" EntityType="Self.vHoKhau" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vHoKhau].[MaHo] AS [MaHo], 
+    [vHoKhau].[CCCDChuHo] AS [CCCDChuHo], 
+    [vHoKhau].[HoTen] AS [HoTen], 
+    [vHoKhau].[TinhThanh] AS [TinhThanh], 
+    [vHoKhau].[QuanHuyen] AS [QuanHuyen], 
+    [vHoKhau].[PhuongXa] AS [PhuongXa], 
+    [vHoKhau].[NgayDangKy] AS [NgayDangKy]
+    FROM [dbo].[vHoKhau] AS [vHoKhau]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vKetHon" EntityType="Self.vKetHon" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vKetHon].[MaKH] AS [MaKH], 
+    [vKetHon].[CCCDChong] AS [CCCDChong], 
+    [vKetHon].[HoTenChong] AS [HoTenChong], 
+    [vKetHon].[NgaySinhChong] AS [NgaySinhChong], 
+    [vKetHon].[NoiSinhChong] AS [NoiSinhChong], 
+    [vKetHon].[CCCDVo] AS [CCCDVo], 
+    [vKetHon].[HoTenVo] AS [HoTenVo], 
+    [vKetHon].[NgaySinhVo] AS [NgaySinhVo], 
+    [vKetHon].[NoiSinhVo] AS [NoiSinhVo], 
+    [vKetHon].[NgayDangKy] AS [NgayDangKy]
+    FROM [dbo].[vKetHon] AS [vKetHon]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vKhaiSinh" EntityType="Self.vKhaiSinh" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vKhaiSinh].[MaCD] AS [MaCD], 
+    [vKhaiSinh].[HoTen] AS [HoTen], 
+    [vKhaiSinh].[NgaySinh] AS [NgaySinh], 
+    [vKhaiSinh].[NoiSinh] AS [NoiSinh], 
+    [vKhaiSinh].[GioiTinh] AS [GioiTinh], 
+    [vKhaiSinh].[MaKH] AS [MaKH], 
+    [vKhaiSinh].[HoTenCha] AS [HoTenCha], 
+    [vKhaiSinh].[HoTenMe] AS [HoTenMe], 
+    [vKhaiSinh].[NgayKhai] AS [NgayKhai]
+    FROM [dbo].[vKhaiSinh] AS [vKhaiSinh]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vKhaiTu" EntityType="Self.vKhaiTu" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vKhaiTu].[MaCD] AS [MaCD], 
+    [vKhaiTu].[HoTen] AS [HoTen], 
+    [vKhaiTu].[NgaySinh] AS [NgaySinh], 
+    [vKhaiTu].[NoiSinh] AS [NoiSinh], 
+    [vKhaiTu].[GioiTinh] AS [GioiTinh], 
+    [vKhaiTu].[NguyenNhan] AS [NguyenNhan], 
+    [vKhaiTu].[CCCDNguoiKhai] AS [CCCDNguoiKhai], 
+    [vKhaiTu].[NguoiKhai] AS [NguoiKhai], 
+    [vKhaiTu].[QuanHeVoiNguoiDuocKhai] AS [QuanHeVoiNguoiDuocKhai], 
+    [vKhaiTu].[NgayTu] AS [NgayTu], 
+    [vKhaiTu].[NgayKhai] AS [NgayKhai]
+    FROM [dbo].[vKhaiTu] AS [vKhaiTu]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vLyHon" EntityType="Self.vLyHon" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vLyHon].[MaKH] AS [MaKH], 
+    [vLyHon].[CCCDChong] AS [CCCDChong], 
+    [vLyHon].[HoTenChong] AS [HoTenChong], 
+    [vLyHon].[CCCDVo] AS [CCCDVo], 
+    [vLyHon].[HoTenVo] AS [HoTenVo], 
+    [vLyHon].[LyDo] AS [LyDo], 
+    [vLyHon].[NgayDangKy] AS [NgayDangKy]
+    FROM [dbo].[vLyHon] AS [vLyHon]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vTamTruTamVang" EntityType="Self.vTamTruTamVang" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vTamTruTamVang].[MaHo] AS [MaHo], 
+    [vTamTruTamVang].[TinhThanh] AS [TinhThanh], 
+    [vTamTruTamVang].[QuanHuyen] AS [QuanHuyen], 
+    [vTamTruTamVang].[PhuongXa] AS [PhuongXa], 
+    [vTamTruTamVang].[MaCD] AS [MaCD], 
+    [vTamTruTamVang].[HoTen] AS [HoTen], 
+    [vTamTruTamVang].[NgaySinh] AS [NgaySinh], 
+    [vTamTruTamVang].[TinhTrangCuTru] AS [TinhTrangCuTru], 
+    [vTamTruTamVang].[NgayDangKy] AS [NgayDangKy]
+    FROM [dbo].[vTamTruTamVang] AS [vTamTruTamVang]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vThue" EntityType="Self.vThue" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vThue].[MaThue] AS [MaThue], 
+    [vThue].[TenThue] AS [TenThue], 
+    [vThue].[MucThue] AS [MucThue], 
+    [vThue].[CCCD] AS [CCCD], 
+    [vThue].[HoTen] AS [HoTen], 
+    [vThue].[NgaySinh] AS [NgaySinh], 
+    [vThue].[ThuNhap] AS [ThuNhap], 
+    [vThue].[Ngay] AS [Ngay]
+    FROM [dbo].[vThue] AS [vThue]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vThuongTru" EntityType="Self.vThuongTru" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vThuongTru].[MaHo] AS [MaHo], 
+    [vThuongTru].[MaCD] AS [MaCD], 
+    [vThuongTru].[HoTen] AS [HoTen], 
+    [vThuongTru].[NgaySinh] AS [NgaySinh], 
+    [vThuongTru].[NoiSinh] AS [NoiSinh], 
+    [vThuongTru].[GioiTinh] AS [GioiTinh], 
+    [vThuongTru].[QuanHeVoiChuHo] AS [QuanHeVoiChuHo], 
+    [vThuongTru].[NgayDangKy] AS [NgayDangKy]
+    FROM [dbo].[vThuongTru] AS [vThuongTru]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__CanCuocCon__MaCD__2A4B4B5E" Association="Self.FK__CanCuocCon__MaCD__2A4B4B5E">
+            <End Role="CongDan" EntitySet="CongDan" />
+            <End Role="CanCuocCongDan" EntitySet="CanCuocCongDan" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HoKhau__ChuHo__31EC6D26" Association="Self.FK__HoKhau__ChuHo__31EC6D26">
+            <End Role="CanCuocCongDan" EntitySet="CanCuocCongDan" />
+            <End Role="HoKhau" EntitySet="HoKhau" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KetHon__CCCDChon__3C69FB99" Association="Self.FK__KetHon__CCCDChon__3C69FB99">
+            <End Role="CanCuocCongDan" EntitySet="CanCuocCongDan" />
+            <End Role="KetHon" EntitySet="KetHon" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KetHon__CCCDVo__3D5E1FD2" Association="Self.FK__KetHon__CCCDVo__3D5E1FD2">
+            <End Role="CanCuocCongDan" EntitySet="CanCuocCongDan" />
+            <End Role="KetHon" EntitySet="KetHon" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KhaiSinh__MaCD__4316F928" Association="Self.FK__KhaiSinh__MaCD__4316F928">
+            <End Role="CongDan" EntitySet="CongDan" />
+            <End Role="KhaiSinh" EntitySet="KhaiSinh" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KhaiSinh__MaKH__440B1D61" Association="Self.FK__KhaiSinh__MaKH__440B1D61">
+            <End Role="KetHon" EntitySet="KetHon" />
+            <End Role="KhaiSinh" EntitySet="KhaiSinh" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KhaiTu__MaCD__2D27B809" Association="Self.FK__KhaiTu__MaCD__2D27B809">
+            <End Role="CongDan" EntitySet="CongDan" />
+            <End Role="KhaiTu" EntitySet="KhaiTu" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KhaiTu__NguoiKha__2E1BDC42" Association="Self.FK__KhaiTu__NguoiKha__2E1BDC42">
+            <End Role="CanCuocCongDan" EntitySet="CanCuocCongDan" />
+            <End Role="KhaiTu" EntitySet="KhaiTu" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LyHon__MaKH__403A8C7D" Association="Self.FK__LyHon__MaKH__403A8C7D">
+            <End Role="KetHon" EntitySet="KetHon" />
+            <End Role="LyHon" EntitySet="LyHon" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TamTruTamV__MaCD__398D8EEE" Association="Self.FK__TamTruTamV__MaCD__398D8EEE">
+            <End Role="CongDan" EntitySet="CongDan" />
+            <End Role="TamTruTamVang" EntitySet="TamTruTamVang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TamTruTamV__MaHo__38996AB5" Association="Self.FK__TamTruTamV__MaHo__38996AB5">
+            <End Role="HoKhau" EntitySet="HoKhau" />
+            <End Role="TamTruTamVang" EntitySet="TamTruTamVang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Thue__CCCD__46E78A0C" Association="Self.FK__Thue__CCCD__46E78A0C">
+            <End Role="CanCuocCongDan" EntitySet="CanCuocCongDan" />
+            <End Role="Thue" EntitySet="Thue" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ThuongTru__MaCD__34C8D9D1" Association="Self.FK__ThuongTru__MaCD__34C8D9D1">
+            <End Role="CongDan" EntitySet="CongDan" />
+            <End Role="ThuongTru" EntitySet="ThuongTru" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ThuongTru__MaHo__35BCFE0A" Association="Self.FK__ThuongTru__MaHo__35BCFE0A">
+            <End Role="HoKhau" EntitySet="HoKhau" />
+            <End Role="ThuongTru" EntitySet="ThuongTru" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLCDTPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <ComplexType Name="fTimKiemCanCuocCongDan_Result">
+          <Property Name="CCCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" />
+          <Property Name="NoiSinh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GioiTinh" Type="Int32" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="fTimKiemHoKhau_Result">
+          <Property Name="MaHo" Type="Int32" Nullable="false" />
+          <Property Name="CCCDChuHo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TinhThanh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QuanHuyen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhuongXa" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="fTimKiemKetHon_Result">
+          <Property Name="MaKH" Type="Int32" Nullable="false" />
+          <Property Name="CCCDChong" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTenChong" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinhChong" Type="DateTime" Nullable="false" />
+          <Property Name="NoiSinhChong" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CCCDVo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTenVo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinhVo" Type="DateTime" Nullable="false" />
+          <Property Name="NoiSinhVo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="fTimKiemKhaiSinh_Result">
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" />
+          <Property Name="NoiSinh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GioiTinh" Type="Int32" Nullable="false" />
+          <Property Name="HoTenCha" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTenMe" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayKhai" Type="DateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="fTimKiemKhaiTu_Result">
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" />
+          <Property Name="NoiSinh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GioiTinh" Type="Int32" Nullable="false" />
+          <Property Name="NguyenNhan" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CCCDNguoiKhai" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NguoiKhai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QuanHeVoiNguoiDuocKhai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayTu" Type="DateTime" Nullable="false" />
+          <Property Name="NgayKhai" Type="DateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="fTimKiemLyHon_Result">
+          <Property Name="MaKH" Type="Int32" Nullable="false" />
+          <Property Name="CCCDChong" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTenChong" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CCCDVo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTenVo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LyDo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="fTimKiemTamTruTamVang_Result">
+          <Property Name="MaHo" Type="Int32" Nullable="false" />
+          <Property Name="TinhThanh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QuanHuyen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhuongXa" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" />
+          <Property Name="TinhTrangCuTru" Type="Int32" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="fTimKiemThue_Result">
+          <Property Name="MaThue" Type="Int32" Nullable="false" />
+          <Property Name="TenThue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MucThue" Type="Double" Nullable="false" />
+          <Property Name="CCCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" />
+          <Property Name="ThuNhap" Type="Double" Nullable="false" />
+          <Property Name="Ngay" Type="DateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="fTimKiemThuongTru_Result">
+          <Property Name="MaHo" Type="Int32" Nullable="false" />
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" />
+          <Property Name="NoiSinh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GioiTinh" Type="Int32" Nullable="false" />
+          <Property Name="QuanHeVoiChuHo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="CanCuocCongDan">
+          <Key>
+            <PropertyRef Name="CCCD" />
+          </Key>
+          <Property Name="CCCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="CongDan" Relationship="Self.FK__CanCuocCon__MaCD__2A4B4B5E" FromRole="CanCuocCongDan" ToRole="CongDan" />
+          <NavigationProperty Name="HoKhaus" Relationship="Self.FK__HoKhau__ChuHo__31EC6D26" FromRole="CanCuocCongDan" ToRole="HoKhau" />
+          <NavigationProperty Name="KetHons" Relationship="Self.FK__KetHon__CCCDChon__3C69FB99" FromRole="CanCuocCongDan" ToRole="KetHon" />
+          <NavigationProperty Name="KetHons1" Relationship="Self.FK__KetHon__CCCDVo__3D5E1FD2" FromRole="CanCuocCongDan" ToRole="KetHon" />
+          <NavigationProperty Name="KhaiTus" Relationship="Self.FK__KhaiTu__NguoiKha__2E1BDC42" FromRole="CanCuocCongDan" ToRole="KhaiTu" />
+          <NavigationProperty Name="Thues" Relationship="Self.FK__Thue__CCCD__46E78A0C" FromRole="CanCuocCongDan" ToRole="Thue" />
+        </EntityType>
+        <EntityType Name="CongDan">
+          <Key>
+            <PropertyRef Name="MaCD" />
+          </Key>
+          <Property Name="MaCD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NoiSinh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GioiTinh" Type="Int32" Nullable="false" />
+          <Property Name="NgheNghiep" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DanToc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TonGiao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TinhTrang" Type="Int32" Nullable="false" />
+          <Property Name="HonNhan" Type="Int32" Nullable="false" />
+          <Property Name="TenTK" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MatKhau" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LoaiTK" Type="Int32" Nullable="false" />
+          <Property Name="SoDu" Type="Double" Nullable="false" />
+          <Property Name="Hinh" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="CanCuocCongDans" Relationship="Self.FK__CanCuocCon__MaCD__2A4B4B5E" FromRole="CongDan" ToRole="CanCuocCongDan" />
+          <NavigationProperty Name="KhaiSinh" Relationship="Self.FK__KhaiSinh__MaCD__4316F928" FromRole="CongDan" ToRole="KhaiSinh" />
+          <NavigationProperty Name="KhaiTu" Relationship="Self.FK__KhaiTu__MaCD__2D27B809" FromRole="CongDan" ToRole="KhaiTu" />
+          <NavigationProperty Name="TamTruTamVangs" Relationship="Self.FK__TamTruTamV__MaCD__398D8EEE" FromRole="CongDan" ToRole="TamTruTamVang" />
+          <NavigationProperty Name="ThuongTru" Relationship="Self.FK__ThuongTru__MaCD__34C8D9D1" FromRole="CongDan" ToRole="ThuongTru" />
+        </EntityType>
+        <EntityType Name="HoKhau">
+          <Key>
+            <PropertyRef Name="MaHo" />
+          </Key>
+          <Property Name="MaHo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ChuHo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TinhThanh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QuanHuyen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhuongXa" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="CanCuocCongDan" Relationship="Self.FK__HoKhau__ChuHo__31EC6D26" FromRole="HoKhau" ToRole="CanCuocCongDan" />
+          <NavigationProperty Name="TamTruTamVangs" Relationship="Self.FK__TamTruTamV__MaHo__38996AB5" FromRole="HoKhau" ToRole="TamTruTamVang" />
+          <NavigationProperty Name="ThuongTrus" Relationship="Self.FK__ThuongTru__MaHo__35BCFE0A" FromRole="HoKhau" ToRole="ThuongTru" />
+        </EntityType>
+        <EntityType Name="KetHon">
+          <Key>
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaKH" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CCCDChong" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CCCDVo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="CanCuocCongDan" Relationship="Self.FK__KetHon__CCCDChon__3C69FB99" FromRole="KetHon" ToRole="CanCuocCongDan" />
+          <NavigationProperty Name="CanCuocCongDan1" Relationship="Self.FK__KetHon__CCCDVo__3D5E1FD2" FromRole="KetHon" ToRole="CanCuocCongDan" />
+          <NavigationProperty Name="KhaiSinhs" Relationship="Self.FK__KhaiSinh__MaKH__440B1D61" FromRole="KetHon" ToRole="KhaiSinh" />
+          <NavigationProperty Name="LyHon" Relationship="Self.FK__LyHon__MaKH__403A8C7D" FromRole="KetHon" ToRole="LyHon" />
+        </EntityType>
+        <EntityType Name="KhaiSinh">
+          <Key>
+            <PropertyRef Name="MaCD" />
+          </Key>
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="MaKH" Type="Int32" Nullable="false" />
+          <Property Name="NgayKhai" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="CongDan" Relationship="Self.FK__KhaiSinh__MaCD__4316F928" FromRole="KhaiSinh" ToRole="CongDan" />
+          <NavigationProperty Name="KetHon" Relationship="Self.FK__KhaiSinh__MaKH__440B1D61" FromRole="KhaiSinh" ToRole="KetHon" />
+        </EntityType>
+        <EntityType Name="KhaiTu">
+          <Key>
+            <PropertyRef Name="MaCD" />
+          </Key>
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="NguyenNhan" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayTu" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NgayKhai" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NguoiKhai" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QuanHeVoiNguoiDuocKhai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CanCuocCongDan" Relationship="Self.FK__KhaiTu__NguoiKha__2E1BDC42" FromRole="KhaiTu" ToRole="CanCuocCongDan" />
+          <NavigationProperty Name="CongDan" Relationship="Self.FK__KhaiTu__MaCD__2D27B809" FromRole="KhaiTu" ToRole="CongDan" />
+        </EntityType>
+        <EntityType Name="LyHon">
+          <Key>
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaKH" Type="Int32" Nullable="false" />
+          <Property Name="LyDo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="KetHon" Relationship="Self.FK__LyHon__MaKH__403A8C7D" FromRole="LyHon" ToRole="KetHon" />
+        </EntityType>
+        <EntityType Name="TamTruTamVang">
+          <Key>
+            <PropertyRef Name="MaHo" />
+            <PropertyRef Name="MaCD" />
+          </Key>
+          <Property Name="MaHo" Type="Int32" Nullable="false" />
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="TinhTrangCuTru" Type="Int32" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="CongDan" Relationship="Self.FK__TamTruTamV__MaCD__398D8EEE" FromRole="TamTruTamVang" ToRole="CongDan" />
+          <NavigationProperty Name="HoKhau" Relationship="Self.FK__TamTruTamV__MaHo__38996AB5" FromRole="TamTruTamVang" ToRole="HoKhau" />
+        </EntityType>
+        <EntityType Name="Thue">
+          <Key>
+            <PropertyRef Name="MaThue" />
+          </Key>
+          <Property Name="MaThue" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenThue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MucThue" Type="Double" Nullable="false" />
+          <Property Name="CCCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ThuNhap" Type="Double" Nullable="false" />
+          <Property Name="Ngay" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="CanCuocCongDan" Relationship="Self.FK__Thue__CCCD__46E78A0C" FromRole="Thue" ToRole="CanCuocCongDan" />
+        </EntityType>
+        <EntityType Name="ThuongTru">
+          <Key>
+            <PropertyRef Name="MaCD" />
+          </Key>
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="MaHo" Type="Int32" Nullable="false" />
+          <Property Name="QuanHeVoiChuHo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="CongDan" Relationship="Self.FK__ThuongTru__MaCD__34C8D9D1" FromRole="ThuongTru" ToRole="CongDan" />
+          <NavigationProperty Name="HoKhau" Relationship="Self.FK__ThuongTru__MaHo__35BCFE0A" FromRole="ThuongTru" ToRole="HoKhau" />
+        </EntityType>
+        <EntityType Name="vCanCuocCongDan">
+          <Key>
+            <PropertyRef Name="CCCD" />
+            <PropertyRef Name="MaCD" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="NoiSinh" />
+            <PropertyRef Name="GioiTinh" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="CCCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NoiSinh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GioiTinh" Type="Int32" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="vHoKhau">
+          <Key>
+            <PropertyRef Name="MaHo" />
+            <PropertyRef Name="CCCDChuHo" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="TinhThanh" />
+            <PropertyRef Name="QuanHuyen" />
+            <PropertyRef Name="PhuongXa" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="MaHo" Type="Int32" Nullable="false" />
+          <Property Name="CCCDChuHo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TinhThanh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QuanHuyen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhuongXa" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="vKetHon">
+          <Key>
+            <PropertyRef Name="MaKH" />
+            <PropertyRef Name="CCCDChong" />
+            <PropertyRef Name="HoTenChong" />
+            <PropertyRef Name="NgaySinhChong" />
+            <PropertyRef Name="NoiSinhChong" />
+            <PropertyRef Name="CCCDVo" />
+            <PropertyRef Name="HoTenVo" />
+            <PropertyRef Name="NgaySinhVo" />
+            <PropertyRef Name="NoiSinhVo" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="MaKH" Type="Int32" Nullable="false" />
+          <Property Name="CCCDChong" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTenChong" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinhChong" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NoiSinhChong" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CCCDVo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTenVo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinhVo" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NoiSinhVo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="vKhaiSinh">
+          <Key>
+            <PropertyRef Name="MaCD" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="NoiSinh" />
+            <PropertyRef Name="GioiTinh" />
+            <PropertyRef Name="HoTenCha" />
+            <PropertyRef Name="HoTenMe" />
+            <PropertyRef Name="NgayKhai" />
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NoiSinh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GioiTinh" Type="Int32" Nullable="false" />
+          <Property Name="HoTenCha" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTenMe" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayKhai" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="MaKH" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vKhaiTu">
+          <Key>
+            <PropertyRef Name="MaCD" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="NoiSinh" />
+            <PropertyRef Name="GioiTinh" />
+            <PropertyRef Name="NguyenNhan" />
+            <PropertyRef Name="CCCDNguoiKhai" />
+            <PropertyRef Name="NguoiKhai" />
+            <PropertyRef Name="QuanHeVoiNguoiDuocKhai" />
+            <PropertyRef Name="NgayTu" />
+            <PropertyRef Name="NgayKhai" />
+          </Key>
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NoiSinh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GioiTinh" Type="Int32" Nullable="false" />
+          <Property Name="NguyenNhan" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CCCDNguoiKhai" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NguoiKhai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QuanHeVoiNguoiDuocKhai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayTu" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NgayKhai" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="vLyHon">
+          <Key>
+            <PropertyRef Name="MaKH" />
+            <PropertyRef Name="CCCDChong" />
+            <PropertyRef Name="HoTenChong" />
+            <PropertyRef Name="CCCDVo" />
+            <PropertyRef Name="HoTenVo" />
+            <PropertyRef Name="LyDo" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="MaKH" Type="Int32" Nullable="false" />
+          <Property Name="CCCDChong" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTenChong" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CCCDVo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTenVo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LyDo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="vTamTruTamVang">
+          <Key>
+            <PropertyRef Name="MaHo" />
+            <PropertyRef Name="TinhThanh" />
+            <PropertyRef Name="QuanHuyen" />
+            <PropertyRef Name="PhuongXa" />
+            <PropertyRef Name="MaCD" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="TinhTrangCuTru" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="MaHo" Type="Int32" Nullable="false" />
+          <Property Name="TinhThanh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QuanHuyen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhuongXa" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TinhTrangCuTru" Type="Int32" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="vThue">
+          <Key>
+            <PropertyRef Name="MaThue" />
+            <PropertyRef Name="TenThue" />
+            <PropertyRef Name="MucThue" />
+            <PropertyRef Name="CCCD" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="ThuNhap" />
+            <PropertyRef Name="Ngay" />
+          </Key>
+          <Property Name="MaThue" Type="Int32" Nullable="false" />
+          <Property Name="TenThue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MucThue" Type="Double" Nullable="false" />
+          <Property Name="CCCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ThuNhap" Type="Double" Nullable="false" />
+          <Property Name="Ngay" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="vThuongTru">
+          <Key>
+            <PropertyRef Name="MaHo" />
+            <PropertyRef Name="MaCD" />
+            <PropertyRef Name="HoTen" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="NoiSinh" />
+            <PropertyRef Name="GioiTinh" />
+            <PropertyRef Name="QuanHeVoiChuHo" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="MaHo" Type="Int32" Nullable="false" />
+          <Property Name="MaCD" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NoiSinh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GioiTinh" Type="Int32" Nullable="false" />
+          <Property Name="QuanHeVoiChuHo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <Association Name="FK__CanCuocCon__MaCD__2A4B4B5E">
+          <End Role="CongDan" Type="Self.CongDan" Multiplicity="1" />
+          <End Role="CanCuocCongDan" Type="Self.CanCuocCongDan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongDan">
+              <PropertyRef Name="MaCD" />
+            </Principal>
+            <Dependent Role="CanCuocCongDan">
+              <PropertyRef Name="MaCD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HoKhau__ChuHo__31EC6D26">
+          <End Role="CanCuocCongDan" Type="Self.CanCuocCongDan" Multiplicity="1" />
+          <End Role="HoKhau" Type="Self.HoKhau" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CanCuocCongDan">
+              <PropertyRef Name="CCCD" />
+            </Principal>
+            <Dependent Role="HoKhau">
+              <PropertyRef Name="ChuHo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KetHon__CCCDChon__3C69FB99">
+          <End Role="CanCuocCongDan" Type="Self.CanCuocCongDan" Multiplicity="1" />
+          <End Role="KetHon" Type="Self.KetHon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CanCuocCongDan">
+              <PropertyRef Name="CCCD" />
+            </Principal>
+            <Dependent Role="KetHon">
+              <PropertyRef Name="CCCDChong" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KetHon__CCCDVo__3D5E1FD2">
+          <End Role="CanCuocCongDan" Type="Self.CanCuocCongDan" Multiplicity="1" />
+          <End Role="KetHon" Type="Self.KetHon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CanCuocCongDan">
+              <PropertyRef Name="CCCD" />
+            </Principal>
+            <Dependent Role="KetHon">
+              <PropertyRef Name="CCCDVo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KhaiTu__NguoiKha__2E1BDC42">
+          <End Role="CanCuocCongDan" Type="Self.CanCuocCongDan" Multiplicity="1" />
+          <End Role="KhaiTu" Type="Self.KhaiTu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CanCuocCongDan">
+              <PropertyRef Name="CCCD" />
+            </Principal>
+            <Dependent Role="KhaiTu">
+              <PropertyRef Name="NguoiKhai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Thue__CCCD__46E78A0C">
+          <End Role="CanCuocCongDan" Type="Self.CanCuocCongDan" Multiplicity="1" />
+          <End Role="Thue" Type="Self.Thue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CanCuocCongDan">
+              <PropertyRef Name="CCCD" />
+            </Principal>
+            <Dependent Role="Thue">
+              <PropertyRef Name="CCCD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KhaiSinh__MaCD__4316F928">
+          <End Role="CongDan" Type="Self.CongDan" Multiplicity="1" />
+          <End Role="KhaiSinh" Type="Self.KhaiSinh" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CongDan">
+              <PropertyRef Name="MaCD" />
+            </Principal>
+            <Dependent Role="KhaiSinh">
+              <PropertyRef Name="MaCD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KhaiTu__MaCD__2D27B809">
+          <End Role="CongDan" Type="Self.CongDan" Multiplicity="1" />
+          <End Role="KhaiTu" Type="Self.KhaiTu" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CongDan">
+              <PropertyRef Name="MaCD" />
+            </Principal>
+            <Dependent Role="KhaiTu">
+              <PropertyRef Name="MaCD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TamTruTamV__MaCD__398D8EEE">
+          <End Role="CongDan" Type="Self.CongDan" Multiplicity="1" />
+          <End Role="TamTruTamVang" Type="Self.TamTruTamVang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongDan">
+              <PropertyRef Name="MaCD" />
+            </Principal>
+            <Dependent Role="TamTruTamVang">
+              <PropertyRef Name="MaCD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ThuongTru__MaCD__34C8D9D1">
+          <End Role="CongDan" Type="Self.CongDan" Multiplicity="1" />
+          <End Role="ThuongTru" Type="Self.ThuongTru" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CongDan">
+              <PropertyRef Name="MaCD" />
+            </Principal>
+            <Dependent Role="ThuongTru">
+              <PropertyRef Name="MaCD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TamTruTamV__MaHo__38996AB5">
+          <End Role="HoKhau" Type="Self.HoKhau" Multiplicity="1" />
+          <End Role="TamTruTamVang" Type="Self.TamTruTamVang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HoKhau">
+              <PropertyRef Name="MaHo" />
+            </Principal>
+            <Dependent Role="TamTruTamVang">
+              <PropertyRef Name="MaHo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ThuongTru__MaHo__35BCFE0A">
+          <End Role="HoKhau" Type="Self.HoKhau" Multiplicity="1" />
+          <End Role="ThuongTru" Type="Self.ThuongTru" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HoKhau">
+              <PropertyRef Name="MaHo" />
+            </Principal>
+            <Dependent Role="ThuongTru">
+              <PropertyRef Name="MaHo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KhaiSinh__MaKH__440B1D61">
+          <End Role="KetHon" Type="Self.KetHon" Multiplicity="1" />
+          <End Role="KhaiSinh" Type="Self.KhaiSinh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KetHon">
+              <PropertyRef Name="MaKH" />
+            </Principal>
+            <Dependent Role="KhaiSinh">
+              <PropertyRef Name="MaKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LyHon__MaKH__403A8C7D">
+          <End Role="KetHon" Type="Self.KetHon" Multiplicity="1" />
+          <End Role="LyHon" Type="Self.LyHon" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="KetHon">
+              <PropertyRef Name="MaKH" />
+            </Principal>
+            <Dependent Role="LyHon">
+              <PropertyRef Name="MaKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CanCuocCongDans" EntityType="Self.CanCuocCongDan" />
+          <EntitySet Name="CongDans" EntityType="Self.CongDan" />
+          <EntitySet Name="HoKhaus" EntityType="Self.HoKhau" />
+          <EntitySet Name="KetHons" EntityType="Self.KetHon" />
+          <EntitySet Name="KhaiSinhs" EntityType="Self.KhaiSinh" />
+          <EntitySet Name="KhaiTus" EntityType="Self.KhaiTu" />
+          <EntitySet Name="LyHons" EntityType="Self.LyHon" />
+          <EntitySet Name="TamTruTamVangs" EntityType="Self.TamTruTamVang" />
+          <EntitySet Name="Thues" EntityType="Self.Thue" />
+          <EntitySet Name="ThuongTrus" EntityType="Self.ThuongTru" />
+          <EntitySet Name="vCanCuocCongDans" EntityType="Self.vCanCuocCongDan" />
+          <EntitySet Name="vHoKhaus" EntityType="Self.vHoKhau" />
+          <EntitySet Name="vKetHons" EntityType="Self.vKetHon" />
+          <EntitySet Name="vKhaiSinhs" EntityType="Self.vKhaiSinh" />
+          <EntitySet Name="vKhaiTus" EntityType="Self.vKhaiTu" />
+          <EntitySet Name="vLyHons" EntityType="Self.vLyHon" />
+          <EntitySet Name="vTamTruTamVangs" EntityType="Self.vTamTruTamVang" />
+          <EntitySet Name="vThues" EntityType="Self.vThue" />
+          <EntitySet Name="vThuongTrus" EntityType="Self.vThuongTru" />
+          <AssociationSet Name="FK__CanCuocCon__MaCD__2A4B4B5E" Association="Self.FK__CanCuocCon__MaCD__2A4B4B5E">
+            <End Role="CongDan" EntitySet="CongDans" />
+            <End Role="CanCuocCongDan" EntitySet="CanCuocCongDans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HoKhau__ChuHo__31EC6D26" Association="Self.FK__HoKhau__ChuHo__31EC6D26">
+            <End Role="CanCuocCongDan" EntitySet="CanCuocCongDans" />
+            <End Role="HoKhau" EntitySet="HoKhaus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KetHon__CCCDChon__3C69FB99" Association="Self.FK__KetHon__CCCDChon__3C69FB99">
+            <End Role="CanCuocCongDan" EntitySet="CanCuocCongDans" />
+            <End Role="KetHon" EntitySet="KetHons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KetHon__CCCDVo__3D5E1FD2" Association="Self.FK__KetHon__CCCDVo__3D5E1FD2">
+            <End Role="CanCuocCongDan" EntitySet="CanCuocCongDans" />
+            <End Role="KetHon" EntitySet="KetHons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KhaiTu__NguoiKha__2E1BDC42" Association="Self.FK__KhaiTu__NguoiKha__2E1BDC42">
+            <End Role="CanCuocCongDan" EntitySet="CanCuocCongDans" />
+            <End Role="KhaiTu" EntitySet="KhaiTus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Thue__CCCD__46E78A0C" Association="Self.FK__Thue__CCCD__46E78A0C">
+            <End Role="CanCuocCongDan" EntitySet="CanCuocCongDans" />
+            <End Role="Thue" EntitySet="Thues" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KhaiSinh__MaCD__4316F928" Association="Self.FK__KhaiSinh__MaCD__4316F928">
+            <End Role="CongDan" EntitySet="CongDans" />
+            <End Role="KhaiSinh" EntitySet="KhaiSinhs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KhaiTu__MaCD__2D27B809" Association="Self.FK__KhaiTu__MaCD__2D27B809">
+            <End Role="CongDan" EntitySet="CongDans" />
+            <End Role="KhaiTu" EntitySet="KhaiTus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TamTruTamV__MaCD__398D8EEE" Association="Self.FK__TamTruTamV__MaCD__398D8EEE">
+            <End Role="CongDan" EntitySet="CongDans" />
+            <End Role="TamTruTamVang" EntitySet="TamTruTamVangs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ThuongTru__MaCD__34C8D9D1" Association="Self.FK__ThuongTru__MaCD__34C8D9D1">
+            <End Role="CongDan" EntitySet="CongDans" />
+            <End Role="ThuongTru" EntitySet="ThuongTrus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TamTruTamV__MaHo__38996AB5" Association="Self.FK__TamTruTamV__MaHo__38996AB5">
+            <End Role="HoKhau" EntitySet="HoKhaus" />
+            <End Role="TamTruTamVang" EntitySet="TamTruTamVangs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ThuongTru__MaHo__35BCFE0A" Association="Self.FK__ThuongTru__MaHo__35BCFE0A">
+            <End Role="HoKhau" EntitySet="HoKhaus" />
+            <End Role="ThuongTru" EntitySet="ThuongTrus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KhaiSinh__MaKH__440B1D61" Association="Self.FK__KhaiSinh__MaKH__440B1D61">
+            <End Role="KetHon" EntitySet="KetHons" />
+            <End Role="KhaiSinh" EntitySet="KhaiSinhs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LyHon__MaKH__403A8C7D" Association="Self.FK__LyHon__MaKH__403A8C7D">
+            <End Role="KetHon" EntitySet="KetHons" />
+            <End Role="LyHon" EntitySet="LyHons" />
+          </AssociationSet>
+          <FunctionImport Name="fTimKiemCanCuocCongDan" IsComposable="true" ReturnType="Collection(QLCDTPModel.fTimKiemCanCuocCongDan_Result)">
+          <Parameter Name="tk" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="fTimKiemHoKhau" IsComposable="true" ReturnType="Collection(QLCDTPModel.fTimKiemHoKhau_Result)">
+          <Parameter Name="tk" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="fTimKiemKetHon" IsComposable="true" ReturnType="Collection(QLCDTPModel.fTimKiemKetHon_Result)">
+          <Parameter Name="tk" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="fTimKiemKhaiSinh" IsComposable="true" ReturnType="Collection(QLCDTPModel.fTimKiemKhaiSinh_Result)">
+          <Parameter Name="tk" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="fTimKiemKhaiTu" IsComposable="true" ReturnType="Collection(QLCDTPModel.fTimKiemKhaiTu_Result)">
+          <Parameter Name="tk" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="fTimKiemLyHon" IsComposable="true" ReturnType="Collection(QLCDTPModel.fTimKiemLyHon_Result)">
+          <Parameter Name="tk" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="fTimKiemTamTruTamVang" IsComposable="true" ReturnType="Collection(QLCDTPModel.fTimKiemTamTruTamVang_Result)">
+          <Parameter Name="tk" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="fTimKiemThue" IsComposable="true" ReturnType="Collection(QLCDTPModel.fTimKiemThue_Result)">
+          <Parameter Name="tk" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="fTimKiemThuongTru" IsComposable="true" ReturnType="Collection(QLCDTPModel.fTimKiemThuongTru_Result)">
+          <Parameter Name="tk" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLCDTPModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="CanCuocCongDans">
+            <EntityTypeMapping TypeName="QLCDTPModel.CanCuocCongDan">
+              <MappingFragment StoreEntitySet="CanCuocCongDan">
+                <ScalarProperty Name="CCCD" ColumnName="CCCD" />
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CongDans">
+            <EntityTypeMapping TypeName="QLCDTPModel.CongDan">
+              <MappingFragment StoreEntitySet="CongDan">
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="NoiSinh" ColumnName="NoiSinh" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="NgheNghiep" ColumnName="NgheNghiep" />
+                <ScalarProperty Name="DanToc" ColumnName="DanToc" />
+                <ScalarProperty Name="TonGiao" ColumnName="TonGiao" />
+                <ScalarProperty Name="TinhTrang" ColumnName="TinhTrang" />
+                <ScalarProperty Name="HonNhan" ColumnName="HonNhan" />
+                <ScalarProperty Name="TenTK" ColumnName="TenTK" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="LoaiTK" ColumnName="LoaiTK" />
+                <ScalarProperty Name="SoDu" ColumnName="SoDu" />
+                <ScalarProperty Name="Hinh" ColumnName="Hinh" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HoKhaus">
+            <EntityTypeMapping TypeName="QLCDTPModel.HoKhau">
+              <MappingFragment StoreEntitySet="HoKhau">
+                <ScalarProperty Name="MaHo" ColumnName="MaHo" />
+                <ScalarProperty Name="ChuHo" ColumnName="ChuHo" />
+                <ScalarProperty Name="TinhThanh" ColumnName="TinhThanh" />
+                <ScalarProperty Name="QuanHuyen" ColumnName="QuanHuyen" />
+                <ScalarProperty Name="PhuongXa" ColumnName="PhuongXa" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KetHons">
+            <EntityTypeMapping TypeName="QLCDTPModel.KetHon">
+              <MappingFragment StoreEntitySet="KetHon">
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="CCCDChong" ColumnName="CCCDChong" />
+                <ScalarProperty Name="CCCDVo" ColumnName="CCCDVo" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KhaiSinhs">
+            <EntityTypeMapping TypeName="QLCDTPModel.KhaiSinh">
+              <MappingFragment StoreEntitySet="KhaiSinh">
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="NgayKhai" ColumnName="NgayKhai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KhaiTus">
+            <EntityTypeMapping TypeName="QLCDTPModel.KhaiTu">
+              <MappingFragment StoreEntitySet="KhaiTu">
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="NguyenNhan" ColumnName="NguyenNhan" />
+                <ScalarProperty Name="NgayTu" ColumnName="NgayTu" />
+                <ScalarProperty Name="NgayKhai" ColumnName="NgayKhai" />
+                <ScalarProperty Name="NguoiKhai" ColumnName="NguoiKhai" />
+                <ScalarProperty Name="QuanHeVoiNguoiDuocKhai" ColumnName="QuanHeVoiNguoiDuocKhai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LyHons">
+            <EntityTypeMapping TypeName="QLCDTPModel.LyHon">
+              <MappingFragment StoreEntitySet="LyHon">
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="LyDo" ColumnName="LyDo" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TamTruTamVangs">
+            <EntityTypeMapping TypeName="QLCDTPModel.TamTruTamVang">
+              <MappingFragment StoreEntitySet="TamTruTamVang">
+                <ScalarProperty Name="MaHo" ColumnName="MaHo" />
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="TinhTrangCuTru" ColumnName="TinhTrangCuTru" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Thues">
+            <EntityTypeMapping TypeName="QLCDTPModel.Thue">
+              <MappingFragment StoreEntitySet="Thue">
+                <ScalarProperty Name="MaThue" ColumnName="MaThue" />
+                <ScalarProperty Name="TenThue" ColumnName="TenThue" />
+                <ScalarProperty Name="MucThue" ColumnName="MucThue" />
+                <ScalarProperty Name="CCCD" ColumnName="CCCD" />
+                <ScalarProperty Name="ThuNhap" ColumnName="ThuNhap" />
+                <ScalarProperty Name="Ngay" ColumnName="Ngay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ThuongTrus">
+            <EntityTypeMapping TypeName="QLCDTPModel.ThuongTru">
+              <MappingFragment StoreEntitySet="ThuongTru">
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="MaHo" ColumnName="MaHo" />
+                <ScalarProperty Name="QuanHeVoiChuHo" ColumnName="QuanHeVoiChuHo" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vCanCuocCongDans">
+            <EntityTypeMapping TypeName="QLCDTPModel.vCanCuocCongDan">
+              <MappingFragment StoreEntitySet="vCanCuocCongDan">
+                <ScalarProperty Name="CCCD" ColumnName="CCCD" />
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="NoiSinh" ColumnName="NoiSinh" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHoKhaus">
+            <EntityTypeMapping TypeName="QLCDTPModel.vHoKhau">
+              <MappingFragment StoreEntitySet="vHoKhau">
+                <ScalarProperty Name="MaHo" ColumnName="MaHo" />
+                <ScalarProperty Name="CCCDChuHo" ColumnName="CCCDChuHo" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="TinhThanh" ColumnName="TinhThanh" />
+                <ScalarProperty Name="QuanHuyen" ColumnName="QuanHuyen" />
+                <ScalarProperty Name="PhuongXa" ColumnName="PhuongXa" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vKetHons">
+            <EntityTypeMapping TypeName="QLCDTPModel.vKetHon">
+              <MappingFragment StoreEntitySet="vKetHon">
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="CCCDChong" ColumnName="CCCDChong" />
+                <ScalarProperty Name="HoTenChong" ColumnName="HoTenChong" />
+                <ScalarProperty Name="NgaySinhChong" ColumnName="NgaySinhChong" />
+                <ScalarProperty Name="NoiSinhChong" ColumnName="NoiSinhChong" />
+                <ScalarProperty Name="CCCDVo" ColumnName="CCCDVo" />
+                <ScalarProperty Name="HoTenVo" ColumnName="HoTenVo" />
+                <ScalarProperty Name="NgaySinhVo" ColumnName="NgaySinhVo" />
+                <ScalarProperty Name="NoiSinhVo" ColumnName="NoiSinhVo" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vKhaiSinhs">
+            <EntityTypeMapping TypeName="QLCDTPModel.vKhaiSinh">
+              <MappingFragment StoreEntitySet="vKhaiSinh">
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="NoiSinh" ColumnName="NoiSinh" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="HoTenCha" ColumnName="HoTenCha" />
+                <ScalarProperty Name="HoTenMe" ColumnName="HoTenMe" />
+                <ScalarProperty Name="NgayKhai" ColumnName="NgayKhai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vKhaiTus">
+            <EntityTypeMapping TypeName="QLCDTPModel.vKhaiTu">
+              <MappingFragment StoreEntitySet="vKhaiTu">
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="NoiSinh" ColumnName="NoiSinh" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="NguyenNhan" ColumnName="NguyenNhan" />
+                <ScalarProperty Name="CCCDNguoiKhai" ColumnName="CCCDNguoiKhai" />
+                <ScalarProperty Name="NguoiKhai" ColumnName="NguoiKhai" />
+                <ScalarProperty Name="QuanHeVoiNguoiDuocKhai" ColumnName="QuanHeVoiNguoiDuocKhai" />
+                <ScalarProperty Name="NgayTu" ColumnName="NgayTu" />
+                <ScalarProperty Name="NgayKhai" ColumnName="NgayKhai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vLyHons">
+            <EntityTypeMapping TypeName="QLCDTPModel.vLyHon">
+              <MappingFragment StoreEntitySet="vLyHon">
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="CCCDChong" ColumnName="CCCDChong" />
+                <ScalarProperty Name="HoTenChong" ColumnName="HoTenChong" />
+                <ScalarProperty Name="CCCDVo" ColumnName="CCCDVo" />
+                <ScalarProperty Name="HoTenVo" ColumnName="HoTenVo" />
+                <ScalarProperty Name="LyDo" ColumnName="LyDo" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vTamTruTamVangs">
+            <EntityTypeMapping TypeName="QLCDTPModel.vTamTruTamVang">
+              <MappingFragment StoreEntitySet="vTamTruTamVang">
+                <ScalarProperty Name="MaHo" ColumnName="MaHo" />
+                <ScalarProperty Name="TinhThanh" ColumnName="TinhThanh" />
+                <ScalarProperty Name="QuanHuyen" ColumnName="QuanHuyen" />
+                <ScalarProperty Name="PhuongXa" ColumnName="PhuongXa" />
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="TinhTrangCuTru" ColumnName="TinhTrangCuTru" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vThues">
+            <EntityTypeMapping TypeName="QLCDTPModel.vThue">
+              <MappingFragment StoreEntitySet="vThue">
+                <ScalarProperty Name="MaThue" ColumnName="MaThue" />
+                <ScalarProperty Name="TenThue" ColumnName="TenThue" />
+                <ScalarProperty Name="MucThue" ColumnName="MucThue" />
+                <ScalarProperty Name="CCCD" ColumnName="CCCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="ThuNhap" ColumnName="ThuNhap" />
+                <ScalarProperty Name="Ngay" ColumnName="Ngay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vThuongTrus">
+            <EntityTypeMapping TypeName="QLCDTPModel.vThuongTru">
+              <MappingFragment StoreEntitySet="vThuongTru">
+                <ScalarProperty Name="MaHo" ColumnName="MaHo" />
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="NoiSinh" ColumnName="NoiSinh" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="QuanHeVoiChuHo" ColumnName="QuanHeVoiChuHo" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionName="QLCDTPModel.Store.fTimKiemCanCuocCongDan" FunctionImportName="fTimKiemCanCuocCongDan">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLCDTPModel.fTimKiemCanCuocCongDan_Result">
+                <ScalarProperty Name="CCCD" ColumnName="CCCD" />
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="NoiSinh" ColumnName="NoiSinh" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="QLCDTPModel.Store.fTimKiemHoKhau" FunctionImportName="fTimKiemHoKhau">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLCDTPModel.fTimKiemHoKhau_Result">
+                <ScalarProperty Name="MaHo" ColumnName="MaHo" />
+                <ScalarProperty Name="CCCDChuHo" ColumnName="CCCDChuHo" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="TinhThanh" ColumnName="TinhThanh" />
+                <ScalarProperty Name="QuanHuyen" ColumnName="QuanHuyen" />
+                <ScalarProperty Name="PhuongXa" ColumnName="PhuongXa" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="QLCDTPModel.Store.fTimKiemKetHon" FunctionImportName="fTimKiemKetHon">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLCDTPModel.fTimKiemKetHon_Result">
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="CCCDChong" ColumnName="CCCDChong" />
+                <ScalarProperty Name="HoTenChong" ColumnName="HoTenChong" />
+                <ScalarProperty Name="NgaySinhChong" ColumnName="NgaySinhChong" />
+                <ScalarProperty Name="NoiSinhChong" ColumnName="NoiSinhChong" />
+                <ScalarProperty Name="CCCDVo" ColumnName="CCCDVo" />
+                <ScalarProperty Name="HoTenVo" ColumnName="HoTenVo" />
+                <ScalarProperty Name="NgaySinhVo" ColumnName="NgaySinhVo" />
+                <ScalarProperty Name="NoiSinhVo" ColumnName="NoiSinhVo" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="QLCDTPModel.Store.fTimKiemKhaiSinh" FunctionImportName="fTimKiemKhaiSinh">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLCDTPModel.fTimKiemKhaiSinh_Result">
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="NoiSinh" ColumnName="NoiSinh" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="HoTenCha" ColumnName="HoTenCha" />
+                <ScalarProperty Name="HoTenMe" ColumnName="HoTenMe" />
+                <ScalarProperty Name="NgayKhai" ColumnName="NgayKhai" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="QLCDTPModel.Store.fTimKiemKhaiTu" FunctionImportName="fTimKiemKhaiTu">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLCDTPModel.fTimKiemKhaiTu_Result">
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="NoiSinh" ColumnName="NoiSinh" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="NguyenNhan" ColumnName="NguyenNhan" />
+                <ScalarProperty Name="CCCDNguoiKhai" ColumnName="CCCDNguoiKhai" />
+                <ScalarProperty Name="NguoiKhai" ColumnName="NguoiKhai" />
+                <ScalarProperty Name="QuanHeVoiNguoiDuocKhai" ColumnName="QuanHeVoiNguoiDuocKhai" />
+                <ScalarProperty Name="NgayTu" ColumnName="NgayTu" />
+                <ScalarProperty Name="NgayKhai" ColumnName="NgayKhai" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="QLCDTPModel.Store.fTimKiemLyHon" FunctionImportName="fTimKiemLyHon">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLCDTPModel.fTimKiemLyHon_Result">
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="CCCDChong" ColumnName="CCCDChong" />
+                <ScalarProperty Name="HoTenChong" ColumnName="HoTenChong" />
+                <ScalarProperty Name="CCCDVo" ColumnName="CCCDVo" />
+                <ScalarProperty Name="HoTenVo" ColumnName="HoTenVo" />
+                <ScalarProperty Name="LyDo" ColumnName="LyDo" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="QLCDTPModel.Store.fTimKiemTamTruTamVang" FunctionImportName="fTimKiemTamTruTamVang">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLCDTPModel.fTimKiemTamTruTamVang_Result">
+                <ScalarProperty Name="MaHo" ColumnName="MaHo" />
+                <ScalarProperty Name="TinhThanh" ColumnName="TinhThanh" />
+                <ScalarProperty Name="QuanHuyen" ColumnName="QuanHuyen" />
+                <ScalarProperty Name="PhuongXa" ColumnName="PhuongXa" />
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="TinhTrangCuTru" ColumnName="TinhTrangCuTru" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="QLCDTPModel.Store.fTimKiemThue" FunctionImportName="fTimKiemThue">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLCDTPModel.fTimKiemThue_Result">
+                <ScalarProperty Name="MaThue" ColumnName="MaThue" />
+                <ScalarProperty Name="TenThue" ColumnName="TenThue" />
+                <ScalarProperty Name="MucThue" ColumnName="MucThue" />
+                <ScalarProperty Name="CCCD" ColumnName="CCCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="ThuNhap" ColumnName="ThuNhap" />
+                <ScalarProperty Name="Ngay" ColumnName="Ngay" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="QLCDTPModel.Store.fTimKiemThuongTru" FunctionImportName="fTimKiemThuongTru">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLCDTPModel.fTimKiemThuongTru_Result">
+                <ScalarProperty Name="MaHo" ColumnName="MaHo" />
+                <ScalarProperty Name="MaCD" ColumnName="MaCD" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="NoiSinh" ColumnName="NoiSinh" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="QuanHeVoiChuHo" ColumnName="QuanHeVoiChuHo" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

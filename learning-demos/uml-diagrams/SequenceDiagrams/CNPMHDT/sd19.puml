@@ -1,0 +1,74 @@
+@startuml SQ
+
+autonumber
+
+title SD19. Cập nhật chi tiết khóa học
+
+actor "Instructor" as Actor
+boundary "views/\nUpdateCourseDetailPage" as UpdateCourseDetailPage
+boundary "components/\nLesson" as Lesson
+control "LessonService"
+control "LessonController"
+entity "LessonModel"
+database "Database" as Database
+
+activate Actor
+Actor -> UpdateCourseDetailPage: redirect to ../updateCourseDetail
+activate UpdateCourseDetailPage
+UpdateCourseDetailPage -> LessonService: getCourseLessons(courseId)
+activate LessonService
+LessonService -> LessonController: router.get(\n"/getCourseLessons",\ngetCourseLessons)
+activate LessonController
+LessonController -> LessonModel: call model
+activate LessonModel
+LessonModel -> Database: Lesson.find({courseId})
+deactivate LessonModel
+activate Database
+Database --> LessonController: return lessons
+deactivate Database
+LessonController --> LessonService: send res.json
+deactivate LessonController
+LessonService --> UpdateCourseDetailPage: return lessons
+deactivate LessonService
+loop forEach lessons
+UpdateCourseDetailPage -> Lesson: call component
+activate Lesson
+Lesson --> UpdateCourseDetailPage: display data
+deactivate Lesson
+deactivate UpdateCourseDetailPage
+end
+
+opt change course visibility
+Actor -> UpdateCourseDetailPage: click visibility box
+ref over UpdateCourseDetailPage
+**SD19a. Change course visibility**
+end ref
+end
+
+opt delete course
+Actor -> UpdateCourseDetailPage: click delete course button
+ref over UpdateCourseDetailPage
+**SD19b. Delete course**
+end ref
+end
+
+opt delete lesson
+Actor -> UpdateCourseDetailPage: choose lesson to delete
+ref over UpdateCourseDetailPage
+**SD19c. Delete lesson**
+end ref
+end
+
+opt create lesson
+Actor -> UpdateCourseDetailPage: input title, description on modal form
+deactivate Actor
+ref over UpdateCourseDetailPage
+**SD19d. Create lesson**
+end ref
+end
+
+ref over Actor
+**SD19e. View lesson**
+end ref
+
+@enduml

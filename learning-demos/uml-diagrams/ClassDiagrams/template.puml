@@ -1,0 +1,28 @@
+@startuml CD
+
+title "Cooking System"
+
+abstract class RecipeTemplate {
+    + void makeRecipe()
+    - void prepareIngredients()
+    - void cook();
+    - void cleanUp()
+
+}
+
+class PizzaRecipe {
+	+ void cook()
+}
+
+class SaladRecipe {
+	+ void cook()
+}
+
+class Main {
+	+ void main(String[])
+}
+
+RecipeTemplate <|-- PizzaRecipe
+RecipeTemplate <|-- SaladRecipe
+
+@enduml

@@ -1,0 +1,47 @@
+@startuml CD
+
+title Expression Solving System
+
+interface AbstractExpression {
+	int interpret()
+}
+
+class AddExpression {
+	- left: AbstractExpression
+	- right: AbstractExpression
+	+ AddExpression(AbstractExpression, AbstractExpression)
+	+ int interpret()
+}
+
+class SubtractExpression {
+	- left: AbstractExpression
+	- right: AbstractExpression
+	+ SubtractExpression(AbstractExpression, AbstractExpression)
+	+ int interpret()
+}
+
+class NumberExpression {
+	- int number
+	+ NumberExpression(int)
+	+ int interpret()
+}
+
+class Context {
+	- input: String
+	- output: int
+	+ Context(String)
+	+ String getInput()
+	+ void setInput(String)
+	+ int getOutput()
+	+ void setOutput(int)
+}
+
+class Client {
+	+ void main(String[])
+}
+
+AbstractExpression <|.. AddExpression
+AbstractExpression <|.. SubtractExpression
+AbstractExpression <|.. NumberExpression
+
+@enduml

@@ -1,0 +1,174 @@
+@startuml SQ
+
+autonumber
+
+title SD14. Quản lý người dùng
+
+actor "Actor" as actor
+boundary "UserManagement" as view
+control "UserController" as controller
+entity "UserModel" as model
+database "Database" as database
+
+actor -> view: enter search values
+activate actor
+activate view
+view -> controller: call API /list
+activate controller
+controller -> model: call model
+activate model
+
+model -> database: find data by search values
+deactivate model
+activate database
+database --> controller: return data
+deactivate database
+controller --> view: return data
+deactivate controller
+
+view -> view: display data
+activate view
+deactivate view
+deactivate view
+
+opt create
+
+actor -> view: click "New"
+activate view
+view -> view: display create form
+
+actor -> view: enter user info
+
+view -> controller: call API /create
+activate controller
+
+controller -> model: call model
+activate model
+
+model -> database: create user
+deactivate model
+activate database
+database --> controller: callback
+deactivate database
+controller --> view: return message
+deactivate controller
+view -> view: display message
+view -> controller: call API /list
+activate controller
+controller -> model: call model
+activate model
+model -> database: find users
+deactivate model
+activate database
+database --> controller: return data
+deactivate database
+controller --> view: return data
+deactivate controller
+view -> view: update display
+activate view
+deactivate view
+deactivate view
+end
+
+opt update
+
+actor -> view: click "Edit" on a user
+activate view
+
+view -> controller: call API /get
+activate controller
+
+controller -> model: call model
+activate model
+
+model -> database: find user by id
+deactivate model
+activate database
+database --> controller: return user
+deactivate database
+controller --> view: return user
+deactivate controller
+
+view -> view: display update form
+
+actor -> view: update user info
+
+view -> controller: call API /update
+activate controller
+
+controller -> model: call model
+activate model
+
+model -> database: update user
+deactivate model
+activate database
+database --> controller: callback
+deactivate database
+controller --> view: return message
+deactivate controller
+view -> view: display message
+view -> controller: call API /list
+activate controller
+controller -> model: call model
+activate model
+model -> database: find users
+deactivate model
+activate database
+database --> controller: return data
+deactivate database
+controller --> view: return data
+deactivate controller
+
+view -> view: update display
+activate view
+deactivate view
+deactivate view
+end
+
+opt delete
+
+actor -> view: click "Delete" on a user
+activate view
+view -> view: display confirmation dialog
+
+alt confirm
+actor -> view: click "Yes"
+
+view -> controller: call API /delete
+
+activate controller
+controller -> model: call model
+activate model
+
+model -> database: update user
+deactivate model
+activate database
+
+database --> controller: callback
+deactivate database
+controller --> view: return message
+deactivate controller
+view -> view: display message
+view -> controller: call API /list
+activate controller
+controller -> model: call model
+activate model
+model -> database: find users
+deactivate model
+activate database
+database --> controller: return data
+deactivate database
+controller --> view: return data
+deactivate controller
+
+view -> view: update display
+else decline
+actor -> view: click "No"
+deactivate actor
+view -> view: close dialog
+activate view
+deactivate view
+deactivate view
+end
+end
+@enduml

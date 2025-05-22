@@ -1,0 +1,43 @@
+@startuml SQ
+autonumber
+title Employee Controller Flow
+actor "Actor" as actor
+participant "FE App" as app
+participant "Tenant API" as tenant
+participant "Master API" as master
+== Login Employee ==
+actor -> app: enter username, password, tenantId
+app -> tenant: send request POST /employee/login\nHeader: X-tenant: tenantId
+tenant -> tenant: validate username, password\n& check employee status
+alt Success
+    tenant -> master: call feign POST /employee/login
+    master -> master: generate token\nwith employee info
+    master --> tenant: return token
+    tenant --> app: return token
+else Fail
+    tenant --> app: return error message
+end
+== Verify Token ==
+app -> tenant: send request POST /employee/verify-token\nAuth: Bearer Token
+tenant -> tenant: validate current user by token\n& check employee status
+alt Success
+    tenant -> master: call feign POST /employee/verify-token
+    alt Permissions changed
+        master -> master: generate token\nwith employee info
+        master --> tenant: return new token
+        tenant --> app: return token
+    else Permissions unchanged
+        tenant --> app: return message "Verify token success"
+    end
+else Fail
+    tenant -> app: return error message
+end
+== Get restaurant info ==
+app -> master: send request POST /employee/my-restaurant\Header: X-tenant: tenantId
+master -> master: find restaurant by tenantId
+alt Restaurant found
+    master --> app: return restaurant info
+else Restaurant not found
+    master --> app: return error message
+end
+@enduml

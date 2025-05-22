@@ -1,0 +1,195 @@
+@startuml SQ
+
+autonumber
+
+title SD15. Quản lý bài đăng
+
+actor "Actor" as actor
+boundary "PostManagement" as view
+control "PostController" as controller
+entity "PostModel" as model
+database "Database" as database
+
+activate actor
+actor -> view: enter search values
+activate view
+view -> controller: call API /list
+activate controller
+controller -> model: call model
+activate model
+
+model -> database: find data by search values
+deactivate model
+activate database
+database --> controller: return data
+deactivate database
+controller --> view: return data
+deactivate controller
+
+view -> view: display data
+activate view
+deactivate view
+deactivate view
+
+opt approve/reject
+
+actor -> view: click "Approve" on a post
+activate view
+
+view -> controller: call API /get
+activate controller
+
+controller -> model: call model
+activate model
+
+model -> database: find post by id
+deactivate model
+activate database
+database --> controller: return post
+deactivate database
+controller --> view: return post
+deactivate controller
+
+view -> view: display post details modal
+
+alt approve post
+actor -> view: click "Approve"
+
+view -> controller: call API /change-state
+
+activate controller
+controller -> model: call model
+activate model
+
+model -> database: update post status to approved
+deactivate model
+activate database
+
+database --> controller: callback
+deactivate database
+controller --> view: return message
+deactivate controller
+view -> view: display message
+view -> controller: call API /list
+activate controller
+controller -> model: call model
+activate model
+model -> database: find posts
+deactivate model
+activate database
+database --> controller: return data
+deactivate database
+controller --> view: return data
+deactivate controller
+
+view -> view: update display
+
+else reject post
+
+actor -> view: click "Reject"
+
+view -> view: display reject form
+
+actor -> view: enter reason
+
+view -> controller: call API /change-state
+
+activate controller
+controller -> model: call model
+activate model
+
+model -> database: update post status to rejected
+deactivate model
+activate database
+
+database --> controller: callback
+deactivate database
+controller --> view: return message
+deactivate controller
+view -> view: display message
+view -> controller: call API /list
+activate controller
+controller -> model: call model
+activate model
+model -> database: find posts
+deactivate model
+activate database
+database --> controller: return data
+deactivate database
+controller --> view: return data
+deactivate controller
+
+view -> view: update display
+
+else cancel
+actor -> view: click "X"
+view -> view: close modal
+activate view
+deactivate view
+deactivate view
+end
+end
+
+opt delete
+
+actor -> view: click "Delete" on a post
+activate view
+
+view -> controller: call API /get
+activate controller
+
+controller -> model: call model
+activate model
+
+model -> database: find post by id
+deactivate model
+activate database
+database --> controller: return post
+deactivate database
+controller --> view: return post
+deactivate controller
+
+view -> view: display post details modal
+
+alt approve post
+actor -> view: click "Delete"
+
+view -> controller: call API /delete
+
+activate controller
+controller -> model: call model
+activate model
+
+model -> database: delete post by id
+deactivate model
+activate database
+
+database --> controller: callback
+deactivate database
+controller --> view: return message
+deactivate controller
+view -> view: display message
+view -> controller: call API /list
+activate controller
+controller -> model: call model
+activate model
+model -> database: find posts
+deactivate model
+activate database
+database --> controller: return data
+deactivate database
+controller --> view: return data
+deactivate controller
+
+view -> view: update display
+
+else cancel
+actor -> view: click "X"
+deactivate actor
+view -> view: close modal
+activate view
+deactivate view
+deactivate view
+end
+end
+@enduml

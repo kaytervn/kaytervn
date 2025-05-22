@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="LyHonDS" targetNamespace="http://tempuri.org/LyHonDS.xsd" xmlns:mstns="http://tempuri.org/LyHonDS.xsd" xmlns="http://tempuri.org/LyHonDS.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection ConnectionStringObject="Data Source=(localdb)\mssqllocaldb;Initial Catalog=QuanLyCongDanThanhPho;Integrated Security=True" IsAppSettingsProperty="false" Modifier="Assembly" Name="msi\localdb#a71fd1e4.QuanLyCongDanThanhPho.dbo" ParameterPrefix="@" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="vLyHonTableAdapter" GeneratorDataComponentClassName="vLyHonTableAdapter" Name="vLyHon" UserDataComponentName="vLyHonTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="msi\localdb#a71fd1e4.QuanLyCongDanThanhPho.dbo" DbObjectName="QuanLyCongDanThanhPho.dbo.vLyHon" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT MaKH, CCCDChong, HoTenChong, CCCDVo, HoTenVo, LyDo, NgayDangKy FROM dbo.vLyHon</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="MaKH" DataSetColumn="MaKH" />
+              <Mapping SourceColumn="CCCDChong" DataSetColumn="CCCDChong" />
+              <Mapping SourceColumn="HoTenChong" DataSetColumn="HoTenChong" />
+              <Mapping SourceColumn="CCCDVo" DataSetColumn="CCCDVo" />
+              <Mapping SourceColumn="HoTenVo" DataSetColumn="HoTenVo" />
+              <Mapping SourceColumn="LyDo" DataSetColumn="LyDo" />
+              <Mapping SourceColumn="NgayDangKy" DataSetColumn="NgayDangKy" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="LyHonDS" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_UserDSName="LyHonDS" msprop:Generator_DataSetName="LyHonDS">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="vLyHon" msprop:Generator_RowEvHandlerName="vLyHonRowChangeEventHandler" msprop:Generator_RowDeletedName="vLyHonRowDeleted" msprop:Generator_RowDeletingName="vLyHonRowDeleting" msprop:Generator_RowEvArgName="vLyHonRowChangeEvent" msprop:Generator_TablePropName="vLyHon" msprop:Generator_RowChangedName="vLyHonRowChanged" msprop:Generator_RowChangingName="vLyHonRowChanging" msprop:Generator_TableClassName="vLyHonDataTable" msprop:Generator_RowClassName="vLyHonRow" msprop:Generator_TableVarName="tablevLyHon" msprop:Generator_UserTableName="vLyHon">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MaKH" msprop:Generator_ColumnPropNameInRow="MaKH" msprop:Generator_ColumnPropNameInTable="MaKHColumn" msprop:Generator_ColumnVarNameInTable="columnMaKH" msprop:Generator_UserColumnName="MaKH" type="xs:int" />
+              <xs:element name="CCCDChong" msprop:Generator_ColumnPropNameInRow="CCCDChong" msprop:Generator_ColumnPropNameInTable="CCCDChongColumn" msprop:Generator_ColumnVarNameInTable="columnCCCDChong" msprop:Generator_UserColumnName="CCCDChong">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="HoTenChong" msprop:Generator_ColumnPropNameInRow="HoTenChong" msprop:Generator_ColumnPropNameInTable="HoTenChongColumn" msprop:Generator_ColumnVarNameInTable="columnHoTenChong" msprop:Generator_UserColumnName="HoTenChong">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CCCDVo" msprop:Generator_ColumnPropNameInRow="CCCDVo" msprop:Generator_ColumnPropNameInTable="CCCDVoColumn" msprop:Generator_ColumnVarNameInTable="columnCCCDVo" msprop:Generator_UserColumnName="CCCDVo">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="HoTenVo" msprop:Generator_ColumnPropNameInRow="HoTenVo" msprop:Generator_ColumnPropNameInTable="HoTenVoColumn" msprop:Generator_ColumnVarNameInTable="columnHoTenVo" msprop:Generator_UserColumnName="HoTenVo">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="LyDo" msprop:Generator_ColumnPropNameInRow="LyDo" msprop:Generator_ColumnPropNameInTable="LyDoColumn" msprop:Generator_ColumnVarNameInTable="columnLyDo" msprop:Generator_UserColumnName="LyDo">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NgayDangKy" msprop:Generator_ColumnPropNameInRow="NgayDangKy" msprop:Generator_ColumnPropNameInTable="NgayDangKyColumn" msprop:Generator_ColumnVarNameInTable="columnNgayDangKy" msprop:Generator_UserColumnName="NgayDangKy" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:vLyHon" />
+      <xs:field xpath="mstns:MaKH" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

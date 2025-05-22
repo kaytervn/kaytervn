@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CartActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="376dp"
+        android:src="@drawable/top_background1"></ImageView>
+
+    <EditText
+        android:id="@+id/editSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTitle"
+        android:layout_marginVertical="10dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:drawableStart="@drawable/baseline_content_paste_search_24"
+        android:drawablePadding="10dp"
+        android:drawableTint="@color/white"
+        android:ems="10"
+        android:hint="Bạn đang tìm gì?"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:textColorHint="@color/white" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="Giỏ hàng của tôi"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCartItems"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_below="@id/editSearch"
+        android:padding="8dp" />
+
+    <Button
+        android:id="@+id/buttonContinueShopping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recyclerViewCartItems"
+        android:layout_centerHorizontal="true"
+        android:width="300dp"
+        android:height="70dp"
+        android:text="Tiếp tục mua hàng"
+        android:textSize="20dp" />
+</RelativeLayout>

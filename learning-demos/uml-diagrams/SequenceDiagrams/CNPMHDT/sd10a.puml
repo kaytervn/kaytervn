@@ -1,0 +1,37 @@
+@startuml SD
+title "SD10a. Delete cart item"
+
+autonumber
+
+boundary "views/\nCartPage" as CartPage
+boundary "components/\nCartItem" as CartItem
+control "CartService"
+control "CartController"
+entity "CartItemModel"
+database "Database" as Database
+
+activate CartPage
+CartPage -> CartService: deleteCartItem(cartId, courseId)
+activate CartService
+CartService -> CartController: router.delete(\n"/deleteCartItem",\ndeleteCartItem)
+activate CartController
+CartController -> CartItemModel: call model
+activate CartItemModel
+CartItemModel -> Database: CartItem.find({cartId, courseId})
+deactivate CartItemModel
+activate Database
+Database --> CartController: return cartItem
+deactivate Database
+CartController -> CartItemModel: call model
+activate CartItemModel
+CartItemModel -> Database: cartItem.deleteOne()
+deactivate CartItemModel
+activate Database
+Database --> CartController: callback
+deactivate Database
+CartController --> CartService: send res.json
+deactivate CartController
+CartService --> CartPage: display message
+deactivate CartService
+CartPage -> CartPage: update display
+@enduml

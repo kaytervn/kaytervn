@@ -1,0 +1,24 @@
+@startuml CD
+title CD10. Quản lý giỏ hàng
+
+actor "Student" as Actor
+boundary "CartPage"
+boundary "CourseIntroPage"
+boundary "PayCoursesPage"
+control "CartController"
+entity "CartModel"
+control "CourseController"
+entity "CourseModel"
+entity "CartItemModel"
+
+Actor - CartPage: \l1. accessPage()<&arrow-right>\n9. chooseCourse()<&arrow-right>\n11. chooseCartItemToDelete()<&arrow-right>\n15. clickCheckout()<&arrow-right>
+CartPage --- CartController: \l<&arrow-bottom>2. getCart(userId)\n<&arrow-top>4. displayCart()\n<&arrow-bottom>12. deleteCartItem(cartId, courseId)
+CartPage -- CourseController: \l<&arrow-bottom>5. getCartCourses(cartId)\n<&arrow-top>8. displayCourses()
+CartController -- CartModel: \l<&arrow-bottom>3. Cart.find({userId})
+CartController - CartItemModel: \l13. CartItem.find({cartId, courseId})<&arrow-right>\n14. cartItem.deleteOne()<&arrow-right>
+CartPage - CourseIntroPage: \l10. navigate("/courseIntro")<&arrow-right>
+CartPage -up- PayCoursesPage: \l<&arrow-top>16. navigate("/payCourses")
+CourseController - CourseModel: \l7. Course.findById(courseId)<&arrow-right>
+CourseController -- CartItemModel: \l<&arrow-bottom>6. CartItem.find({cartId})
+
+@enduml

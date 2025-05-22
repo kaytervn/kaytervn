@@ -1,0 +1,2123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QuanLyCuaHangTienLoiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Ca">
+          <Key>
+            <PropertyRef Name="MaCa" />
+          </Key>
+          <Property Name="MaCa" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="LoaiCa" Type="int" Nullable="false" />
+          <Property Name="GioBatDau" Type="time" Precision="7" Nullable="false" />
+          <Property Name="GioKetThuc" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ChamCong">
+          <Key>
+            <PropertyRef Name="MaPC" />
+          </Key>
+          <Property Name="MaPC" Type="int" Nullable="false" />
+          <Property Name="GioBD" Type="time" Precision="7" />
+          <Property Name="GioKT" Type="time" Precision="7" />
+          <Property Name="Luong" Type="float" />
+        </EntityType>
+        <EntityType Name="ChiTietHoaDon">
+          <Key>
+            <PropertyRef Name="MaHD" />
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="NSX" />
+            <PropertyRef Name="HSD" />
+          </Key>
+          <Property Name="MaHD" Type="int" Nullable="false" />
+          <Property Name="MaSP" Type="int" Nullable="false" />
+          <Property Name="NSX" Type="date" Nullable="false" />
+          <Property Name="HSD" Type="date" Nullable="false" />
+          <Property Name="SoLuong" Type="int" Nullable="false" />
+          <Property Name="GiaBan" Type="float" Nullable="false" />
+          <Property Name="GiaGoc" Type="float" Nullable="false" />
+          <Property Name="ThanhTien" Type="float" Nullable="false" />
+          <Property Name="TienLoi" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ChucVu">
+          <Key>
+            <PropertyRef Name="MaCV" />
+          </Key>
+          <Property Name="MaCV" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenCV" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="LuongTheoGio" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CuaHang">
+          <Key>
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="NSX" />
+            <PropertyRef Name="HSD" />
+          </Key>
+          <Property Name="MaSP" Type="int" Nullable="false" />
+          <Property Name="NSX" Type="date" Nullable="false" />
+          <Property Name="HSD" Type="date" Nullable="false" />
+          <Property Name="NgayXuatKho" Type="date" Nullable="false" />
+          <Property Name="SoLuong" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HoaDon">
+          <Key>
+            <PropertyRef Name="MaHD" />
+          </Key>
+          <Property Name="MaHD" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaNV" Type="nvarchar" MaxLength="10" />
+          <Property Name="SdtKH" Type="nvarchar" MaxLength="10" />
+          <Property Name="PTTT" Type="int" />
+          <Property Name="Ngay" Type="date" Nullable="false" />
+          <Property Name="TongTienTT" Type="float" Nullable="false" />
+          <Property Name="TongTienLoi" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KhachHang">
+          <Key>
+            <PropertyRef Name="Sdt" />
+          </Key>
+          <Property Name="Sdt" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TenKH" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="DiemTichLuy" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Kho">
+          <Key>
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="NSX" />
+            <PropertyRef Name="HSD" />
+          </Key>
+          <Property Name="MaSP" Type="int" Nullable="false" />
+          <Property Name="NSX" Type="date" Nullable="false" />
+          <Property Name="HSD" Type="date" Nullable="false" />
+          <Property Name="NgayNhapKho" Type="date" Nullable="false" />
+          <Property Name="LoaiKho" Type="bit" Nullable="false" />
+          <Property Name="SLTonKho" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LoaiSanPham">
+          <Key>
+            <PropertyRef Name="MaLoai" />
+          </Key>
+          <Property Name="MaLoai" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenLoai" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NgayLe">
+          <Key>
+            <PropertyRef Name="MaNL" />
+          </Key>
+          <Property Name="MaNL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ngay" Type="date" Nullable="false" />
+          <Property Name="SuKien" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NhanVien">
+          <Key>
+            <PropertyRef Name="MaNV" />
+          </Key>
+          <Property Name="MaNV" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TenNV" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Sdt" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Phai" Type="bit" Nullable="false" />
+          <Property Name="NgaySinh" Type="date" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MaCV" Type="int" Nullable="false" />
+          <Property Name="TrangThai" Type="bit" Nullable="false" />
+          <Property Name="TenTK" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MatKhau" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Hinh" Type="image" />
+        </EntityType>
+        <EntityType Name="NhaSanXuat">
+          <Key>
+            <PropertyRef Name="MaNSX" />
+          </Key>
+          <Property Name="MaNSX" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenNSX" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PhanCong">
+          <Key>
+            <PropertyRef Name="MaPC" />
+          </Key>
+          <Property Name="MaPC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaNV" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="MaCa" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PhuongThucThanhToan">
+          <Key>
+            <PropertyRef Name="PTTT" />
+          </Key>
+          <Property Name="PTTT" Type="int" Nullable="false" />
+          <Property Name="TenPTTT" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="SanPham">
+          <Key>
+            <PropertyRef Name="MaSP" />
+          </Key>
+          <Property Name="MaSP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenSP" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MaNSX" Type="int" />
+          <Property Name="MaLoai" Type="int" />
+          <Property Name="GiaBan" Type="float" Nullable="false" />
+          <Property Name="GiaGoc" Type="float" Nullable="false" />
+          <Property Name="TrangThai" Type="bit" Nullable="false" />
+          <Property Name="Hinh" Type="image" />
+        </EntityType>
+        <EntityType Name="TinhLuong">
+          <Key>
+            <PropertyRef Name="MaNV" />
+            <PropertyRef Name="Ngay" />
+          </Key>
+          <Property Name="MaNV" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Ngay" Type="date" Nullable="false" />
+          <Property Name="TongLuong" Type="float" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCuaHangTienLoi.dbo.ChiTietHoaDonThanhToan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ChiTietHoaDonThanhToan">
+          <Key>
+            <PropertyRef Name="MaHD" />
+            <PropertyRef Name="TenSP" />
+            <PropertyRef Name="SoLuong" />
+            <PropertyRef Name="GiaBan" />
+            <PropertyRef Name="ThanhTien" />
+          </Key>
+          <Property Name="MaHD" Type="int" Nullable="false" />
+          <Property Name="TenSP" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="SoLuong" Type="int" Nullable="false" />
+          <Property Name="GiaBan" Type="float" Nullable="false" />
+          <Property Name="ThanhTien" Type="float" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCuaHangTienLoi.dbo.NhanVienConLamViec' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="NhanVienConLamViec">
+          <Key>
+            <PropertyRef Name="MaNV" />
+            <PropertyRef Name="TenNV" />
+            <PropertyRef Name="Sdt" />
+            <PropertyRef Name="Phai" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="MaCV" />
+            <PropertyRef Name="TrangThai" />
+            <PropertyRef Name="TenTK" />
+            <PropertyRef Name="MatKhau" />
+          </Key>
+          <Property Name="MaNV" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TenNV" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Sdt" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Phai" Type="bit" Nullable="false" />
+          <Property Name="NgaySinh" Type="date" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MaCV" Type="int" Nullable="false" />
+          <Property Name="TrangThai" Type="bit" Nullable="false" />
+          <Property Name="TenTK" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MatKhau" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Hinh" Type="image" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCuaHangTienLoi.dbo.NhanVienNghiLam' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="NhanVienNghiLam">
+          <Key>
+            <PropertyRef Name="MaNV" />
+            <PropertyRef Name="TenNV" />
+            <PropertyRef Name="Sdt" />
+            <PropertyRef Name="Phai" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="MaCV" />
+            <PropertyRef Name="TrangThai" />
+            <PropertyRef Name="TenTK" />
+            <PropertyRef Name="MatKhau" />
+          </Key>
+          <Property Name="MaNV" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TenNV" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Sdt" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Phai" Type="bit" Nullable="false" />
+          <Property Name="NgaySinh" Type="date" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MaCV" Type="int" Nullable="false" />
+          <Property Name="TrangThai" Type="bit" Nullable="false" />
+          <Property Name="TenTK" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MatKhau" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Hinh" Type="image" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCuaHangTienLoi.dbo.SanPhamConBan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SanPhamConBan">
+          <Key>
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="TenSP" />
+            <PropertyRef Name="GiaBan" />
+            <PropertyRef Name="GiaGoc" />
+            <PropertyRef Name="TrangThai" />
+          </Key>
+          <Property Name="MaSP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenSP" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MaNSX" Type="int" />
+          <Property Name="MaLoai" Type="int" />
+          <Property Name="GiaBan" Type="float" Nullable="false" />
+          <Property Name="GiaGoc" Type="float" Nullable="false" />
+          <Property Name="TrangThai" Type="bit" Nullable="false" />
+          <Property Name="Hinh" Type="image" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCuaHangTienLoi.dbo.SPConHan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SPConHan">
+          <Key>
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="TenSP" />
+            <PropertyRef Name="NgayNhapKho" />
+            <PropertyRef Name="HSD" />
+            <PropertyRef Name="SLTonKho" />
+            <PropertyRef Name="TrangThai" />
+          </Key>
+          <Property Name="MaSP" Type="int" Nullable="false" />
+          <Property Name="TenSP" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgayNhapKho" Type="date" Nullable="false" />
+          <Property Name="HSD" Type="date" Nullable="false" />
+          <Property Name="SLTonKho" Type="int" Nullable="false" />
+          <Property Name="TrangThai" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCuaHangTienLoi.dbo.SPHetHan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SPHetHan">
+          <Key>
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="TenSP" />
+            <PropertyRef Name="NgayNhapKho" />
+            <PropertyRef Name="HSD" />
+            <PropertyRef Name="SLTonKho" />
+            <PropertyRef Name="TrangThai" />
+          </Key>
+          <Property Name="MaSP" Type="int" Nullable="false" />
+          <Property Name="TenSP" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NgayNhapKho" Type="date" Nullable="false" />
+          <Property Name="HSD" Type="date" Nullable="false" />
+          <Property Name="SLTonKho" Type="int" Nullable="false" />
+          <Property Name="TrangThai" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCuaHangTienLoi.dbo.ViewKho' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewKho">
+          <Key>
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="TenSP" />
+            <PropertyRef Name="NSX" />
+            <PropertyRef Name="HSD" />
+            <PropertyRef Name="NgayNhapKho" />
+            <PropertyRef Name="LoaiKho" />
+            <PropertyRef Name="SLTonKho" />
+          </Key>
+          <Property Name="MaSP" Type="int" Nullable="false" />
+          <Property Name="TenSP" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NSX" Type="date" Nullable="false" />
+          <Property Name="HSD" Type="date" Nullable="false" />
+          <Property Name="NgayNhapKho" Type="date" Nullable="false" />
+          <Property Name="LoaiKho" Type="bit" Nullable="false" />
+          <Property Name="SLTonKho" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuanLyCuaHangTienLoi.dbo.XemBangPC_NhanVien' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="XemBangPC_NhanVien">
+          <Key>
+            <PropertyRef Name="MaPC" />
+            <PropertyRef Name="MaNV" />
+            <PropertyRef Name="TenNV" />
+            <PropertyRef Name="MaCa" />
+            <PropertyRef Name="GioBatDau" />
+            <PropertyRef Name="GioKetThuc" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="MaPC" Type="int" Nullable="false" />
+          <Property Name="MaNV" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TenNV" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MaCa" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="GioBatDau" Type="time" Precision="7" Nullable="false" />
+          <Property Name="GioKetThuc" Type="time" Precision="7" Nullable="false" />
+          <Property Name="NgayDangKy" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__ChamCong__MaPC__4E88ABD4">
+          <End Role="PhanCong" Type="Self.PhanCong" Multiplicity="1" />
+          <End Role="ChamCong" Type="Self.ChamCong" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PhanCong">
+              <PropertyRef Name="MaPC" />
+            </Principal>
+            <Dependent Role="ChamCong">
+              <PropertyRef Name="MaPC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ChiTietHoa__MaHD__44FF419A">
+          <End Role="HoaDon" Type="Self.HoaDon" Multiplicity="1" />
+          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HoaDon">
+              <PropertyRef Name="MaHD" />
+            </Principal>
+            <Dependent Role="ChiTietHoaDon">
+              <PropertyRef Name="MaHD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ChiTietHoaDon__45F365D3">
+          <End Role="CuaHang" Type="Self.CuaHang" Multiplicity="1" />
+          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuaHang">
+              <PropertyRef Name="MaSP" />
+              <PropertyRef Name="NSX" />
+              <PropertyRef Name="HSD" />
+            </Principal>
+            <Dependent Role="ChiTietHoaDon">
+              <PropertyRef Name="MaSP" />
+              <PropertyRef Name="NSX" />
+              <PropertyRef Name="HSD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CuaHang__38996AB5">
+          <End Role="Kho" Type="Self.Kho" Multiplicity="1" />
+          <End Role="CuaHang" Type="Self.CuaHang" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Kho">
+              <PropertyRef Name="MaSP" />
+              <PropertyRef Name="NSX" />
+              <PropertyRef Name="HSD" />
+            </Principal>
+            <Dependent Role="CuaHang">
+              <PropertyRef Name="MaSP" />
+              <PropertyRef Name="NSX" />
+              <PropertyRef Name="HSD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HoaDon__MaNV__3F466844">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="0..1" />
+          <End Role="HoaDon" Type="Self.HoaDon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="HoaDon">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HoaDon__SdtKH__403A8C7D">
+          <End Role="KhachHang" Type="Self.KhachHang" Multiplicity="0..1" />
+          <End Role="HoaDon" Type="Self.HoaDon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KhachHang">
+              <PropertyRef Name="Sdt" />
+            </Principal>
+            <Dependent Role="HoaDon">
+              <PropertyRef Name="SdtKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Kho__MaSP__34C8D9D1">
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="1" />
+          <End Role="Kho" Type="Self.Kho" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPham">
+              <PropertyRef Name="MaSP" />
+            </Principal>
+            <Dependent Role="Kho">
+              <PropertyRef Name="MaSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__NhanVien__MaCV__286302EC">
+          <End Role="ChucVu" Type="Self.ChucVu" Multiplicity="1" />
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChucVu">
+              <PropertyRef Name="MaCV" />
+            </Principal>
+            <Dependent Role="NhanVien">
+              <PropertyRef Name="MaCV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PhanCong__MaCa__4BAC3F29">
+          <End Role="Ca" Type="Self.Ca" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PhanCong" Type="Self.PhanCong" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ca">
+              <PropertyRef Name="MaCa" />
+            </Principal>
+            <Dependent Role="PhanCong">
+              <PropertyRef Name="MaCa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PhanCong__MaNV__4AB81AF0">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+          <End Role="PhanCong" Type="Self.PhanCong" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="PhanCong">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SanPham__MaLoai__30F848ED">
+          <End Role="LoaiSanPham" Type="Self.LoaiSanPham" Multiplicity="0..1" />
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoaiSanPham">
+              <PropertyRef Name="MaLoai" />
+            </Principal>
+            <Dependent Role="SanPham">
+              <PropertyRef Name="MaLoai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SanPham__MaNSX__300424B4">
+          <End Role="NhaSanXuat" Type="Self.NhaSanXuat" Multiplicity="0..1" />
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhaSanXuat">
+              <PropertyRef Name="MaNSX" />
+            </Principal>
+            <Dependent Role="SanPham">
+              <PropertyRef Name="MaNSX" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TinhLuong__MaNV__5165187F">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+          <End Role="TinhLuong" Type="Self.TinhLuong" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="TinhLuong">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="BangChiTietHoaDonThanhToan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="MaSP" Type="int" Nullable="false" />
+                <Property Name="NSX" Type="date" Nullable="false" />
+                <Property Name="HSD" Type="date" Nullable="false" />
+                <Property Name="SoLuong" Type="int" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="DatMaNV" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar" />
+        <Function Name="LocDoanhThu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ngaybatdau" Type="date" Mode="In" />
+          <Parameter Name="ngayketthuc" Type="date" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="MaHD" Type="int" Nullable="false" />
+                <Property Name="MaNV" Type="nvarchar" MaxLength="10" />
+                <Property Name="SdtKH" Type="nvarchar" MaxLength="10" />
+                <Property Name="PTTT" Type="int" />
+                <Property Name="Ngay" Type="date" Nullable="false" />
+                <Property Name="TongTienTT" Type="float" Nullable="false" />
+                <Property Name="TongTienLoi" Type="float" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="MaxHD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_NhapKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="masp" Type="int" Mode="In" />
+          <Parameter Name="nsx" Type="date" Mode="In" />
+          <Parameter Name="hsd" Type="date" Mode="In" />
+          <Parameter Name="ngaynhapkho" Type="date" Mode="In" />
+          <Parameter Name="loaikho" Type="bit" Mode="In" />
+          <Parameter Name="sltonkho" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_SuaCa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="maca" Type="nvarchar" Mode="In" />
+          <Parameter Name="loaica" Type="int" Mode="In" />
+          <Parameter Name="giobatdau" Type="time" Mode="In" />
+          <Parameter Name="gioketthuc" Type="time" Mode="In" />
+        </Function>
+        <Function Name="sp_SuaChamCong" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mapc" Type="int" Mode="In" />
+          <Parameter Name="giobd" Type="time" Mode="In" />
+          <Parameter Name="giokt" Type="time" Mode="In" />
+          <Parameter Name="luong" Type="float" Mode="In" />
+        </Function>
+        <Function Name="sp_SuaChiTietHoaDon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mahd" Type="int" Mode="In" />
+          <Parameter Name="masp" Type="int" Mode="In" />
+          <Parameter Name="nsx" Type="date" Mode="In" />
+          <Parameter Name="hsd" Type="date" Mode="In" />
+          <Parameter Name="sl" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_SuaHoaDon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mahd" Type="int" Mode="In" />
+          <Parameter Name="manv" Type="nvarchar" Mode="In" />
+          <Parameter Name="sdtkh" Type="nvarchar" Mode="In" />
+          <Parameter Name="pttt" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_SuaKhachHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="sdt" Type="nvarchar" Mode="In" />
+          <Parameter Name="tenkh" Type="nvarchar" Mode="In" />
+          <Parameter Name="diemtichluy" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_SuaLSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="maloai" Type="int" Mode="In" />
+          <Parameter Name="tenloai" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_SuaNgayLe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mangayle" Type="int" Mode="In" />
+          <Parameter Name="sukien" Type="nvarchar" Mode="In" />
+          <Parameter Name="ngay" Type="date" Mode="In" />
+        </Function>
+        <Function Name="sp_SuaNhanVien" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="manv" Type="nvarchar" Mode="In" />
+          <Parameter Name="tennv" Type="nvarchar" Mode="In" />
+          <Parameter Name="sdt" Type="nvarchar" Mode="In" />
+          <Parameter Name="phai" Type="nvarchar" Mode="In" />
+          <Parameter Name="ngaysinh" Type="date" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+          <Parameter Name="macv" Type="nvarchar" Mode="In" />
+          <Parameter Name="trangthai" Type="nvarchar" Mode="In" />
+          <Parameter Name="tentk" Type="nvarchar" Mode="In" />
+          <Parameter Name="matkhau" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_SuaNhaSanXuat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mansx" Type="int" Mode="In" />
+          <Parameter Name="tennsx" Type="nvarchar" Mode="In" />
+          <Parameter Name="diachi" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_SuaPhanCong" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mapc" Type="int" Mode="In" />
+          <Parameter Name="manv" Type="nvarchar" Mode="In" />
+          <Parameter Name="maca" Type="nvarchar" Mode="In" />
+          <Parameter Name="ngaydangky" Type="date" Mode="In" />
+        </Function>
+        <Function Name="sp_SuaSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="masp" Type="int" Mode="In" />
+          <Parameter Name="tensp" Type="nvarchar" Mode="In" />
+          <Parameter Name="mansx" Type="nvarchar" Mode="In" />
+          <Parameter Name="maloai" Type="nvarchar" Mode="In" />
+          <Parameter Name="giaban" Type="float" Mode="In" />
+          <Parameter Name="giagoc" Type="float" Mode="In" />
+          <Parameter Name="trangthai" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_SuaSpVaoKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="masp" Type="int" Mode="In" />
+          <Parameter Name="nsx" Type="date" Mode="In" />
+          <Parameter Name="hsd" Type="date" Mode="In" />
+          <Parameter Name="ngaynhapkho" Type="date" Mode="In" />
+          <Parameter Name="loaikho" Type="bit" Mode="In" />
+          <Parameter Name="sltonkho" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemCa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="maca" Type="nvarchar" Mode="In" />
+          <Parameter Name="loaica" Type="int" Mode="In" />
+          <Parameter Name="giobatdau" Type="time" Mode="In" />
+          <Parameter Name="gioketthuc" Type="time" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemChiTietHoaDon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mahd" Type="int" Mode="In" />
+          <Parameter Name="masp" Type="int" Mode="In" />
+          <Parameter Name="nsx" Type="date" Mode="In" />
+          <Parameter Name="hsd" Type="date" Mode="In" />
+          <Parameter Name="sl" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemHoaDon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="manv" Type="nvarchar" Mode="In" />
+          <Parameter Name="sdtkh" Type="nvarchar" Mode="In" />
+          <Parameter Name="pttt" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemKhachHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="sdt" Type="nvarchar" Mode="In" />
+          <Parameter Name="tenkh" Type="nvarchar" Mode="In" />
+          <Parameter Name="diemtichluy" Type="float" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemLSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tenloai" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemNgayLe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mangayle" Type="int" Mode="In" />
+          <Parameter Name="sukien" Type="nvarchar" Mode="In" />
+          <Parameter Name="ngay" Type="date" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemNhanVien" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tennv" Type="nvarchar" Mode="In" />
+          <Parameter Name="sdt" Type="nvarchar" Mode="In" />
+          <Parameter Name="phai" Type="nvarchar" Mode="In" />
+          <Parameter Name="ngaysinh" Type="date" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+          <Parameter Name="macv" Type="nvarchar" Mode="In" />
+          <Parameter Name="trangthai" Type="nvarchar" Mode="In" />
+          <Parameter Name="tentk" Type="nvarchar" Mode="In" />
+          <Parameter Name="matkhau" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemNhaSanXuat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tennsx" Type="nvarchar" Mode="In" />
+          <Parameter Name="diachi" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemPhanCong" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="manv" Type="nvarchar" Mode="In" />
+          <Parameter Name="maca" Type="nvarchar" Mode="In" />
+          <Parameter Name="ngaydangky" Type="date" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tensp" Type="nvarchar" Mode="In" />
+          <Parameter Name="mansx" Type="nvarchar" Mode="In" />
+          <Parameter Name="maloai" Type="nvarchar" Mode="In" />
+          <Parameter Name="giaban" Type="float" Mode="In" />
+          <Parameter Name="giagoc" Type="float" Mode="In" />
+          <Parameter Name="trangthai" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_TraKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="masp" Type="int" Mode="In" />
+          <Parameter Name="nsx" Type="date" Mode="In" />
+          <Parameter Name="hsd" Type="date" Mode="In" />
+          <Parameter Name="ngayxuatkho" Type="date" Mode="In" />
+          <Parameter Name="soluong" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaCa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="maca" Type="nvarchar" Mode="In" />
+          <Parameter Name="loaica" Type="int" Mode="In" />
+          <Parameter Name="giobatdau" Type="time" Mode="In" />
+          <Parameter Name="gioketthuc" Type="time" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaChamCong" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mapc" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaChiTietHoaDon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mahd" Type="int" Mode="In" />
+          <Parameter Name="masp" Type="int" Mode="In" />
+          <Parameter Name="nsx" Type="date" Mode="In" />
+          <Parameter Name="hsd" Type="date" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaHoaDon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mahd" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaKhachHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="sdt" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaLSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="maloai" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaNgayLe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mangayle" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaNhanVien" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="manv" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaNhaSanXuat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mansx" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaPhanCong" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mapc" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="masp" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaSpVaoKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="masp" Type="int" Mode="In" />
+          <Parameter Name="nsx" Type="date" Mode="In" />
+          <Parameter Name="hsd" Type="date" Mode="In" />
+        </Function>
+        <Function Name="sp_XuatKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="masp" Type="int" Mode="In" />
+          <Parameter Name="nsx" Type="date" Mode="In" />
+          <Parameter Name="hsd" Type="date" Mode="In" />
+          <Parameter Name="ngayxuatkho" Type="date" Mode="In" />
+          <Parameter Name="soluong" Type="int" Mode="In" />
+        </Function>
+        <Function Name="TinhDoanhThu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar" />
+        <Function Name="UpDateGioBD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mapc" Type="int" Mode="In" />
+          <Parameter Name="giobd" Type="time" Mode="In" />
+        </Function>
+        <Function Name="UpDateGioKT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="mapc" Type="int" Mode="In" />
+          <Parameter Name="giokt" Type="time" Mode="In" />
+        </Function>
+        <Function Name="UpdateLaiCuaHangKhiThanhToan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="QuanLyCuaHangTienLoiModelStoreContainer">
+          <EntitySet Name="Ca" EntityType="Self.Ca" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChamCong" EntityType="Self.ChamCong" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChiTietHoaDon" EntityType="Self.ChiTietHoaDon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChucVu" EntityType="Self.ChucVu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CuaHang" EntityType="Self.CuaHang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HoaDon" EntityType="Self.HoaDon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KhachHang" EntityType="Self.KhachHang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kho" EntityType="Self.Kho" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoaiSanPham" EntityType="Self.LoaiSanPham" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NgayLe" EntityType="Self.NgayLe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NhanVien" EntityType="Self.NhanVien" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NhaSanXuat" EntityType="Self.NhaSanXuat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PhanCong" EntityType="Self.PhanCong" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PhuongThucThanhToan" EntityType="Self.PhuongThucThanhToan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SanPham" EntityType="Self.SanPham" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TinhLuong" EntityType="Self.TinhLuong" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChiTietHoaDonThanhToan" EntityType="Self.ChiTietHoaDonThanhToan" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ChiTietHoaDonThanhToan].[MaHD] AS [MaHD], 
+    [ChiTietHoaDonThanhToan].[TenSP] AS [TenSP], 
+    [ChiTietHoaDonThanhToan].[SoLuong] AS [SoLuong], 
+    [ChiTietHoaDonThanhToan].[GiaBan] AS [GiaBan], 
+    [ChiTietHoaDonThanhToan].[ThanhTien] AS [ThanhTien]
+    FROM [dbo].[ChiTietHoaDonThanhToan] AS [ChiTietHoaDonThanhToan]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="NhanVienConLamViec" EntityType="Self.NhanVienConLamViec" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [NhanVienConLamViec].[MaNV] AS [MaNV], 
+    [NhanVienConLamViec].[TenNV] AS [TenNV], 
+    [NhanVienConLamViec].[Sdt] AS [Sdt], 
+    [NhanVienConLamViec].[Phai] AS [Phai], 
+    [NhanVienConLamViec].[NgaySinh] AS [NgaySinh], 
+    [NhanVienConLamViec].[Email] AS [Email], 
+    [NhanVienConLamViec].[MaCV] AS [MaCV], 
+    [NhanVienConLamViec].[TrangThai] AS [TrangThai], 
+    [NhanVienConLamViec].[TenTK] AS [TenTK], 
+    [NhanVienConLamViec].[MatKhau] AS [MatKhau], 
+    [NhanVienConLamViec].[Hinh] AS [Hinh]
+    FROM [dbo].[NhanVienConLamViec] AS [NhanVienConLamViec]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="NhanVienNghiLam" EntityType="Self.NhanVienNghiLam" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [NhanVienNghiLam].[MaNV] AS [MaNV], 
+    [NhanVienNghiLam].[TenNV] AS [TenNV], 
+    [NhanVienNghiLam].[Sdt] AS [Sdt], 
+    [NhanVienNghiLam].[Phai] AS [Phai], 
+    [NhanVienNghiLam].[NgaySinh] AS [NgaySinh], 
+    [NhanVienNghiLam].[Email] AS [Email], 
+    [NhanVienNghiLam].[MaCV] AS [MaCV], 
+    [NhanVienNghiLam].[TrangThai] AS [TrangThai], 
+    [NhanVienNghiLam].[TenTK] AS [TenTK], 
+    [NhanVienNghiLam].[MatKhau] AS [MatKhau], 
+    [NhanVienNghiLam].[Hinh] AS [Hinh]
+    FROM [dbo].[NhanVienNghiLam] AS [NhanVienNghiLam]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SanPhamConBan" EntityType="Self.SanPhamConBan" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SanPhamConBan].[MaSP] AS [MaSP], 
+    [SanPhamConBan].[TenSP] AS [TenSP], 
+    [SanPhamConBan].[MaNSX] AS [MaNSX], 
+    [SanPhamConBan].[MaLoai] AS [MaLoai], 
+    [SanPhamConBan].[GiaBan] AS [GiaBan], 
+    [SanPhamConBan].[GiaGoc] AS [GiaGoc], 
+    [SanPhamConBan].[TrangThai] AS [TrangThai], 
+    [SanPhamConBan].[Hinh] AS [Hinh]
+    FROM [dbo].[SanPhamConBan] AS [SanPhamConBan]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SPConHan" EntityType="Self.SPConHan" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SPConHan].[MaSP] AS [MaSP], 
+    [SPConHan].[TenSP] AS [TenSP], 
+    [SPConHan].[NgayNhapKho] AS [NgayNhapKho], 
+    [SPConHan].[HSD] AS [HSD], 
+    [SPConHan].[SLTonKho] AS [SLTonKho], 
+    [SPConHan].[TrangThai] AS [TrangThai]
+    FROM [dbo].[SPConHan] AS [SPConHan]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SPHetHan" EntityType="Self.SPHetHan" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SPHetHan].[MaSP] AS [MaSP], 
+    [SPHetHan].[TenSP] AS [TenSP], 
+    [SPHetHan].[NgayNhapKho] AS [NgayNhapKho], 
+    [SPHetHan].[HSD] AS [HSD], 
+    [SPHetHan].[SLTonKho] AS [SLTonKho], 
+    [SPHetHan].[TrangThai] AS [TrangThai]
+    FROM [dbo].[SPHetHan] AS [SPHetHan]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewKho" EntityType="Self.ViewKho" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewKho].[MaSP] AS [MaSP], 
+    [ViewKho].[TenSP] AS [TenSP], 
+    [ViewKho].[NSX] AS [NSX], 
+    [ViewKho].[HSD] AS [HSD], 
+    [ViewKho].[NgayNhapKho] AS [NgayNhapKho], 
+    [ViewKho].[LoaiKho] AS [LoaiKho], 
+    [ViewKho].[SLTonKho] AS [SLTonKho]
+    FROM [dbo].[ViewKho] AS [ViewKho]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="XemBangPC_NhanVien" EntityType="Self.XemBangPC_NhanVien" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [XemBangPC_NhanVien].[MaPC] AS [MaPC], 
+    [XemBangPC_NhanVien].[MaNV] AS [MaNV], 
+    [XemBangPC_NhanVien].[TenNV] AS [TenNV], 
+    [XemBangPC_NhanVien].[MaCa] AS [MaCa], 
+    [XemBangPC_NhanVien].[GioBatDau] AS [GioBatDau], 
+    [XemBangPC_NhanVien].[GioKetThuc] AS [GioKetThuc], 
+    [XemBangPC_NhanVien].[NgayDangKy] AS [NgayDangKy]
+    FROM [dbo].[XemBangPC_NhanVien] AS [XemBangPC_NhanVien]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__ChamCong__MaPC__4E88ABD4" Association="Self.FK__ChamCong__MaPC__4E88ABD4">
+            <End Role="PhanCong" EntitySet="PhanCong" />
+            <End Role="ChamCong" EntitySet="ChamCong" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ChiTietHoa__MaHD__44FF419A" Association="Self.FK__ChiTietHoa__MaHD__44FF419A">
+            <End Role="HoaDon" EntitySet="HoaDon" />
+            <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDon" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ChiTietHoaDon__45F365D3" Association="Self.FK__ChiTietHoaDon__45F365D3">
+            <End Role="CuaHang" EntitySet="CuaHang" />
+            <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDon" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CuaHang__38996AB5" Association="Self.FK__CuaHang__38996AB5">
+            <End Role="Kho" EntitySet="Kho" />
+            <End Role="CuaHang" EntitySet="CuaHang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HoaDon__MaNV__3F466844" Association="Self.FK__HoaDon__MaNV__3F466844">
+            <End Role="NhanVien" EntitySet="NhanVien" />
+            <End Role="HoaDon" EntitySet="HoaDon" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HoaDon__SdtKH__403A8C7D" Association="Self.FK__HoaDon__SdtKH__403A8C7D">
+            <End Role="KhachHang" EntitySet="KhachHang" />
+            <End Role="HoaDon" EntitySet="HoaDon" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Kho__MaSP__34C8D9D1" Association="Self.FK__Kho__MaSP__34C8D9D1">
+            <End Role="SanPham" EntitySet="SanPham" />
+            <End Role="Kho" EntitySet="Kho" />
+          </AssociationSet>
+          <AssociationSet Name="FK__NhanVien__MaCV__286302EC" Association="Self.FK__NhanVien__MaCV__286302EC">
+            <End Role="ChucVu" EntitySet="ChucVu" />
+            <End Role="NhanVien" EntitySet="NhanVien" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PhanCong__MaCa__4BAC3F29" Association="Self.FK__PhanCong__MaCa__4BAC3F29">
+            <End Role="Ca" EntitySet="Ca" />
+            <End Role="PhanCong" EntitySet="PhanCong" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PhanCong__MaNV__4AB81AF0" Association="Self.FK__PhanCong__MaNV__4AB81AF0">
+            <End Role="NhanVien" EntitySet="NhanVien" />
+            <End Role="PhanCong" EntitySet="PhanCong" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SanPham__MaLoai__30F848ED" Association="Self.FK__SanPham__MaLoai__30F848ED">
+            <End Role="LoaiSanPham" EntitySet="LoaiSanPham" />
+            <End Role="SanPham" EntitySet="SanPham" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SanPham__MaNSX__300424B4" Association="Self.FK__SanPham__MaNSX__300424B4">
+            <End Role="NhaSanXuat" EntitySet="NhaSanXuat" />
+            <End Role="SanPham" EntitySet="SanPham" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TinhLuong__MaNV__5165187F" Association="Self.FK__TinhLuong__MaNV__5165187F">
+            <End Role="NhanVien" EntitySet="NhanVien" />
+            <End Role="TinhLuong" EntitySet="TinhLuong" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QuanLyCuaHangTienLoiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <ComplexType Name="BangChiTietHoaDonThanhToan_Result">
+          <Property Name="MaSP" Type="Int32" Nullable="false" />
+          <Property Name="NSX" Type="DateTime" Nullable="false" />
+          <Property Name="HSD" Type="DateTime" Nullable="false" />
+          <Property Name="SoLuong" Type="Int32" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="LocDoanhThu_Result">
+          <Property Name="MaHD" Type="Int32" Nullable="false" />
+          <Property Name="MaNV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SdtKH" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PTTT" Type="Int32" />
+          <Property Name="Ngay" Type="DateTime" Nullable="false" />
+          <Property Name="TongTienTT" Type="Double" Nullable="false" />
+          <Property Name="TongTienLoi" Type="Double" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Ca">
+          <Key>
+            <PropertyRef Name="MaCa" />
+          </Key>
+          <Property Name="MaCa" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LoaiCa" Type="Int32" Nullable="false" />
+          <Property Name="GioBatDau" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="GioKetThuc" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="PhanCongs" Relationship="Self.FK__PhanCong__MaCa__4BAC3F29" FromRole="Ca" ToRole="PhanCong" />
+        </EntityType>
+        <EntityType Name="ChamCong">
+          <Key>
+            <PropertyRef Name="MaPC" />
+          </Key>
+          <Property Name="MaPC" Type="Int32" Nullable="false" />
+          <Property Name="GioBD" Type="Time" Precision="7" />
+          <Property Name="GioKT" Type="Time" Precision="7" />
+          <Property Name="Luong" Type="Double" />
+          <NavigationProperty Name="PhanCong" Relationship="Self.FK__ChamCong__MaPC__4E88ABD4" FromRole="ChamCong" ToRole="PhanCong" />
+        </EntityType>
+        <EntityType Name="ChiTietHoaDon">
+          <Key>
+            <PropertyRef Name="MaHD" />
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="NSX" />
+            <PropertyRef Name="HSD" />
+          </Key>
+          <Property Name="MaHD" Type="Int32" Nullable="false" />
+          <Property Name="MaSP" Type="Int32" Nullable="false" />
+          <Property Name="NSX" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HSD" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SoLuong" Type="Int32" Nullable="false" />
+          <Property Name="GiaBan" Type="Double" Nullable="false" />
+          <Property Name="GiaGoc" Type="Double" Nullable="false" />
+          <Property Name="ThanhTien" Type="Double" Nullable="false" />
+          <Property Name="TienLoi" Type="Double" Nullable="false" />
+          <NavigationProperty Name="HoaDon" Relationship="Self.FK__ChiTietHoa__MaHD__44FF419A" FromRole="ChiTietHoaDon" ToRole="HoaDon" />
+          <NavigationProperty Name="CuaHang" Relationship="Self.FK__ChiTietHoaDon__45F365D3" FromRole="ChiTietHoaDon" ToRole="CuaHang" />
+        </EntityType>
+        <EntityType Name="ChucVu">
+          <Key>
+            <PropertyRef Name="MaCV" />
+          </Key>
+          <Property Name="MaCV" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenCV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LuongTheoGio" Type="Double" Nullable="false" />
+          <NavigationProperty Name="NhanViens" Relationship="Self.FK__NhanVien__MaCV__286302EC" FromRole="ChucVu" ToRole="NhanVien" />
+        </EntityType>
+        <EntityType Name="CuaHang">
+          <Key>
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="NSX" />
+            <PropertyRef Name="HSD" />
+          </Key>
+          <Property Name="MaSP" Type="Int32" Nullable="false" />
+          <Property Name="NSX" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HSD" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NgayXuatKho" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SoLuong" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ChiTietHoaDons" Relationship="Self.FK__ChiTietHoaDon__45F365D3" FromRole="CuaHang" ToRole="ChiTietHoaDon" />
+          <NavigationProperty Name="Kho" Relationship="Self.FK__CuaHang__38996AB5" FromRole="CuaHang" ToRole="Kho" />
+        </EntityType>
+        <EntityType Name="HoaDon">
+          <Key>
+            <PropertyRef Name="MaHD" />
+          </Key>
+          <Property Name="MaHD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaNV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SdtKH" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PTTT" Type="Int32" />
+          <Property Name="Ngay" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TongTienTT" Type="Double" Nullable="false" />
+          <Property Name="TongTienLoi" Type="Double" Nullable="false" />
+          <NavigationProperty Name="ChiTietHoaDons" Relationship="Self.FK__ChiTietHoa__MaHD__44FF419A" FromRole="HoaDon" ToRole="ChiTietHoaDon" />
+          <NavigationProperty Name="NhanVien" Relationship="Self.FK__HoaDon__MaNV__3F466844" FromRole="HoaDon" ToRole="NhanVien" />
+          <NavigationProperty Name="KhachHang" Relationship="Self.FK__HoaDon__SdtKH__403A8C7D" FromRole="HoaDon" ToRole="KhachHang" />
+        </EntityType>
+        <EntityType Name="KhachHang">
+          <Key>
+            <PropertyRef Name="Sdt" />
+          </Key>
+          <Property Name="Sdt" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TenKH" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DiemTichLuy" Type="Double" Nullable="false" />
+          <NavigationProperty Name="HoaDons" Relationship="Self.FK__HoaDon__SdtKH__403A8C7D" FromRole="KhachHang" ToRole="HoaDon" />
+        </EntityType>
+        <EntityType Name="Kho">
+          <Key>
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="NSX" />
+            <PropertyRef Name="HSD" />
+          </Key>
+          <Property Name="MaSP" Type="Int32" Nullable="false" />
+          <Property Name="NSX" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HSD" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NgayNhapKho" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LoaiKho" Type="Boolean" Nullable="false" />
+          <Property Name="SLTonKho" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CuaHang" Relationship="Self.FK__CuaHang__38996AB5" FromRole="Kho" ToRole="CuaHang" />
+          <NavigationProperty Name="SanPham" Relationship="Self.FK__Kho__MaSP__34C8D9D1" FromRole="Kho" ToRole="SanPham" />
+        </EntityType>
+        <EntityType Name="LoaiSanPham">
+          <Key>
+            <PropertyRef Name="MaLoai" />
+          </Key>
+          <Property Name="MaLoai" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenLoai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="SanPhams" Relationship="Self.FK__SanPham__MaLoai__30F848ED" FromRole="LoaiSanPham" ToRole="SanPham" />
+        </EntityType>
+        <EntityType Name="NgayLe">
+          <Key>
+            <PropertyRef Name="MaNL" />
+          </Key>
+          <Property Name="MaNL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ngay" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SuKien" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NhanVien">
+          <Key>
+            <PropertyRef Name="MaNV" />
+          </Key>
+          <Property Name="MaNV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TenNV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sdt" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phai" Type="Boolean" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaCV" Type="Int32" Nullable="false" />
+          <Property Name="TrangThai" Type="Boolean" Nullable="false" />
+          <Property Name="TenTK" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MatKhau" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Hinh" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="ChucVu" Relationship="Self.FK__NhanVien__MaCV__286302EC" FromRole="NhanVien" ToRole="ChucVu" />
+          <NavigationProperty Name="HoaDons" Relationship="Self.FK__HoaDon__MaNV__3F466844" FromRole="NhanVien" ToRole="HoaDon" />
+          <NavigationProperty Name="PhanCongs" Relationship="Self.FK__PhanCong__MaNV__4AB81AF0" FromRole="NhanVien" ToRole="PhanCong" />
+          <NavigationProperty Name="TinhLuongs" Relationship="Self.FK__TinhLuong__MaNV__5165187F" FromRole="NhanVien" ToRole="TinhLuong" />
+        </EntityType>
+        <EntityType Name="NhaSanXuat">
+          <Key>
+            <PropertyRef Name="MaNSX" />
+          </Key>
+          <Property Name="MaNSX" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenNSX" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DiaChi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="SanPhams" Relationship="Self.FK__SanPham__MaNSX__300424B4" FromRole="NhaSanXuat" ToRole="SanPham" />
+        </EntityType>
+        <EntityType Name="PhanCong">
+          <Key>
+            <PropertyRef Name="MaPC" />
+          </Key>
+          <Property Name="MaPC" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaNV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaCa" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Ca" Relationship="Self.FK__PhanCong__MaCa__4BAC3F29" FromRole="PhanCong" ToRole="Ca" />
+          <NavigationProperty Name="ChamCong" Relationship="Self.FK__ChamCong__MaPC__4E88ABD4" FromRole="PhanCong" ToRole="ChamCong" />
+          <NavigationProperty Name="NhanVien" Relationship="Self.FK__PhanCong__MaNV__4AB81AF0" FromRole="PhanCong" ToRole="NhanVien" />
+        </EntityType>
+        <EntityType Name="PhuongThucThanhToan">
+          <Key>
+            <PropertyRef Name="PTTT" />
+          </Key>
+          <Property Name="PTTT" Type="Int32" Nullable="false" />
+          <Property Name="TenPTTT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SanPham">
+          <Key>
+            <PropertyRef Name="MaSP" />
+          </Key>
+          <Property Name="MaSP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenSP" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaNSX" Type="Int32" />
+          <Property Name="MaLoai" Type="Int32" />
+          <Property Name="GiaBan" Type="Double" Nullable="false" />
+          <Property Name="GiaGoc" Type="Double" Nullable="false" />
+          <Property Name="TrangThai" Type="Boolean" Nullable="false" />
+          <Property Name="Hinh" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Khoes" Relationship="Self.FK__Kho__MaSP__34C8D9D1" FromRole="SanPham" ToRole="Kho" />
+          <NavigationProperty Name="LoaiSanPham" Relationship="Self.FK__SanPham__MaLoai__30F848ED" FromRole="SanPham" ToRole="LoaiSanPham" />
+          <NavigationProperty Name="NhaSanXuat" Relationship="Self.FK__SanPham__MaNSX__300424B4" FromRole="SanPham" ToRole="NhaSanXuat" />
+        </EntityType>
+        <EntityType Name="TinhLuong">
+          <Key>
+            <PropertyRef Name="MaNV" />
+            <PropertyRef Name="Ngay" />
+          </Key>
+          <Property Name="MaNV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ngay" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TongLuong" Type="Double" Nullable="false" />
+          <NavigationProperty Name="NhanVien" Relationship="Self.FK__TinhLuong__MaNV__5165187F" FromRole="TinhLuong" ToRole="NhanVien" />
+        </EntityType>
+        <EntityType Name="ChiTietHoaDonThanhToan">
+          <Key>
+            <PropertyRef Name="MaHD" />
+            <PropertyRef Name="TenSP" />
+            <PropertyRef Name="SoLuong" />
+            <PropertyRef Name="GiaBan" />
+            <PropertyRef Name="ThanhTien" />
+          </Key>
+          <Property Name="MaHD" Type="Int32" Nullable="false" />
+          <Property Name="TenSP" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SoLuong" Type="Int32" Nullable="false" />
+          <Property Name="GiaBan" Type="Double" Nullable="false" />
+          <Property Name="ThanhTien" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NhanVienConLamViec">
+          <Key>
+            <PropertyRef Name="MaNV" />
+            <PropertyRef Name="TenNV" />
+            <PropertyRef Name="Sdt" />
+            <PropertyRef Name="Phai" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="MaCV" />
+            <PropertyRef Name="TrangThai" />
+            <PropertyRef Name="TenTK" />
+            <PropertyRef Name="MatKhau" />
+          </Key>
+          <Property Name="MaNV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TenNV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sdt" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phai" Type="Boolean" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaCV" Type="Int32" Nullable="false" />
+          <Property Name="TrangThai" Type="Boolean" Nullable="false" />
+          <Property Name="TenTK" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MatKhau" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Hinh" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="NhanVienNghiLam">
+          <Key>
+            <PropertyRef Name="MaNV" />
+            <PropertyRef Name="TenNV" />
+            <PropertyRef Name="Sdt" />
+            <PropertyRef Name="Phai" />
+            <PropertyRef Name="NgaySinh" />
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="MaCV" />
+            <PropertyRef Name="TrangThai" />
+            <PropertyRef Name="TenTK" />
+            <PropertyRef Name="MatKhau" />
+          </Key>
+          <Property Name="MaNV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TenNV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sdt" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phai" Type="Boolean" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaCV" Type="Int32" Nullable="false" />
+          <Property Name="TrangThai" Type="Boolean" Nullable="false" />
+          <Property Name="TenTK" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MatKhau" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Hinh" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="SanPhamConBan">
+          <Key>
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="TenSP" />
+            <PropertyRef Name="GiaBan" />
+            <PropertyRef Name="GiaGoc" />
+            <PropertyRef Name="TrangThai" />
+          </Key>
+          <Property Name="MaSP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenSP" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaNSX" Type="Int32" />
+          <Property Name="MaLoai" Type="Int32" />
+          <Property Name="GiaBan" Type="Double" Nullable="false" />
+          <Property Name="GiaGoc" Type="Double" Nullable="false" />
+          <Property Name="TrangThai" Type="Boolean" Nullable="false" />
+          <Property Name="Hinh" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="SPConHan">
+          <Key>
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="TenSP" />
+            <PropertyRef Name="NgayNhapKho" />
+            <PropertyRef Name="HSD" />
+            <PropertyRef Name="SLTonKho" />
+            <PropertyRef Name="TrangThai" />
+          </Key>
+          <Property Name="MaSP" Type="Int32" Nullable="false" />
+          <Property Name="TenSP" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayNhapKho" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HSD" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SLTonKho" Type="Int32" Nullable="false" />
+          <Property Name="TrangThai" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SPHetHan">
+          <Key>
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="TenSP" />
+            <PropertyRef Name="NgayNhapKho" />
+            <PropertyRef Name="HSD" />
+            <PropertyRef Name="SLTonKho" />
+            <PropertyRef Name="TrangThai" />
+          </Key>
+          <Property Name="MaSP" Type="Int32" Nullable="false" />
+          <Property Name="TenSP" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayNhapKho" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HSD" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SLTonKho" Type="Int32" Nullable="false" />
+          <Property Name="TrangThai" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ViewKho">
+          <Key>
+            <PropertyRef Name="MaSP" />
+            <PropertyRef Name="TenSP" />
+            <PropertyRef Name="NSX" />
+            <PropertyRef Name="HSD" />
+            <PropertyRef Name="NgayNhapKho" />
+            <PropertyRef Name="LoaiKho" />
+            <PropertyRef Name="SLTonKho" />
+          </Key>
+          <Property Name="MaSP" Type="Int32" Nullable="false" />
+          <Property Name="TenSP" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NSX" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HSD" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NgayNhapKho" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LoaiKho" Type="Boolean" Nullable="false" />
+          <Property Name="SLTonKho" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="XemBangPC_NhanVien">
+          <Key>
+            <PropertyRef Name="MaPC" />
+            <PropertyRef Name="MaNV" />
+            <PropertyRef Name="TenNV" />
+            <PropertyRef Name="MaCa" />
+            <PropertyRef Name="GioBatDau" />
+            <PropertyRef Name="GioKetThuc" />
+            <PropertyRef Name="NgayDangKy" />
+          </Key>
+          <Property Name="MaPC" Type="Int32" Nullable="false" />
+          <Property Name="MaNV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TenNV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaCa" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GioBatDau" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="GioKetThuc" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="NgayDangKy" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <Association Name="FK__PhanCong__MaCa__4BAC3F29">
+          <End Role="Ca" Type="Self.Ca" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PhanCong" Type="Self.PhanCong" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ca">
+              <PropertyRef Name="MaCa" />
+            </Principal>
+            <Dependent Role="PhanCong">
+              <PropertyRef Name="MaCa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ChamCong__MaPC__4E88ABD4">
+          <End Role="PhanCong" Type="Self.PhanCong" Multiplicity="1" />
+          <End Role="ChamCong" Type="Self.ChamCong" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PhanCong">
+              <PropertyRef Name="MaPC" />
+            </Principal>
+            <Dependent Role="ChamCong">
+              <PropertyRef Name="MaPC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ChiTietHoa__MaHD__44FF419A">
+          <End Role="HoaDon" Type="Self.HoaDon" Multiplicity="1" />
+          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HoaDon">
+              <PropertyRef Name="MaHD" />
+            </Principal>
+            <Dependent Role="ChiTietHoaDon">
+              <PropertyRef Name="MaHD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ChiTietHoaDon__45F365D3">
+          <End Role="CuaHang" Type="Self.CuaHang" Multiplicity="1" />
+          <End Role="ChiTietHoaDon" Type="Self.ChiTietHoaDon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuaHang">
+              <PropertyRef Name="MaSP" />
+              <PropertyRef Name="NSX" />
+              <PropertyRef Name="HSD" />
+            </Principal>
+            <Dependent Role="ChiTietHoaDon">
+              <PropertyRef Name="MaSP" />
+              <PropertyRef Name="NSX" />
+              <PropertyRef Name="HSD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__NhanVien__MaCV__286302EC">
+          <End Role="ChucVu" Type="Self.ChucVu" Multiplicity="1" />
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChucVu">
+              <PropertyRef Name="MaCV" />
+            </Principal>
+            <Dependent Role="NhanVien">
+              <PropertyRef Name="MaCV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CuaHang__38996AB5">
+          <End Role="Kho" Type="Self.Kho" Multiplicity="1" />
+          <End Role="CuaHang" Type="Self.CuaHang" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Kho">
+              <PropertyRef Name="MaSP" />
+              <PropertyRef Name="NSX" />
+              <PropertyRef Name="HSD" />
+            </Principal>
+            <Dependent Role="CuaHang">
+              <PropertyRef Name="MaSP" />
+              <PropertyRef Name="NSX" />
+              <PropertyRef Name="HSD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HoaDon__MaNV__3F466844">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="0..1" />
+          <End Role="HoaDon" Type="Self.HoaDon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="HoaDon">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HoaDon__SdtKH__403A8C7D">
+          <End Role="KhachHang" Type="Self.KhachHang" Multiplicity="0..1" />
+          <End Role="HoaDon" Type="Self.HoaDon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KhachHang">
+              <PropertyRef Name="Sdt" />
+            </Principal>
+            <Dependent Role="HoaDon">
+              <PropertyRef Name="SdtKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Kho__MaSP__34C8D9D1">
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="1" />
+          <End Role="Kho" Type="Self.Kho" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPham">
+              <PropertyRef Name="MaSP" />
+            </Principal>
+            <Dependent Role="Kho">
+              <PropertyRef Name="MaSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SanPham__MaLoai__30F848ED">
+          <End Role="LoaiSanPham" Type="Self.LoaiSanPham" Multiplicity="0..1" />
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoaiSanPham">
+              <PropertyRef Name="MaLoai" />
+            </Principal>
+            <Dependent Role="SanPham">
+              <PropertyRef Name="MaLoai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PhanCong__MaNV__4AB81AF0">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+          <End Role="PhanCong" Type="Self.PhanCong" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="PhanCong">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TinhLuong__MaNV__5165187F">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+          <End Role="TinhLuong" Type="Self.TinhLuong" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="TinhLuong">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SanPham__MaNSX__300424B4">
+          <End Role="NhaSanXuat" Type="Self.NhaSanXuat" Multiplicity="0..1" />
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhaSanXuat">
+              <PropertyRef Name="MaNSX" />
+            </Principal>
+            <Dependent Role="SanPham">
+              <PropertyRef Name="MaNSX" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cas" EntityType="Self.Ca" />
+          <EntitySet Name="ChamCongs" EntityType="Self.ChamCong" />
+          <EntitySet Name="ChiTietHoaDons" EntityType="Self.ChiTietHoaDon" />
+          <EntitySet Name="ChucVus" EntityType="Self.ChucVu" />
+          <EntitySet Name="CuaHangs" EntityType="Self.CuaHang" />
+          <EntitySet Name="HoaDons" EntityType="Self.HoaDon" />
+          <EntitySet Name="KhachHangs" EntityType="Self.KhachHang" />
+          <EntitySet Name="Khoes" EntityType="Self.Kho" />
+          <EntitySet Name="LoaiSanPhams" EntityType="Self.LoaiSanPham" />
+          <EntitySet Name="NgayLes" EntityType="Self.NgayLe" />
+          <EntitySet Name="NhanViens" EntityType="Self.NhanVien" />
+          <EntitySet Name="NhaSanXuats" EntityType="Self.NhaSanXuat" />
+          <EntitySet Name="PhanCongs" EntityType="Self.PhanCong" />
+          <EntitySet Name="PhuongThucThanhToans" EntityType="Self.PhuongThucThanhToan" />
+          <EntitySet Name="SanPhams" EntityType="Self.SanPham" />
+          <EntitySet Name="TinhLuongs" EntityType="Self.TinhLuong" />
+          <EntitySet Name="ChiTietHoaDonThanhToans" EntityType="Self.ChiTietHoaDonThanhToan" />
+          <EntitySet Name="NhanVienConLamViecs" EntityType="Self.NhanVienConLamViec" />
+          <EntitySet Name="NhanVienNghiLams" EntityType="Self.NhanVienNghiLam" />
+          <EntitySet Name="SanPhamConBans" EntityType="Self.SanPhamConBan" />
+          <EntitySet Name="SPConHans" EntityType="Self.SPConHan" />
+          <EntitySet Name="SPHetHans" EntityType="Self.SPHetHan" />
+          <EntitySet Name="ViewKhoes" EntityType="Self.ViewKho" />
+          <EntitySet Name="XemBangPC_NhanVien" EntityType="Self.XemBangPC_NhanVien" />
+          <AssociationSet Name="FK__PhanCong__MaCa__4BAC3F29" Association="Self.FK__PhanCong__MaCa__4BAC3F29">
+            <End Role="Ca" EntitySet="Cas" />
+            <End Role="PhanCong" EntitySet="PhanCongs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ChamCong__MaPC__4E88ABD4" Association="Self.FK__ChamCong__MaPC__4E88ABD4">
+            <End Role="PhanCong" EntitySet="PhanCongs" />
+            <End Role="ChamCong" EntitySet="ChamCongs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ChiTietHoa__MaHD__44FF419A" Association="Self.FK__ChiTietHoa__MaHD__44FF419A">
+            <End Role="HoaDon" EntitySet="HoaDons" />
+            <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ChiTietHoaDon__45F365D3" Association="Self.FK__ChiTietHoaDon__45F365D3">
+            <End Role="CuaHang" EntitySet="CuaHangs" />
+            <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__NhanVien__MaCV__286302EC" Association="Self.FK__NhanVien__MaCV__286302EC">
+            <End Role="ChucVu" EntitySet="ChucVus" />
+            <End Role="NhanVien" EntitySet="NhanViens" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CuaHang__38996AB5" Association="Self.FK__CuaHang__38996AB5">
+            <End Role="Kho" EntitySet="Khoes" />
+            <End Role="CuaHang" EntitySet="CuaHangs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HoaDon__MaNV__3F466844" Association="Self.FK__HoaDon__MaNV__3F466844">
+            <End Role="NhanVien" EntitySet="NhanViens" />
+            <End Role="HoaDon" EntitySet="HoaDons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HoaDon__SdtKH__403A8C7D" Association="Self.FK__HoaDon__SdtKH__403A8C7D">
+            <End Role="KhachHang" EntitySet="KhachHangs" />
+            <End Role="HoaDon" EntitySet="HoaDons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Kho__MaSP__34C8D9D1" Association="Self.FK__Kho__MaSP__34C8D9D1">
+            <End Role="SanPham" EntitySet="SanPhams" />
+            <End Role="Kho" EntitySet="Khoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SanPham__MaLoai__30F848ED" Association="Self.FK__SanPham__MaLoai__30F848ED">
+            <End Role="LoaiSanPham" EntitySet="LoaiSanPhams" />
+            <End Role="SanPham" EntitySet="SanPhams" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PhanCong__MaNV__4AB81AF0" Association="Self.FK__PhanCong__MaNV__4AB81AF0">
+            <End Role="NhanVien" EntitySet="NhanViens" />
+            <End Role="PhanCong" EntitySet="PhanCongs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TinhLuong__MaNV__5165187F" Association="Self.FK__TinhLuong__MaNV__5165187F">
+            <End Role="NhanVien" EntitySet="NhanViens" />
+            <End Role="TinhLuong" EntitySet="TinhLuongs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SanPham__MaNSX__300424B4" Association="Self.FK__SanPham__MaNSX__300424B4">
+            <End Role="NhaSanXuat" EntitySet="NhaSanXuats" />
+            <End Role="SanPham" EntitySet="SanPhams" />
+          </AssociationSet>
+          <FunctionImport Name="BangChiTietHoaDonThanhToan" IsComposable="true" ReturnType="Collection(QuanLyCuaHangTienLoiModel.BangChiTietHoaDonThanhToan_Result)" />
+          <FunctionImport Name="LocDoanhThu" IsComposable="true" ReturnType="Collection(QuanLyCuaHangTienLoiModel.LocDoanhThu_Result)">
+            <Parameter Name="ngaybatdau" Mode="In" Type="DateTime" />
+            <Parameter Name="ngayketthuc" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_NhapKho">
+            <Parameter Name="masp" Mode="In" Type="Int32" />
+            <Parameter Name="nsx" Mode="In" Type="DateTime" />
+            <Parameter Name="hsd" Mode="In" Type="DateTime" />
+            <Parameter Name="ngaynhapkho" Mode="In" Type="DateTime" />
+            <Parameter Name="loaikho" Mode="In" Type="Boolean" />
+            <Parameter Name="sltonkho" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaCa">
+            <Parameter Name="maca" Mode="In" Type="String" />
+            <Parameter Name="loaica" Mode="In" Type="Int32" />
+            <Parameter Name="giobatdau" Mode="In" Type="Time" />
+            <Parameter Name="gioketthuc" Mode="In" Type="Time" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaChamCong">
+            <Parameter Name="mapc" Mode="In" Type="Int32" />
+            <Parameter Name="giobd" Mode="In" Type="Time" />
+            <Parameter Name="giokt" Mode="In" Type="Time" />
+            <Parameter Name="luong" Mode="In" Type="Double" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaChiTietHoaDon">
+            <Parameter Name="mahd" Mode="In" Type="Int32" />
+            <Parameter Name="masp" Mode="In" Type="Int32" />
+            <Parameter Name="nsx" Mode="In" Type="DateTime" />
+            <Parameter Name="hsd" Mode="In" Type="DateTime" />
+            <Parameter Name="sl" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaHoaDon">
+            <Parameter Name="mahd" Mode="In" Type="Int32" />
+            <Parameter Name="manv" Mode="In" Type="String" />
+            <Parameter Name="sdtkh" Mode="In" Type="String" />
+            <Parameter Name="pttt" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaKhachHang">
+            <Parameter Name="sdt" Mode="In" Type="String" />
+            <Parameter Name="tenkh" Mode="In" Type="String" />
+            <Parameter Name="diemtichluy" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaLSP">
+            <Parameter Name="maloai" Mode="In" Type="Int32" />
+            <Parameter Name="tenloai" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaNgayLe">
+            <Parameter Name="mangayle" Mode="In" Type="Int32" />
+            <Parameter Name="sukien" Mode="In" Type="String" />
+            <Parameter Name="ngay" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaNhanVien">
+            <Parameter Name="manv" Mode="In" Type="String" />
+            <Parameter Name="tennv" Mode="In" Type="String" />
+            <Parameter Name="sdt" Mode="In" Type="String" />
+            <Parameter Name="phai" Mode="In" Type="String" />
+            <Parameter Name="ngaysinh" Mode="In" Type="DateTime" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="macv" Mode="In" Type="String" />
+            <Parameter Name="trangthai" Mode="In" Type="String" />
+            <Parameter Name="tentk" Mode="In" Type="String" />
+            <Parameter Name="matkhau" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaNhaSanXuat">
+            <Parameter Name="mansx" Mode="In" Type="Int32" />
+            <Parameter Name="tennsx" Mode="In" Type="String" />
+            <Parameter Name="diachi" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaPhanCong">
+            <Parameter Name="mapc" Mode="In" Type="Int32" />
+            <Parameter Name="manv" Mode="In" Type="String" />
+            <Parameter Name="maca" Mode="In" Type="String" />
+            <Parameter Name="ngaydangky" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaSanPham">
+            <Parameter Name="masp" Mode="In" Type="Int32" />
+            <Parameter Name="tensp" Mode="In" Type="String" />
+            <Parameter Name="mansx" Mode="In" Type="String" />
+            <Parameter Name="maloai" Mode="In" Type="String" />
+            <Parameter Name="giaban" Mode="In" Type="Double" />
+            <Parameter Name="giagoc" Mode="In" Type="Double" />
+            <Parameter Name="trangthai" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaSpVaoKho">
+            <Parameter Name="masp" Mode="In" Type="Int32" />
+            <Parameter Name="nsx" Mode="In" Type="DateTime" />
+            <Parameter Name="hsd" Mode="In" Type="DateTime" />
+            <Parameter Name="ngaynhapkho" Mode="In" Type="DateTime" />
+            <Parameter Name="loaikho" Mode="In" Type="Boolean" />
+            <Parameter Name="sltonkho" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemCa">
+            <Parameter Name="maca" Mode="In" Type="String" />
+            <Parameter Name="loaica" Mode="In" Type="Int32" />
+            <Parameter Name="giobatdau" Mode="In" Type="Time" />
+            <Parameter Name="gioketthuc" Mode="In" Type="Time" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemChiTietHoaDon">
+            <Parameter Name="mahd" Mode="In" Type="Int32" />
+            <Parameter Name="masp" Mode="In" Type="Int32" />
+            <Parameter Name="nsx" Mode="In" Type="DateTime" />
+            <Parameter Name="hsd" Mode="In" Type="DateTime" />
+            <Parameter Name="sl" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemHoaDon">
+            <Parameter Name="manv" Mode="In" Type="String" />
+            <Parameter Name="sdtkh" Mode="In" Type="String" />
+            <Parameter Name="pttt" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemKhachHang">
+            <Parameter Name="sdt" Mode="In" Type="String" />
+            <Parameter Name="tenkh" Mode="In" Type="String" />
+            <Parameter Name="diemtichluy" Mode="In" Type="Double" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemLSP">
+            <Parameter Name="tenloai" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemNgayLe">
+            <Parameter Name="mangayle" Mode="In" Type="Int32" />
+            <Parameter Name="sukien" Mode="In" Type="String" />
+            <Parameter Name="ngay" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemNhanVien">
+            <Parameter Name="tennv" Mode="In" Type="String" />
+            <Parameter Name="sdt" Mode="In" Type="String" />
+            <Parameter Name="phai" Mode="In" Type="String" />
+            <Parameter Name="ngaysinh" Mode="In" Type="DateTime" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="macv" Mode="In" Type="String" />
+            <Parameter Name="trangthai" Mode="In" Type="String" />
+            <Parameter Name="tentk" Mode="In" Type="String" />
+            <Parameter Name="matkhau" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemNhaSanXuat">
+            <Parameter Name="tennsx" Mode="In" Type="String" />
+            <Parameter Name="diachi" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemPhanCong">
+            <Parameter Name="manv" Mode="In" Type="String" />
+            <Parameter Name="maca" Mode="In" Type="String" />
+            <Parameter Name="ngaydangky" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemSanPham">
+            <Parameter Name="tensp" Mode="In" Type="String" />
+            <Parameter Name="mansx" Mode="In" Type="String" />
+            <Parameter Name="maloai" Mode="In" Type="String" />
+            <Parameter Name="giaban" Mode="In" Type="Double" />
+            <Parameter Name="giagoc" Mode="In" Type="Double" />
+            <Parameter Name="trangthai" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_TraKho">
+            <Parameter Name="masp" Mode="In" Type="Int32" />
+            <Parameter Name="nsx" Mode="In" Type="DateTime" />
+            <Parameter Name="hsd" Mode="In" Type="DateTime" />
+            <Parameter Name="ngayxuatkho" Mode="In" Type="DateTime" />
+            <Parameter Name="soluong" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaCa">
+            <Parameter Name="maca" Mode="In" Type="String" />
+            <Parameter Name="loaica" Mode="In" Type="Int32" />
+            <Parameter Name="giobatdau" Mode="In" Type="Time" />
+            <Parameter Name="gioketthuc" Mode="In" Type="Time" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaChamCong">
+            <Parameter Name="mapc" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaChiTietHoaDon">
+            <Parameter Name="mahd" Mode="In" Type="Int32" />
+            <Parameter Name="masp" Mode="In" Type="Int32" />
+            <Parameter Name="nsx" Mode="In" Type="DateTime" />
+            <Parameter Name="hsd" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaHoaDon">
+            <Parameter Name="mahd" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaKhachHang">
+            <Parameter Name="sdt" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaLSP">
+            <Parameter Name="maloai" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaNgayLe">
+            <Parameter Name="mangayle" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaNhanVien">
+            <Parameter Name="manv" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaNhaSanXuat">
+            <Parameter Name="mansx" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaPhanCong">
+            <Parameter Name="mapc" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaSanPham">
+            <Parameter Name="masp" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaSpVaoKho">
+            <Parameter Name="masp" Mode="In" Type="Int32" />
+            <Parameter Name="nsx" Mode="In" Type="DateTime" />
+            <Parameter Name="hsd" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XuatKho">
+            <Parameter Name="masp" Mode="In" Type="Int32" />
+            <Parameter Name="nsx" Mode="In" Type="DateTime" />
+            <Parameter Name="hsd" Mode="In" Type="DateTime" />
+            <Parameter Name="ngayxuatkho" Mode="In" Type="DateTime" />
+            <Parameter Name="soluong" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpDateGioBD">
+            <Parameter Name="mapc" Mode="In" Type="Int32" />
+            <Parameter Name="giobd" Mode="In" Type="Time" />
+          </FunctionImport>
+          <FunctionImport Name="UpDateGioKT">
+            <Parameter Name="mapc" Mode="In" Type="Int32" />
+            <Parameter Name="giokt" Mode="In" Type="Time" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateLaiCuaHangKhiThanhToan" ReturnType="Collection(QuanLyCuaHangTienLoiModel.UpdateLaiCuaHangKhiThanhToan_Result)" />
+        </EntityContainer>
+        <ComplexType Name="UpdateLaiCuaHangKhiThanhToan_Result">
+          <Property Type="Int32" Name="masptt" Nullable="true" />
+          <Property Type="DateTime" Name="nsxtt" Nullable="true" />
+          <Property Type="DateTime" Name="hsdtt" Nullable="true" />
+          <Property Type="Int32" Name="sl" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QuanLyCuaHangTienLoiModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Cas">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.Ca">
+              <MappingFragment StoreEntitySet="Ca">
+                <ScalarProperty Name="MaCa" ColumnName="MaCa" />
+                <ScalarProperty Name="LoaiCa" ColumnName="LoaiCa" />
+                <ScalarProperty Name="GioBatDau" ColumnName="GioBatDau" />
+                <ScalarProperty Name="GioKetThuc" ColumnName="GioKetThuc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChamCongs">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.ChamCong">
+              <MappingFragment StoreEntitySet="ChamCong">
+                <ScalarProperty Name="MaPC" ColumnName="MaPC" />
+                <ScalarProperty Name="GioBD" ColumnName="GioBD" />
+                <ScalarProperty Name="GioKT" ColumnName="GioKT" />
+                <ScalarProperty Name="Luong" ColumnName="Luong" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChiTietHoaDons">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.ChiTietHoaDon">
+              <MappingFragment StoreEntitySet="ChiTietHoaDon">
+                <ScalarProperty Name="MaHD" ColumnName="MaHD" />
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="NSX" ColumnName="NSX" />
+                <ScalarProperty Name="HSD" ColumnName="HSD" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="GiaBan" ColumnName="GiaBan" />
+                <ScalarProperty Name="GiaGoc" ColumnName="GiaGoc" />
+                <ScalarProperty Name="ThanhTien" ColumnName="ThanhTien" />
+                <ScalarProperty Name="TienLoi" ColumnName="TienLoi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChucVus">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.ChucVu">
+              <MappingFragment StoreEntitySet="ChucVu">
+                <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+                <ScalarProperty Name="TenCV" ColumnName="TenCV" />
+                <ScalarProperty Name="LuongTheoGio" ColumnName="LuongTheoGio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CuaHangs">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.CuaHang">
+              <MappingFragment StoreEntitySet="CuaHang">
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="NSX" ColumnName="NSX" />
+                <ScalarProperty Name="HSD" ColumnName="HSD" />
+                <ScalarProperty Name="NgayXuatKho" ColumnName="NgayXuatKho" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HoaDons">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.HoaDon">
+              <MappingFragment StoreEntitySet="HoaDon">
+                <ScalarProperty Name="MaHD" ColumnName="MaHD" />
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="SdtKH" ColumnName="SdtKH" />
+                <ScalarProperty Name="PTTT" ColumnName="PTTT" />
+                <ScalarProperty Name="Ngay" ColumnName="Ngay" />
+                <ScalarProperty Name="TongTienTT" ColumnName="TongTienTT" />
+                <ScalarProperty Name="TongTienLoi" ColumnName="TongTienLoi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KhachHangs">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.KhachHang">
+              <MappingFragment StoreEntitySet="KhachHang">
+                <ScalarProperty Name="Sdt" ColumnName="Sdt" />
+                <ScalarProperty Name="TenKH" ColumnName="TenKH" />
+                <ScalarProperty Name="DiemTichLuy" ColumnName="DiemTichLuy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Khoes">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.Kho">
+              <MappingFragment StoreEntitySet="Kho">
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="NSX" ColumnName="NSX" />
+                <ScalarProperty Name="HSD" ColumnName="HSD" />
+                <ScalarProperty Name="NgayNhapKho" ColumnName="NgayNhapKho" />
+                <ScalarProperty Name="LoaiKho" ColumnName="LoaiKho" />
+                <ScalarProperty Name="SLTonKho" ColumnName="SLTonKho" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoaiSanPhams">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.LoaiSanPham">
+              <MappingFragment StoreEntitySet="LoaiSanPham">
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+                <ScalarProperty Name="TenLoai" ColumnName="TenLoai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NgayLes">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.NgayLe">
+              <MappingFragment StoreEntitySet="NgayLe">
+                <ScalarProperty Name="MaNL" ColumnName="MaNL" />
+                <ScalarProperty Name="Ngay" ColumnName="Ngay" />
+                <ScalarProperty Name="SuKien" ColumnName="SuKien" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NhanViens">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.NhanVien">
+              <MappingFragment StoreEntitySet="NhanVien">
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="TenNV" ColumnName="TenNV" />
+                <ScalarProperty Name="Sdt" ColumnName="Sdt" />
+                <ScalarProperty Name="Phai" ColumnName="Phai" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="TenTK" ColumnName="TenTK" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="Hinh" ColumnName="Hinh" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NhaSanXuats">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.NhaSanXuat">
+              <MappingFragment StoreEntitySet="NhaSanXuat">
+                <ScalarProperty Name="MaNSX" ColumnName="MaNSX" />
+                <ScalarProperty Name="TenNSX" ColumnName="TenNSX" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PhanCongs">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.PhanCong">
+              <MappingFragment StoreEntitySet="PhanCong">
+                <ScalarProperty Name="MaPC" ColumnName="MaPC" />
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="MaCa" ColumnName="MaCa" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PhuongThucThanhToans">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.PhuongThucThanhToan">
+              <MappingFragment StoreEntitySet="PhuongThucThanhToan">
+                <ScalarProperty Name="PTTT" ColumnName="PTTT" />
+                <ScalarProperty Name="TenPTTT" ColumnName="TenPTTT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SanPhams">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.SanPham">
+              <MappingFragment StoreEntitySet="SanPham">
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="TenSP" ColumnName="TenSP" />
+                <ScalarProperty Name="MaNSX" ColumnName="MaNSX" />
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+                <ScalarProperty Name="GiaBan" ColumnName="GiaBan" />
+                <ScalarProperty Name="GiaGoc" ColumnName="GiaGoc" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="Hinh" ColumnName="Hinh" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TinhLuongs">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.TinhLuong">
+              <MappingFragment StoreEntitySet="TinhLuong">
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="Ngay" ColumnName="Ngay" />
+                <ScalarProperty Name="TongLuong" ColumnName="TongLuong" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChiTietHoaDonThanhToans">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.ChiTietHoaDonThanhToan">
+              <MappingFragment StoreEntitySet="ChiTietHoaDonThanhToan">
+                <ScalarProperty Name="MaHD" ColumnName="MaHD" />
+                <ScalarProperty Name="TenSP" ColumnName="TenSP" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="GiaBan" ColumnName="GiaBan" />
+                <ScalarProperty Name="ThanhTien" ColumnName="ThanhTien" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NhanVienConLamViecs">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.NhanVienConLamViec">
+              <MappingFragment StoreEntitySet="NhanVienConLamViec">
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="TenNV" ColumnName="TenNV" />
+                <ScalarProperty Name="Sdt" ColumnName="Sdt" />
+                <ScalarProperty Name="Phai" ColumnName="Phai" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="TenTK" ColumnName="TenTK" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="Hinh" ColumnName="Hinh" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NhanVienNghiLams">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.NhanVienNghiLam">
+              <MappingFragment StoreEntitySet="NhanVienNghiLam">
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="TenNV" ColumnName="TenNV" />
+                <ScalarProperty Name="Sdt" ColumnName="Sdt" />
+                <ScalarProperty Name="Phai" ColumnName="Phai" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="TenTK" ColumnName="TenTK" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="Hinh" ColumnName="Hinh" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SanPhamConBans">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.SanPhamConBan">
+              <MappingFragment StoreEntitySet="SanPhamConBan">
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="TenSP" ColumnName="TenSP" />
+                <ScalarProperty Name="MaNSX" ColumnName="MaNSX" />
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+                <ScalarProperty Name="GiaBan" ColumnName="GiaBan" />
+                <ScalarProperty Name="GiaGoc" ColumnName="GiaGoc" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="Hinh" ColumnName="Hinh" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SPConHans">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.SPConHan">
+              <MappingFragment StoreEntitySet="SPConHan">
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="TenSP" ColumnName="TenSP" />
+                <ScalarProperty Name="NgayNhapKho" ColumnName="NgayNhapKho" />
+                <ScalarProperty Name="HSD" ColumnName="HSD" />
+                <ScalarProperty Name="SLTonKho" ColumnName="SLTonKho" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SPHetHans">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.SPHetHan">
+              <MappingFragment StoreEntitySet="SPHetHan">
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="TenSP" ColumnName="TenSP" />
+                <ScalarProperty Name="NgayNhapKho" ColumnName="NgayNhapKho" />
+                <ScalarProperty Name="HSD" ColumnName="HSD" />
+                <ScalarProperty Name="SLTonKho" ColumnName="SLTonKho" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewKhoes">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.ViewKho">
+              <MappingFragment StoreEntitySet="ViewKho">
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="TenSP" ColumnName="TenSP" />
+                <ScalarProperty Name="NSX" ColumnName="NSX" />
+                <ScalarProperty Name="HSD" ColumnName="HSD" />
+                <ScalarProperty Name="NgayNhapKho" ColumnName="NgayNhapKho" />
+                <ScalarProperty Name="LoaiKho" ColumnName="LoaiKho" />
+                <ScalarProperty Name="SLTonKho" ColumnName="SLTonKho" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="XemBangPC_NhanVien">
+            <EntityTypeMapping TypeName="QuanLyCuaHangTienLoiModel.XemBangPC_NhanVien">
+              <MappingFragment StoreEntitySet="XemBangPC_NhanVien">
+                <ScalarProperty Name="MaPC" ColumnName="MaPC" />
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="TenNV" ColumnName="TenNV" />
+                <ScalarProperty Name="MaCa" ColumnName="MaCa" />
+                <ScalarProperty Name="GioBatDau" ColumnName="GioBatDau" />
+                <ScalarProperty Name="GioKetThuc" ColumnName="GioKetThuc" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionName="QuanLyCuaHangTienLoiModel.Store.BangChiTietHoaDonThanhToan" FunctionImportName="BangChiTietHoaDonThanhToan">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QuanLyCuaHangTienLoiModel.BangChiTietHoaDonThanhToan_Result">
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="NSX" ColumnName="NSX" />
+                <ScalarProperty Name="HSD" ColumnName="HSD" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="QuanLyCuaHangTienLoiModel.Store.LocDoanhThu" FunctionImportName="LocDoanhThu">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QuanLyCuaHangTienLoiModel.LocDoanhThu_Result">
+                <ScalarProperty Name="MaHD" ColumnName="MaHD" />
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="SdtKH" ColumnName="SdtKH" />
+                <ScalarProperty Name="PTTT" ColumnName="PTTT" />
+                <ScalarProperty Name="Ngay" ColumnName="Ngay" />
+                <ScalarProperty Name="TongTienTT" ColumnName="TongTienTT" />
+                <ScalarProperty Name="TongTienLoi" ColumnName="TongTienLoi" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_NhapKho" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_NhapKho" />
+          <FunctionImportMapping FunctionImportName="sp_SuaCa" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_SuaCa" />
+          <FunctionImportMapping FunctionImportName="sp_SuaChamCong" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_SuaChamCong" />
+          <FunctionImportMapping FunctionImportName="sp_SuaChiTietHoaDon" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_SuaChiTietHoaDon" />
+          <FunctionImportMapping FunctionImportName="sp_SuaHoaDon" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_SuaHoaDon" />
+          <FunctionImportMapping FunctionImportName="sp_SuaKhachHang" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_SuaKhachHang" />
+          <FunctionImportMapping FunctionImportName="sp_SuaLSP" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_SuaLSP" />
+          <FunctionImportMapping FunctionImportName="sp_SuaNgayLe" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_SuaNgayLe" />
+          <FunctionImportMapping FunctionImportName="sp_SuaNhanVien" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_SuaNhanVien" />
+          <FunctionImportMapping FunctionImportName="sp_SuaNhaSanXuat" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_SuaNhaSanXuat" />
+          <FunctionImportMapping FunctionImportName="sp_SuaPhanCong" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_SuaPhanCong" />
+          <FunctionImportMapping FunctionImportName="sp_SuaSanPham" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_SuaSanPham" />
+          <FunctionImportMapping FunctionImportName="sp_SuaSpVaoKho" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_SuaSpVaoKho" />
+          <FunctionImportMapping FunctionImportName="sp_ThemCa" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_ThemCa" />
+          <FunctionImportMapping FunctionImportName="sp_ThemChiTietHoaDon" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_ThemChiTietHoaDon" />
+          <FunctionImportMapping FunctionImportName="sp_ThemHoaDon" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_ThemHoaDon" />
+          <FunctionImportMapping FunctionImportName="sp_ThemKhachHang" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_ThemKhachHang" />
+          <FunctionImportMapping FunctionImportName="sp_ThemLSP" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_ThemLSP" />
+          <FunctionImportMapping FunctionImportName="sp_ThemNgayLe" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_ThemNgayLe" />
+          <FunctionImportMapping FunctionImportName="sp_ThemNhanVien" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_ThemNhanVien" />
+          <FunctionImportMapping FunctionImportName="sp_ThemNhaSanXuat" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_ThemNhaSanXuat" />
+          <FunctionImportMapping FunctionImportName="sp_ThemPhanCong" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_ThemPhanCong" />
+          <FunctionImportMapping FunctionImportName="sp_ThemSanPham" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_ThemSanPham" />
+          <FunctionImportMapping FunctionImportName="sp_TraKho" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_TraKho" />
+          <FunctionImportMapping FunctionImportName="sp_XoaCa" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XoaCa" />
+          <FunctionImportMapping FunctionImportName="sp_XoaChamCong" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XoaChamCong" />
+          <FunctionImportMapping FunctionImportName="sp_XoaChiTietHoaDon" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XoaChiTietHoaDon" />
+          <FunctionImportMapping FunctionImportName="sp_XoaHoaDon" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XoaHoaDon" />
+          <FunctionImportMapping FunctionImportName="sp_XoaKhachHang" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XoaKhachHang" />
+          <FunctionImportMapping FunctionImportName="sp_XoaLSP" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XoaLSP" />
+          <FunctionImportMapping FunctionImportName="sp_XoaNgayLe" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XoaNgayLe" />
+          <FunctionImportMapping FunctionImportName="sp_XoaNhanVien" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XoaNhanVien" />
+          <FunctionImportMapping FunctionImportName="sp_XoaNhaSanXuat" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XoaNhaSanXuat" />
+          <FunctionImportMapping FunctionImportName="sp_XoaPhanCong" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XoaPhanCong" />
+          <FunctionImportMapping FunctionImportName="sp_XoaSanPham" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XoaSanPham" />
+          <FunctionImportMapping FunctionImportName="sp_XoaSpVaoKho" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XoaSpVaoKho" />
+          <FunctionImportMapping FunctionImportName="sp_XuatKho" FunctionName="QuanLyCuaHangTienLoiModel.Store.sp_XuatKho" />
+          <FunctionImportMapping FunctionImportName="UpDateGioBD" FunctionName="QuanLyCuaHangTienLoiModel.Store.UpDateGioBD" />
+          <FunctionImportMapping FunctionImportName="UpDateGioKT" FunctionName="QuanLyCuaHangTienLoiModel.Store.UpDateGioKT" />
+          <FunctionImportMapping FunctionImportName="UpdateLaiCuaHangKhiThanhToan" FunctionName="QuanLyCuaHangTienLoiModel.Store.UpdateLaiCuaHangKhiThanhToan">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QuanLyCuaHangTienLoiModel.UpdateLaiCuaHangKhiThanhToan_Result">
+                <ScalarProperty Name="masptt" ColumnName="masptt" />
+                <ScalarProperty Name="nsxtt" ColumnName="nsxtt" />
+                <ScalarProperty Name="hsdtt" ColumnName="hsdtt" />
+                <ScalarProperty Name="sl" ColumnName="sl" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

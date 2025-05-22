@@ -1,0 +1,36 @@
+@startuml SQ
+
+autonumber
+
+title SD14a. Change course visibility
+
+boundary "MyCreatedCourses"
+control "CourseService"
+control "CourseController"
+entity "CourseModel"
+database "Database" as Database
+
+opt change course visibility
+activate MyCreatedCourses
+MyCreatedCourses -> CourseService: handleChangVisibility(_id)
+activate CourseService
+CourseService -> CourseController: changeCourseVisibility(_id)
+activate CourseController
+CourseController -> CourseModel: call model
+activate CourseModel
+CourseModel -> Database: Course.updateOne()
+deactivate CourseModel
+activate Database
+Database --> CourseController: callback
+deactivate Database
+CourseController --> CourseService: send res.json
+deactivate CourseController
+CourseService --> MyCreatedCourses: callback
+deactivate CourseService
+MyCreatedCourses -> MyCreatedCourses: update display
+activate MyCreatedCourses
+deactivate MyCreatedCourses
+deactivate MyCreatedCourses
+end
+
+@enduml

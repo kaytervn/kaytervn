@@ -1,0 +1,44 @@
+@startuml CD
+
+title "Transportation System"
+
+class Transportation {
+	- parcels: List<Parcel>
+	- transportStrategy: TransportStrategy
+	+ Transportation()
+	+ void addParcel(Parcel)
+	+ void transport()
+	+ void setTransportStrategy(TransportStrategy)
+}
+
+class Parcel {
+	- name: String
+	- weight: int
+	+ Parcel(String, int)
+}
+
+interface TransportStrategy {
+	void transport(int)
+}
+
+class TruckStrategy{
+	+ void transport(int)
+}
+
+class MotobikeStrategy {
+	+ void transport(int)
+}
+
+class CarStrategy {
+	+ void transport(int)
+}
+
+class Main {
+	+ void main(String[])
+}
+
+TransportStrategy <|.. TruckStrategy
+TransportStrategy <|.. MotobikeStrategy
+TransportStrategy <|.. CarStrategy
+
+@enduml

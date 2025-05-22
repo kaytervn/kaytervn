@@ -1,0 +1,39 @@
+@startuml SQ
+
+autonumber
+
+title SD15. Cập nhật giới thiệu khóa học
+
+actor "Instructor"
+boundary "UpdateCourseIntro"
+boundary "EditCourse"
+control "CourseService"
+control "CourseController"
+entity "CourseModel"
+database "Database" as Database
+activate Instructor
+Instructor -> UpdateCourseIntro: input {title,\ndescription, picture}
+deactivate Instructor
+activate UpdateCourseIntro
+UpdateCourseIntro -> CourseService: handleUpdate(_id)
+activate CourseService
+CourseService -> CourseController: updateCourseIntro(\n{_id, formData})
+activate CourseController
+CourseController -> CourseModel: call model
+activate CourseModel
+CourseModel -> Database: Course.updateOne()
+deactivate CourseModel
+activate Database
+Database --> CourseController: callback
+deactivate Database
+CourseController --> CourseService: send res.json
+deactivate CourseController
+CourseService --> UpdateCourseIntro: callback
+deactivate CourseService
+alt input is empty
+UpdateCourseIntro -> UpdateCourseIntro: display alert
+else input is not empty
+UpdateCourseIntro -> EditCourse: navigate("/edit-course")
+deactivate UpdateCourseIntro
+end
+@enduml

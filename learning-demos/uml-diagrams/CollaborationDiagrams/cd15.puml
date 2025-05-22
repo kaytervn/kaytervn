@@ -1,0 +1,12 @@
+@startuml CD
+title CD15. Đăng ký tài khoản giáo viên
+
+actor "Instructor" as Actor
+boundary "RegisterInstructorPage"
+control "UserController"
+rectangle "NodeMailer"
+
+Actor - RegisterInstructorPage: \l1. inputRegisterFormData(name, email, content)<&arrow-right>
+RegisterInstructorPage -- UserController: \l<&arrow-bottom>2. registerInstructor(name, email, content)
+UserController - NodeMailer: \l3. registerInstructor()<&arrow-right>
+@enduml

@@ -1,0 +1,91 @@
+@startuml SQ
+autonumber
+title SD19e. View lesson
+actor "Instructor" as Actor
+boundary "views/\nUpdateCourseDetailPage" as UpdateCourseDetailPage
+boundary "views/\nUpdateLessonPage" as UpdateLessonPage
+boundary "components/\nDocument" as Document
+boundary "components/\nComment" as Comment
+control "DocumentService"
+control "DocumentController"
+entity "DocumentModel"
+control "CommentService"
+control "CommentController"
+entity "CommentModel"
+database "Database" as Database
+activate Actor
+Actor -> UpdateCourseDetailPage: choose lesson
+activate UpdateCourseDetailPage
+UpdateCourseDetailPage -> UpdateLessonPage: navigate("/updateLesson")
+deactivate UpdateCourseDetailPage
+activate UpdateLessonPage
+UpdateLessonPage -> DocumentService: getLessonDocuments(lessonId)
+activate DocumentService
+DocumentService -> DocumentController: router.get(\n"/getLessonDocuments",\ngetLessonDocuments)
+activate DocumentController
+DocumentController -> DocumentModel: call model
+activate DocumentModel
+DocumentModel -> Database: Document.find({lessonid})
+deactivate DocumentModel
+activate Database
+Database --> DocumentController: return documents
+deactivate Database
+DocumentController --> DocumentService: send res.json
+deactivate DocumentController
+DocumentService --> UpdateLessonPage: return documents
+deactivate DocumentService
+
+UpdateLessonPage -> CommentService: getLessonComments(lessonId)
+activate CommentService
+CommentService -> CommentController: router.get(\n"/getLessonComments",\ngetLessonComments)
+activate CommentController
+CommentController -> CommentModel: call model
+activate CommentModel
+CommentModel -> Database: Comment.find({lessonId})
+deactivate CommentModel
+activate Database
+Database --> CommentController: return comments
+deactivate Database
+CommentController --> CommentService: send res.json
+deactivate CommentController
+CommentService --> UpdateLessonPage: return comments
+deactivate CommentService
+loop forEach documents
+
+UpdateLessonPage -> Document: call component
+activate Document
+Document --> UpdateLessonPage: display data
+deactivate Document
+end
+
+loop forEach comments
+UpdateLessonPage -> Comment: call component
+activate Comment
+Comment --> UpdateLessonPage: display data
+deactivate UpdateLessonPage
+deactivate Comment
+end
+
+opt create document
+Actor -> UpdateLessonPage: input title, type, description on modal form
+ref over UpdateLessonPage
+**SD19f. Create document**
+end ref
+end
+
+opt delete document
+Actor -> UpdateLessonPage: choose document to delete
+ref over UpdateLessonPage
+**SD19g. Delete document**
+end ref
+end
+
+opt leave comment
+Actor -> UpdateLessonPage: input content on modal form
+deactivate Actor
+ref over UpdateLessonPage
+**SD19h. Leave comment**
+end ref
+end
+
+@enduml

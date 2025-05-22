@@ -1,0 +1,36 @@
+@startuml CD
+
+title "Game System"
+
+class Game {
+	- health: int
+	- score: int
+	- level: int
+	+ Game()
+	+ void play()
+	+ GameMemento saveState()
+	+ void restoreState(GameMemento)
+	+ void printState()
+}
+
+class GameMemento {
+	- health: int
+	- score: int
+	- level: int
+	+ GameMemento(int, int, int)
+	+ int getHealth()
+	+ int getScore()
+	+ int getLevel()
+}
+
+class GameCaretaker {
+	- mementos: List<GameMemento>
+	+ void saveState(Game)
+	+ void undo(Game)
+}
+
+class GameClient {
+	+ void main(String[])
+}
+
+@enduml

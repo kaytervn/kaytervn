@@ -1,0 +1,107 @@
+@startuml SQ
+
+autonumber
+
+title SD10. Quản lý giỏ hàng
+
+actor "Student" as Actor
+boundary "views/\nCartPage" as CartPage
+boundary "views/\nCourseIntroPage" as CourseIntro
+boundary "views/\nPayCoursesPage" as PayCourse
+boundary "components/\nCartItem" as CartItem
+control "CartService"
+control "CartController"
+entity "CartModel"
+control "CourseService"
+control "CourseController"
+entity "CourseModel"
+entity "CartItemModel"
+database "Database" as Database
+
+activate Actor
+Actor -> CartPage: redirect to ../cart
+activate CartPage
+CartPage -> CartService: getCart(userId)
+activate CartService
+CartService -> CartController: router.get("/getCart", getCart)
+activate CartController
+CartController -> CartModel: call model
+activate CartModel
+CartModel -> Database: Cart.find({userId})
+deactivate CartModel
+activate Database
+Database --> CartController: return cart
+deactivate Database
+CartController --> CartService: send res.json
+deactivate CartController
+CartService --> CartPage: return cart
+deactivate CartService
+CartPage -> CourseService: getCartCourses(cartId)
+activate CourseService
+CourseService -> CourseController: router.get(\n"/getCartCourses",\ngetCartCourses)
+activate CourseController
+CourseController -> CartItemModel: call model
+activate CartItemModel
+CartItemModel -> Database: CartItem.find({cartId})
+deactivate CartItemModel
+activate Database
+Database --> CourseController: return cartItems
+deactivate Database
+loop forEach cartItems
+CourseController -> CourseModel: call model
+activate CourseModel
+CourseModel -> Database: Course.findById(courseId)
+deactivate CourseModel
+activate Database
+deactivate CourseModel
+Database --> CourseController: return course
+deactivate Database
+CourseController -> CourseController: courses.add(course)
+end
+CourseController --> CourseService: send res.json
+deactivate CourseController
+CourseService --> CartPage: return courses
+deactivate CourseService
+
+loop forEach courses
+
+CartPage -> CartItem: call component
+
+activate CartItem
+CartItem --> CartPage: display data
+deactivate CartItem
+deactivate CartPage
+
+end
+
+opt view course intro
+Actor -> CartPage: choose course
+activate CartPage
+CartPage -> CourseIntro: navigate("/courseIntro")
+deactivate CartPage
+
+ref over CourseIntro
+**SD5. Xem giới thiệu khóa học**
+end ref
+end group
+
+opt checkout courses
+Actor -> CartPage: check courses\nthen click checkout
+activate CartPage
+CartPage -> PayCourse: navigate("/payCourses")
+deactivate CartPage
+
+ref over PayCourse
+**SD6. Mua khóa học**
+end ref
+end
+
+opt delete cart item
+Actor -> CartPage: choose cart item to delete
+deactivate Actor
+ref over CartPage
+**SD10a. Delete cart item**
+end ref
+end
+
+@enduml

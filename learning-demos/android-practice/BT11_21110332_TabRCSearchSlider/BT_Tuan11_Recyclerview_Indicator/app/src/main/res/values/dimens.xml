@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="indicator_height">8dp</dimen>
+    <dimen name="indicator_width">8dp</dimen>
+    <dimen name="indicator_padding">4dp</dimen>
+    <dimen name="indicator_radius">4dp</dimen>
+    <color name="colorGray">#808080</color>
+    <color name="colorAccent">#FF4081</color>
+</resources>

@@ -1,0 +1,76 @@
+@startuml SQ
+
+autonumber
+
+title SD16. Cập nhật chi tiết khóa học
+
+actor "Instructor"
+boundary "UpdateCourseDetails"
+boundary "UpdateLessonDetails"
+boundary "CreateLesson"
+control "LessonService"
+control "LessonController"
+entity "LessonModel"
+database "Database" as Database
+
+activate Instructor
+Instructor -> UpdateCourseDetails: click "Create Lesson"
+activate UpdateCourseDetails
+UpdateCourseDetails -> CreateLesson: navigate("/create-lesson")
+deactivate UpdateCourseDetails
+activate CreateLesson
+Instructor -> CreateLesson: input {tile, description}
+CreateLesson -> LessonService: handleCreate()
+activate LessonService
+LessonService -> LessonController: createLesson(\n{lessonId, title, description})
+activate LessonController
+LessonController -> LessonModel: call model
+activate LessonModel
+LessonModel -> Database: Lesson.create()
+deactivate LessonModel
+activate Database
+Database --> LessonController: callback
+deactivate Database
+LessonController --> LessonService: send res.json
+deactivate LessonController
+LessonService --> CreateLesson: callback
+deactivate LessonService
+alt input is empty
+CreateLesson -> CreateLesson: display alert
+else input is not empty
+CreateLesson -> UpdateCourseDetails: navigate(\n"/update-course-details")
+deactivate CreateLesson
+end
+
+opt edit lesson details
+Instructor -> UpdateCourseDetails: click "Edit Lesson" on a lesson
+activate UpdateCourseDetails
+UpdateCourseDetails -> UpdateLessonDetails: navigate(\n"/update-lesson-details")
+deactivate UpdateCourseDetails
+ref over UpdateLessonDetails
+**SD17. Cập nhật chi tiết bài học**
+end ref
+end
+
+opt update lesson
+Instructor -> UpdateCourseDetails: click "Edit" button on a lesson
+ref over UpdateCourseDetails
+**SD16a. Update lesson**
+end ref
+end
+
+opt delete lesson
+Instructor -> UpdateCourseDetails: click "Delete" button on a lesson
+ref over UpdateCourseDetails
+**SD16b. Delete lesson**
+end ref
+end
+
+opt delete course
+Instructor -> UpdateCourseDetails: click "Delete Course"
+ref over UpdateCourseDetails
+**SD16c. Delete Course**
+end ref
+deactivate Instructor
+end
+@enduml

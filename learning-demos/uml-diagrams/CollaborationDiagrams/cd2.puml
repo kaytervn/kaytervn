@@ -1,0 +1,18 @@
+@startuml CD
+
+title CD2. Xem danh sách khóa học theo tiêu chí
+
+
+actor "Student" as Actor
+boundary "HomePage"
+boundary "CourseIntroPage"
+control "CourseController"
+entity "CourseModel"
+entity "InvoiceItemModel"
+
+Actor - HomePage: \l1. accessPage()<&arrow-right>\n8. chooseCourse()<&arrow-right>
+HomePage - CourseController: \l2. getNewestCourses()<&arrow-right>\n4. getBestSellerCourses()<&arrow-right>\n<&arrow-left>7. displayCourses()
+CourseController - CourseModel: \l3. Course.find()<&arrow-right>\n6. Course.find()<&arrow-right>
+CourseController -- InvoiceItemModel: \l<&arrow-bottom>5. InvoiceItem.aggregate()
+HomePage -- CourseIntroPage: \l<&arrow-bottom>9. navigate("/courseIntro")
+@enduml

@@ -1,0 +1,22 @@
+@startuml CD
+
+title CD14. Quản lý danh sách khóa học đã tạo
+
+actor "Instructor"
+boundary "MyCreatedCourses"
+boundary "EditCourse"
+boundary "UpdateCourseIntro"
+boundary "UpdateCourseDetails"
+control "CourseService"
+control "CourseController"
+entity "CourseModel"
+
+Instructor - MyCreatedCourses: \l1. inputFilterData()<&arrow-right>\n5.clickEyeButton()<&arrow-right>\n9. clickEdit()<&arrow-right>
+Instructor --- EditCourse: \l<&arrow-bottom>11. clickEditIntro()\n<&arrow-bottom>13. clickEditDetails()
+EditCourse - UpdateCourseDetails: \l14. navigate("/update-course-details")<&arrow-right>
+MyCreatedCourses - CourseService: \l2. updateDisplay()<&arrow-right>\n6. handleChangeCourseVisibility()<&arrow-right>
+CourseService -- CourseController: \l<&arrow-bottom>3. searchUserCourses()\n<&arrow-bottom>7. changeCourseVisibility()
+CourseController - CourseModel: \l4. Course.find()<&arrow-right>\n8. Course.updateOne()<&arrow-right>
+MyCreatedCourses -- EditCourse: \l<&arrow-bottom>10. navigate("/edit-course")
+EditCourse -- UpdateCourseIntro: \l<&arrow-bottom>12. navigate("/update-course-intro")
+@enduml

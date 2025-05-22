@@ -1,0 +1,42 @@
+@startuml CD
+
+title Solar System
+
+interface Iterator {
+	boolean hasNext()
+	T next()
+}
+
+interface Iterable {
+	Iterator<T> getIterator()
+}
+
+class SolarSystemIterator{
+	- planets: List<Planet>
+	- position: int
+	+ SolarSystemIterator(List<Planet>)
+	+ boolean hasNext()
+	+ Planet next()
+}
+
+class Planet {
+	- name: String
+	+ Planet(String)
+	+ String getName()
+}
+
+class SolarSystem {
+	- planets: List<Planet>
+	+ SolarSystem(List<Planet>)
+	+ Iterator<Planet> getIterator()
+}
+
+class Main {
+	+ void main(String[])
+}
+
+Iterator <|.. SolarSystemIterator
+Iterable <|.. SolarSystem
+
+
+@enduml

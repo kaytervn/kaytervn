@@ -1,0 +1,39 @@
+@startuml CD
+
+title "Appointment System"
+
+interface Mediator {
+	void giveTalk(String, Member)
+	void addMember(Member)
+}
+
+class AppointmentMediator {
+	- members: List<Member>
+	+ AppointmentMediator(String)
+	+ void giveTalk(String, Member)
+	+ void addMember(Member)
+}
+
+abstract Member {
+	# mediator: AppointmentMediator
+	# name: String
+	# role: String
+	+ Member(AppointmentMediator, String, String)
+	+ void talk(String)
+	+ void hear()
+}
+
+class MemberImpl {
+	+ MemberImpl(AppointmentMediator, String, String)
+	+ void talk(String)
+	+ void hear()
+}
+
+class MediatorDemo {
+	+ void main(String[])
+}
+
+Mediator <|.. AppointmentMediator
+Member <|-- MemberImpl
+
+@enduml

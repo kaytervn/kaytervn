@@ -1,0 +1,84 @@
+@startuml Sq
+
+autonumber
+title SD11. Quản lý thông tin cá nhân
+
+actor "Student"
+boundary "ProfileActivity"
+boundary "ChangeNameActivity"
+boundary "ChangePasswordActivity"
+control "APIService"
+control "UserController"
+entity "UserModel"
+database "Database"
+activate Student
+Student -> ProfileActivity: click "Camera" icon
+activate ProfileActivity
+ProfileActivity -> APIService: updateUserProfilePicture(@Header, @Part)
+activate APIService
+APIService -> UserController: @PUT("users/update-profile-picture")
+activate UserController
+UserController -> UserModel: call model
+activate UserModel
+UserModel -> Database: User.updateOne()
+deactivate UserModel
+activate Database
+Database --> UserController: callback
+deactivate Database
+UserController --> APIService: send res.json
+deactivate UserController
+APIService --> ProfileActivity: callback
+deactivate APIService
+ProfileActivity -> ProfileActivity: update display
+activate ProfileActivity
+deactivate ProfileActivity
+deactivate ProfileActivity
+
+opt change password
+Student -> ProfileActivity: click "Change Password"
+activate ProfileActivity
+ProfileActivity -> ChangePasswordActivity: redirect to
+deactivate ProfileActivity
+ref over ChangePasswordActivity
+
+**SD12. Đổi mật khẩu**
+
+end ref
+end
+
+opt change name
+
+Student -> ProfileActivity: click "Change Name"
+activate ProfileActivity
+ProfileActivity -> ChangeNameActivity: redirect to
+deactivate ProfileActivity
+activate ChangeNameActivity
+Student -> ChangeNameActivity: update name
+deactivate Student
+ChangeNameActivity -> APIService: changeUserName(@Header, @Body)
+activate APIService
+APIService -> UserController: @PUT("users/change-app-user-name")
+activate UserController
+UserController -> UserModel: call model
+activate UserModel
+UserModel -> Database: User.updateOne()
+deactivate UserModel
+activate Database
+Database --> UserController: callback
+deactivate Database
+UserController --> APIService: send res.json
+deactivate UserController
+APIService --> ChangeNameActivity: callback
+deactivate APIService
+alt success
+ChangeNameActivity -> ProfileActivity: redirect to
+else failure
+ChangeNameActivity -> ChangeNameActivity: display message
+activate ChangeNameActivity
+deactivate ChangeNameActivity
+deactivate ChangeNameActivity
+end
+
+end
+
+@enduml

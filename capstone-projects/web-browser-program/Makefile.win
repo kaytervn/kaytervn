@@ -1,0 +1,64 @@
+# Project: Project1
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+OBJ      = main.o Stack.o DoublyLinkedList.o Tab.o Group.o TabMethod.o NumberProcess.o AddThisTabToGroup.o ShowTabList.o Showing.o History.o FileMethod.o Bookmark.o
+LINKOBJ  = main.o Stack.o DoublyLinkedList.o Tab.o Group.o TabMethod.o NumberProcess.o AddThisTabToGroup.o ShowTabList.o Showing.o History.o FileMethod.o Bookmark.o
+LIBS     = -L"D:/Program Files For Data/DevCpp/MinGW64/lib" -L"D:/Program Files For Data/DevCpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
+INCS     = -I"D:/Program Files For Data/DevCpp/MinGW64/include" -I"D:/Program Files For Data/DevCpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Program Files For Data/DevCpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
+CXXINCS  = -I"D:/Program Files For Data/DevCpp/MinGW64/include" -I"D:/Program Files For Data/DevCpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Program Files For Data/DevCpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/Program Files For Data/DevCpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
+BIN      = BrowserProject.exe
+CXXFLAGS = $(CXXINCS) 
+CFLAGS   = $(INCS) 
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+main.o: main.cpp
+	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
+
+Stack.o: Stack.cpp
+	$(CPP) -c Stack.cpp -o Stack.o $(CXXFLAGS)
+
+DoublyLinkedList.o: DoublyLinkedList.cpp
+	$(CPP) -c DoublyLinkedList.cpp -o DoublyLinkedList.o $(CXXFLAGS)
+
+Tab.o: Tab.cpp
+	$(CPP) -c Tab.cpp -o Tab.o $(CXXFLAGS)
+
+Group.o: Group.cpp
+	$(CPP) -c Group.cpp -o Group.o $(CXXFLAGS)
+
+TabMethod.o: TabMethod.cpp
+	$(CPP) -c TabMethod.cpp -o TabMethod.o $(CXXFLAGS)
+
+NumberProcess.o: NumberProcess.cpp
+	$(CPP) -c NumberProcess.cpp -o NumberProcess.o $(CXXFLAGS)
+
+AddThisTabToGroup.o: AddThisTabToGroup.cpp
+	$(CPP) -c AddThisTabToGroup.cpp -o AddThisTabToGroup.o $(CXXFLAGS)
+
+ShowTabList.o: ShowTabList.cpp
+	$(CPP) -c ShowTabList.cpp -o ShowTabList.o $(CXXFLAGS)
+
+Showing.o: Showing.cpp
+	$(CPP) -c Showing.cpp -o Showing.o $(CXXFLAGS)
+
+History.o: History.cpp
+	$(CPP) -c History.cpp -o History.o $(CXXFLAGS)
+
+FileMethod.o: FileMethod.cpp
+	$(CPP) -c FileMethod.cpp -o FileMethod.o $(CXXFLAGS)
+
+Bookmark.o: Bookmark.cpp
+	$(CPP) -c Bookmark.cpp -o Bookmark.o $(CXXFLAGS)

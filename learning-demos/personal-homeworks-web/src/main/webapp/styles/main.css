@@ -1,0 +1,128 @@
+/* The styles for the elements */
+body {
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+}
+
+#gradient {
+	width: 100vw;
+	padding: 0px;
+	margin: 0px;
+}
+
+.image {
+	transition: filter 0.5s;
+	box-sizing: border-box;
+	transition: transform .2s;
+}
+
+.image:hover {
+	filter: brightness(150%);
+	transform: scale(1.1);
+}
+
+#mainCSS {
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 2em;
+}
+
+#mainCSS h1 {
+	color: teal;
+	margin-bottom: .5em;
+}
+
+#mainCSS h2 {
+	color: teal;
+	margin-bottom: .5em;
+}
+
+#mainCSS label {
+	float: left;
+	width: 7em;
+	margin-bottom: 0.5em;
+	padding-top: .3em;
+	font-weight: bold;
+	display: block;
+}
+
+#mainCSS input[type="text"],
+input[type="email"],
+input[type="date"] {
+	/* An attribute selector */
+	width: 15em;
+	margin-left: 0.5em;
+	margin-bottom: 0.5em;
+	border: 1px solid #ccc;
+	padding: 12px 20px 12px 40px;
+	border-radius: 3px;
+}
+
+#mainCSS span {
+	margin-left: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+#mainCSS br {
+	clear: both;
+}
+
+#submit {
+	margin-left: 0.5em;
+}
+
+/* The styles for the classes */
+#mainCSS .pad_top {
+	padding-top: 0.25em;
+}
+
+#mainCSS .margin_left {
+	margin-left: 0.5em;
+}
+
+#mainCSS .align_left {
+	text-align: left;
+}
+
+#mainCSS .align_right {
+	text-align: left;
+}
+
+/* The styles for the tables */
+#mainCSS table {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+#mainCSS th,
+td {
+	border: 1px solid black;
+	text-align: left;
+	padding: .5em;
+}
+
+.btn {
+	background-color: #04AA6D;
+	color: white;
+	padding: 12px;
+	margin: 10px 0;
+	border: none;
+	border-radius: 3px;
+	cursor: pointer;
+	font-size: 17px;
+}
+
+.btn:hover {
+	background-color: #45a049;
+}
+
+#center {
+	margin: 0 auto;
+	text-align: center;
+}

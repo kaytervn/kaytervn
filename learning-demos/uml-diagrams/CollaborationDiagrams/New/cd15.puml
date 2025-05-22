@@ -1,0 +1,18 @@
+@startuml CD
+
+title CD15. Cập nhật giới thiệu khóa học
+
+actor "Instructor"
+boundary "UpdateCourseIntro"
+boundary "EditCourse"
+control "CourseService"
+control "CourseController"
+entity "CourseModel"
+
+Instructor - UpdateCourseIntro: \l1. updateData()<&arrow-right>
+UpdateCourseIntro - CourseService: \l2. handleUpdate()<&arrow-right>
+CourseService - CourseController: \l3. updateCourseIntro()<&arrow-right>
+CourseController -- CourseModel: \l<&arrow-bottom>4. Course.updateOne()
+UpdateCourseIntro -- EditCourse: \l<&arrow-bottom>5. navigate("/edit-course")
+
+@enduml

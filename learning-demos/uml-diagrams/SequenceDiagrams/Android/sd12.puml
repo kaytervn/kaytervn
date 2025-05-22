@@ -1,0 +1,42 @@
+@startuml Sq
+
+autonumber
+title SD12. Đổi mật khẩu
+
+actor "Student"
+boundary "ChangePasswordActivity"
+boundary "ProfileActivity"
+boundary "ChangePasswordActivity"
+control "APIService"
+control "UserController"
+entity "UserModel"
+database "Database"
+activate Student
+Student -> ChangePasswordActivity: input {password,\nnewPassword, confirmPassword}
+deactivate Student
+activate ChangePasswordActivity
+ChangePasswordActivity -> APIService: changeUserPassword(@Header, @Body)
+activate APIService
+APIService -> UserController: @PUT("users/change-password-app-user")
+activate UserController
+UserController -> UserModel: call model
+activate UserModel
+UserModel -> Database: User.updateOne()
+deactivate UserModel
+activate Database
+Database --> UserController: callback
+deactivate Database
+UserController --> APIService: send res.json
+deactivate UserController
+APIService --> ChangePasswordActivity: callback
+deactivate APIService
+alt success
+ChangePasswordActivity -> ProfileActivity: redirect to
+else failure
+ChangePasswordActivity -> ChangePasswordActivity: display message
+activate ChangePasswordActivity
+deactivate ChangePasswordActivity
+deactivate ChangePasswordActivity
+end
+
+@enduml

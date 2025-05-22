@@ -1,0 +1,59 @@
+@startuml Sq
+
+autonumber
+title SD1. Đăng ký tài khoản học viên
+
+actor "Student"
+boundary "RegisterActivity"
+boundary "LoginActivity"
+control "APIService"
+control "UserController"
+entity "UserModel"
+database "Database"
+
+activate Student
+Student -> RegisterActivity: input {name, email,\npassword, confirmPassword}
+activate RegisterActivity
+RegisterActivity -> APIService: register(@Body)
+activate APIService
+APIService -> UserController: @POST("users/register-app-user")
+activate UserController
+UserController -> UserModel: call model
+activate UserModel
+UserModel -> Database: User.create()
+deactivate UserModel
+activate Database
+Database --> UserController: callback
+deactivate Database
+UserController --> APIService: send res.json
+deactivate UserController
+APIService --> RegisterActivity: callback
+deactivate APIService
+
+alt sucess
+RegisterActivity -> LoginActivity: redirect to
+ref over LoginActivity
+**UC-9 Đăng nhập**
+end ref
+else failure
+RegisterActivity -> RegisterActivity: display message
+activate RegisterActivity
+deactivate RegisterActivity
+deactivate RegisterActivity
+
+end
+
+opt switch to login page
+Student -> RegisterActivity: click "Login" text
+deactivate Student
+activate RegisterActivity
+RegisterActivity -> LoginActivity: redirect to
+deactivate RegisterActivity
+
+ref over LoginActivity
+**SD9. Đăng nhập**
+end ref
+end
+
+
+@enduml

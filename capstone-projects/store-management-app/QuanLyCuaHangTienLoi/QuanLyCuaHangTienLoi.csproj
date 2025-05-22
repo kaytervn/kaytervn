@@ -1,0 +1,424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2E5333B4-C2AF-480C-85BA-73CE94A210C1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>QuanLyCuaHangTienLoi</RootNamespace>
+    <AssemblyName>QuanLyCuaHangTienLoi</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BangChiTietHoaDonThanhToan_Result.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Ca.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChamCong.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DTO\ChamCongDTO.cs" />
+    <Compile Include="ChiTietHoaDon.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChiTietHoaDonThanhToan.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChucVu.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CuaHang.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\ChamCongDAO.cs" />
+    <Compile Include="DTO\CaDTO.cs" />
+    <Compile Include="DAO\CaDAO.cs" />
+    <Compile Include="DTO\ChiTietHoaDonDTO.cs" />
+    <Compile Include="DAO\ChiTietHoaDonDAO.cs" />
+    <Compile Include="DAO\ChucVuDAO.cs" />
+    <Compile Include="DAO\CuaHangDAO.cs" />
+    <Compile Include="DAO\KhoDAO.cs" />
+    <Compile Include="DAO\NhanVienDAO.cs" />
+    <Compile Include="DAO\SanPhamDAO.cs" />
+    <Compile Include="DTO\ChucVuDTO.cs" />
+    <Compile Include="DBConnection.cs" />
+    <Compile Include="DTO\CuaHangDTO.cs" />
+    <Compile Include="DTO\KhachHangDTO.cs" />
+    <Compile Include="DTO\KhoDTO.cs" />
+    <Compile Include="DTO\SanPhamDTO.cs" />
+    <Compile Include="Form\QuanLy\fDoanhThu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\fDoanhThu.designer.cs">
+      <DependentUpon>fDoanhThu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\fDangNhap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\fDangNhap.Designer.cs">
+      <DependentUpon>fDangNhap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DTO\HoaDonDTO.cs" />
+    <Compile Include="Form\NhanVien\fQLPhanCong.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\NhanVien\fQLPhanCong.Designer.cs">
+      <DependentUpon>fQLPhanCong.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\NhanVien\fThanhToan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\NhanVien\fThanhToan.designer.cs">
+      <DependentUpon>fThanhToan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\HoaDonDAO.cs" />
+    <Compile Include="DAO\KhachHangDAO.cs" />
+    <Compile Include="Form\NhanVien\fNhanVien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\NhanVien\fNhanVien.Designer.cs">
+      <DependentUpon>fNhanVien.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\fQuanLy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\fQuanLy.Designer.cs">
+      <DependentUpon>fQuanLy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\fQLNhanVien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\fQLNhanVien.Designer.cs">
+      <DependentUpon>fQLNhanVien.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\NhanVien\fQLKhachHang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\NhanVien\fQLKhachHang.Designer.cs">
+      <DependentUpon>fQLKhachHang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DTO\NhanVienDTO.cs" />
+    <Compile Include="Form\QuanLy\fQLXuatKho.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\fQLXuatKho.Designer.cs">
+      <DependentUpon>fQLXuatKho.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\fQLNhapKho.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\fQLNhapKho.Designer.cs">
+      <DependentUpon>fQLNhapKho.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\NhanVien\fThongTinCaNhan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\NhanVien\fThongTinCaNhan.Designer.cs">
+      <DependentUpon>fThongTinCaNhan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\PhanCongDAO.cs" />
+    <Compile Include="DTO\PhanCongDTO.cs" />
+    <Compile Include="Form\QuanLy\fQLLuong.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\fQLLuong.Designer.cs">
+      <DependentUpon>fQLLuong.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HoaDon.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KhachHang.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Kho.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LoaiSanPham.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LocDoanhThu_Result.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NgayLe.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\NgayLeDAO.cs" />
+    <Compile Include="DTO\NgayLeDTO.cs" />
+    <Compile Include="NhanVien.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NhanVienConLamViec.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NhanVienNghiLam.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NhaSanXuat.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DTO\NhaSanXuatDTO.cs" />
+    <Compile Include="DAO\NhaSanXuatDAO.cs" />
+    <Compile Include="PhanCong.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PhuongThucThanhToan.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DAO\PTTTDAO.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="QLCHTL.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLCHTL.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QLCHTL.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QLCHTL.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLCHTL.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="QuanLyCuaHangTienLoiDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QuanLyCuaHangTienLoiDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="QuanLyCuaHangTienLoiDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QuanLyCuaHangTienLoiDataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="QuanLyCuaHangTienLoiDataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QuanLyCuaHangTienLoiDataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="QuanLyCuaHangTienLoiDataSet3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QuanLyCuaHangTienLoiDataSet3.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SanPham.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SanPhamConBan.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SPConHan.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SPHetHan.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TinhLuong.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\TinhLuongDAO.cs" />
+    <Compile Include="TinhLuongDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TinhLuongDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="UpdateLaiCuaHangKhiThanhToan_Result.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ViewKho.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="XemBangPC_NhanVien.cs">
+      <DependentUpon>QLCHTL.tt</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Form\QuanLy\fDoanhThu.resx">
+      <DependentUpon>fDoanhThu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\fDangNhap.resx">
+      <DependentUpon>fDangNhap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\NhanVien\fQLPhanCong.resx">
+      <DependentUpon>fQLPhanCong.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\NhanVien\fThanhToan.resx">
+      <DependentUpon>fThanhToan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\NhanVien\fNhanVien.resx">
+      <DependentUpon>fNhanVien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\fQLLuong.resx">
+      <DependentUpon>fQLLuong.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\fQLXuatKho.resx">
+      <DependentUpon>fQLXuatKho.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\fQuanLy.resx">
+      <DependentUpon>fQuanLy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\fQLNhanVien.resx">
+      <DependentUpon>fQLNhanVien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\NhanVien\fQLKhachHang.resx">
+      <DependentUpon>fQLKhachHang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\fQLNhapKho.resx">
+      <DependentUpon>fQLNhapKho.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\NhanVien\fThongTinCaNhan.resx">
+      <DependentUpon>fThongTinCaNhan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EntityDeploy Include="QLCHTL.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>QLCHTL.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="QLCHTL.edmx.diagram">
+      <DependentUpon>QLCHTL.edmx</DependentUpon>
+    </None>
+    <None Include="QuanLyCuaHangTienLoiDataSet.xsc">
+      <DependentUpon>QuanLyCuaHangTienLoiDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="QuanLyCuaHangTienLoiDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>QuanLyCuaHangTienLoiDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="QuanLyCuaHangTienLoiDataSet.xss">
+      <DependentUpon>QuanLyCuaHangTienLoiDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="QuanLyCuaHangTienLoiDataSet1.xsc">
+      <DependentUpon>QuanLyCuaHangTienLoiDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="QuanLyCuaHangTienLoiDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>QuanLyCuaHangTienLoiDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="QuanLyCuaHangTienLoiDataSet1.xss">
+      <DependentUpon>QuanLyCuaHangTienLoiDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="QuanLyCuaHangTienLoiDataSet2.xsc">
+      <DependentUpon>QuanLyCuaHangTienLoiDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="QuanLyCuaHangTienLoiDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>QuanLyCuaHangTienLoiDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="QuanLyCuaHangTienLoiDataSet2.xss">
+      <DependentUpon>QuanLyCuaHangTienLoiDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="QuanLyCuaHangTienLoiDataSet3.xsc">
+      <DependentUpon>QuanLyCuaHangTienLoiDataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="QuanLyCuaHangTienLoiDataSet3.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>QuanLyCuaHangTienLoiDataSet3.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="QuanLyCuaHangTienLoiDataSet3.xss">
+      <DependentUpon>QuanLyCuaHangTienLoiDataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="TinhLuongDS.xsc">
+      <DependentUpon>TinhLuongDS.xsd</DependentUpon>
+    </None>
+    <None Include="TinhLuongDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TinhLuongDS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="TinhLuongDS.xss">
+      <DependentUpon>TinhLuongDS.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="QLCHTL.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>QLCHTL.edmx</DependentUpon>
+      <LastGenOutput>QLCHTL.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="QLCHTL.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>QLCHTL.edmx</DependentUpon>
+      <LastGenOutput>QLCHTL.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

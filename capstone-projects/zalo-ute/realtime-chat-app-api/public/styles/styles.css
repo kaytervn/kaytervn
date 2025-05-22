@@ -1,0 +1,100 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f2f5;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.join-form {
+  padding: 20px;
+  background-color: #e4e6eb;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+}
+
+.join-form input {
+  width: 75%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.join-form button {
+  padding: 10px 20px;
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.join-form button:hover {
+  background-color: #166fe5;
+}
+
+.messages {
+  height: 400px;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: #f7f8fa;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 15px;
+  align-items: flex-start;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.message-content {
+  background-color: #e4e6eb;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.user-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.timestamp {
+  font-size: 0.8rem;
+  color: #65676b;
+}
+
+.reactions {
+  font-size: 0.9rem;
+  color: #65676b;
+  margin-top: 5px;
+}
+
+.message img {
+  max-width: 100%;
+  margin-top: 10px;
+  border-radius: 8px;
+}

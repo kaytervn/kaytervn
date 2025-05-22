@@ -1,0 +1,52 @@
+@startuml CD
+
+title "Weather Forecast System"
+
+interface Observer {
+	void update(float, float, float)
+}
+
+class CurrentConditionsDisplay {
+	- temperature: float
+	- humidity: float
+	+ void update(float, float, float)
+	+ void display()
+}
+
+class StatisticsDisplay {
+	- maxTemp: float
+	- minTemp: float
+	- sumTemp: float
+	- tempReadingCount: int
+	+ void update(float, float, float)
+	+ void display()
+}
+
+interface Subject {
+	void registerObserver(Observer)
+	void removeObserver(Observer)
+	void notifyObservers()
+}
+
+class WeatherData {
+	- observers: List<Observer>
+	- temperature: float
+	- humidity: float
+	- pressure: float
+	+ WeatherData()
+	+ void registerObserver(Observer)
+	+ void removeObserver(Observer)
+	+ void notifyObservers()
+	+ void measurementsChanged()
+	+ void setMeasurements(float, float, float)
+}
+
+class Main {
+	+ void main(String[])
+}
+
+Observer <|.. CurrentConditionsDisplay
+Observer <|.. StatisticsDisplay
+Subject <|.. WeatherData
+
+@enduml

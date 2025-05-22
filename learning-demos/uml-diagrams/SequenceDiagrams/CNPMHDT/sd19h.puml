@@ -1,0 +1,27 @@
+@startuml SQ
+autonumber
+title SD19h. Leave comment
+boundary "views/\nUpdateLessonPage" as UpdateLessonPage
+control "CommentService"
+control "CommentController"
+entity "CommentModel"
+database "Database" as Database
+activate UpdateLessonPage
+UpdateLessonPage -> CommentService: createComment(lessonId, userId, parentId, content)
+activate CommentService
+CommentService -> CommentController: router.post("/createComment", createComment)
+activate CommentController
+CommentController -> CommentModel: call model
+activate CommentModel
+CommentModel -> Database: Comment.create(\n{lessonId, userId, parentId, content})
+deactivate CommentModel
+activate Database
+Database --> CommentController: callback
+deactivate Database
+CommentController --> CommentService: send res.json
+deactivate CommentController
+CommentService --> UpdateLessonPage: callback
+deactivate CommentService
+UpdateLessonPage -> UpdateLessonPage: update display
+
+@enduml

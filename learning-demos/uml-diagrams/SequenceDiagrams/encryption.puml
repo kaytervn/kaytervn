@@ -1,0 +1,27 @@
+@startuml
+actor User
+participant Application
+database Database
+== Data Encryption ==
+User -> Application: Input raw data
+Application -> Application: Encrypt raw data using server secret key
+Application -> Database: Save encrypted data
+
+== Request User Key ==
+User -> Application: Send request key
+Application -> Application: Generate user secret key and RSA key pair
+Application -> Application: Encrypt secret key with public key
+Application -> Database: Save public key and encrypted secret key
+Application -> User: Return private key
+
+== Data decryption ==
+User -> Application: Send request data
+Application -> Database: Retrive encrypted data
+Application -> Application: Decrypt data using server secret key
+Application -> Application: Encrypt data using user secret key
+Application -> User: Return encrypted data
+User -> User: Decrypt user secret key using private key
+User -> User: Decrypt data using user secret key
+
+@enduml
+

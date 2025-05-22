@@ -1,0 +1,43 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="BaseUser" id="1698938825239-1">
+        <addColumn tableName="db_user_base_user">
+            <column name="account_id" type="bigint" afterColumn="id"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="BaseUser" id="1698938825239-2">
+        <addColumn tableName="db_user_base_address">
+            <column name="user_id" type="bigint" afterColumn="id"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="BaseUser" id="1698938825239-3">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="db_user_base_address"
+                                 constraintName="FK20mqlhry7ck664s85wk1eq1qn" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_user_base_user" validate="true"/>
+    </changeSet>
+    <changeSet author="BaseUser" id="1698938825239-4">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_user_base_user"
+                                 constraintName="FK30tks1lqufixlmk8b08gti667" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_user_base_account" validate="true"/>
+    </changeSet>
+    <changeSet author="BaseUser" id="1698938825239-11">
+        <dropColumn columnName="avatar" tableName="db_user_base_user"/>
+    </changeSet>
+    <changeSet author="BaseUser" id="1698938825239-12">
+        <dropColumn columnName="email" tableName="db_user_base_user"/>
+    </changeSet>
+    <changeSet author="BaseUser" id="1698938825239-13">
+        <dropColumn columnName="name" tableName="db_user_base_user"/>
+    </changeSet>
+    <changeSet author="BaseUser" id="1698938825239-14">
+        <dropColumn columnName="password" tableName="db_user_base_user"/>
+    </changeSet>
+    <changeSet author="BaseUser" id="1698938825239-15">
+        <dropColumn columnName="phone" tableName="db_user_base_user"/>
+    </changeSet>
+</databaseChangeLog>

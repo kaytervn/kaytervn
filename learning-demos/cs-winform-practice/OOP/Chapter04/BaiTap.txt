@@ -1,0 +1,131 @@
+1.      Xây dựng các lớp sau (xây dựng các hàm tạo, hàm hủy, hàm nhập, hàm xuất, hàm tính toán):
+
+a.      NhanVien (HoTen, CMND, Năm sinh, lương cơ bản)
+
+                                                    i.     Hàm TinhLuong(): Tính Lương: Lương =  lương cơ bản.
+
+                                                   ii.     Các hàm khởi tạo
+
+                                                  iii.     Hàm Nhap(), Nhap(HoTen, CMND, Năm sinh, lương cơ bản)
+
+                                                  iv.     Hàm Xuat().
+
+                                                   v.     Hàm hủy
+
+b.      NVKeToan (Phụ cấp) kế thừa lớp NhanVien
+
+                                                    i.     Hàm TinhLuong(): Tính Lương: Lương = lương cơ bản + phụ cấp
+
+                                                   ii.     Các hàm khởi tạo
+
+                                                  iii.     Hàm Nhap(), Nhap(HoTen, CMND, Năm sinh, lương cơ bản, phụ cấp)
+
+                                                  iv.     Hàm Xuat().
+
+                                                   v.     Hàm hủy
+
+c.      NVKinhDoanh (Số hợp đồng) kế thừa lớp NhanVien
+
+                                                    i.     Hàm TinhLuong(): Tính lương: Lương = lương cơ bản + số hợp đồng * 100
+
+                                                   ii.     Các hàm khởi tạo
+
+                                                  iii.     Hàm Nhap(), Nhap(HoTen, CMND, Năm sinh, lương cơ bản, phụ cấp, Số hợp đồng)
+
+                                                  iv.     Hàm Xuat().
+
+                                                   v.     Hàm hủy
+
+ 
+
+d.      NVBaoVe (Ca đăng ký làm việc) kế thừa lớp NhanVien
+
+                                                    i.     Tính lương: Chính là hàm tính lương nhân viên (không cài đặt)
+
+                                                   ii.     Các hàm khởi tạo
+
+                                                  iii.     Hàm Nhap(), Nhap(HoTen, CMND, Năm sinh, lương cơ bản, phụ cấp, Ca đăng ký làm việc)
+
+                                                  iv.     Hàm Xuat().
+
+                                                   v.     Hàm hủy
+
+ 
+
+e.      CongTy (tên công ty, danh sách nhân viên)//STATIC CLASS
+
+                                                    i.     Tính lương cho các nhân viên
+
+                                                   ii.     Sắp xếp nhân viên theo lương
+
+                                                  iii.     Search employees with their name
+
+                                                  iv.     Find m employess with highest salary in the company
+
+2. Xây dựng lớp Diem (tọa độ x, tọa độ y), lớp Hinh (gồm 2 Diem). Sau đó xây dựng các lớp dẫn xuất: Đoạn Thẳng (có hai điểm), Hình Chữ Nhật (chiều dài, chiều rộng), Hình Tam Giác (độ dài Cạnh đáy, chiều cao).
+
+     Viết các hàm (đầy đủ các loại hàm cần thiết như câu 1):
+
+a)      Khởi tạo
+
+b)     Hàm hủy
+
+c)      Hàm xuất
+
+d)     Hàm nhập
+
+e)     Tính diện tích các hình cụ thể
+
+Yêu cầu: Tạo 1 lớp Graphic chứa danh sách hình //STATIC CLASS: Nhập vào danh sách các hình, gọi hàm nhập, xuất, vẽ các hình
+
+
+3.  Xây dựng lớp SanPham (MaSP, TenSP, Màu sắc, Giá cơ bản), sau đó xây dựng các lớp dẫn xuất: TiVi (thêm thuộc tính Kích thước), Điện thoại (Thêm thuộc tính Bộ nhớ),Máy Lạnh (thêm thuộc tính công suất),
+
+CongTy (ten công ty, danh sách sản phẩm). //STATIC CLASS
+
+Viết các hàm (đầy đủ các hàm cần thiết như câu 1):
+
+a.      Khởi tạo
+
+b.      Hàm hủy
+
+c.      Hàm xuất
+
+d.      Hàm nhập
+
+e.      Tính giá bán của các loại sản phẩm
+
+ + Giá bán Ti vi = giá cơ bản + Kích thước *0.1
+
+ + Giá điện thoại = giá cơ bản + Bộ nhớ * 0.2
+
+ + Giá máy lạnh = giá cơ bản + công suất * 0.1
+
+f.       Sắp xếp danh sách sản phẩm theo giá bán
+
+g.      Tìm sản phẩm theo tên
+
+h.      Tìm m sản phẩm có giá cao nhất
+
+ Write a class POINT (x, y), class SHAPE (including 2 POINTS, Color). And then write the following classes derived from class SHAPE: LINE (2 POINTS), RECTANGLE (length, width), TRIANGLE (Bottom edge, height), COMPLEXOBJECT (list of SHAPES).
+
+Operations:
+
+a)      Constructors
+
+b)     Finalizer
+
+c)      Input
+
+d)     Output
+
+e)     Calculate the area of the shape
+
+f)  Move a graphic object into a new position
+
+g) Merge/group graphic objects.
+
+h) Devided/ungroup a graphic object into smaller objects.
+
+i) Change color of shape.
+

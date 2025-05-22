@@ -1,0 +1,28 @@
+@startuml CD
+
+title CD19. Cập nhật chi tiết khóa học
+
+actor "Instructor" as Actor
+boundary "UpdateCourseDetailPage"
+boundary "UpdateLessonPage"
+control "LessonController"
+entity "LessonModel"
+control "DocumentController"
+entity "DocumentModel"
+control "CommentController"
+entity "CommentModel"
+control "CourseController"
+entity "CourseModel"
+
+Actor - UpdateCourseDetailPage: \l1. accessPage()<&arrow-right>\n5. click visibility box<&arrow-right>\n9. clickDeleteCourseButton()<&arrow-right>\n13. chooseLessonToDelete()\n17. inputLessonData(title, description)<&arrow-right>\n20. chooseLesson()<&arrow-right>
+UpdateCourseDetailPage -up- LessonController: \l<&arrow-top>2. getCourseLessons(courseId)\n<&arrow-bottom>4. displayLessons()\n<&arrow-top>14. deleteLesson(_id)\n<&arrow-top>18. createLesson(courseId, title, description)
+LessonController - LessonModel: \l3. Lesson.find({courseId})<&arrow-right>\n15. Lesson.findById(req.params.id)<&arrow-right>\n16. lesson.updateOne({status: false})<&arrow-right>\n19. Lesson.create({courseId, title, description})<&arrow-right>
+UpdateCourseDetailPage - CourseController: \l6. changeCourseVisibility(courseId, visibility)<&arrow-right>\n10. deleteCourse(courseId)<&arrow-right>
+CourseController - CourseModel: \l7. Course.findById(courseId)<&arrow-right>\n8. course.updateOne({visibility})<&arrow-right>\n11. Course.findById(courseId)<&arrow-right>\n12. course.updateOne({status: false})<&arrow-right>
+UpdateCourseDetailPage ---- UpdateLessonPage: \l<&arrow-bottom>21. navigate("/updateLesson")
+UpdateLessonPage - DocumentController: \l22. getLessonDocuments(lessonId)<&arrow-right>\n<&arrow-left>24. displayDocuments()\n29.createDocument(lessonId, title, type, description)<&arrow-right>\n32. deleteDocument(_id)<&arrow-right>
+DocumentController - DocumentModel: \l23. Document.find({lessonId})<&arrow-right>\n30. Document.create({lessonId, title, type, description})<&arrow-right>\n33. Document.findById(req.params.id)<&arrow-right>\n34. document.deleteOne()<&arrow-right>
+UpdateLessonPage -- CommentController: \l<&arrow-bottom>25. getLessonComments(lessonId)\n<&arrow-top>27. displayComments()\n<&arrow-bottom>36. createComment(lessonId, userId, parentId, content)
+CommentController - CommentModel: \l26. Comment.find({lessonId})<&arrow-right>\n37. Comment.create({lessonId, userId, parentId, content})<&arrow-right>
+Actor - UpdateLessonPage: \l<&arrow-bottom>28. inputDocumentData(title, type, description)\n<&arrow-bottom>31. chooseDocumentToDelete(_id)\n<&arrow-bottom>35. inputComment(content)
+@enduml

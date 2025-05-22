@@ -1,0 +1,30 @@
+@startuml SQ
+
+autonumber
+
+title SD15. Đăng ký tài khoản giáo viên
+
+actor "Instructor" as Actor
+boundary "views/\nRegisterInstructorPage" as RegisterInstructorPage
+control "UserService"
+control "UserController"
+
+activate Actor
+Actor -> RegisterInstructorPage: input name, email, content
+deactivate Actor
+activate RegisterInstructorPage
+RegisterInstructorPage -> UserService: registerInstructor(name, email, content)
+activate UserService
+UserService -> UserController: router.post(\n"/registerInstructor",\nregisterInstructor)
+activate UserController
+UserController -> NodeMailer: registerInstructor()
+activate NodeMailer
+NodeMailer --> UserController: callback
+deactivate NodeMailer
+UserController --> UserService: send res.json
+deactivate UserController
+UserService --> RegisterInstructorPage: display message
+deactivate RegisterInstructorPage
+deactivate UserService
+
+@enduml

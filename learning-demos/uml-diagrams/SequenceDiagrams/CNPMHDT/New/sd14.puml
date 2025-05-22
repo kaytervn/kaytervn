@@ -1,0 +1,86 @@
+@startuml SQ
+
+autonumber
+
+title SD14. Quản lý danh sách khóa học đã tạo
+
+actor "Instructor"
+boundary "MyCreatedCourses"
+boundary "EditCourse"
+boundary "UpdateCourseIntro"
+boundary "UpdateCourseDetails"
+control "CourseService"
+control "CourseController"
+entity "CourseModel"
+database "Database" as Database
+
+activate Instructor
+Instructor -> MyCreatedCourses: input {search, sort,\nvisibility, topic}
+activate MyCreatedCourses
+MyCreatedCourses -> CourseService: updateDisplay()
+activate CourseService
+CourseService -> CourseController: searchUserCourses({search,\nvisibility, topic, page, sort})
+activate CourseController
+CourseController -> CourseModel: call model
+activate CourseModel
+CourseModel -> Database: Course.find()
+deactivate CourseModel
+activate Database
+Database --> CourseController: return courses
+deactivate Database
+CourseController --> CourseService: send res.json
+deactivate CourseController
+CourseService --> MyCreatedCourses: callback
+deactivate CourseService
+
+MyCreatedCourses -> MyCreatedCourses: display courses
+activate MyCreatedCourses
+deactivate MyCreatedCourses
+deactivate MyCreatedCourses
+
+opt change course visibility
+
+Instructor -> MyCreatedCourses: click "eye" button on a course
+
+ref over MyCreatedCourses
+**SD14a. Change**
+**course visibility**
+end ref
+
+end
+
+opt edit course
+
+Instructor -> MyCreatedCourses: click "Edit" on a course
+activate MyCreatedCourses
+MyCreatedCourses -> EditCourse: navigate("/edit-course")
+deactivate MyCreatedCourses
+activate EditCourse
+opt update course intro
+
+Instructor -> EditCourse: click "Edit Intro"
+EditCourse -> UpdateCourseIntro: navigate(\n"/update-course-intro")
+ref over UpdateCourseIntro
+**SD15. Cập nhật**
+**giới thiệu khóa học**
+end ref
+
+end
+
+opt update course details
+
+Instructor -> EditCourse: click "Edit Details"
+deactivate Instructor
+EditCourse -> UpdateCourseDetails: navigate(\n"/update-course-details")
+deactivate EditCourse
+
+ref over UpdateCourseDetails
+**SD16. Cập nhật**
+**chi tiết khóa học**
+end ref
+
+end
+
+end
+
+@enduml

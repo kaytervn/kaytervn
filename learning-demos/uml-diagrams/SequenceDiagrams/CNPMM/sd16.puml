@@ -1,0 +1,110 @@
+@startuml SQ
+
+autonumber
+
+title SD16. Quản lý quyền
+
+actor "Actor" as actor
+boundary "RoleManagement" as view
+control "RoleController" as RoleController
+control "PermissionController" as PermissionController
+entity "RoleModel" as RoleModel
+entity "PermissionModel" as PermissionModel
+database "Database" as database
+
+actor -> view: enter search values
+activate actor
+activate view
+view -> RoleController: call API /list
+activate RoleController
+RoleController -> RoleModel: call model
+activate RoleModel
+
+RoleModel -> database: find data by search values
+deactivate RoleModel
+activate database
+database --> RoleController: return data
+deactivate database
+RoleController --> view: return data
+deactivate RoleController
+
+view -> PermissionController: call API /list
+activate PermissionController
+PermissionController -> PermissionModel: call model
+activate PermissionModel
+
+PermissionModel -> database: find all
+deactivate PermissionModel
+activate database
+database --> PermissionController: return data
+deactivate database
+PermissionController --> view: return data
+deactivate PermissionController
+
+view -> view: display data
+activate view
+deactivate view
+deactivate view
+
+opt update role
+
+actor -> view: click "Edit" on a role
+activate view
+view -> RoleController: call API /get
+activate RoleController
+
+RoleController -> RoleModel: call model
+activate RoleModel
+RoleModel -> database: find role by id
+deactivate RoleModel
+activate database
+database --> RoleController: return role
+deactivate database
+RoleController --> view: return role
+deactivate RoleController
+view -> view: display update role form
+
+actor -> view: enter role info
+
+alt confirm
+actor -> view: click "Submit"
+
+view -> RoleController: call API /update
+
+activate RoleController
+RoleController -> RoleModel: call model
+activate RoleModel
+
+RoleModel -> database: update role by id
+deactivate RoleModel
+activate database
+
+database --> RoleController: callback
+deactivate database
+RoleController --> view: return message
+deactivate RoleController
+view -> view: display message
+view -> RoleController: call API /list
+activate RoleController
+RoleController -> RoleModel: call model
+activate RoleModel
+RoleModel -> database: find roles
+deactivate RoleModel
+activate database
+database --> RoleController: return data
+deactivate database
+RoleController --> view: return data
+deactivate RoleController
+
+view -> view: update display
+
+else cancel
+actor -> view: click "X"
+deactivate actor
+view -> view: close modal
+activate view
+deactivate view
+deactivate view
+end
+end
+@enduml

@@ -1,0 +1,30 @@
+@startuml CD
+
+title CD17. Cập nhật chi tiết bài học
+
+actor "Instructor"
+boundary "UpdateLessonDetails"
+boundary "CreateDocument"
+boundary "CreateComment"
+control "DocumentService"
+control "DocumentController"
+entity "DocumentModel"
+control "CommentService"
+control "CommentController"
+entity "CommentModel"
+
+Instructor --- UpdateLessonDetails: \l<&arrow-bottom>1. clickCreateDocument()\n<&arrow-bottom>8. clickDeleteOnDocument()\n<&arrow-bottom>12. clickLeaveComment()
+UpdateLessonDetails - CreateDocument: \l2. navigate("/create-comment")<&arrow-right>\n<&arrow-left>7. navigate("/update-lesson-details")
+CreateComment - UpdateLessonDetails: \l<&arrow-left>13. navigate("/create-comment")\n18. navigate("/update-lesson-details")<&arrow-right>
+
+Instructor --- CreateDocument: \l<&arrow-bottom>3. inputData()
+Instructor --- CreateComment: \l<&arrow-left>14. inputContent()
+UpdateLessonDetails - DocumentService: \l<&arrow-bottom>9. handleDelete()
+CreateDocument -- DocumentService: \l<&arrow-bottom>4. handleCreate()
+DocumentService -- DocumentController: \l<&arrow-bottom>5. createDocument()\n<&arrow-bottom>10. deleteDocument()
+DocumentController -- DocumentModel: \l<&arrow-bottom>6. Document.create()\n<&arrow-bottom>11. Document.deleteOne()
+CreateComment -- CommentService: \l<&arrow-bottom>15. handleCreate()
+CommentService -- CommentController: \l<&arrow-bottom>16. createComment()
+CommentController -- CommentModel: \l<&arrow-bottom>17. Comment.create()
+
+@enduml

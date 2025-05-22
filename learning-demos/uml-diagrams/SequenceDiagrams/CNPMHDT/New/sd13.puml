@@ -1,0 +1,48 @@
+@startuml SQ
+
+autonumber
+
+title SD13. Tạo khóa học
+
+actor "Instructor" as Actor
+boundary "CreateCourse"
+boundary "MyCreatedCourses"
+control "CourseService"
+control "CourseController"
+entity "CourseModel"
+database "Database" as Database
+
+activate Actor
+Actor -> CreateCourse: input {title, topic,\nprice, picture, description}
+deactivate Actor
+activate CreateCourse
+CreateCourse -> CourseService: handleCreate()
+activate CourseService
+CourseService -> CourseController: createCourse({formData})
+activate CourseController
+CourseController -> CourseModel: call model
+activate CourseModel
+CourseModel -> Database: Course.create()
+deactivate CourseModel
+activate Database
+Database --> CourseController: return course
+deactivate Database
+CourseController --> CourseService: send res.json
+deactivate CourseController
+CourseService --> CreateCourse: callback
+deactivate CourseService
+
+alt input is empty
+CreateCourse -> CreateCourse: display alert
+else input is not empty
+CreateCourse -> MyCreatedCourses: navigate("/")
+deactivate CreateCourse
+ref over MyCreatedCourses
+**SD17. Quản lý danh sách**
+**khóa học đã tạo**
+end ref
+end
+
+
+
+@enduml

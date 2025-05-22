@@ -1,0 +1,46 @@
+@startuml CD
+
+title "Travelling System"
+
+abstract TransportHandler {
+
+	# nextHandler: TransportHandler
+	+ void handleDepart(TravelRequest)
+	+ void setNext(TransportHandler)
+	# boolean isAcceptable(int)
+	# void depart(TravelRequest)
+}
+
+class Car {
+	- MAX_SIZE: int
+	# boolean isAcceptable(int)
+	# void depart(TravelRequest)
+}
+
+class Bus {
+	- MIN_SIZE: int
+	- MAX_SIZE: int
+	# boolean isAcceptable(int)
+	# void depart(TravelRequest)
+}
+
+class Airplane {
+	- MIN_SIZE: int
+	# boolean isAcceptable(int)
+	# void depart(TravelRequest)
+}
+
+class TourGuide {
+	+ TransportHandler getTransport()
+}
+
+class Main {
+	+ void main(String[])
+}
+
+TransportHandler <|-- Car
+TransportHandler <|-- Bus
+TransportHandler <|-- Airplane
+
+
+@enduml

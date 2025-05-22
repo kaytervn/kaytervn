@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3ad39c537e784f8b8002106ecadf6874" Name="Diagram1">
+        <EntityTypeShape EntityType="QLCDTPModel.CanCuocCongDan" Width="1.5" PointX="3" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.CongDan" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.HoKhau" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.KetHon" Width="1.5" PointX="5.25" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.KhaiSinh" Width="1.5" PointX="10.5" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.KhaiTu" Width="1.5" PointX="10.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.LyHon" Width="1.5" PointX="7.5" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.TamTruTamVang" Width="1.5" PointX="7.5" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.Thue" Width="1.5" PointX="5.25" PointY="15.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.ThuongTru" Width="1.5" PointX="7.5" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.vCanCuocCongDan" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.vHoKhau" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.vKetHon" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.vKhaiSinh" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.vKhaiTu" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.vLyHon" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.vTamTruTamVang" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.vThue" Width="1.5" PointX="12.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCDTPModel.vThuongTru" Width="1.5" PointX="12.75" PointY="8.75" IsExpanded="true" />
+        <AssociationConnector Association="QLCDTPModel.FK__CanCuocCon__MaCD__2A4B4B5E" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__HoKhau__ChuHo__31EC6D26" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__KetHon__CCCDChon__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__KetHon__CCCDVo__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__KhaiTu__NguoiKha__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__Thue__CCCD__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__KhaiSinh__MaCD__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__KhaiTu__MaCD__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__TamTruTamV__MaCD__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__ThuongTru__MaCD__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__TamTruTamV__MaHo__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__ThuongTru__MaHo__35BCFE0A" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__KhaiSinh__MaKH__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCDTPModel.FK__LyHon__MaKH__403A8C7D" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

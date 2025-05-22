@@ -1,0 +1,43 @@
+@startuml SQ
+
+autonumber
+
+title SD14b. Edit course
+
+actor "Instructor"
+boundary "MyCreatedCourses"
+boundary "EditCourse"
+boundary "UpdateCourseIntro"
+boundary "UpdateCourseDetails"
+activate Instructor
+Instructor -> MyCreatedCourses: click "Edit" on a course
+activate MyCreatedCourses
+MyCreatedCourses -> EditCourse: navigate("/edit-course")
+deactivate MyCreatedCourses
+activate EditCourse
+opt update course intro
+
+Instructor -> EditCourse: click "Edit Intro"
+EditCourse -> UpdateCourseIntro: navigate(\n"/update-course-intro")
+ref over UpdateCourseIntro
+**SD15. Cập nhật**
+**giới thiệu khóa học**
+end ref
+
+end
+
+opt update course details
+
+Instructor -> EditCourse: click "Edit Details"
+deactivate Instructor
+EditCourse -> UpdateCourseDetails: navigate(\n"/update-course-details")
+deactivate EditCourse
+
+ref over UpdateCourseDetails
+**SD16. Cập nhật**
+**chi tiết khóa học**
+end ref
+
+end
+
+@enduml

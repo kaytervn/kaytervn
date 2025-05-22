@@ -1,0 +1,63 @@
+/* CheckoutPage.css */
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.payment-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.total-price {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  /* Custom styling for smaller screens */
+  .center-content {
+    padding: 20px;
+  }
+
+  .sticky-top {
+    position: static;
+  }
+
+}
+.section-container {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  /* Custom styling for smaller screens */
+  .center-content {
+    padding: 20px;
+  }
+
+  .sticky-top {
+    position: static;
+  }
+}
+.center-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 3rem;
+}

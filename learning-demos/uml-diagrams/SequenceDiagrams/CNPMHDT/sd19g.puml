@@ -1,0 +1,34 @@
+@startuml SQ
+autonumber
+title SD19g. Delete document
+boundary "views/\nUpdateLessonPage" as UpdateLessonPage
+control "DocumentService"
+control "DocumentController"
+entity "DocumentModel"
+database "Database" as Database
+activate UpdateLessonPage
+UpdateLessonPage -> DocumentService: deleteDocument(_id)
+activate DocumentService
+DocumentService -> DocumentController: router.delete("/deleteDocument:id", deleteDocument)
+activate DocumentController
+DocumentController -> DocumentModel: call model
+activate DocumentModel
+DocumentModel -> Database: Document.findById(req.params.id)
+deactivate DocumentModel
+activate Database
+Database --> DocumentController: return document
+deactivate Database
+DocumentController -> DocumentModel: call model
+activate DocumentModel
+DocumentModel -> Database: document.deleteOne()
+deactivate DocumentModel
+activate Database
+Database --> DocumentController: callback
+deactivate Database
+DocumentController --> DocumentService: send res.json
+deactivate DocumentController
+DocumentService --> UpdateLessonPage: callback
+deactivate DocumentService
+UpdateLessonPage -> UpdateLessonPage: update display
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml SQ
+autonumber
+title SD19c. Delete lesson
+boundary "views/\nUpdateCourseDetailPage" as UpdateCourseDetailPage
+control "LessonService"
+control "LessonController"
+entity "LessonModel"
+database "Database" as Database
+activate UpdateCourseDetailPage
+UpdateCourseDetailPage -> LessonService: deleteLesson(_id)
+activate LessonService
+LessonService -> LessonController: router.delete("/deleteLesson:id", deleteLesson)
+activate LessonController
+LessonController -> LessonModel: call model
+activate LessonModel
+LessonModel -> Database: Lesson.findById(req.params.id)
+deactivate LessonModel
+activate Database
+Database --> LessonController: return lesson
+deactivate Database
+LessonController -> LessonModel: call model
+activate LessonModel
+LessonModel -> Database: lesson.updateOne({status: false})
+deactivate LessonModel
+activate Database
+Database --> LessonController: callback
+deactivate Database
+LessonController --> LessonService: send res.json
+deactivate LessonController
+LessonService --> UpdateCourseDetailPage: display message
+deactivate LessonService
+UpdateCourseDetailPage -> UpdateCourseDetailPage: update display
+
+
+@enduml

@@ -1,0 +1,76 @@
+@startuml SQ
+
+autonumber
+
+title SD2. Xem danh sách khóa học
+
+actor "Student"
+boundary "HomeActivity"
+boundary "CourseIntroActivity"
+control "APIService"
+control "CourseController"
+entity "CourseModel"
+control "CartController"
+entity "CartItemModel"
+database "Database" as Database
+
+activate Student
+Student -> HomeActivity: input {search, sort, topic}
+activate HomeActivity
+HomeActivity -> APIService: searchCourses(@Header, @Body)
+activate APIService
+APIService -> CourseController: @POST("courses/search-courses")
+activate CourseController
+CourseController -> CourseModel: call model
+activate CourseModel
+CourseModel -> Database: Course.find()
+deactivate CourseModel
+activate Database
+Database --> CourseController: return courses
+deactivate Database
+CourseController --> APIService: send res.json
+deactivate CourseController
+APIService --> HomeActivity: callback
+deactivate APIService
+
+HomeActivity -> HomeActivity: display courses
+activate HomeActivity
+deactivate HomeActivity
+deactivate HomeActivity
+
+opt view course intro
+Student -> HomeActivity: click "View Intro" on a course
+activate HomeActivity
+HomeActivity -> CourseIntroActivity: redirect to
+deactivate HomeActivity
+ref over CourseIntroActivity
+**SD5. Xem giới thiệu khóa học**
+end ref
+end
+
+opt add course to cart
+Student -> HomeActivity: click "Cart" icon on a course
+deactivate Student
+activate HomeActivity
+HomeActivity -> APIService: addToCart(@Header, @Body)
+activate APIService
+APIService -> CartController: @POST("carts/addToCart")
+activate CartController
+CartController -> CartItemModel: call model
+activate CartItemModel
+CartItemModel -> Database: CartItem.create()
+deactivate CartItemModel
+activate Database
+Database --> CartController: callback
+deactivate Database
+CartController --> APIService: send res.json
+deactivate CartController
+APIService --> HomeActivity: callback
+deactivate APIService
+HomeActivity -> HomeActivity: display message
+activate HomeActivity
+deactivate HomeActivity
+deactivate HomeActivity
+end
+
+@enduml

@@ -1,0 +1,62 @@
+{
+  "name": "zalo-ute",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@react-native-community/datetimepicker": "^8.2.0",
+    "@types/react-datepicker": "^6.2.0",
+    "autoprefixer": "^10.4.20",
+    "axios": "^1.7.7",
+    "build": "^0.1.4",
+    "cropperjs": "^1.6.2",
+    "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.4.5",
+    "expo-linear-gradient": "^13.0.2",
+    "i": "^0.3.7",
+    "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.441.0",
+    "npm": "^10.9.0",
+    "postcss": "^8.4.47",
+    "react": "^18.3.1",
+    "react-cropper": "^2.3.3",
+    "react-datepicker": "^7.4.0",
+    "react-datetime-picker": "^6.0.1",
+    "react-dom": "^18.3.1",
+    "react-image-crop": "^11.0.7",
+    "react-loader-spinner": "^6.1.6",
+    "react-router-dom": "^6.26.2",
+    "react-toastify": "^10.0.5",
+    "react-tooltip": "^5.28.0",
+    "run": "^1.5.0",
+    "socket.io-client": "^4.8.1",
+    "zalo-ute": "file:"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/crypto-js": "^4.2.2",
+    "@types/node": "^22.5.5",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "globals": "^15.9.0",
+    "tailwindcss": "^3.4.11",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.0.1",
+    "vite": "^5.4.1"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.17.2"
+  }
+}

@@ -1,0 +1,33 @@
+@startuml SQ
+
+autonumber
+
+title SD16c. Delete course
+
+boundary "UpdateCourseDetails"
+boundary "MyCreatedCourses"
+control "CourseService"
+control "CourseController"
+entity "CourseModel"
+database "Database"
+
+activate UpdateCourseDetails
+UpdateCourseDetails -> CourseService: handleDelete(_id)
+activate CourseService
+CourseService -> CourseController: deleteLesson(_id)
+activate CourseController
+CourseController -> CourseModel: call model
+activate CourseModel
+CourseModel -> Database: Course.updateOne()
+deactivate CourseModel
+activate Database
+Database --> CourseController: callback
+deactivate Database
+CourseController --> CourseService: send res.json
+deactivate CourseController
+CourseService --> UpdateCourseDetails: callback
+deactivate CourseService
+UpdateCourseDetails -> MyCreatedCourses: navigate("/")
+deactivate UpdateCourseDetails
+
+@enduml

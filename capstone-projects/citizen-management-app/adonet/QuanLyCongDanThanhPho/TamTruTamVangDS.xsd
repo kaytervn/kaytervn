@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="TamTruTamVangDS" targetNamespace="http://tempuri.org/TamTruTamVangDS.xsd" xmlns:mstns="http://tempuri.org/TamTruTamVangDS.xsd" xmlns="http://tempuri.org/TamTruTamVangDS.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection ConnectionStringObject="Data Source=(localdb)\mssqllocaldb;Initial Catalog=QuanLyCongDanThanhPho;Integrated Security=True" IsAppSettingsProperty="false" Modifier="Assembly" Name="msi\localdb#a71fd1e4.QuanLyCongDanThanhPho.dbo" ParameterPrefix="@" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="vTamTruTamVangTableAdapter" GeneratorDataComponentClassName="vTamTruTamVangTableAdapter" Name="vTamTruTamVang" UserDataComponentName="vTamTruTamVangTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="msi\localdb#a71fd1e4.QuanLyCongDanThanhPho.dbo" DbObjectName="QuanLyCongDanThanhPho.dbo.vTamTruTamVang" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT MaHo, TinhThanh, QuanHuyen, PhuongXa, MaCD, HoTen, NgaySinh, TinhTrangCuTru, NgayDangKy FROM dbo.vTamTruTamVang</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="MaHo" DataSetColumn="MaHo" />
+              <Mapping SourceColumn="TinhThanh" DataSetColumn="TinhThanh" />
+              <Mapping SourceColumn="QuanHuyen" DataSetColumn="QuanHuyen" />
+              <Mapping SourceColumn="PhuongXa" DataSetColumn="PhuongXa" />
+              <Mapping SourceColumn="MaCD" DataSetColumn="MaCD" />
+              <Mapping SourceColumn="HoTen" DataSetColumn="HoTen" />
+              <Mapping SourceColumn="NgaySinh" DataSetColumn="NgaySinh" />
+              <Mapping SourceColumn="TinhTrangCuTru" DataSetColumn="TinhTrangCuTru" />
+              <Mapping SourceColumn="NgayDangKy" DataSetColumn="NgayDangKy" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="TamTruTamVangDS" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_UserDSName="TamTruTamVangDS" msprop:Generator_DataSetName="TamTruTamVangDS">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="vTamTruTamVang" msprop:Generator_RowEvHandlerName="vTamTruTamVangRowChangeEventHandler" msprop:Generator_RowDeletedName="vTamTruTamVangRowDeleted" msprop:Generator_RowDeletingName="vTamTruTamVangRowDeleting" msprop:Generator_RowEvArgName="vTamTruTamVangRowChangeEvent" msprop:Generator_TablePropName="vTamTruTamVang" msprop:Generator_RowChangedName="vTamTruTamVangRowChanged" msprop:Generator_RowChangingName="vTamTruTamVangRowChanging" msprop:Generator_TableClassName="vTamTruTamVangDataTable" msprop:Generator_RowClassName="vTamTruTamVangRow" msprop:Generator_TableVarName="tablevTamTruTamVang" msprop:Generator_UserTableName="vTamTruTamVang">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MaHo" msprop:Generator_ColumnPropNameInRow="MaHo" msprop:Generator_ColumnPropNameInTable="MaHoColumn" msprop:Generator_ColumnVarNameInTable="columnMaHo" msprop:Generator_UserColumnName="MaHo" type="xs:int" />
+              <xs:element name="TinhThanh" msprop:Generator_ColumnPropNameInRow="TinhThanh" msprop:Generator_ColumnPropNameInTable="TinhThanhColumn" msprop:Generator_ColumnVarNameInTable="columnTinhThanh" msprop:Generator_UserColumnName="TinhThanh">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="QuanHuyen" msprop:Generator_ColumnPropNameInRow="QuanHuyen" msprop:Generator_ColumnPropNameInTable="QuanHuyenColumn" msprop:Generator_ColumnVarNameInTable="columnQuanHuyen" msprop:Generator_UserColumnName="QuanHuyen">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PhuongXa" msprop:Generator_ColumnPropNameInRow="PhuongXa" msprop:Generator_ColumnPropNameInTable="PhuongXaColumn" msprop:Generator_ColumnVarNameInTable="columnPhuongXa" msprop:Generator_UserColumnName="PhuongXa">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MaCD" msprop:Generator_ColumnPropNameInRow="MaCD" msprop:Generator_ColumnPropNameInTable="MaCDColumn" msprop:Generator_ColumnVarNameInTable="columnMaCD" msprop:Generator_UserColumnName="MaCD" type="xs:int" />
+              <xs:element name="HoTen" msprop:Generator_ColumnPropNameInRow="HoTen" msprop:Generator_ColumnPropNameInTable="HoTenColumn" msprop:Generator_ColumnVarNameInTable="columnHoTen" msprop:Generator_UserColumnName="HoTen">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NgaySinh" msprop:Generator_ColumnPropNameInRow="NgaySinh" msprop:Generator_ColumnPropNameInTable="NgaySinhColumn" msprop:Generator_ColumnVarNameInTable="columnNgaySinh" msprop:Generator_UserColumnName="NgaySinh" type="xs:dateTime" />
+              <xs:element name="TinhTrangCuTru" msprop:Generator_ColumnPropNameInRow="TinhTrangCuTru" msprop:Generator_ColumnPropNameInTable="TinhTrangCuTruColumn" msprop:Generator_ColumnVarNameInTable="columnTinhTrangCuTru" msprop:Generator_UserColumnName="TinhTrangCuTru" type="xs:int" />
+              <xs:element name="NgayDangKy" msprop:Generator_ColumnPropNameInRow="NgayDangKy" msprop:Generator_ColumnPropNameInTable="NgayDangKyColumn" msprop:Generator_ColumnVarNameInTable="columnNgayDangKy" msprop:Generator_UserColumnName="NgayDangKy" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

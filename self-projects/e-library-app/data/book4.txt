@@ -1,0 +1,6 @@
+Lập trình Python cơ bản
+Lập trình
+Tất cả những điều quan trọng cần biết về Python cơ bản được tập hợp một cách dễ hiểu trong cuốn sách này. Bắt đầu từ những khái niệm căn bản như biến, kiểu dữ liệu và câu lệnh điều kiện, sách cung cấp nền tảng vững chắc cho người mới bắt đầu.
+Ngoài ra, sách không chỉ dừng lại ở những khái niệm cơ bản mà còn đi sâu vào các chủ đề quan trọng khác như lập trình hàm, xử lý lỗi, và thậm chí là lập trình hướng đối tượng. Mỗi chương của sách được thiết kế một cách cẩn thận với ví dụ minh họa rõ ràng và bài tập thực hành giúp độc giả áp dụng kiến thức ngay lập tức.
+Không chỉ dừng lại ở việc giới thiệu cú pháp, cuốn sách còn đi sâu vào việc áp dụng Python vào thế giới thực. Đây có thể là việc xử lý dữ liệu, tạo các ứng dụng đơn giản, hoặc thậm chí là viết mã cho các dự án thực tế.
+Tuyệt vời cho người mới bắt đầu, cuốn sách "Lập trình Python cơ bản" không chỉ là một hướng dẫn, mà còn là một cẩm nang đầy đủ để khám phá và tiếp cận ngôn ngữ lập trình đa năng này.

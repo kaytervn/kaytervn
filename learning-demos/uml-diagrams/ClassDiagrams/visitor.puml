@@ -1,0 +1,59 @@
+@startuml CD
+
+title Travelling System
+
+interface TravelVisitor{
+	void visitRestaurant(Restaurant);
+	void visitZoo(Zoo);
+	void visitBarbershop(Barbershop);
+}
+
+class Approach {
+	+ void visitRestaurant(Restaurant)
+	+ void visitZoo(Zoo)
+	+ void visitBarbershop(Barbershop)
+}
+
+class TakeAction {
+	+ void visitRestaurant(Restaurant)
+	+ void visitZoo(Zoo)
+	+ void visitBarbershop(Barbershop)
+}
+
+interface Destination {
+	void accept(TravelVisitor)
+}
+
+class Restaurant {
+	- address: String
+	- foods: List<String>
+	+ Restaurant(String, List<String>)
+	+ void accept(TravelVisitor)
+}
+
+class Zoo {
+	- name: String
+	- areas: List<String>
+	+ Zoo(String, List<String>)
+	+ void accept(TravelVisitor)
+}
+
+class Barbershop {
+	- brand: String
+	- hairstyles: List<String>
+	+ Barbershop(String, List<String>)
+	+ void accept(TravelVisitor)
+}
+
+class Main {
+    + void main(String[])
+}
+
+TravelVisitor <|.. Approach
+TravelVisitor <|.. TakeAction
+
+Destination <|.. Restaurant
+Destination <|.. Zoo
+Destination <|.. Barbershop
+
+@enduml

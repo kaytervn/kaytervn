@@ -1,0 +1,569 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{84403FE9-D255-410E-BF8D-2DB59E28943B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>QuanLyCongDanThanhPho</RootNamespace>
+    <AssemblyName>QuanLyCongDanThanhPho</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CanCuocCongDan.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CanCuocCongDanDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CanCuocCongDanDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="CongDan.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CongDanDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CongDanDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DTO\CanCuocCongDan.cs" />
+    <Compile Include="DTO\CongDan.cs" />
+    <Compile Include="DAO\CanCuocCongDanDAO.cs" />
+    <Compile Include="DAO\CongDanDAO.cs" />
+    <Compile Include="DBConnection.cs" />
+    <Compile Include="Form\CongDan\fCongDan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\CongDan\fCongDan.Designer.cs">
+      <DependentUpon>fCongDan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\KhaiSinh\fGiayKhaiSinh.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\KhaiSinh\fGiayKhaiSinh.Designer.cs">
+      <DependentUpon>fGiayKhaiSinh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\KhaiSinh\fKhaiSinh.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\KhaiSinh\fKhaiSinh.Designer.cs">
+      <DependentUpon>fKhaiSinh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\TamTruTamVang\fGiayTamTruTamVang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\TamTruTamVang\fGiayTamTruTamVang.Designer.cs">
+      <DependentUpon>fGiayTamTruTamVang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\fHoKhau.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\fHoKhau.Designer.cs">
+      <DependentUpon>fHoKhau.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\LyHon\fGiayLyHon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\LyHon\fGiayLyHon.Designer.cs">
+      <DependentUpon>fGiayLyHon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\LyHon\fLyHon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\LyHon\fLyHon.Designer.cs">
+      <DependentUpon>fLyHon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\KhaiTu\fGiayKhaiTu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\KhaiTu\fGiayKhaiTu.Designer.cs">
+      <DependentUpon>fGiayKhaiTu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\KhaiTu\fKhaiTu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\KhaiTu\fKhaiTu.Designer.cs">
+      <DependentUpon>fKhaiTu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\KetHon\fGiayKetHon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\KetHon\fGiayKetHon.Designer.cs">
+      <DependentUpon>fGiayKetHon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\KetHon\fKetHon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\KetHon\fKetHon.Designer.cs">
+      <DependentUpon>fKetHon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\fCanCuocCongDan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\fCanCuocCongDan.Designer.cs">
+      <DependentUpon>fCanCuocCongDan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\ThongTinCongDan\fGiayThongTinCaNhan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\ThongTinCongDan\fGiayThongTinCaNhan.Designer.cs">
+      <DependentUpon>fGiayThongTinCaNhan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\fDangNhap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\fDangNhap.Designer.cs">
+      <DependentUpon>fDangNhap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\fQuanLy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\fQuanLy.Designer.cs">
+      <DependentUpon>fQuanLy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\HoKhauDAO.cs" />
+    <Compile Include="DTO\HoKhau.cs" />
+    <Compile Include="DTO\KetHon.cs" />
+    <Compile Include="DTO\KhaiTu.cs" />
+    <Compile Include="DTO\LyHon.cs" />
+    <Compile Include="Form\QuanLy\ThongTinCongDan\fThongTinCongDan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\ThongTinCongDan\fThongTinCongDan.Designer.cs">
+      <DependentUpon>fThongTinCongDan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\TamTruTamVang\fTamTruTamVang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\TamTruTamVang\fTamTruTamVang.Designer.cs">
+      <DependentUpon>fTamTruTamVang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\QuanLy\fThue.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\QuanLy\fThue.Designer.cs">
+      <DependentUpon>fThue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\KetHonDAO.cs" />
+    <Compile Include="DAO\KhaiTuDAO.cs" />
+    <Compile Include="DAO\LyHonDAO.cs" />
+    <Compile Include="Form\CongDan\fThongTinCaNhan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\CongDan\fThongTinCaNhan.Designer.cs">
+      <DependentUpon>fThongTinCaNhan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\CongDan\fThuongTru.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\CongDan\fThuongTru.Designer.cs">
+      <DependentUpon>fThuongTru.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\KhaiSinhDAO.cs" />
+    <Compile Include="DTO\KhaiSinh.cs" />
+    <Compile Include="fTimKiemCanCuocCongDan_Result.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fTimKiemHoKhau_Result.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fTimKiemKetHon_Result.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fTimKiemKhaiSinh_Result.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fTimKiemKhaiTu_Result.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fTimKiemLyHon_Result.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fTimKiemTamTruTamVang_Result.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fTimKiemThue_Result.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fTimKiemThuongTru_Result.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HoKhau.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HoKhauDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HoKhauDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="KetHon.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KetHonDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KetHonDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="KhaiSinh.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KhaiSinhDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KhaiSinhDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="KhaiTu.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KhaiTuDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KhaiTuDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="LyHon.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LyHonDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LyHonDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DAO\ThuongTruDAO.cs" />
+    <Compile Include="DTO\TamTruTamVang.cs" />
+    <Compile Include="DTO\Thue.cs" />
+    <Compile Include="DTO\ThuongTru.cs" />
+    <Compile Include="DAO\TamTruTamVangDAO.cs" />
+    <Compile Include="DAO\ThueDAO.cs" />
+    <Compile Include="QLCDTP.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLCDTP.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QLCDTP.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QLCDTP.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLCDTP.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="TamTruTamVang.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TamTruTamVangDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TamTruTamVangDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Thue.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ThueDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ThueDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ThuongTru.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ThuongTruDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ThuongTruDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="vCanCuocCongDan.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vHoKhau.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vKetHon.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vKhaiSinh.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vKhaiTu.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vLyHon.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vTamTruTamVang.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vThue.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vThuongTru.cs">
+      <DependentUpon>QLCDTP.tt</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Form\CongDan\fCongDan.resx">
+      <DependentUpon>fCongDan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\CongDan\fThuongTru.resx">
+      <DependentUpon>fThuongTru.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\fHoKhau.resx">
+      <DependentUpon>fHoKhau.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\fThue.resx">
+      <DependentUpon>fThue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\KhaiSinh\fGiayKhaiSinh.resx">
+      <DependentUpon>fGiayKhaiSinh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\KhaiSinh\fKhaiSinh.resx">
+      <DependentUpon>fKhaiSinh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\KhaiTu\fGiayKhaiTu.resx">
+      <DependentUpon>fGiayKhaiTu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\KhaiTu\fKhaiTu.resx">
+      <DependentUpon>fKhaiTu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\LyHon\fGiayLyHon.resx">
+      <DependentUpon>fGiayLyHon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\LyHon\fLyHon.resx">
+      <DependentUpon>fLyHon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\fCanCuocCongDan.resx">
+      <DependentUpon>fCanCuocCongDan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\KetHon\fGiayKetHon.resx">
+      <DependentUpon>fGiayKetHon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\KetHon\fKetHon.resx">
+      <DependentUpon>fKetHon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\ThongTinCongDan\fGiayThongTinCaNhan.resx">
+      <DependentUpon>fGiayThongTinCaNhan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\fDangNhap.resx">
+      <DependentUpon>fDangNhap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\fQuanLy.resx">
+      <DependentUpon>fQuanLy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\ThongTinCongDan\fThongTinCongDan.resx">
+      <DependentUpon>fThongTinCongDan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\TamTruTamVang\fGiayTamTruTamVang.resx">
+      <DependentUpon>fGiayTamTruTamVang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\QuanLy\TamTruTamVang\fTamTruTamVang.resx">
+      <DependentUpon>fTamTruTamVang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\CongDan\fThongTinCaNhan.resx">
+      <DependentUpon>fThongTinCaNhan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="CanCuocCongDanDS.xsc">
+      <DependentUpon>CanCuocCongDanDS.xsd</DependentUpon>
+    </None>
+    <None Include="CanCuocCongDanDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CanCuocCongDanDS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="CanCuocCongDanDS.xss">
+      <DependentUpon>CanCuocCongDanDS.xsd</DependentUpon>
+    </None>
+    <None Include="CongDanDS.xsc">
+      <DependentUpon>CongDanDS.xsd</DependentUpon>
+    </None>
+    <None Include="CongDanDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CongDanDS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="CongDanDS.xss">
+      <DependentUpon>CongDanDS.xsd</DependentUpon>
+    </None>
+    <None Include="HoKhauDS.xsc">
+      <DependentUpon>HoKhauDS.xsd</DependentUpon>
+    </None>
+    <None Include="HoKhauDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>HoKhauDS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="HoKhauDS.xss">
+      <DependentUpon>HoKhauDS.xsd</DependentUpon>
+    </None>
+    <None Include="KetHonDS.xsc">
+      <DependentUpon>KetHonDS.xsd</DependentUpon>
+    </None>
+    <None Include="KetHonDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>KetHonDS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="KetHonDS.xss">
+      <DependentUpon>KetHonDS.xsd</DependentUpon>
+    </None>
+    <None Include="KhaiSinhDS.xsc">
+      <DependentUpon>KhaiSinhDS.xsd</DependentUpon>
+    </None>
+    <None Include="KhaiSinhDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>KhaiSinhDS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="KhaiSinhDS.xss">
+      <DependentUpon>KhaiSinhDS.xsd</DependentUpon>
+    </None>
+    <None Include="KhaiTuDS.xsc">
+      <DependentUpon>KhaiTuDS.xsd</DependentUpon>
+    </None>
+    <None Include="KhaiTuDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>KhaiTuDS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="KhaiTuDS.xss">
+      <DependentUpon>KhaiTuDS.xsd</DependentUpon>
+    </None>
+    <None Include="LyHonDS.xsc">
+      <DependentUpon>LyHonDS.xsd</DependentUpon>
+    </None>
+    <None Include="LyHonDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LyHonDS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="LyHonDS.xss">
+      <DependentUpon>LyHonDS.xsd</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EntityDeploy Include="QLCDTP.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>QLCDTP.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="QLCDTP.edmx.diagram">
+      <DependentUpon>QLCDTP.edmx</DependentUpon>
+    </None>
+    <None Include="TamTruTamVangDS.xsc">
+      <DependentUpon>TamTruTamVangDS.xsd</DependentUpon>
+    </None>
+    <None Include="TamTruTamVangDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TamTruTamVangDS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="TamTruTamVangDS.xss">
+      <DependentUpon>TamTruTamVangDS.xsd</DependentUpon>
+    </None>
+    <None Include="ThueDS.xsc">
+      <DependentUpon>ThueDS.xsd</DependentUpon>
+    </None>
+    <None Include="ThueDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ThueDS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ThueDS.xss">
+      <DependentUpon>ThueDS.xsd</DependentUpon>
+    </None>
+    <None Include="ThuongTruDS.xsc">
+      <DependentUpon>ThuongTruDS.xsd</DependentUpon>
+    </None>
+    <None Include="ThuongTruDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ThuongTruDS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ThuongTruDS.xss">
+      <DependentUpon>ThuongTruDS.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="QLCDTP.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>QLCDTP.edmx</DependentUpon>
+      <LastGenOutput>QLCDTP.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="QLCDTP.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>QLCDTP.edmx</DependentUpon>
+      <LastGenOutput>QLCDTP.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

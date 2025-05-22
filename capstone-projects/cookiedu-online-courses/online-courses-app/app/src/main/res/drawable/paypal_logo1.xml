@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap
+            android:src="@drawable/paypal_logo"
+            android:gravity="center"
+            android:width="0.5dp"
+            android:height="0.5dp"/>
+    </item>
+</layer-list>

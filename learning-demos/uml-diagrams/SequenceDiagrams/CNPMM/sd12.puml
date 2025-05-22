@@ -1,0 +1,114 @@
+@startuml SQ
+
+autonumber
+
+title SD12. Quản lý thông báo
+
+actor "Actor"
+boundary "HomePage"
+control "NotificationController"
+entity "NotificationModel"
+database "Database"
+
+activate Actor
+Actor -> HomePage : click on "Notification"
+activate HomePage
+HomePage -> NotificationController : call API /list
+activate NotificationController
+NotificationController -> NotificationModel : call model
+activate NotificationModel
+NotificationModel -> Database: find by user
+deactivate NotificationModel
+activate Database
+Database --> NotificationController : return data
+deactivate Database
+NotificationController --> HomePage : return data
+deactivate NotificationController
+HomePage -> HomePage: display data
+activate HomePage
+deactivate HomePage
+deactivate HomePage
+
+opt mark as read
+Actor -> HomePage : click "Mark as read" on a notification
+activate HomePage
+HomePage -> NotificationController : call API /read
+activate NotificationController
+NotificationController -> NotificationModel : call model
+activate NotificationModel
+NotificationModel -> Database: update status
+deactivate NotificationModel
+activate Database
+Database --> NotificationController : callback
+deactivate Database
+NotificationController -> HomePage : callback
+deactivate NotificationController
+HomePage -> HomePage: update display
+activate HomePage
+deactivate HomePage
+deactivate HomePage
+end
+
+opt delete
+Actor -> HomePage : click "Delete" on a notification
+activate HomePage
+HomePage -> NotificationController : call API /delete
+activate NotificationController
+NotificationController -> NotificationModel : call model
+activate NotificationModel
+NotificationModel -> Database: delete by id
+deactivate NotificationModel
+activate Database
+Database --> NotificationController : callback
+deactivate Database
+NotificationController -> HomePage: callback
+deactivate NotificationController
+HomePage -> HomePage: update display
+activate HomePage
+deactivate HomePage
+deactivate HomePage
+end
+
+opt read all
+Actor -> HomePage : click "Read all"
+activate HomePage
+HomePage -> NotificationController : call API /read-all
+activate NotificationController
+NotificationController -> NotificationModel : call model
+activate NotificationModel
+NotificationModel -> Database: update status all by user
+deactivate NotificationModel
+activate Database
+Database --> NotificationController : callback
+deactivate Database
+NotificationController -> HomePage : callback
+deactivate NotificationController
+HomePage -> HomePage: update display
+activate HomePage
+deactivate HomePage
+deactivate HomePage
+end
+
+opt delete all
+Actor -> HomePage : click "Read all"
+deactivate Actor
+activate HomePage
+HomePage -> NotificationController : call API /delete-all
+activate NotificationController
+NotificationController -> NotificationModel : call model
+activate NotificationModel
+NotificationModel -> Database: delete all by user
+deactivate NotificationModel
+activate Database
+Database --> NotificationController : callback
+deactivate Database
+NotificationController -> HomePage : callback
+deactivate NotificationController
+HomePage -> HomePage: update display
+activate HomePage
+deactivate HomePage
+deactivate HomePage
+end
+
+
+@enduml

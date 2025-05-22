@@ -1,0 +1,39 @@
+@startuml SQ
+autonumber
+title SD19b. Delete course
+boundary "views/\nUpdateCourseDetailPage" as UpdateCourseDetailPage
+boundary "views/\nMyCreatedCoursesPage" as MyCreatedCourses
+control "CourseService"
+control "CourseController"
+entity "CourseModel"
+database "Database" as Database
+activate UpdateCourseDetailPage
+UpdateCourseDetailPage -> CourseService: deleteCourse(courseId)
+activate CourseService
+CourseService -> CourseController: router.delete(\n"/deleteCourse:id",\ndeleteCourse)
+activate CourseController
+CourseController -> CourseModel: call model
+activate CourseModel
+CourseModel -> Database: Course.findById(courseId)
+deactivate CourseModel
+activate Database
+Database --> CourseController: return course
+deactivate Database
+CourseController -> CourseModel: call model
+activate CourseModel
+CourseModel -> Database: course.deleteOne()
+deactivate CourseModel
+activate Database
+Database --> CourseController: callback
+deactivate Database
+CourseController --> CourseService: send res.json
+deactivate CourseController
+CourseService --> UpdateCourseDetailPage: callback
+deactivate CourseService
+UpdateCourseDetailPage -> MyCreatedCourses: navigate("/myCreatedCourses")
+deactivate UpdateCourseDetailPage
+ref over MyCreatedCourses
+**SD17. Quản lý danh sách khóa học đã tạo**
+end ref
+
+@enduml
