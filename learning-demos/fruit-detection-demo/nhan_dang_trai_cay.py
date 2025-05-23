@@ -2,9 +2,12 @@ import streamlit as st
 import numpy as np
 from PIL import Image
 import cv2
+import os
 
-model = "trai_cay.onnx"
-filename_classes = "trai_cay.txt"
+script_dir = os.path.dirname(os.path.abspath(__file__))
+model = os.path.join(script_dir, "trai_cay.onnx")
+filename_classes = os.path.join(script_dir, "trai_cay.txt")
+
 inpWidth, inpHeight = 640, 640
 confThreshold, nmsThreshold = 0.5, 0.4
 classes = None
