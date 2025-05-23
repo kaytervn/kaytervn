@@ -6,15 +6,15 @@
     <title>JSON Tool</title>
     <style>
       :root {
-        --primary-color: #4361ee;
-        --secondary-color: #3f37c9;
-        --bg-color: #f8f9fa;
-        --card-bg: #ffffff;
-        --text-color: #212529;
-        --border-color: #dee2e6;
+        --primary-color: #4cc9f0;
+        --secondary-color: #4895ef;
+        --bg-color: #1e1e1e;
+        --card-bg: #2d2d2d;
+        --text-color: #e0e0e0;
+        --border-color: #444444;
         --success-color: #38b000;
         --error-color: #d90429;
-        --highlight-color: #4895ef;
+        --highlight-color: #ffb703;
       }
 
       * {
@@ -49,7 +49,7 @@
 
       .subtitle {
         font-size: 1.1rem;
-        color: #6c757d;
+        color: #adb5bd;
         margin-bottom: 1.5rem;
       }
 
@@ -62,22 +62,23 @@
 
       .tab {
         padding: 0.75rem 1.5rem;
-        background-color: #e9ecef;
+        background-color: #3a3a3a;
         border: none;
         border-radius: 8px;
         font-size: 1rem;
         font-weight: 600;
+        color: var(--text-color);
         cursor: pointer;
         transition: all 0.3s ease;
       }
 
       .tab.active {
         background-color: var(--primary-color);
-        color: white;
+        color: #1e1e1e;
       }
 
       .tab:hover:not(.active) {
-        background-color: #dee2e6;
+        background-color: #4a4a4a;
       }
 
       .tab-content {
@@ -91,14 +92,14 @@
       .card {
         background-color: var(--card-bg);
         border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         padding: 1.5rem;
         margin-bottom: 1.5rem;
         transition: all 0.3s ease;
       }
 
       .card:hover {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
       }
 
       .card-title {
@@ -124,7 +125,7 @@
         margin-bottom: 0.5rem;
         font-weight: 600;
         font-size: 0.9rem;
-        color: #495057;
+        color: var(--text-color);
       }
 
       textarea {
@@ -137,6 +138,8 @@
         font-family: "Consolas", "Monaco", monospace;
         font-size: 0.9rem;
         line-height: 1.5;
+        background-color: #3d3d3d;
+        color: var(--text-color);
         transition: border 0.3s ease;
       }
 
@@ -165,7 +168,7 @@
 
       .btn-primary {
         background-color: var(--primary-color);
-        color: white;
+        color: #1e1e1e;
       }
 
       .btn-primary:hover {
@@ -173,26 +176,26 @@
       }
 
       .btn-secondary {
-        background-color: #e9ecef;
-        color: #495057;
+        background-color: #3a3a3a;
+        color: var(--text-color);
       }
 
       .btn-secondary:hover {
-        background-color: #dee2e6;
+        background-color: #4a4a4a;
       }
 
       .btn-icon {
         padding: 0.5rem;
         border-radius: 8px;
-        background-color: #e9ecef;
-        color: #495057;
+        background-color: #3a3a3a;
+        color: var(--text-color);
         cursor: pointer;
         transition: all 0.3s ease;
         border: none;
       }
 
       .btn-icon:hover {
-        background-color: #dee2e6;
+        background-color: #4a4a4a;
       }
 
       .result-container {
@@ -204,11 +207,12 @@
         font-size: 0.9rem;
         line-height: 1.5;
         padding: 1rem;
-        background-color: #f8f9fa;
+        background-color: #3d3d3d;
         border-radius: 8px;
         border: 1px solid var(--border-color);
         max-height: 400px;
         overflow: auto;
+        color: var(--text-color);
       }
 
       .expand-collapse {
@@ -263,7 +267,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: #ccc;
+        background-color: #555555;
         transition: 0.4s;
         border-radius: 24px;
       }
@@ -275,7 +279,7 @@
         width: 18px;
         left: 3px;
         bottom: 3px;
-        background-color: white;
+        background-color: var(--text-color);
         transition: 0.4s;
         border-radius: 50%;
       }
@@ -294,8 +298,8 @@
         right: 20px;
         padding: 1rem;
         border-radius: 8px;
-        background-color: #fff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        background-color: var(--card-bg);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         transform: translateX(120%);
         transition: all 0.5s ease;
         z-index: 1000;
@@ -322,12 +326,12 @@
 
       .notification-title {
         font-weight: 600;
-        margin-bottom: 0.25rem;
+        color: var(--text-color);
       }
 
       .notification-message {
         font-size: 0.9rem;
-        color: #6c757d;
+        color: #adb5bd;
       }
 
       /* JSON Viewer Styles */
@@ -340,22 +344,22 @@
       }
 
       .json-key {
-        color: #0057b7;
+        color: var(--primary-color);
         font-weight: 600;
       }
 
       .json-string {
-        color: #218380;
+        color: #80ed99;
       }
 
       .json-number,
       .json-boolean,
       .json-null {
-        color: #d00000;
+        color: #f77f00;
       }
 
       .json-bracket {
-        color: #212529;
+        color: var(--text-color);
       }
 
       .collapsible {
@@ -379,83 +383,12 @@
         display: none;
       }
 
-      .light-mode {
-        --primary-color: #4361ee;
-        --secondary-color: #3f37c9;
-        --bg-color: #f8f9fa;
-        --card-bg: #ffffff;
-        --text-color: #212529;
-        --border-color: #dee2e6;
-      }
-
-      .dark-mode {
-        --primary-color: #4cc9f0;
-        --secondary-color: #4895ef;
-        --bg-color: #1e1e1e;
-        --card-bg: #2d2d2d;
-        --text-color: #f8f9fa;
-        --border-color: #444444;
-      }
-
-      .dark-mode .json-key {
-        color: #4cc9f0;
-      }
-
-      .dark-mode .json-string {
-        color: #80ed99;
-      }
-
-      .dark-mode .json-number,
-      .dark-mode .json-boolean,
-      .dark-mode .json-null {
-        color: #f77f00;
-      }
-
-      .dark-mode .json-bracket {
-        color: #f8f9fa;
-      }
-
-      .dark-mode .notification {
-        background-color: #2d2d2d;
-      }
-
-      .dark-mode .notification-message {
-        color: #adb5bd;
-      }
-
-      .dark-mode textarea,
-      .dark-mode .json-view {
-        background-color: #3d3d3d;
-        color: #f8f9fa;
-        border-color: #444444;
-      }
-
-      /* Theme Toggle */
-      .theme-toggle {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: var(--card-bg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        z-index: 100;
-        border: none;
-        color: var(--text-color);
-        font-size: 1.2rem;
-      }
-
       /* Loading Indicator */
       .loader {
         display: inline-block;
         width: 20px;
         height: 20px;
-        border: 3px solid rgba(0, 0, 0, 0.1);
+        border: 3px solid rgba(255, 255, 255, 0.2);
         border-radius: 50%;
         border-top-color: var(--primary-color);
         animation: spin 1s ease-in-out infinite;
@@ -508,6 +441,8 @@
         border: 1px solid var(--border-color);
         border-radius: 8px;
         font-size: 0.9rem;
+        background-color: #3d3d3d;
+        color: var(--text-color);
         transition: border 0.3s ease;
       }
 
@@ -517,23 +452,15 @@
       }
 
       .highlight {
-        background-color: #ffdd00;
-        color: #000;
+        background-color: var(--highlight-color);
+        color: #1e1e1e;
         padding: 0 2px;
         border-radius: 2px;
       }
 
-      .dark-mode .highlight {
-        background-color: #ffb703;
-      }
-
       .error-highlight {
-        background-color: #ffccd5;
-        border-bottom: 2px dotted var(--error-color);
-      }
-
-      .dark-mode .error-highlight {
         background-color: rgba(255, 0, 0, 0.3);
+        border-bottom: 2px dotted var(--error-color);
       }
 
       .error-message {
@@ -563,7 +490,7 @@
 
       .feature-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
       }
 
       .feature-icon {
@@ -574,15 +501,11 @@
 
       .feature-title {
         font-weight: 600;
-        margin-bottom: 0.5rem;
+        color: var(--text-color);
       }
 
       .feature-description {
         font-size: 0.9rem;
-        color: #6c757d;
-      }
-
-      .dark-mode .feature-description {
         color: #adb5bd;
       }
     </style>
@@ -830,17 +753,11 @@
       </div>
     </div>
 
-    <button class="theme-toggle" id="theme-toggle">
-      <i class="fas fa-moon"></i>
-    </button>
-
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // DOM Elements
         const tabs = document.querySelectorAll(".tab");
         const tabContents = document.querySelectorAll(".tab-content");
-        const themeToggle = document.getElementById("theme-toggle");
-        const themeIcon = themeToggle.querySelector("i");
         const notification = document.getElementById("notification");
         const notificationTitle = document.getElementById("notification-title");
         const notificationMessage = document.getElementById(
@@ -936,28 +853,6 @@
           });
         });
 
-        // Theme Toggling
-        let isDarkMode = localStorage.getItem("darkMode") === "true";
-        if (isDarkMode) {
-          document.body.classList.add("dark-mode");
-          themeIcon.classList.remove("fa-moon");
-          themeIcon.classList.add("fa-sun");
-        }
-
-        themeToggle.addEventListener("click", () => {
-          document.body.classList.toggle("dark-mode");
-          const isDark = document.body.classList.contains("dark-mode");
-          localStorage.setItem("darkMode", isDark);
-
-          if (isDark) {
-            themeIcon.classList.remove("fa-moon");
-            themeIcon.classList.add("fa-sun");
-          } else {
-            themeIcon.classList.remove("fa-sun");
-            themeIcon.classList.add("fa-moon");
-          }
-        });
-
         // Show Notification
         function showNotification(title, message, type = "success") {
           notificationTitle.textContent = title;
@@ -1013,9 +908,7 @@
         // Convert JSON to String (escaped)
         function jsonToString(jsonStr) {
           try {
-            // First, ensure we're working with a valid JSON
             const obj = JSON.parse(jsonStr);
-            // Convert to a JSON string then escape it
             return JSON.stringify(JSON.stringify(obj));
           } catch (e) {
             throw new Error("JSON không hợp lệ: " + e.message);
@@ -1025,38 +918,29 @@
         // Convert String to JSON (unescaped)
         function stringToJson(str) {
           try {
-            // Loại bỏ các dấu ngoặc kép bên ngoài nếu có
             let input = str.trim();
             if (input.startsWith('"') && input.endsWith('"')) {
               input = input.slice(1, -1);
             }
 
-            // Thử giải mã chuỗi nếu nó chứa các ký tự escape
             try {
-              // Xử lý chuỗi đã được escape
               if (input.includes("\\")) {
                 const unescaped = JSON.parse('"' + input + '"');
-
-                // Kiểm tra nếu kết quả là một chuỗi JSON hợp lệ
                 try {
                   const jsonObject = JSON.parse(unescaped);
                   return formatJSON(unescaped, indentSizeSelect.value);
                 } catch (e) {
-                  // Nếu không phải JSON hợp lệ, trả về chuỗi đã giải mã
                   return unescaped;
                 }
               } else {
-                // Nếu không có ký tự escape, có thể đây là JSON chuỗi
                 try {
                   const jsonObject = JSON.parse(input);
                   return formatJSON(input, indentSizeSelect.value);
                 } catch (e) {
-                  // Nếu không phải JSON hợp lệ, trả về chuỗi đầu vào
                   return input;
                 }
               }
             } catch (e) {
-              // Nếu không thể giải mã, đây có thể là một chuỗi hợp lệ khác
               return input;
             }
           } catch (e) {
@@ -1083,16 +967,13 @@
             const result = stringToJson(inputJson.value);
             resultOutput.value = result;
 
-            // Nếu kết quả là JSON hợp lệ, định dạng nó
             try {
               const formattedResult = formatJSON(
                 result,
                 indentSizeSelect.value
               );
               resultOutput.value = formattedResult;
-            } catch (e) {
-              // Nếu không phải JSON hợp lệ, giữ nguyên kết quả
-            }
+            } catch (e) {}
           } catch (e) {
             inputError.textContent = e.message;
           }
@@ -1131,23 +1012,19 @@
           }
         });
 
-        // Auto-format when checkbox is checked
         autoFormatCheckbox.addEventListener("change", () => {
           if (autoFormatCheckbox.checked) {
             try {
               const spaces = indentSizeSelect.value;
               const formattedJSON = formatJSON(inputJson.value, spaces);
               inputJson.value = formattedJSON;
-            } catch (e) {
-              // Silently ignore errors during auto-format
-            }
+            } catch (e) {}
           }
         });
 
         inputJson.addEventListener("input", () => {
           if (autoFormatCheckbox.checked) {
             try {
-              // Try to auto-format if JSON seems valid
               if (
                 inputJson.value.trim().startsWith("{") ||
                 inputJson.value.trim().startsWith("[")
@@ -1156,9 +1033,7 @@
                 const formattedJSON = formatJSON(inputJson.value, spaces);
                 inputJson.value = formattedJSON;
               }
-            } catch (e) {
-              // Silently ignore errors during auto-format
-            }
+            } catch (e) {}
           }
         });
 
@@ -1170,7 +1045,6 @@
             jsonContainer.innerHTML = "";
             jsonContainer.appendChild(createJsonView(json));
 
-            // Add click event for collapsible elements
             const collapsibles = jsonContainer.querySelectorAll(".collapsible");
             collapsibles.forEach((el) => {
               el.addEventListener("click", (e) => {
@@ -1323,7 +1197,6 @@
 
         function searchInJson(query) {
           if (!query.trim()) {
-            // Remove all highlights if search is empty
             const highlights = jsonContainer.querySelectorAll(".highlight");
             highlights.forEach((el) => {
               const parent = el.parentNode;
@@ -1333,7 +1206,6 @@
             return;
           }
 
-          // Function to highlight text in textNodes
           function highlightText(node, searchText) {
             const text = node.textContent;
             const lowerText = text.toLowerCase();
@@ -1357,7 +1229,6 @@
               const parent = node.parentNode;
               parent.replaceChild(fragment, node);
 
-              // If we found a match, expand all parent collapsibles
               let current = parent;
               while (current && current !== jsonContainer) {
                 if (
@@ -1376,14 +1247,11 @@
             return false;
           }
 
-          // Recursive function to search in DOM
           function searchInNode(node, searchText) {
             if (node.nodeType === Node.TEXT_NODE) {
               return highlightText(node, searchText);
             } else if (node.nodeType === Node.ELEMENT_NODE) {
               let found = false;
-              // Create a copy of childNodes as it's a live collection
-              // and will change when we replace nodes
               const children = Array.from(node.childNodes);
               children.forEach((child) => {
                 if (searchInNode(child, searchText)) {
@@ -1395,7 +1263,6 @@
             return false;
           }
 
-          // Remove existing highlights
           const highlights = jsonContainer.querySelectorAll(".highlight");
           highlights.forEach((el) => {
             const parent = el.parentNode;
@@ -1403,14 +1270,12 @@
             parent.normalize();
           });
 
-          // Search in the JSON container
           searchInNode(jsonContainer, query);
         }
 
         // JSON Viewer Event Handlers
         loadJsonBtn.addEventListener("click", () => {
           if (renderJsonViewer(jsonInput.value)) {
-            // If successful, clear search
             searchJsonInput.value = "";
           }
         });
@@ -1430,12 +1295,6 @@
         searchJsonInput.addEventListener("input", () => {
           searchInJson(searchJsonInput.value);
         });
-
-        // Load sample JSON when the app starts
-        // This is disabled by default to avoid confusion,
-        // but you can uncomment it if you want
-        // jsonInput.value = JSON.stringify(sampleJson, null, 2);
-        // renderJsonViewer(jsonInput.value);
       });
     </script>
   </body>
