@@ -17,3 +17,5 @@ target/
 # Gradle
 .gradle/
 build/
+
+*.war
