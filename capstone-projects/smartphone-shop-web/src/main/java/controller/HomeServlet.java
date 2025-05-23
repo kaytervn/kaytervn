@@ -296,13 +296,15 @@ public class HomeServlet extends HttpServlet {
 				User user = new User(name, email, code);
 				String title = "TechGadget - Activate Account";
 				String text = "Your code is: " + user.getCode();
-				boolean test = sm.sendEmail(user.getEmail(), title, text);
+//				boolean test = sm.sendEmail(user.getEmail(), title, text);
+				boolean test = true;
 				if (test) {
 					HttpSession session = request.getSession();
 					session.setAttribute("user", user);
 					boolean isSuccess = userService.register(name, email, password, code);
 					if (isSuccess) {
-						request.getRequestDispatcher("/views/home/verify.jsp").forward(request, response);
+//						request.getRequestDispatcher("/views/home/verify.jsp").forward(request, response);
+						request.getRequestDispatcher("/views/home/login.jsp").forward(request, response);
 					} else {
 						alertMsg = "System error!";
 						request.setAttribute("error", alertMsg);

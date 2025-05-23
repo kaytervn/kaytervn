@@ -29,7 +29,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 	public boolean register(String name, String email, String password, String code){
 		if (userDAO.checkExistEmail(email))
 			return false;
-		userDAO.insert(new User(name, User.Role.USER, User.Gender.UNKNOWN, email, password, code, User.Status.INACTIVE));
+//		userDAO.insert(new User(name, User.Role.USER, User.Gender.UNKNOWN, email, password, code, User.Status.INACTIVE));
+		userDAO.insert(new User(name, User.Role.USER, User.Gender.UNKNOWN, email, password, code, User.Status.ACTIVE));
 		return true;
 	}
 

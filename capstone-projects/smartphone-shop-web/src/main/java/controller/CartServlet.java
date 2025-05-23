@@ -82,7 +82,7 @@ public class CartServlet extends HttpServlet {
 			productService.update(product);
 			orderDetailService.insert(orderDetail);
 		}
-		sm.sendEmail(toEmail, order);
+//		sm.sendEmail(toEmail, order);
 		session.removeAttribute("order");
 		request.getRequestDispatcher("/views/thankyou.jsp").forward(request, response);
 	}
