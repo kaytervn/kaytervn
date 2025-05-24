@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import { remoteUrl } from '../../types/constant'; 
-import { jwtDecode } from 'jwt-decode';
-import { useLoading } from '../../hooks/useLoading';
-import { LoadingDialog } from '../Dialog';
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { remoteUrl, ZALO_UTE_PORTAL_ACCESS_TOKEN } from "../../types/constant";
+import { jwtDecode } from "jwt-decode";
+import { useLoading } from "../../hooks/useLoading";
+import { LoadingDialog } from "../Dialog";
 
 interface User {
   _id: string;
@@ -23,14 +23,14 @@ const FriendRequests: React.FC = () => {
   const { isLoading, showLoading, hideLoading } = useLoading();
 
   const getUserIdFromToken = () => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN);
     if (!token) return null;
 
     try {
       const decodedToken: any = jwtDecode(token);
       return decodedToken?.userId;
     } catch (error) {
-      console.error('Lỗi khi giải mã token:', error);
+      console.error("Lỗi khi giải mã token:", error);
       return null;
     }
   };
@@ -40,13 +40,18 @@ const FriendRequests: React.FC = () => {
   const fetchFriendRequests = async () => {
     showLoading();
     try {
-      const response = await fetch(`${remoteUrl}/v1/friendship/list?getListKind=1`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      });
+      const response = await fetch(
+        `${remoteUrl}/v1/friendship/list?getListKind=1`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem(
+              ZALO_UTE_PORTAL_ACCESS_TOKEN
+            )}`,
+          },
+        }
+      );
 
       const data = await response.json();
       if (data.result) {
@@ -55,11 +60,11 @@ const FriendRequests: React.FC = () => {
         );
         setFriendRequests(filteredRequests);
       } else {
-        toast.error('Không thể tải danh sách lời mời kết bạn.');
+        toast.error("Không thể tải danh sách lời mời kết bạn.");
       }
     } catch (error) {
-      console.error('Error fetching friend requests:', error);
-      toast.error('Có lỗi xảy ra khi tải danh sách lời mời kết bạn.');
+      console.error("Error fetching friend requests:", error);
+      toast.error("Có lỗi xảy ra khi tải danh sách lời mời kết bạn.");
     } finally {
       hideLoading();
     }
@@ -73,24 +78,28 @@ const FriendRequests: React.FC = () => {
     showLoading();
     try {
       const response = await fetch(`${remoteUrl}/v1/friendship/accept`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem(
+            ZALO_UTE_PORTAL_ACCESS_TOKEN
+          )}`,
         },
         body: JSON.stringify({ friendship: friendshipId }),
       });
 
       const data = await response.json();
       if (data.result) {
-        toast.success('Đã chấp nhận lời mời kết bạn');
-        setFriendRequests(friendRequests.filter(request => request._id !== friendshipId));
+        toast.success("Đã chấp nhận lời mời kết bạn");
+        setFriendRequests(
+          friendRequests.filter((request) => request._id !== friendshipId)
+        );
       } else {
-        toast.error(data.message || 'Không thể chấp nhận lời mời kết bạn');
+        toast.error(data.message || "Không thể chấp nhận lời mời kết bạn");
       }
     } catch (error) {
-      console.error('Error accepting friend request:', error);
-      toast.error('Có lỗi xảy ra khi chấp nhận lời mời kết bạn');
+      console.error("Error accepting friend request:", error);
+      toast.error("Có lỗi xảy ra khi chấp nhận lời mời kết bạn");
     } finally {
       hideLoading();
     }
@@ -100,24 +109,28 @@ const FriendRequests: React.FC = () => {
     showLoading();
     try {
       const response = await fetch(`${remoteUrl}/v1/friendship/reject`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem(
+            ZALO_UTE_PORTAL_ACCESS_TOKEN
+          )}`,
         },
         body: JSON.stringify({ friendship: friendshipId }),
       });
 
       const data = await response.json();
       if (data.result) {
-        toast.success('Đã từ chối lời mời kết bạn');
-        setFriendRequests(friendRequests.filter(request => request._id !== friendshipId));
+        toast.success("Đã từ chối lời mời kết bạn");
+        setFriendRequests(
+          friendRequests.filter((request) => request._id !== friendshipId)
+        );
       } else {
-        toast.error(data.message || 'Không thể từ chối lời mời kết bạn');
+        toast.error(data.message || "Không thể từ chối lời mời kết bạn");
       }
     } catch (error) {
-      console.error('Error rejecting friend request:', error);
-      toast.error('Có lỗi xảy ra khi từ chối lời mời kết bạn');
+      console.error("Error rejecting friend request:", error);
+      toast.error("Có lỗi xảy ra khi từ chối lời mời kết bạn");
     } finally {
       hideLoading();
     }
@@ -129,10 +142,15 @@ const FriendRequests: React.FC = () => {
       {friendRequests.length > 0 ? (
         <div className="grid grid-cols-2 gap-4">
           {friendRequests.map((request) => (
-            <div key={request._id} className="flex items-center justify-between border p-4 rounded-md shadow-sm">
+            <div
+              key={request._id}
+              className="flex items-center justify-between border p-4 rounded-md shadow-sm"
+            >
               <div className="flex items-center">
                 <img
-                  src={request.sender.avatarUrl || '/path/to/default-avatar.png'}
+                  src={
+                    request.sender.avatarUrl || "/path/to/default-avatar.png"
+                  }
                   alt={request.sender.displayName}
                   className="w-12 h-12 rounded-full mr-4"
                 />
