@@ -14,7 +14,6 @@ const settingKey = {
   MAX_CONVERSATIONS: "max_conversations",
 };
 
-// const remoteUrl = "https://realtime-chat-app-api-1.onrender.com";
-const remoteUrl = "http://localhost:7979";
+const remoteUrl = "https://zalo-ute-api.onrender.com";
 
 export { EmailPattern, settingKey, PhonePattern, remoteUrl, StudentIdPattern };
