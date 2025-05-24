@@ -15,7 +15,7 @@ import {
   LogInIcon,
   FlameIcon,
   BookCheckIcon,
-  BackpackIcon,
+  GraduationCapIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../config/GlobalProvider";
@@ -83,7 +83,7 @@ const Sidebar = ({ activeItem, renderContent, breadcrumbs }: any) => {
         {
           name: STUDY_STUFF.name,
           label: STUDY_STUFF.label,
-          icon: <BackpackIcon size={20} />,
+          icon: <GraduationCapIcon size={20} />,
           path: STUDY_STUFF.path,
         },
       ],
