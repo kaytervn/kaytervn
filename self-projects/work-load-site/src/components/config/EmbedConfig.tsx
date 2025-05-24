@@ -1,5 +1,4 @@
 import {
-  AppleIcon,
   BookMarkedIcon,
   BracesIcon,
   CookieIcon,
@@ -97,13 +96,6 @@ const STUDY_LIST = [
     icon: ImageIcon,
     color: "#A78BFA",
     url: "https://dip-final-50oz.onrender.com",
-  },
-  {
-    label: "Fruit Detection Demo",
-    path: "/fruit-detection",
-    icon: AppleIcon,
-    color: "#F87171",
-    url: "https://kaytervn-fruit-detection.streamlit.app",
   },
   {
     label: "MERN Stack Demo",
