@@ -102,23 +102,23 @@ const deleteExpiredStories = async () => {
 const job = new cron.CronJob("0 0 * * *", async function () {
   try {
     await birthDateNotification();
-    await deleteExpiredStories();
+    // await deleteExpiredStories();
 
-    const cutoffDate = new Date(
-      Date.now() - daysToDeleteNotification * 24 * 60 * 60 * 1000
-    );
+    // const cutoffDate = new Date(
+    //   Date.now() - daysToDeleteNotification * 24 * 60 * 60 * 1000
+    // );
 
-    const { deletedCount } = await Notification.deleteMany({
-      createdAt: { $lt: cutoffDate },
-    });
+    // const { deletedCount } = await Notification.deleteMany({
+    //   createdAt: { $lt: cutoffDate },
+    // });
 
-    const superAdmin = await User.findOne({ isSuperAdmin: 1 });
-    if (deletedCount > 0) {
-      await Notification.create({
-        user: superAdmin._id,
-        message: `Hệ thống đã xóa ${deletedCount} thông báo quá hạn ${daysToDeleteNotification} ngày`,
-      });
-    }
+    // const superAdmin = await User.findOne({ isSuperAdmin: 1 });
+    // if (deletedCount > 0) {
+    //   await Notification.create({
+    //     user: superAdmin._id,
+    //     message: `Hệ thống đã xóa ${deletedCount} thông báo quá hạn ${daysToDeleteNotification} ngày`,
+    //   });
+    // }
   } catch (error) {
     console.error("Error running cron job:", error);
   }
