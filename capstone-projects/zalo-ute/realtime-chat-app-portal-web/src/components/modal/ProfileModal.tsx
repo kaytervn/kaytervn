@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { remoteUrl } from "../../types/constant";
+import { remoteUrl, ZALO_UTE_PORTAL_ACCESS_TOKEN } from "../../types/constant";
 import { UserCircle, Phone, Mail, Book, X, Calendar } from "lucide-react";
 import { getDate } from "../../types/utils";
 
@@ -31,7 +31,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
   const fetchProfile = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN);
       const response = await fetch(`${remoteUrl}/v1/user/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,

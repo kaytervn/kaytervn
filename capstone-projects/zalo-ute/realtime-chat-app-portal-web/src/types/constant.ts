@@ -3,8 +3,8 @@ const EmailPattern =
 
 const PhonePattern = /^0[1235789][0-9]{8}$/;
 
-// const remoteUrl = "https://realtime-chat-app-api-tbaf.onrender.com";
+const ZALO_UTE_PORTAL_ACCESS_TOKEN = "zalo-ute-portal-access-token";
 
-const remoteUrl = "http://localhost:7979";
+const remoteUrl = "https://zalo-ute-api.onrender.com";
 
-export { EmailPattern, PhonePattern, remoteUrl };
+export { EmailPattern, PhonePattern, remoteUrl, ZALO_UTE_PORTAL_ACCESS_TOKEN };

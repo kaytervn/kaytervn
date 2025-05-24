@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useLoading } from "../hooks/useLoading";
 import useForm from "../hooks/useForm";
 import { ToastContainer, toast } from "react-toastify";
-import { remoteUrl } from "../types/constant";
+import { remoteUrl, ZALO_UTE_PORTAL_ACCESS_TOKEN } from "../types/constant";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { LoadingDialog } from "../components/Dialog";
@@ -95,7 +95,10 @@ const Login = () => {
           return;
         }
         const data = await response.json();
-        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem(
+          ZALO_UTE_PORTAL_ACCESS_TOKEN,
+          data.data.accessToken
+        );
         // toast.success("Đăng nhập thành công");
         navigate("/");
         window.location.reload();

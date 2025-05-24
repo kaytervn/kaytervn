@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { remoteUrl } from "../types/constant";
+import { remoteUrl, ZALO_UTE_PORTAL_ACCESS_TOKEN } from "../types/constant";
 
 interface FetchOptions {
   method: "GET" | "POST" | "PUT" | "DELETE";
@@ -17,7 +17,7 @@ const useFetch = () => {
       setError(null);
 
       try {
-        const accessToken = await localStorage.getItem("accessToken");
+        const accessToken = await localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN);
         let url = `${remoteUrl}${endpoint}`;
         const headers: Record<string, string> = {
           Authorization: `Bearer ${accessToken}`,

@@ -11,6 +11,7 @@ import Loading from "./views/Loading";
 import { useEffect, useState } from "react";
 import useFetch from "./hooks/useFetch";
 import { ToastContainer } from "react-toastify";
+import { ZALO_UTE_PORTAL_ACCESS_TOKEN } from "./types/constant";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -18,12 +19,12 @@ const App = () => {
 
   useEffect(() => {
     const checkToken = async () => {
-      const token = await localStorage.getItem("accessToken");
+      const token = await localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN);
       const res = await post("/v1/user/verify-token", { accessToken: token });
       if (res.result) {
         setIsAuthenticated(true);
       } else {
-        await localStorage.removeItem("accessToken");
+        await localStorage.removeItem(ZALO_UTE_PORTAL_ACCESS_TOKEN);
         setIsAuthenticated(false);
       }
     };

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { toast } from "react-toastify";
-import { remoteUrl } from "../../../types/constant";
+import { remoteUrl, ZALO_UTE_PORTAL_ACCESS_TOKEN } from "../../../types/constant";
 import { useLoading } from "../../../hooks/useLoading";
 import { uploadImage } from "../../../types/utils";
 import { PlusCircle, Camera } from "lucide-react";
@@ -45,7 +45,7 @@ const CreateStory = ({ isVisible, setVisible, profile, onButtonClick }: any) => 
           method: "POST",
           body: formData,
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN)}`,
           },
         });
         return await response.json();
@@ -55,7 +55,7 @@ const CreateStory = ({ isVisible, setVisible, profile, onButtonClick }: any) => 
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN)}`,
         },
         body: JSON.stringify({ imageUrl }), // Truyền đường dẫn ảnh
       });

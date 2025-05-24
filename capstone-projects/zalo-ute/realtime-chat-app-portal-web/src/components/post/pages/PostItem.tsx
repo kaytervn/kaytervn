@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { PostModel } from "../../../models/post/PostModel";
 import PostDetail from "./PostDetail";
-import { remoteUrl } from "../../../types/constant";
+import { remoteUrl, ZALO_UTE_PORTAL_ACCESS_TOKEN } from "../../../types/constant";
 import { Profile } from "../../../models/profile/Profile";
 import useFetch from "../../../hooks/useFetch";
 import { toast } from "react-toastify";
@@ -88,7 +88,7 @@ const PostItem = ({ postItem, onEdit, onDelete } :
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN)}`,
           },
           body: JSON.stringify({ post: postItem._id }),
         });
@@ -107,7 +107,7 @@ const PostItem = ({ postItem, onEdit, onDelete } :
         const response = await fetch(`${remoteUrl}/v1/post-reaction/delete/${postItem._id}`, {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN)}`,
           },
         });
 

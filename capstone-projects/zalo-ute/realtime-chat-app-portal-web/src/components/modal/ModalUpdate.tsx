@@ -3,7 +3,7 @@ import Button from "../Button";
 import InputField from "../InputField";
 import useForm from "../../hooks/useForm";
 import { useLoading } from "../../hooks/useLoading";
-import { remoteUrl } from "../../types/constant";
+import { remoteUrl, ZALO_UTE_PORTAL_ACCESS_TOKEN } from "../../types/constant";
 import { toast } from "react-toastify";
 import { formatBirthDate, formatDateFormToString } from "../../utils/DateUtils";
 
@@ -39,7 +39,7 @@ const ModalUpdate = ({ isOpen, onClose, profile }: any) => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN)}`,
           },
           body: JSON.stringify({
             displayName: form.displayName,

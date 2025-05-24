@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { EmailPattern, remoteUrl } from "../../types/constant";
+import { EmailPattern, remoteUrl, ZALO_UTE_PORTAL_ACCESS_TOKEN } from "../../types/constant";
 import UserIcon from "../../assets/user_icon.png";
 import {
   X,
@@ -154,7 +154,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   const fetchCurrentProfile = async () => {
     setError(null);
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN);
       const response = await fetch(`${remoteUrl}/v1/user/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -217,7 +217,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN)}`,
         },
         body: JSON.stringify(dataToSend),
       });
@@ -276,7 +276,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN)}`,
         },
         body: JSON.stringify(requestBody),
       });
@@ -306,7 +306,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN)}`,
         },
         body: JSON.stringify({
           [sensitiveFieldToEdit as string]: tempSensitiveValue,
@@ -347,7 +347,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   };
 
   const handleAlertAccept = () => {
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem(ZALO_UTE_PORTAL_ACCESS_TOKEN);
     window.location.reload();
   };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import PostItem from "./PostItem";
 import { useLoading } from "../../../hooks/useLoading";
-import { remoteUrl } from "../../../types/constant";
+import { remoteUrl, ZALO_UTE_PORTAL_ACCESS_TOKEN } from "../../../types/constant";
 import { toast } from "react-toastify";
 import InputField from "../../InputField";
 import { Search, Loader2 } from "lucide-react";
@@ -99,7 +99,7 @@ const MyPosts = () => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN)}`,
         },
       });
       const data = await response.json();

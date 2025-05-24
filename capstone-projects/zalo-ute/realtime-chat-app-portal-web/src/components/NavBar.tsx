@@ -16,6 +16,7 @@ import ProfileModal from "../components/modal/ProfileModal";
 import EditProfileModal from "../components/modal/EditProfileModal";
 import { useProfile } from "../types/UserContext";
 import useFetch from "../hooks/useFetch";
+import { ZALO_UTE_PORTAL_ACCESS_TOKEN } from "../types/constant";
 
 interface NavBarProps {
   setSelectedSection: (section: string) => void;
@@ -45,7 +46,7 @@ const NavBar: React.FC<NavBarProps> = ({ setSelectedSection }) => {
   };
 
   const onConfirmLogout = () => {
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem(ZALO_UTE_PORTAL_ACCESS_TOKEN);
     setProfile(null);
     navigate("/");
     window.location.reload();

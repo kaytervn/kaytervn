@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CommentModel } from '../../../models/comment/CommentModel';
 import ChildComments from './ChildComments';
 import useFetch from '../../../hooks/useFetch';
-import { remoteUrl } from '../../../types/constant';
+import { remoteUrl, ZALO_UTE_PORTAL_ACCESS_TOKEN } from '../../../types/constant';
 import { uploadImage } from '../../../types/utils';
 import { toast } from 'react-toastify';
 import { LoadingDialog } from '../../Dialog';
@@ -206,7 +206,7 @@ const CommentItem = ({
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem(ZALO_UTE_PORTAL_ACCESS_TOKEN)}`,
         },
         body: JSON.stringify({
           id: comment._id,
