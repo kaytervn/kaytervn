@@ -5,7 +5,10 @@ const BasicEmbeded = ({ url, main, label }: any) => {
   return (
     <Sidebar
       activeItem={main.name}
-      breadcrumbs={[{ label: main.label, path: main.path }, { label: label }]}
+      breadcrumbs={[
+        { label: main.label, path: main.path },
+        { label: label, url },
+      ]}
       renderContent={
         <>
           <div className="w-full h-[88vh]">
