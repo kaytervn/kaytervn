@@ -8,7 +8,7 @@ const BasicEmbeded = ({ url, main, label }: any) => {
       breadcrumbs={[{ label: main.label, path: main.path }, { label: label }]}
       renderContent={
         <>
-          <div className="w-full h-screen">
+          <div className="w-full h-[88vh]">
             <Iframe url={url} className="w-full h-full rounded-xl" />
           </div>
         </>

@@ -63,7 +63,7 @@ job.start();
 
 // Connect to the MongoDB database
 mongoose
-  .connect(process.env.MONGODB_URI, { dbName: "cookiedu_db" })
+  .connect(process.env.MONGODB_URI, { dbName: "db_cookiedu" })
   .then(() => {
     console.log("Connected to the database");
     app.listen(process.env.PORT, () => {
