@@ -22,6 +22,7 @@ import UpdateProfile from "./user/UpdateProfile";
 import useFetch from "../hooks/useFetch";
 import useDialog from "../hooks/useDialog";
 import { useGlobalContext } from "../types/context";
+import { ZALO_UTE_CMS_ACCESS_TOKEN } from "../types/constant";
 
 const Sidebar = ({ activeItem, renderContent }: any) => {
   const { profile, setProfile, isCollapsed, setIsCollapsed } =
@@ -51,13 +52,13 @@ const Sidebar = ({ activeItem, renderContent }: any) => {
 
   const handleLogout = () => {
     hideDialog();
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem(ZALO_UTE_CMS_ACCESS_TOKEN);
     navigate("/");
     window.location.reload();
   };
 
   const getProfile = async () => {
-    if (localStorage.getItem("accessToken")) {
+    if (localStorage.getItem(ZALO_UTE_CMS_ACCESS_TOKEN)) {
       const res = await get("/v1/user/profile");
       setProfile(res.data);
     }

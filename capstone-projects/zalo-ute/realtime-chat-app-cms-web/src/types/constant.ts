@@ -14,6 +14,15 @@ const settingKey = {
   MAX_CONVERSATIONS: "max_conversations",
 };
 
+const ZALO_UTE_CMS_ACCESS_TOKEN = "zalo-ute-cms-access-token";
+
 const remoteUrl = "https://zalo-ute-api.onrender.com";
 
-export { EmailPattern, settingKey, PhonePattern, remoteUrl, StudentIdPattern };
+export {
+  EmailPattern,
+  settingKey,
+  PhonePattern,
+  remoteUrl,
+  StudentIdPattern,
+  ZALO_UTE_CMS_ACCESS_TOKEN,
+};

@@ -10,6 +10,7 @@ import Role from "./views/Role";
 import Statistic from "./views/Statistic";
 import Setting from "./views/Setting";
 import { useGlobalContext } from "./types/context";
+import { ZALO_UTE_CMS_ACCESS_TOKEN } from "./types/constant";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -18,12 +19,12 @@ const App = () => {
 
   useEffect(() => {
     const checkToken = async () => {
-      const token = await localStorage.getItem("accessToken");
+      const token = await localStorage.getItem(ZALO_UTE_CMS_ACCESS_TOKEN);
       const res = await post("/v1/user/verify-token", { accessToken: token });
       if (res.result) {
         setIsAuthenticated(true);
       } else {
-        await localStorage.removeItem("accessToken");
+        await localStorage.removeItem(ZALO_UTE_CMS_ACCESS_TOKEN);
         setIsAuthenticated(false);
       }
     };

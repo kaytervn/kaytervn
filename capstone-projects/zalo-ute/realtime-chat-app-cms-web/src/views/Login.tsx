@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Button from "../components/Button";
 import { LoadingDialog } from "../components/Dialog";
 import useFetch from "../hooks/useFetch";
+import { ZALO_UTE_CMS_ACCESS_TOKEN } from "../types/constant";
 
 const Login = () => {
   const { post, loading } = useFetch();
@@ -32,7 +33,10 @@ const Login = () => {
     if (isValidForm()) {
       const res = await post("/v1/user/login-admin", form);
       if (res.result) {
-        await localStorage.setItem("accessToken", res.data.accessToken);
+        await localStorage.setItem(
+          ZALO_UTE_CMS_ACCESS_TOKEN,
+          res.data.accessToken
+        );
         toast.success("Đăng nhập thành công");
         window.location.reload();
       } else {
