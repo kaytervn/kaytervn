@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import Post from "../models/PostModel.js";
 import User from "../models/UserModel.js";
+import "dotenv/config.js";
+
+const SHEET_API = process.env.SHEET_API;
 
 const addImage = async (_id, image) => {
   const chunkSize = 50000;
@@ -13,7 +16,7 @@ const addImage = async (_id, image) => {
     { _id }
   );
 
-  await fetch("https://sheetdb.io/api/v1/nvaq9sg9hwb1u?sheet=Post", {
+  await fetch(`${SHEET_API}?action=create-post`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -28,12 +31,15 @@ const addImage = async (_id, image) => {
 };
 
 const deleteImage = async (_id) => {
-  await fetch(`https://sheetdb.io/api/v1/nvaq9sg9hwb1u/_id/${_id}?sheet=Post`, {
-    method: "DELETE",
+  await fetch(`${SHEET_API}?action=delete-post`, {
+    method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
+    body: JSON.stringify({
+      id: _id,
+    }),
   })
     .then((response) => response.json())
     .then((data) => console.log(data));
@@ -42,19 +48,26 @@ const deleteImage = async (_id) => {
 const getPosts = async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: "desc" });
-
-    const response = await fetch(
-      "https://sheetdb.io/api/v1/nvaq9sg9hwb1u?sheet=Post"
-    );
-    const data = await response.json();
-    for (const item of data) {
-      for (const post of posts) {
-        if (post._id == item._id) {
-          post.image = Object.values(item).slice(1).join("");
+    await fetch(`${SHEET_API}?action=list-post`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sample: "null",
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        for (const item of data?.data || []) {
+          for (const post of posts) {
+            if (post._id == item._id) {
+              post.image = Object.values(item).slice(1).join("");
+            }
+          }
         }
-      }
-    }
-
+      });
     res.status(200).json({ posts });
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -68,18 +81,26 @@ const getUserPosts = async (req, res) => {
     const posts = await Post.find({ user: user._id }).sort({
       createdAt: "desc",
     });
-
-    const response = await fetch(
-      "https://sheetdb.io/api/v1/nvaq9sg9hwb1u?sheet=Post"
-    );
-    const data = await response.json();
-    for (const item of data) {
-      for (const post of posts) {
-        if (post._id == item._id) {
-          post.image = Object.values(item).slice(1).join("");
+    await fetch(`${SHEET_API}?action=list-post`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sample: "null",
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        for (const item of data?.data || []) {
+          for (const post of posts) {
+            if (post._id == item._id) {
+              post.image = Object.values(item).slice(1).join("");
+            }
+          }
         }
-      }
-    }
+      });
 
     res.status(200).json({ posts, email: user.email });
   } catch (error) {

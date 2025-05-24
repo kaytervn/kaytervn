@@ -19,7 +19,7 @@ app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "/client/dist/index.html"))
 );
 mongoose
-  .connect(process.env.DB_URI, { dbName: "demo_db" })
+  .connect(process.env.DB_URI, { dbName: "db_demo" })
   .then(() => {
     console.log("Successfully connect to DB");
     app.listen(4000, () => console.log("Listening at 4000"));
