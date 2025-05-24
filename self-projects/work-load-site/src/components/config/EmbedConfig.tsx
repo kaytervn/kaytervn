@@ -1,4 +1,5 @@
 import {
+  BirdIcon,
   BookMarkedIcon,
   BracesIcon,
   CookieIcon,
@@ -128,6 +129,13 @@ const STUDY_LIST = [
     icon: ServerIcon,
     color: "#F87171",
     url: "https://zalo-ute-cms.onrender.com",
+  },
+  {
+    label: "Zalo UTE - Flutter",
+    path: "/zalo-ute-flutter",
+    icon: BirdIcon,
+    color: "#38BDF8",
+    url: "https://zalo-ute-flutter.onrender.com",
   },
   {
     label: "Zalo UTE - PORTAL",
