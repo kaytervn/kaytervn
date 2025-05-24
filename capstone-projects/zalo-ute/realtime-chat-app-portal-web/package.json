@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
-    "@react-native-community/datetimepicker": "^8.2.0",
     "@types/react-datepicker": "^6.2.0",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
@@ -21,7 +20,6 @@
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
-    "expo-linear-gradient": "^13.0.2",
     "i": "^0.3.7",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.441.0",
