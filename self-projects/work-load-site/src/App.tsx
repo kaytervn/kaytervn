@@ -19,6 +19,7 @@ import {
   REQUEST_MANAGER,
   HEADER_MANAGER,
   EMBED_STUFF,
+  STUDY_STUFF,
 } from "./types/pageConfig";
 import QrCodeGenerator from "./views/Tools/QrGenerator";
 import SequenceActivator from "./views/Tools/SequenceActivator";
@@ -48,10 +49,26 @@ import {
   removeSessionCache,
 } from "./services/storages";
 import { LOCAL_STORAGE } from "./types/constant";
-import { EMBED_LIST } from "./components/config/EmbedConfig";
+import { EMBED_LIST, STUDY_LIST } from "./components/config/EmbedConfig";
 import BasicEmbeded from "./views/Embed/BasicEmbeded";
-import EmbedList from "./views/Embed/EmbedList";
 import LessonClient from "./pages/n-lessons/client/LessonClient";
+import MainEmbed from "./views/Embed/MainEmbed";
+import StudyStuff from "./views/Embed/StudyStuff";
+
+const getEmbedRouters = ({
+  pageConfig = EMBED_STUFF,
+  embedList = EMBED_LIST,
+}: any) => {
+  return embedList.map((item: any) => (
+    <Route
+      key={item.path}
+      path={item.path}
+      element={
+        <BasicEmbeded url={item.url} label={item.label} main={pageConfig} />
+      }
+    />
+  ));
+};
 
 const PAGE_CONFIG_FILTERED = Object.values(PAGE_CONFIG).filter(
   (item: any) => item.path && item.element
@@ -146,20 +163,16 @@ const App = () => {
               path={MULTIROOM_PLATFORMER.path}
               element={<MultiroomPlatformer />}
             />
-            <Route path={EMBED_STUFF.path} element={<EmbedList />} />
-            {EMBED_LIST.map((item: any) => (
-              <Route
-                key={item.path}
-                path={item.path}
-                element={
-                  <BasicEmbeded
-                    url={item.url}
-                    label={item.label}
-                    main={EMBED_STUFF}
-                  />
-                }
-              />
-            ))}
+            <Route path={EMBED_STUFF.path} element={<MainEmbed />} />
+            <Route path={STUDY_STUFF.path} element={<StudyStuff />} />
+            {getEmbedRouters({
+              pageConfig: EMBED_STUFF,
+              embedList: EMBED_LIST,
+            })}
+            {getEmbedRouters({
+              pageConfig: STUDY_STUFF,
+              embedList: STUDY_LIST,
+            })}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

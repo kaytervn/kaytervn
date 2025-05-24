@@ -59,7 +59,7 @@ app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "/client/dist/index.html"))
 );
 
-job.start();
+// job.start();
 
 // Connect to the MongoDB database
 mongoose

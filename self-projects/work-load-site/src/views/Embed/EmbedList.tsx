@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/main/Sidebar";
 import { EMBED_STUFF } from "../../types/pageConfig";
@@ -9,26 +10,29 @@ import { InputBox } from "../../components/form/InputTextField";
 import { NoData } from "../../components/NoData";
 import { EMBED_LIST } from "../../components/config/EmbedConfig";
 
-const EmbedList = () => {
+const EmbedList = ({
+  pageConfig = EMBED_STUFF,
+  embedList = EMBED_LIST,
+}: any) => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
-  const [filteredData, setFilteredData] = useState(EMBED_LIST);
+  const [filteredData, setFilteredData] = useState(embedList);
 
   useEffect(() => {
-    document.title = EMBED_STUFF.label;
+    document.title = pageConfig.label;
   }, []);
 
   useEffect(() => {
     const lower = searchValue.toLowerCase();
     setFilteredData(
-      EMBED_LIST.filter((item) => item.label.toLowerCase().includes(lower))
+      embedList.filter((item: any) => item.label.toLowerCase().includes(lower))
     );
   }, [searchValue]);
 
   return (
     <Sidebar
-      activeItem={EMBED_STUFF.name}
-      breadcrumbs={[{ label: EMBED_STUFF.label }]}
+      activeItem={pageConfig.name}
+      breadcrumbs={[{ label: pageConfig.label }]}
       renderContent={
         <>
           <Header

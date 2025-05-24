@@ -1,12 +1,17 @@
 import {
+  AppleIcon,
+  BookMarkedIcon,
   BracesIcon,
   CookieIcon,
   FilesIcon,
   GoalIcon,
+  ImageIcon,
   LayoutDashboardIcon,
   PaletteIcon,
   PlayIcon,
   RocketIcon,
+  SmartphoneIcon,
+  StickyNoteIcon,
   VideoIcon,
 } from "lucide-react";
 
@@ -78,4 +83,49 @@ const EMBED_LIST = [
   },
 ];
 
-export { EMBED_LIST };
+const STUDY_LIST = [
+  {
+    label: "COOKIEDU Courses",
+    path: "/cookiedu-courses",
+    icon: CookieIcon,
+    color: "#60A5FA",
+    url: "https://cookiedu-online-courses.onrender.com",
+  },
+  {
+    label: "DIP Final",
+    path: "/dip-final",
+    icon: ImageIcon,
+    color: "#A78BFA",
+    url: "https://dip-final-50oz.onrender.com",
+  },
+  {
+    label: "Fruit Detection Demo",
+    path: "/fruit-detection",
+    icon: AppleIcon,
+    color: "#F87171",
+    url: "https://kaytervn-fruit-detection.streamlit.app",
+  },
+  {
+    label: "MERN Stack Demo",
+    path: "/mern-demo",
+    icon: StickyNoteIcon,
+    color: "#4ADE80",
+    url: "https://mern-demo-lgh6.onrender.com",
+  },
+  {
+    label: "Personal Homeworks",
+    path: "/personal-homeworks",
+    icon: BookMarkedIcon,
+    color: "#FBBF24",
+    url: "https://personal-homeworks-web.onrender.com/WebProgramming/",
+  },
+  {
+    label: "TechGadget Store",
+    path: "/techgadget-store",
+    icon: SmartphoneIcon,
+    color: "#2DD4BF",
+    url: "https://smartphone-shop-web.onrender.com/Smartphone_Webshop/",
+  },
+];
+
+export { EMBED_LIST, STUDY_LIST };

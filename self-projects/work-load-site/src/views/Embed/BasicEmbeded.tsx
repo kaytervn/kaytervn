@@ -12,7 +12,7 @@ const BasicEmbeded = ({ url, main, label }: any) => {
       renderContent={
         <>
           <div className="w-full h-[88vh]">
-            <Iframe url={url} className="w-full h-full rounded-xl" />
+            <Iframe url={url} className="w-full h-full rounded-xl bg-white" />
           </div>
         </>
       }

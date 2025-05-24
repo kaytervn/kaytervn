@@ -15,6 +15,7 @@ import {
   LogInIcon,
   FlameIcon,
   BookCheckIcon,
+  BackpackIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../config/GlobalProvider";
@@ -23,6 +24,7 @@ import {
   EMBED_STUFF,
   GAMES,
   GORGEOUS_SWAGGER,
+  STUDY_STUFF,
   TOOLS,
 } from "../../types/pageConfig";
 import { getStorageData, setStorageData } from "../../services/storages";
@@ -77,6 +79,12 @@ const Sidebar = ({ activeItem, renderContent, breadcrumbs }: any) => {
           label: EMBED_STUFF.label,
           icon: <FlameIcon size={20} />,
           path: EMBED_STUFF.path,
+        },
+        {
+          name: STUDY_STUFF.name,
+          label: STUDY_STUFF.label,
+          icon: <BackpackIcon size={20} />,
+          path: STUDY_STUFF.path,
         },
       ],
     },

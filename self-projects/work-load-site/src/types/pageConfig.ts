@@ -100,6 +100,12 @@ const EMBED_STUFF = {
   path: "/embed",
 };
 
+const STUDY_STUFF = {
+  name: "STUDY",
+  label: "Study",
+  path: "/study",
+};
+
 export {
   GORGEOUS_SWAGGER,
   CRUD_GENERATOR,
@@ -118,4 +124,5 @@ export {
   REQUEST_MANAGER,
   HEADER_MANAGER,
   EMBED_STUFF,
+  STUDY_STUFF,
 };
