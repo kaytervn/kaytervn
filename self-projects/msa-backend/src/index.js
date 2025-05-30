@@ -8,7 +8,7 @@ import {
 } from "./utils/constant.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { reloadWebsite, startAllJobs } from "./utils/cron.js";
+import { reloadWebsite } from "./utils/cron.js";
 import { checkSystemReady, verifySignature } from "./middlewares/auth.js";
 import { keyRouter } from "./routes/keyRouter.js";
 import { initKey } from "./config/appProperties.js";
@@ -44,7 +44,6 @@ httpServer.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-startAllJobs();
 initKey();
 setupSocket(io);
 setInterval(reloadWebsite, RELOAD_INTERVAL);

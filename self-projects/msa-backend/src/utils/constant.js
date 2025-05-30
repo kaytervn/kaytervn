@@ -5,7 +5,7 @@ const DATE_FORMAT = "DD/MM/YYYY HH:mm:ss";
 const TIMEZONE = "Asia/Ho_Chi_Minh";
 const JSON_LIMIT = "1000mb";
 const OTP_VALIDITY = 1; // 1 minute
-const RELOAD_INTERVAL = 30000; // 30 seconds
+const RELOAD_INTERVAL = 50000; // 50 seconds
 
 const CORS_OPTIONS = {
   origin: "*",
