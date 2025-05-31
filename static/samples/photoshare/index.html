@@ -320,8 +320,244 @@
         color: var(--primary);
       }
 
-      /* Messages */
-      .message {
+      /* Dialog Overlay */
+      .dialog-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .dialog-overlay.show {
+        display: flex;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Error Dialog */
+      .error-dialog {
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        max-width: 450px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+        transform: scale(0.9);
+        animation: dialogSlideIn 0.3s ease forwards;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .error-dialog::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #ef4444, #dc2626);
+      }
+
+      @keyframes dialogSlideIn {
+        from {
+          transform: scale(0.9) translateY(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1) translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .error-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #fee2e2, #fecaca);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        position: relative;
+      }
+
+      .error-icon::before {
+        content: "";
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: #ef4444;
+        border-radius: 50%;
+        opacity: 0.1;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 0.1;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.2;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0.1;
+        }
+      }
+
+      .error-icon i {
+        font-size: 2.5rem;
+        color: var(--error);
+        z-index: 1;
+        position: relative;
+      }
+
+      .error-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--gray-800);
+        margin-bottom: 1rem;
+      }
+
+      .error-text {
+        color: var(--gray-600);
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+
+      .error-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-secondary {
+        background: var(--gray-100);
+        color: var(--gray-700);
+        border: 1px solid var(--gray-300);
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-secondary:hover {
+        background: var(--gray-200);
+        transform: translateY(-1px);
+      }
+
+      /* Success Dialog */
+      .success-dialog {
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        max-width: 450px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+        transform: scale(0.9);
+        animation: dialogSlideIn 0.3s ease forwards;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .success-dialog::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #10b981, #059669);
+      }
+
+      .success-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        position: relative;
+      }
+
+      .success-icon::before {
+        content: "";
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: #10b981;
+        border-radius: 50%;
+        opacity: 0.1;
+        animation: pulse 2s infinite;
+      }
+
+      .success-icon i {
+        font-size: 2.5rem;
+        color: var(--success);
+        z-index: 1;
+        position: relative;
+      }
+
+      .success-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--gray-800);
+        margin-bottom: 1rem;
+      }
+
+      .success-text {
+        color: var(--gray-600);
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+
+      /* Loading Message */
+      .loading-message {
+        background: #fef3c7;
+        color: var(--warning);
+        border: 1px solid #fde68a;
         padding: 1rem 1.5rem;
         border-radius: 12px;
         margin-top: 1.5rem;
@@ -343,29 +579,11 @@
         }
       }
 
-      .message.show {
+      .loading-message.show {
         display: flex;
       }
 
-      .error-message {
-        background: #fef2f2;
-        color: var(--error);
-        border: 1px solid #fecaca;
-      }
-
-      .success-message {
-        background: #f0fdf4;
-        color: var(--success);
-        border: 1px solid #bbf7d0;
-      }
-
-      .loading-message {
-        background: #fef3c7;
-        color: var(--warning);
-        border: 1px solid #fde68a;
-      }
-
-      .message i {
+      .loading-message i {
         font-size: 1.2rem;
       }
 
@@ -526,25 +744,54 @@
           </div>
         </div>
 
-        <!-- Messages -->
-        <div class="message error-message" id="errorMessage">
-          <i class="fas fa-exclamation-triangle"></i>
-          <span id="errorText"></span>
-        </div>
-
-        <div class="message success-message" id="successMessage">
-          <i class="fas fa-check-circle"></i>
-          <span
-            >Tải lên thành công! Ảnh của bạn đã được thêm vào thư viện.</span
-          >
-        </div>
-
-        <div class="message loading-message" id="loadingMessage">
+        <!-- Loading Message -->
+        <div class="loading-message" id="loadingMessage">
           <div class="loading-spinner"></div>
           <span>Đang tải lên ảnh, vui lòng đợi...</span>
         </div>
       </div>
     </main>
+
+    <!-- Error Dialog -->
+    <div class="dialog-overlay" id="errorDialog">
+      <div class="error-dialog">
+        <div class="error-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3 class="error-title">Tải lên thất bại!</h3>
+        <p class="error-text" id="errorDialogText"></p>
+        <div class="error-actions">
+          <button class="btn-primary" onclick="retryUpload()">
+            <i class="fas fa-redo"></i> Thử lại
+          </button>
+          <button class="btn-secondary" onclick="closeErrorDialog()">
+            <i class="fas fa-times"></i> Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Dialog -->
+    <div class="dialog-overlay" id="successDialog">
+      <div class="success-dialog">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h3 class="success-title">Tải lên thành công!</h3>
+        <p class="success-text">
+          Ảnh của bạn đã được thêm vào thư viện và sẵn sàng để chia sẻ với cộng
+          đồng.
+        </p>
+        <div class="error-actions">
+          <button class="btn-primary" onclick="closeSuccessDialog()">
+            <i class="fas fa-images"></i> Xem thư viện
+          </button>
+          <button class="btn-secondary" onclick="uploadMore()">
+            <i class="fas fa-plus"></i> Tải thêm ảnh
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -560,47 +807,99 @@
     <script>
       const uploadZone = document.getElementById("uploadZone");
       const fileInput = document.getElementById("fileInput");
-      const errorMessage = document.getElementById("errorMessage");
-      const successMessage = document.getElementById("successMessage");
+      const errorDialog = document.getElementById("errorDialog");
+      const successDialog = document.getElementById("successDialog");
       const loadingMessage = document.getElementById("loadingMessage");
-      const errorText = document.getElementById("errorText");
+      const errorDialogText = document.getElementById("errorDialogText");
 
       // Error messages array for variety
       const errorMessages = [
-        "Lỗi kết nối mạng. Vui lòng kiểm tra kết nối internet và thử lại!",
-        "Máy chủ đang bận. Vui lòng thử lại sau vài phút!",
-        "Không thể xử lý file. Vui lòng thử với file khác!",
-        "Timeout - Quá thời gian chờ. Vui lòng thử lại!",
-        "Lỗi hệ thống không xác định. Liên hệ admin nếu lỗi tiếp tục!",
-        "Dung lượng máy chủ đã đầy. Vui lòng thử lại sau!",
-        "File bị lỗi hoặc hỏng. Vui lòng chọn file khác!",
+        "Kết nối mạng không ổn định. Vui lòng kiểm tra internet và thử lại!",
+        "Máy chủ đang quá tải. Vui lòng thử lại sau vài phút!",
+        "Không thể xử lý file ảnh này. Hãy thử với file khác!",
+        "Quá thời gian chờ kết nối. Vui lòng thử lại!",
+        "Có lỗi hệ thống xảy ra. Liên hệ hỗ trợ nếu lỗi tiếp tục!",
+        "Dung lượng lưu trữ máy chủ đã đầy. Vui lòng thử lại sau!",
+        "File ảnh bị lỗi hoặc không đọc được. Vui lòng chọn file khác!",
+        "Lỗi bảo mật: File không được phép tải lên!",
+        "Kết nối bị gián đoạn trong quá trình tải lên!",
       ];
 
-      // Hide all messages
-      function hideAllMessages() {
-        errorMessage.classList.remove("show");
-        successMessage.classList.remove("show");
+      let currentFiles = null;
+
+      // Hide all dialogs
+      function hideAllDialogs() {
+        errorDialog.classList.remove("show");
+        successDialog.classList.remove("show");
         loadingMessage.classList.remove("show");
       }
 
-      // Show error message
-      function showError(message) {
-        hideAllMessages();
-        errorText.textContent = message;
-        errorMessage.classList.add("show");
+      // Show error dialog
+      function showErrorDialog(message) {
+        hideAllDialogs();
+        errorDialogText.textContent = message;
+        errorDialog.classList.add("show");
       }
 
-      // Show success message
-      function showSuccess() {
-        hideAllMessages();
-        successMessage.classList.add("show");
+      // Show success dialog
+      function showSuccessDialog() {
+        hideAllDialogs();
+        successDialog.classList.add("show");
       }
 
       // Show loading message
       function showLoading() {
-        hideAllMessages();
+        hideAllDialogs();
         loadingMessage.classList.add("show");
       }
+
+      // Close error dialog
+      function closeErrorDialog() {
+        errorDialog.classList.remove("show");
+      }
+
+      // Close success dialog
+      function closeSuccessDialog() {
+        successDialog.classList.remove("show");
+      }
+
+      // Retry upload
+      function retryUpload() {
+        closeErrorDialog();
+        if (currentFiles) {
+          fileInput.files = currentFiles;
+          handleFileUpload();
+        }
+      }
+
+      // Upload more photos
+      function uploadMore() {
+        closeSuccessDialog();
+        fileInput.value = "";
+        currentFiles = null;
+      }
+
+      // Close dialog when clicking overlay
+      errorDialog.addEventListener("click", (e) => {
+        if (e.target === errorDialog) {
+          closeErrorDialog();
+        }
+      });
+
+      successDialog.addEventListener("click", (e) => {
+        if (e.target === successDialog) {
+          closeSuccessDialog();
+        }
+      });
+
+      // Prevent dialog close when clicking inside dialog
+      document
+        .querySelectorAll(".error-dialog, .success-dialog")
+        .forEach((dialog) => {
+          dialog.addEventListener("click", (e) => {
+            e.stopPropagation();
+          });
+        });
 
       // Drag and drop events
       uploadZone.addEventListener("dragover", (e) => {
@@ -645,7 +944,7 @@
         }
 
         if (file.size > maxSize) {
-          return "File quá lớn! Kích thước tối đa là 5MB.";
+          return `File "${file.name}" quá lớn! Kích thước tối đa là 5MB.`;
         }
 
         return null;
@@ -653,12 +952,15 @@
 
       // Handle file upload
       function handleFileUpload() {
-        hideAllMessages();
+        hideAllDialogs();
 
         if (fileInput.files.length === 0) {
-          showError("Vui lòng chọn ít nhất một file ảnh!");
+          showErrorDialog("Vui lòng chọn ít nhất một file ảnh!");
           return;
         }
+
+        // Store current files for retry functionality
+        currentFiles = fileInput.files;
 
         // Validate all files
         for (let i = 0; i < fileInput.files.length; i++) {
@@ -666,8 +968,9 @@
           const validationError = validateFile(file);
 
           if (validationError) {
-            showError(validationError);
+            showErrorDialog(validationError);
             fileInput.value = "";
+            currentFiles = null;
             return;
           }
         }
@@ -675,21 +978,27 @@
         // Show loading
         showLoading();
 
-        // Simulate upload process with high error rate (80% chance of error)
+        // Simulate upload process with high error rate (85% chance of error)
         setTimeout(() => {
-          if (Math.random() > 0.2) {
+          if (Math.random() > 0.15) {
             // Random error message
             const randomError =
               errorMessages[Math.floor(Math.random() * errorMessages.length)];
-            showError(randomError);
+            showErrorDialog(randomError);
           } else {
-            showSuccess();
+            showSuccessDialog();
+            fileInput.value = "";
+            currentFiles = null;
           }
-
-          // Reset file input
-          fileInput.value = "";
         }, 2000 + Math.random() * 3000); // Random delay between 2-5 seconds
       }
+
+      // Close dialogs with ESC key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          hideAllDialogs();
+        }
+      });
     </script>
   </body>
 </html>
