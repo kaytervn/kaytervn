@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PhotoShare - Chia Sẻ Ảnh Kỹ Thuật Số</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #667eea;
+        --primary-dark: #5a67d8;
+        --secondary: #764ba2;
+        --accent: #f093fb;
+        --success: #10b981;
+        --error: #ef4444;
+        --warning: #f59e0b;
+        --dark: #1a202c;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        line-height: 1.6;
+        color: var(--gray-800);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        z-index: 0;
+      }
+
+      .container {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Header Styles */
+      .header {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+      }
+
+      .logo i {
+        margin-right: 0.5rem;
+        font-size: 2rem;
+        background: linear-gradient(45deg, #f093fb, #f5f7fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .nav-links a::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .nav-links a:hover::before {
+        left: 100%;
+      }
+
+      .nav-links a:hover {
+        color: white;
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+      }
+
+      /* Main Content */
+      .main-content {
+        max-width: 800px;
+        margin: 4rem auto;
+        padding: 0 2rem;
+      }
+
+      .upload-section {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 3rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1),
+          0 8px 25px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .upload-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .section-title h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--gray-800);
+        margin-bottom: 0.5rem;
+      }
+
+      .section-title p {
+        color: var(--gray-600);
+        font-size: 1.1rem;
+      }
+
+      /* Upload Zone */
+      .upload-zone {
+        border: 2px dashed var(--gray-300);
+        border-radius: 16px;
+        padding: 3rem 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+        margin-bottom: 2rem;
+      }
+
+      .upload-zone:hover {
+        border-color: var(--primary);
+        background: linear-gradient(145deg, #f0f4ff, #e0e7ff);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.1);
+      }
+
+      .upload-zone.drag-over {
+        border-color: var(--primary);
+        background: linear-gradient(145deg, #f0f4ff, #e0e7ff);
+        transform: scale(1.02);
+        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+      }
+
+      .upload-icon {
+        font-size: 4rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+        display: block;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .upload-text {
+        margin-bottom: 1.5rem;
+      }
+
+      .upload-text h3 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--gray-800);
+        margin-bottom: 0.5rem;
+      }
+
+      .upload-text p {
+        color: var(--gray-600);
+        font-size: 1rem;
+      }
+
+      .upload-button {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        border: none;
+        padding: 0.875rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .upload-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .upload-button:active {
+        transform: translateY(0);
+      }
+
+      .upload-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .upload-button:hover::before {
+        left: 100%;
+      }
+
+      /* File Info */
+      .file-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: var(--gray-50);
+        border-radius: 12px;
+        border: 1px solid var(--gray-200);
+      }
+
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--gray-600);
+        font-size: 0.9rem;
+      }
+
+      .info-item i {
+        color: var(--primary);
+      }
+
+      /* Messages */
+      .message {
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        margin-top: 1.5rem;
+        display: none;
+        align-items: center;
+        gap: 1rem;
+        font-weight: 500;
+        animation: slideIn 0.3s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message.show {
+        display: flex;
+      }
+
+      .error-message {
+        background: #fef2f2;
+        color: var(--error);
+        border: 1px solid #fecaca;
+      }
+
+      .success-message {
+        background: #f0fdf4;
+        color: var(--success);
+        border: 1px solid #bbf7d0;
+      }
+
+      .loading-message {
+        background: #fef3c7;
+        color: var(--warning);
+        border: 1px solid #fde68a;
+      }
+
+      .message i {
+        font-size: 1.2rem;
+      }
+
+      /* Loading Animation */
+      .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid var(--warning);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Footer */
+      .footer {
+        margin-top: 4rem;
+        text-align: center;
+        padding: 2rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: white;
+      }
+
+      /* Hidden Input */
+      .hidden-input {
+        display: none;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .nav-container {
+          padding: 0 1rem;
+        }
+
+        .nav-links {
+          gap: 1rem;
+        }
+
+        .main-content {
+          padding: 0 1rem;
+          margin: 2rem auto;
+        }
+
+        .upload-section {
+          padding: 2rem 1.5rem;
+        }
+
+        .section-title h2 {
+          font-size: 1.5rem;
+        }
+
+        .upload-zone {
+          padding: 2rem 1rem;
+        }
+
+        .upload-icon {
+          font-size: 3rem;
+        }
+
+        .footer-links {
+          gap: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="nav-container">
+        <a href="#" class="logo">
+          <i class="fas fa-camera-retro"></i>
+          PhotoShare
+        </a>
+        <nav>
+          <ul class="nav-links">
+            <li>
+              <a href="#"><i class="fas fa-home"></i> Trang Chủ</a>
+            </li>
+            <li>
+              <a href="#"><i class="fas fa-images"></i> Thư Viện</a>
+            </li>
+            <li>
+              <a href="#"><i class="fas fa-user"></i> Tài Khoản</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="upload-section">
+        <div class="section-title">
+          <h2>Tải Lên Ảnh Của Bạn</h2>
+          <p>Chia sẻ những khoảnh khắc đẹp nhất với cộng đồng</p>
+        </div>
+
+        <div class="upload-zone" id="uploadZone">
+          <i class="fas fa-cloud-upload-alt upload-icon"></i>
+          <div class="upload-text">
+            <h3>Kéo thả ảnh vào đây</h3>
+            <p>hoặc nhấn để chọn từ thiết bị của bạn</p>
+          </div>
+          <button class="upload-button" type="button">
+            <i class="fas fa-plus"></i> Chọn Ảnh
+          </button>
+          <input
+            type="file"
+            id="fileInput"
+            class="hidden-input"
+            accept="image/jpeg,image/png,image/jpg"
+            multiple
+          />
+        </div>
+
+        <div class="file-info">
+          <div class="info-item">
+            <i class="fas fa-file-image"></i>
+            <span>Định dạng: JPG, PNG</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-weight-hanging"></i>
+            <span>Kích thước tối đa: 5MB</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-images"></i>
+            <span>Hỗ trợ nhiều ảnh</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-shield-alt"></i>
+            <span>An toàn & bảo mật</span>
+          </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="message error-message" id="errorMessage">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span id="errorText"></span>
+        </div>
+
+        <div class="message success-message" id="successMessage">
+          <i class="fas fa-check-circle"></i>
+          <span
+            >Tải lên thành công! Ảnh của bạn đã được thêm vào thư viện.</span
+          >
+        </div>
+
+        <div class="message loading-message" id="loadingMessage">
+          <div class="loading-spinner"></div>
+          <span>Đang tải lên ảnh, vui lòng đợi...</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2025 PhotoShare. Tất cả quyền được bảo lưu.</p>
+      <div class="footer-links">
+        <a href="#"><i class="fas fa-file-contract"></i> Điều khoản sử dụng</a>
+        <a href="#"><i class="fas fa-shield-alt"></i> Chính sách bảo mật</a>
+        <a href="#"><i class="fas fa-envelope"></i> Liên hệ</a>
+        <a href="#"><i class="fas fa-question-circle"></i> Trợ giúp</a>
+      </div>
+    </footer>
+
+    <script>
+      const uploadZone = document.getElementById("uploadZone");
+      const fileInput = document.getElementById("fileInput");
+      const errorMessage = document.getElementById("errorMessage");
+      const successMessage = document.getElementById("successMessage");
+      const loadingMessage = document.getElementById("loadingMessage");
+      const errorText = document.getElementById("errorText");
+
+      // Error messages array for variety
+      const errorMessages = [
+        "Lỗi kết nối mạng. Vui lòng kiểm tra kết nối internet và thử lại!",
+        "Máy chủ đang bận. Vui lòng thử lại sau vài phút!",
+        "Không thể xử lý file. Vui lòng thử với file khác!",
+        "Timeout - Quá thời gian chờ. Vui lòng thử lại!",
+        "Lỗi hệ thống không xác định. Liên hệ admin nếu lỗi tiếp tục!",
+        "Dung lượng máy chủ đã đầy. Vui lòng thử lại sau!",
+        "File bị lỗi hoặc hỏng. Vui lòng chọn file khác!",
+      ];
+
+      // Hide all messages
+      function hideAllMessages() {
+        errorMessage.classList.remove("show");
+        successMessage.classList.remove("show");
+        loadingMessage.classList.remove("show");
+      }
+
+      // Show error message
+      function showError(message) {
+        hideAllMessages();
+        errorText.textContent = message;
+        errorMessage.classList.add("show");
+      }
+
+      // Show success message
+      function showSuccess() {
+        hideAllMessages();
+        successMessage.classList.add("show");
+      }
+
+      // Show loading message
+      function showLoading() {
+        hideAllMessages();
+        loadingMessage.classList.add("show");
+      }
+
+      // Drag and drop events
+      uploadZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        uploadZone.classList.add("drag-over");
+      });
+
+      uploadZone.addEventListener("dragleave", (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove("drag-over");
+      });
+
+      uploadZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove("drag-over");
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          fileInput.files = files;
+          handleFileUpload();
+        }
+      });
+
+      // Click to select files
+      uploadZone.addEventListener("click", () => {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener("change", () => {
+        if (fileInput.files.length > 0) {
+          handleFileUpload();
+        }
+      });
+
+      // File validation
+      function validateFile(file) {
+        const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+        const maxSize = 5 * 1024 * 1024; // 5MB
+
+        if (!validTypes.includes(file.type)) {
+          return "File không đúng định dạng! Chỉ chấp nhận JPG, PNG.";
+        }
+
+        if (file.size > maxSize) {
+          return "File quá lớn! Kích thước tối đa là 5MB.";
+        }
+
+        return null;
+      }
+
+      // Handle file upload
+      function handleFileUpload() {
+        hideAllMessages();
+
+        if (fileInput.files.length === 0) {
+          showError("Vui lòng chọn ít nhất một file ảnh!");
+          return;
+        }
+
+        // Validate all files
+        for (let i = 0; i < fileInput.files.length; i++) {
+          const file = fileInput.files[i];
+          const validationError = validateFile(file);
+
+          if (validationError) {
+            showError(validationError);
+            fileInput.value = "";
+            return;
+          }
+        }
+
+        // Show loading
+        showLoading();
+
+        // Simulate upload process with high error rate (80% chance of error)
+        setTimeout(() => {
+          if (Math.random() > 0.2) {
+            // Random error message
+            const randomError =
+              errorMessages[Math.floor(Math.random() * errorMessages.length)];
+            showError(randomError);
+          } else {
+            showSuccess();
+          }
+
+          // Reset file input
+          fileInput.value = "";
+        }, 2000 + Math.random() * 3000); // Random delay between 2-5 seconds
+      }
+    </script>
+  </body>
+</html>
