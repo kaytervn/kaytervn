@@ -34,9 +34,12 @@ const setMasterKey = async (masterKey) => {
   }
   APP_PROPERTIES[CONFIG_KEY.MONGODB_URI] = mongoUri;
   dbConfig();
-  const configData = await Config.find({ kind: CONFIG_KIND.SYSTEM });
+  const configData = await Config.find();
   configData.forEach((config) => {
-    APP_PROPERTIES[config.key] = decryptRSA(masterKey, config.value);
+    APP_PROPERTIES[config.key] =
+      config.kind === CONFIG_KIND.RAW
+        ? config.value
+        : decryptRSA(masterKey, config.value);
   });
   initCache();
 };

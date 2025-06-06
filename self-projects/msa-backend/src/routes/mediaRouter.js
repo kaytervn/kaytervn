@@ -9,14 +9,15 @@ import {
   downloadFile,
   uploadFile,
 } from "../controllers/mediaController.js";
-import { ENV } from "../utils/constant.js";
+import { CONFIG_KEY } from "../utils/constant.js";
+import { getConfigValue } from "../config/appProperties.js";
 
 const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const folder = Date.now().toString();
-    const folderPath = path.join(ENV.UPLOAD_DIR, folder);
+    const folderPath = path.join(getConfigValue(CONFIG_KEY.UPLOAD_DIR), folder);
     if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath, { recursive: true });
     }
@@ -30,7 +31,10 @@ const storage = multer.diskStorage({
 
 const storageBackup = multer.diskStorage({
   destination: function (req, file, cb) {
-    const tempDir = path.join(ENV.UPLOAD_DIR, `temp_${Date.now()}`);
+    const tempDir = path.join(
+      getConfigValue(CONFIG_KEY.UPLOAD_DIR),
+      `temp_${Date.now()}`
+    );
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir, { recursive: true });
     }

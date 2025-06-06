@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 import { DATE_FORMAT, OTP_VALIDITY } from "./constant.js";
+import { getCloudinary } from "../config/cloudinary.js";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -41,10 +42,29 @@ const verifyTimestamp = (timestamp) => {
   return true;
 };
 
+const extractIdFromFilePath = (filePath) => {
+  const parts = filePath.split("/");
+  const fileName = parts[parts.length - 1];
+  const id = fileName.split(".")[0];
+  return id;
+};
+
+const deleteFileByUrl = async (url) => {
+  try {
+    const cloudinary = getCloudinary();
+    if (url) {
+      await cloudinary.uploader.destroy(extractIdFromFilePath(url));
+    }
+  } catch (error) {
+    console.error("Error deleting file:", error);
+  }
+};
+
 export {
   formatDateUTC,
   isValidUrl,
   extractAppNameFromMongoUri,
   getNestedValue,
   verifyTimestamp,
+  deleteFileByUrl,
 };

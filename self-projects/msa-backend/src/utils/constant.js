@@ -1,5 +1,10 @@
 /* eslint-disable no-undef */
 import "dotenv/config.js";
+import {
+  ACCOUNT_ENCRYPT_FIELDS,
+  LINK_GROUP_ENCRYPT_FIELDS,
+  PLATFORM_ENCRYPT_FIELDS,
+} from "../encryption/encryptFieldConfig.js";
 
 const DATE_FORMAT = "DD/MM/YYYY HH:mm:ss";
 const TIMEZONE = "Asia/Ho_Chi_Minh";
@@ -28,11 +33,8 @@ const API_HEADER = {
 };
 
 const ENV = {
-  SERVER_PORT: process.env.PORT,
   MONGODB_URI: process.env.MONGODB_URI,
   MASTER_KEY: process.env.MASTER_KEY,
-  X_API_KEY: process.env.X_API_KEY,
-  UPLOAD_DIR: process.env.UPLOAD_DIR,
 };
 
 const SOCKET_CMD = {
@@ -53,6 +55,12 @@ const CONFIG_KEY = {
   MONGODB_URI: "MONGODB_URI",
   CLIENT_ID: "CLIENT_ID",
   CLIENT_SECRET: "CLIENT_SECRET",
+  CLOUD_NAME: "CLOUD_NAME",
+  CLOUD_API_KEY: "CLOUD_API_KEY",
+  CLOUD_API_SECRET: "CLOUD_API_SECRET",
+  PORT: "PORT",
+  X_API_KEY: "X_API_KEY",
+  UPLOAD_DIR: "UPLOAD_DIR",
 };
 
 const ERROR_CODE = {
@@ -73,6 +81,15 @@ const ACCOUNT_KIND = {
   LINKED: 2,
 };
 
+const SOFTWARE_KIND = {
+  NESESSARY: 1,
+  STUDY: 2,
+  WORKING: 3,
+  GAMES: 4,
+  OTHERS: 5,
+  TOOLS: 6,
+};
+
 const TOTP = {
   ISSUER: "MSA",
 };
@@ -86,10 +103,9 @@ const ENCRYPT_FIELDS = {
   RESET_PASSWORD_FORM: ["userId", "newPassword", "otp"],
   CHANGE_PASSWORD_FORM: ["oldPassword", "newPassword"],
   USER: ["email", "username", "password", "secret", "code"],
-  ACCOUNT: ["username", "password", "note"],
-  PLATFORM: ["name"],
-  CREATE_PLATFORM: ["name"],
-  UPDATE_PLATFORM: ["id", "name"],
+  ...ACCOUNT_ENCRYPT_FIELDS,
+  ...PLATFORM_ENCRYPT_FIELDS,
+  ...LINK_GROUP_ENCRYPT_FIELDS,
 };
 
 const MIME_TYPES = {
@@ -140,4 +156,5 @@ export {
   RELOAD_INTERVAL,
   MIME_TYPES,
   TIMEZONE,
+  SOFTWARE_KIND,
 };

@@ -2,8 +2,12 @@ import archiver from "archiver";
 import fs from "fs";
 import path from "path";
 import unzipper from "unzipper";
-import { makeErrorResponse, makeSuccessResponse } from "../services/apiService.js";
-import { ENV, MIME_TYPES } from "../utils/constant.js";
+import {
+  makeErrorResponse,
+  makeSuccessResponse,
+} from "../services/apiService.js";
+import { CONFIG_KEY, MIME_TYPES } from "../utils/constant.js";
+import { getConfigValue } from "../config/appProperties.js";
 
 const uploadFile = async (req, res) => {
   try {
@@ -12,7 +16,11 @@ const uploadFile = async (req, res) => {
     }
 
     const folder = req.uploadFolder;
-    const filePath = path.join(ENV.UPLOAD_DIR, folder, req.file.filename);
+    const filePath = path.join(
+      getConfigValue(CONFIG_KEY.UPLOAD_DIR),
+      folder,
+      req.file.filename
+    );
 
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
 
@@ -32,12 +40,13 @@ const downloadFile = async (req, res) => {
   try {
     const folderName = req.params.folder;
     const fileName = req.params.fileName;
+    const uploadDir = getConfigValue(CONFIG_KEY.UPLOAD_DIR);
 
-    if (!ENV.UPLOAD_DIR) {
+    if (!uploadDir) {
       return makeErrorResponse({ res, message: "Server configuration error" });
     }
 
-    const filePath = path.join(ENV.UPLOAD_DIR, folderName, fileName);
+    const filePath = path.join(uploadDir, folderName, fileName);
 
     if (!fs.existsSync(filePath)) {
       return makeErrorResponse({ res, message: "File not found" });
@@ -62,7 +71,7 @@ const downloadFile = async (req, res) => {
 
 const downloadAllFiles = async (req, res) => {
   try {
-    const uploadDir = ENV.UPLOAD_DIR;
+    const uploadDir = getConfigValue(CONFIG_KEY.UPLOAD_DIR);
     if (!fs.existsSync(uploadDir)) {
       return res.status(404).json({ error: "Directory not found" });
     }
@@ -96,7 +105,7 @@ const backupZipFile = async (req, res) => {
       return makeErrorResponse({ res, message: "No ZIP file uploaded" });
     }
 
-    const uploadDir = ENV.UPLOAD_DIR;
+    const uploadDir = getConfigValue(CONFIG_KEY.UPLOAD_DIR);
 
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });

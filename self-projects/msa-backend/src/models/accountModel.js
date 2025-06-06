@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { ACCOUNT_KIND } from "../utils/constant.js";
+import BackupCode from "./backupCodeModel.js";
 
 const AccountSchema = new mongoose.Schema({
   kind: {
@@ -29,6 +30,19 @@ const AccountSchema = new mongoose.Schema({
     reqquired: true,
   },
 });
+
+AccountSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    try {
+      await BackupCode.deleteMany({ account: this._id });
+      next();
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 const Account = mongoose.model("Account", AccountSchema);
 export default Account;
