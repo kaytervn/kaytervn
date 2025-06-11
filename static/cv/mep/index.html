@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CV - MEP Platform</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        line-height: 1.4;
+        color: #1f2937;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .cv-container {
+        max-width: 850px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        position: relative;
+      }
+
+      .print-btn {
+        position: fixed;
+        top: 30px;
+        right: 30px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        transition: transform 0.2s ease;
+        z-index: 1000;
+      }
+
+      .print-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .header {
+        background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+        color: white;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        transform: translate(50px, -50px);
+      }
+
+      .header-content {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 30px;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .profile-img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        object-fit: cover;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .header-info h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, #60a5fa, #a78bfa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .header-info .title {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #d1d5db;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        font-size: 0.9rem;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .contact-item::before {
+        content: "•";
+        color: #60a5fa;
+        font-weight: bold;
+        font-size: 1.2em;
+      }
+
+      .main-content {
+        padding: 40px;
+      }
+
+      .section {
+        margin-bottom: 35px;
+      }
+
+      .section-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 8px;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 2px;
+      }
+
+      .objective {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #4b5563;
+        text-align: justify;
+      }
+
+      .card {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border-left: 4px solid #667eea;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+      }
+
+      .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      .card-title a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .card-title a:hover {
+        color: #4f46e5;
+      }
+
+      .card-date {
+        font-size: 0.85rem;
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .card-content {
+        color: #4b5563;
+        font-size: 0.95rem;
+      }
+
+      .card-content ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .card-content li {
+        padding: 4px 0;
+        position: relative;
+        padding-left: 15px;
+      }
+
+      .card-content li::before {
+        content: "▸";
+        position: absolute;
+        left: 0;
+        color: #667eea;
+        font-weight: bold;
+      }
+
+      .card-footer {
+        margin-top: 5px;
+        border-top: 1px solid #e5e7eb;
+        font-size: 0.85rem;
+        color: #6b7280;
+      }
+
+      .tech-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .tech-tag {
+        background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+        color: #4338ca;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+
+      .skills-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .skill-category {
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+      }
+
+      .skill-category h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 10px;
+      }
+
+      .skill-category p {
+        font-size: 0.9rem;
+        color: #4b5563;
+        line-height: 1.5;
+      }
+
+      .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+      }
+
+      @media print {
+        body {
+          background: white;
+          padding: 0;
+        }
+
+        .cv-container {
+          box-shadow: none;
+          border-radius: 0;
+          max-width: none;
+        }
+
+        .print-btn {
+          display: none;
+        }
+
+        .header {
+          padding: 30px;
+        }
+
+        .main-content {
+          padding: 30px;
+        }
+
+        .section {
+          margin-bottom: 25px;
+        }
+
+        .card {
+          break-inside: avoid;
+          margin-bottom: 15px;
+          padding: 20px;
+        }
+
+        .two-column {
+          gap: 20px;
+        }
+
+        .skills-grid {
+          gap: 15px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+          gap: 20px;
+        }
+
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .two-column,
+        .skills-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button class="print-btn" onclick="window.print()">📄 Print to PDF</button>
+
+    <div class="cv-container">
+      <div class="header">
+        <div class="header-content">
+          <img
+            src="../basic/images/img.jpg"
+            class="profile-img"
+            alt="Profile"
+          />
+          <div class="header-info">
+            <h1>Kiến Đức Trọng</h1>
+            <div class="title">Unity Game Developer Intern</div>
+            <div class="contact-grid">
+              <div class="contact-item"><i class="fa fa-mars"></i> Male</div>
+              <div class="contact-item">
+                <i class="fa fa-calendar"></i> **-09-20**
+              </div>
+              <div class="contact-item">
+                <i class="fa fa-phone"></i> 035****430
+              </div>
+              <div class="contact-item">
+                <i class="fa fa-map-marker"></i> District 8, Ho Chi Minh City
+              </div>
+              <div class="contact-item">
+                <i class="fa fa-envelope"></i> k***********@gmail.com
+              </div>
+              <div class="contact-item">
+                <i class="fa fa-github"></i>
+                <a href="https://github.com/kaytervn" target="_blank"
+                  >@kaytervn</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="section">
+          <h2 class="section-title">Objective</h2>
+          <p class="objective">
+            As a final-year Software Engineering student, I am pursuing a Unity
+            Game Developer Internship at MEP Platform. With a solid foundation
+            in Java backend (Spring Boot), I'm eager to pivot into game
+            development and contribute to creative, music-driven projects.
+          </p>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">Education</h2>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                Ho Chi Minh City University of Technology and Education
+              </div>
+              <div class="card-date">2021 - 09/2025</div>
+            </div>
+            <div class="card-content">
+              <ul>
+                <li><strong>Field of Study:</strong> Infomation Technology</li>
+                <li>
+                  <strong>Major:</strong> Software Engineering |
+                  <strong>GPA:</strong> 3.62/4.0
+                </li>
+                <li>
+                  <strong>Key subjects:</strong> Data Structures & Algorithms,
+                  Software Design (UML, MVC), OOP
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">Experience</h2>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                ITZ Education - Java Backend Developer Intern
+              </div>
+              <div class="card-date">06/2024 - 09/2025</div>
+            </div>
+            <div class="card-content">
+              <ul>
+                <li>
+                  Developed RESTful APIs with Java, Spring Boot, MySQL, Docker
+                </li>
+                <li>
+                  Implemented JWT authentication, Spring Security, MFA via QR
+                  code, password reset
+                </li>
+                <li>
+                  Managed database versioning (Liquibase), session handling
+                  (Redis), WebSocket notifications
+                </li>
+                <li>
+                  Worked with microservices architecture using RabbitMQ for
+                  inter-service communication
+                </li>
+              </ul>
+              <div class="tech-tags">
+                <span class="tech-tag">Java</span>
+                <span class="tech-tag">Spring Boot</span>
+                <span class="tech-tag">MySQL</span>
+                <span class="tech-tag">Redis</span>
+                <span class="tech-tag">RabbitMQ</span>
+                <span class="tech-tag">WebSocket</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">TEKY Academy - Programming Lecturer</div>
+              <div class="card-date">03/2023 - 12/2023</div>
+            </div>
+            <div class="card-content">
+              <ul>
+                <li>
+                  Taught programming to students aged 7-15: Scratch, Python
+                  (tkinter, pygame)
+                </li>
+                <li>
+                  Managed STEM classrooms, enhanced problem-solving and
+                  presentaion skills
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="two-column">
+          <div>
+            <div class="section">
+              <h2 class="section-title">Key Projects</h2>
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title">
+                    <i class="fa fa-github"></i>
+                    <a
+                      href="https://github.com/stars/kaytervn/lists/financies"
+                      target="_blank"
+                      >Company Management App</a
+                    >
+                  </div>
+                  <div class="card-date">2025</div>
+                </div>
+                <div class="card-content">
+                  <p>
+                    Graduation project applies a multi-tenant database and
+                    microservices architecture, secured through data encryption
+                    and access/session JWT validation.
+                  </p>
+                </div>
+                <div class="tech-tags">
+                  <span class="tech-tag">
+                    <a
+                      href="https://github.com/stars/kaytervn/lists/financies"
+                      target="_blank"
+                      >Sources</a
+                    ></span
+                  >
+                  <span class="tech-tag">
+                    <a
+                      href="https://drive.google.com/drive/u/1/folders/1L4mgAx1IcBqbb2ki5CJOqxFIa83P_aj8"
+                      target="_blank"
+                      >Report PDFs</a
+                    ></span
+                  >
+                  <span class="tech-tag">
+                    <a
+                      href="https://www.youtube.com/playlist?list=PLpxA6_4irZfF_SjyHGu5MG3-dbvvSqLS3"
+                      target="_blank"
+                      >Report Videos</a
+                    ></span
+                  >
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title">
+                    <i class="fa fa-github"></i>
+                    <a
+                      href="https://github.com/stars/kaytervn/lists/zalo-ute"
+                      target="_blank"
+                      >Social Network Zalo UTE</a
+                    >
+                  </div>
+                  <div class="card-date">2024</div>
+                </div>
+                <div class="card-content">
+                  <p>
+                    MERN Stack project with real-time chat via Socket.IO, and
+                    developed mobile apps in both Flutter and React Native.
+                  </p>
+                </div>
+                <div class="card-footer">
+                  <div class="tech-tags">
+                    <span class="tech-tag">
+                      <a
+                        href="https://github.com/stars/kaytervn/lists/zalo-ute"
+                        target="_blank"
+                        >Sources</a
+                      ></span
+                    >
+                    <span class="tech-tag">
+                      <a
+                        href="https://drive.google.com/drive/u/1/folders/1rqtrticHR-KMLI5ow1dLM53s9bla_ghP"
+                        target="_blank"
+                        >Report PDFs</a
+                      ></span
+                    >
+                    <span class="tech-tag">
+                      <a
+                        href="https://www.youtube.com/playlist?list=PLpxA6_4irZfELSB1baT64iRtlHGVDlZT9"
+                        target="_blank"
+                        >Report Videos</a
+                      ></span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="section">
+              <h2 class="section-title">Certifications</h2>
+              <div class="skill-category">
+                <p><strong>TOEIC: </strong>745 (06/2024)</p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section">
+              <h2 class="section-title">Technical Skills</h2>
+              <div class="skills-grid">
+                <div class="skill-category">
+                  <h4>Programming</h4>
+                  <p>Java & JavaScript (Proficient), C# (Basic)</p>
+                </div>
+
+                <div class="skill-category">
+                  <h4>Backend</h4>
+                  <p>Spring Boot, WebSocket, Microservices</p>
+                </div>
+
+                <div class="skill-category">
+                  <h4>Database</h4>
+                  <p>MySQL, MongoDB, Liquibase, Redis</p>
+                </div>
+
+                <div class="skill-category">
+                  <h4>Tools & Others</h4>
+                  <p>Git, RabbitMQ, Docker</p>
+                </div>
+              </div>
+            </div>
+            <div class="section">
+              <h2 class="section-title">References</h2>
+              <div class="skill-category">
+                <h4>Hoàng Văn Dũng, Assoc. Prof. Dr.</h4>
+                <p>Vice Dean of Faculty of IT (AI - HCMUTE)</p>
+                <p>
+                  <strong>Email: </strong
+                  ><a href="dunghv@hcmute.edu.vn">dunghv@hcmute.edu.vn</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
