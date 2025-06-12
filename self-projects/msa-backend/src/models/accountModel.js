@@ -22,12 +22,12 @@ const AccountSchema = new mongoose.Schema({
   ref: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Account",
-    reqquired: true,
+    required: true,
   },
   platform: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Platform",
-    reqquired: true,
+    required: true,
   },
 });
 

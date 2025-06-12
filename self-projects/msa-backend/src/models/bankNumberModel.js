@@ -12,7 +12,7 @@ const BankNumberSchema = new mongoose.Schema({
   bank: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Bank",
-    reqquired: true,
+    required: true,
   },
 });
 

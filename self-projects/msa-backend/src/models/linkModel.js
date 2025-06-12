@@ -15,7 +15,7 @@ const LinkSchema = new mongoose.Schema({
   linkGroup: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "LinkGroup",
-    reqquired: true,
+    required: true,
   },
 });
 

@@ -20,6 +20,7 @@ import {
   HEADER_MANAGER,
   EMBED_STUFF,
   STUDY_STUFF,
+  NODE_CRUD_GENERATOR,
 } from "./types/pageConfig";
 import QrCodeGenerator from "./views/Tools/QrGenerator";
 import SequenceActivator from "./views/Tools/SequenceActivator";
@@ -54,6 +55,7 @@ import BasicEmbeded from "./views/Embed/BasicEmbeded";
 import LessonClient from "./pages/n-lessons/client/LessonClient";
 import MainEmbed from "./views/Embed/MainEmbed";
 import StudyStuff from "./views/Embed/StudyStuff";
+import NodeCrudGenerator from "./views/Tools/NodeCrudGenerator";
 
 const getEmbedRouters = ({
   pageConfig = EMBED_STUFF,
@@ -144,6 +146,10 @@ const App = () => {
             <Route path={TOOLS.path} element={<Tools />} />
             <Route path={CRUD_GENERATOR.path} element={<CRUDGenerator />} />
             <Route path={QR_GENERATOR.path} element={<QrCodeGenerator />} />
+            <Route
+              path={NODE_CRUD_GENERATOR.path}
+              element={<NodeCrudGenerator />}
+            />
             <Route
               path={SEQUENCE_ACTIVATOR.path}
               element={<SequenceActivator />}

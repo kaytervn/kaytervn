@@ -6,8 +6,14 @@ const GORGEOUS_SWAGGER = {
 
 const CRUD_GENERATOR = {
   name: "CRUD_GENERATOR",
-  label: "CRUD Generator",
-  path: "/crud-generator",
+  label: "Java CRUD Generator",
+  path: "/java-crud-generator",
+};
+
+const NODE_CRUD_GENERATOR = {
+  name: "NODE_CRUD_GENERATOR",
+  label: "Node.js CRUD Generator",
+  path: "/nodejs-crud-generator",
 };
 
 const TOOLS = {
@@ -125,4 +131,5 @@ export {
   HEADER_MANAGER,
   EMBED_STUFF,
   STUDY_STUFF,
+  NODE_CRUD_GENERATOR,
 };

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Copy, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
 import Sidebar from "../../components/main/Sidebar";
-import { CRUD_GENERATOR, TOOLS } from "../../types/pageConfig";
-import { generateOutput } from "../../types/crud";
+import { NODE_CRUD_GENERATOR, TOOLS } from "../../types/pageConfig";
 import { useGlobalContext } from "../../components/config/GlobalProvider";
 import { TOAST } from "../../types/constant";
+import { generateNodeJsCrudOutput } from "../../services/nodeJsCrud";
 
-const CRUDGenerator = () => {
+const NodeCrudGenerator = () => {
   const { setToast } = useGlobalContext();
   const [inputText, setInputText] = useState("");
   const [outputItems, setOutputItems] = useState<any[]>([]);
@@ -16,7 +16,7 @@ const CRUDGenerator = () => {
   const [openStates, setOpenStates] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
-    document.title = CRUD_GENERATOR.label;
+    document.title = NODE_CRUD_GENERATOR.label;
   }, []);
 
   const handleGenerate = () => {
@@ -25,8 +25,12 @@ const CRUDGenerator = () => {
       return;
     }
     try {
+      const results: any = generateNodeJsCrudOutput(inputText);
+      if (!results) {
+        setToast("Invalid schema format", TOAST.ERROR);
+        return;
+      }
       setToast("Generated successfully", TOAST.SUCCESS);
-      const results = generateOutput(inputText);
       setOutputItems(results);
     } catch (err) {
       setToast(
@@ -57,7 +61,7 @@ const CRUDGenerator = () => {
       activeItem={TOOLS.name}
       breadcrumbs={[
         { label: TOOLS.label, path: TOOLS.path },
-        { label: CRUD_GENERATOR.label },
+        { label: NODE_CRUD_GENERATOR.label },
       ]}
       renderContent={
         <>
@@ -66,10 +70,11 @@ const CRUDGenerator = () => {
               <div className="mb-6">
                 <h1 className="text-left text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent flex items-center">
                   <span className="mr-2">⚡</span>
-                  {CRUD_GENERATOR.label}
+                  Node.js CRUD Generator
                 </h1>
                 <p className="text-gray-400 mt-2">
-                  Transform your model definitions into complete CRUD operations
+                  This tool generates CRUD operations for MSA Project with
+                  Encryption
                 </p>
               </div>
 
@@ -83,7 +88,7 @@ const CRUDGenerator = () => {
                       <div className="w-3 h-3 rounded-full bg-green-500"></div>
                     </div>
                     <span className="ml-4 text-xs text-gray-400">
-                      model_definition.java
+                      yourModel.js
                     </span>
                   </div>
                   <textarea
@@ -168,4 +173,4 @@ const CRUDGenerator = () => {
   );
 };
 
-export default CRUDGenerator;
+export default NodeCrudGenerator;

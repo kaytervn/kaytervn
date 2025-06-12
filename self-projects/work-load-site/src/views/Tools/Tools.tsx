@@ -7,11 +7,13 @@ import {
   SEQUENCE_ACTIVATOR,
   CRUD_GENERATOR,
   PERMISSIONS_GENERATOR,
+  NODE_CRUD_GENERATOR,
 } from "../../types/pageConfig";
 import ToolCard from "../../components/ToolCard";
 import Header from "../../components/swagger/Header";
 import {
   CodeIcon,
+  FileBoxIcon,
   FolderOpenDotIcon,
   LifeBuoyIcon,
   QrCodeIcon,
@@ -37,18 +39,12 @@ const Tools = () => {
       color: "#8C4E4E",
       onButtonClick: () => navigate(CRUD_GENERATOR.path),
     },
-    // {
-    //   label: DATA_GENERATOR.label,
-    //   icon: FileBoxIcon,
-    //   color: "#304C73",
-    //   onButtonClick: () => navigate(DATA_GENERATOR.path),
-    // },
-    // {
-    //   label: DATA_MERGING.label,
-    //   icon: CombineIcon,
-    //   color: "#463457",
-    //   onButtonClick: () => navigate(DATA_MERGING.path),
-    // },
+    {
+      label: NODE_CRUD_GENERATOR.label,
+      icon: FileBoxIcon,
+      color: "#00695C",
+      onButtonClick: () => navigate(NODE_CRUD_GENERATOR.path),
+    },
     {
       label: SEQUENCE_ACTIVATOR.label,
       icon: ShieldCheckIcon,
