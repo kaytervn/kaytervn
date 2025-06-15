@@ -126,8 +126,12 @@ function generateController(modelName: any, fields: any) {
   const refImports = refFields
     .map((field: any) => {
       const refName = lowerModelName(field.ref);
-      return `import ${field.ref} from "../models/${refName}Model.js";`;
+      if (refName !== lowerModel) {
+        return `import ${field.ref} from "../models/${refName}Model.js";`;
+      }
+      return null;
     })
+    .filter(Boolean)
     .join("\n");
 
   return `import { encryptCommonField } from "../encryption/commonEncryption.js";
@@ -136,7 +140,7 @@ function generateController(modelName: any, fields: any) {
     decryptAndEncryptListByUserKey,
     decryptDataByUserKey,
   } from "../encryption/userKeyEncryption.js";
-  import ${upperModel}Model from "../models/${lowerModel}Model.js";
+  import ${upperModel} from "../models/${lowerModel}Model.js";
   ${refImports}
   import {
     makeErrorResponse,
@@ -153,7 +157,7 @@ function generateController(modelName: any, fields: any) {
       );
       ${validationCheck}
   ${refChecks}
-      await ${upperModel}Model.create(${createEncryptedObject});
+      await ${upperModel}.create(${createEncryptedObject});
       return makeSuccessResponse({
         res,
         message: "Create ${splitModelSpace} success",
@@ -181,11 +185,11 @@ function generateController(modelName: any, fields: any) {
         });
       }
   ${refChecks}
-      const ${lowerModel} = await ${upperModel}Model.findById(id);
+      const ${lowerModel} = await ${upperModel}.findById(id);
       if (!${lowerModel}) {
         return makeErrorResponse({ res, message: "Not found ${splitModelSpace}" });
       }
-      await obj.updateOne(${updateEncryptedObject});
+      await ${lowerModel}.updateOne(${updateEncryptedObject});
       return makeSuccessResponse({ res, message: "Update ${splitModelSpace} success" });
     } catch (error) {
       return makeErrorResponse({ res, message: error.message });
@@ -195,11 +199,11 @@ function generateController(modelName: any, fields: any) {
   const delete${upperModel} = async (req, res) => {
     try {
       const id = req.params.id;
-      const ${lowerModel} = await ${upperModel}Model.findById(id);
+      const ${lowerModel} = await ${upperModel}.findById(id);
       if (!${lowerModel}) {
         return makeErrorResponse({ res, message: "Not found ${splitModelSpace}" });
       }
-      await obj.deleteOne();
+      await ${lowerModel}.deleteOne();
       return makeSuccessResponse({
         res,
         message: "Delete ${splitModelSpace} success",
@@ -212,7 +216,7 @@ function generateController(modelName: any, fields: any) {
   const get${upperModel} = async (req, res) => {
     try {
       const id = req.params.id;
-      const ${lowerModel} = await ${upperModel}Model.findById(id)${populateFields};
+      const ${lowerModel} = await ${upperModel}.findById(id)${populateFields};
       if (!${lowerModel}) {
         return makeErrorResponse({ res, message: "Not found ${splitModelSpace}" });
       }
@@ -220,7 +224,7 @@ function generateController(modelName: any, fields: any) {
         res,
         data: decryptAndEncryptDataByUserKey(
           req.token,
-          obj,
+          ${lowerModel},
           ENCRYPT_FIELDS.${upperSnakeCaseModel}
         ),
       });
@@ -233,7 +237,7 @@ function generateController(modelName: any, fields: any) {
     try {
       const objs = decryptAndEncryptListByUserKey(
         req.token,
-        await ${upperModel}Model.find()${populateFields},
+        await ${upperModel}.find()${populateFields},
         ENCRYPT_FIELDS.${upperSnakeCaseModel}
       );
       return makeSuccessResponse({
