@@ -31,7 +31,11 @@ const encodePassword = async (rawPassword) => {
 };
 
 const comparePassword = async (rawPassword, hashedPassword) => {
-  return await bcrypt.compare(rawPassword, hashedPassword);
+  try {
+    return await bcrypt.compare(rawPassword, hashedPassword);
+  } catch {
+    return false;
+  }
 };
 
 export {

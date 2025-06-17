@@ -10,6 +10,7 @@ import {
   requestKey,
   verifyUserToken,
   changeUserPassword,
+  changePin,
 } from "../controllers/userController.js";
 import { clearKey } from "../controllers/keyController.js";
 import { basicAuth, bearerAuth } from "../middlewares/auth.js";
@@ -27,5 +28,6 @@ router.post("/request-key", bearerAuth, requestKey);
 router.get("/clear-key", bearerAuth, clearKey);
 router.get("/verify-token", bearerAuth, verifyUserToken);
 router.put("/change-password", bearerAuth, changeUserPassword);
+router.put("/change-pin", bearerAuth, changePin);
 
 export { router as userRouter };

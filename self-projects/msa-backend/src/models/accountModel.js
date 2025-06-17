@@ -22,7 +22,6 @@ const AccountSchema = new mongoose.Schema({
   ref: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Account",
-    required: true,
   },
   platform: {
     type: mongoose.Schema.Types.ObjectId,

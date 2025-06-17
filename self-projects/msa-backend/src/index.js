@@ -21,6 +21,8 @@ import { categoryRouter } from "./routes/categoryRouter.js";
 import { lessonRouter } from "./routes/lessonRouter.js";
 import { cloudinaryRouter } from "./routes/cloudinaryRouter.js";
 import { linkGroupRouter } from "./routes/linkGroupRouter.js";
+import { accountRouter } from "./routes/accountRouter.js";
+import { backupCodeRouter } from "./routes/backupCodeRouter.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -42,6 +44,8 @@ app.use(verifySignature);
 app.use("/v1/user", userRouter);
 app.use("/v1/platform", platformRouter);
 app.use("/v1/link-group", linkGroupRouter);
+app.use("/v1/account", accountRouter);
+app.use("/v1/backup-code", backupCodeRouter);
 
 const PORT = getConfigValue(CONFIG_KEY.PORT) || 6676;
 httpServer.listen(PORT, () => {

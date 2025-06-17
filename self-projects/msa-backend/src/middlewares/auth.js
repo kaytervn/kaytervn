@@ -2,6 +2,7 @@ import { getAppProperties, getConfigValue } from "../config/appProperties.js";
 import { decryptClientField } from "../encryption/clientEncryption.js";
 import { makeUnauthorizedExecption } from "../services/apiService.js";
 import { isValidSession } from "../services/cacheService.js";
+import { decrypt } from "../services/encryptionService.js";
 import { generateMd5 } from "../services/generateService.js";
 import { verifyToken } from "../services/jwtService.js";
 import { API_HEADER, CONFIG_KEY, ERROR_CODE } from "../utils/constant.js";
@@ -112,8 +113,11 @@ const verifySignature = async (req, res, next) => {
     req.headers[API_HEADER.MESSAGE_SIGNATURE]
   );
   const timestamp = decryptClientField(req.headers[API_HEADER.TIMESTAMP]);
+  const clientRequestId = decryptClientField(
+    req.headers[API_HEADER.CLIENT_REQUEST_ID]
+  );
 
-  if (!messageSignature || !timestamp) {
+  if (!messageSignature || !timestamp || !clientRequestId) {
     return makeUnauthorizedExecption({
       res,
       code: ERROR_CODE.INVALID_SIGNATURE,
@@ -124,7 +128,16 @@ const verifySignature = async (req, res, next) => {
   try {
     const clientId = getConfigValue(CONFIG_KEY.CLIENT_ID);
     const clientSecret = getConfigValue(CONFIG_KEY.CLIENT_SECRET);
-    const systemSignature = generateMd5(clientId + clientSecret + timestamp);
+    const systemSignature = generateMd5(
+      clientId + clientSecret + timestamp + clientRequestId
+    );
+
+    try {
+      const payload = decrypt(clientRequestId, req?.body?.data);
+      req.body = JSON.parse(payload);
+    } catch {
+      req.body = null;
+    }
 
     if (messageSignature !== systemSignature) {
       return makeUnauthorizedExecption({

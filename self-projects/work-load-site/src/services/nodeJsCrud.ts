@@ -42,13 +42,17 @@ const processFields = (schemaText: string) => {
 
 const generateEncryptFields = (modelName: any, fields: any) => {
   const name = splitModelName(modelName, "_").toUpperCase();
-  const fieldNames = fields.map((field: any) => field.name);
-  const output = `const ${name.toUpperCase()}_ENCRYPT_FIELDS = {
-    ${name.toUpperCase()}: [${fieldNames
+
+  const stringFields = fields
+    .filter((field: any) => field.type === "String")
+    .map((field: any) => field.name);
+
+  const output = `const ${name}_ENCRYPT_FIELDS = {
+    ${name}: [${stringFields.map((name: any) => `"${name}"`).join(", ")}],
+    CREATE_${name}: [${stringFields
     .map((name: any) => `"${name}"`)
     .join(", ")}],
-    CREATE_${name}: [${fieldNames.map((name: any) => `"${name}"`).join(", ")}],
-    UPDATE_${name}: ["id", ${fieldNames
+    UPDATE_${name}: [${stringFields
     .map((name: any) => `"${name}"`)
     .join(", ")}],
   };`;
@@ -71,10 +75,24 @@ function generateController(modelName: any, fields: any) {
   const refFields = fields
     .filter((field: any) => field.ref)
     .map((field: any) => ({ name: field.name, ref: field.ref }));
+  const refFieldMap = new Map(
+    fields
+      .filter((field: any) => field.ref)
+      .map((field: any) => [field.name, field.ref])
+  );
+
+  const fieldChecks = requiredFields.map((name: any) => {
+    const isRef = refFieldMap.has(name);
+    const checks = [`!${name}`];
+    if (isRef) {
+      checks.push(`!mongoose.isValidObjectId(${name})`);
+    }
+    return checks.join(" || ");
+  });
 
   const validationCheck =
-    requiredFields.length > 0
-      ? `if (!${requiredFields.join(" || !")}) {
+    fieldChecks.length > 0
+      ? `if (${fieldChecks.join(" || ")}) {
         return makeErrorResponse({
           res,
           message: "Invalid form",
@@ -84,27 +102,39 @@ function generateController(modelName: any, fields: any) {
 
   const refChecks = refFields
     .map((field: any) => {
-      const refName = lowerModelName(field.ref);
+      const fieldName = field.name;
+      const refName = field.name.replace(/Id$/, "");
       const splitRef = splitModelName(field.ref, " ").toLowerCase();
-      return `    const ${refName}Exists = await ${field.ref}.exists({ _id: ${field.name} });
-      if (!${refName}Exists) {
-        return makeErrorResponse({
-          res,
-          message: "Not found ${splitRef}",
-        });
-      }`;
+
+      return `    if (${fieldName}) {
+          const ${refName}Exists = await ${field.ref}.exists({ _id: ${fieldName} });
+          if (!${refName}Exists) {
+            return makeErrorResponse({
+              res,
+              message: "Not found ref ${splitRef}",
+            });
+          }
+        }`;
     })
     .join("\n");
 
-  // Generate field destructuring for create and update
   const fieldDestructuring =
     allFieldNames.length > 0 ? `{ ${allFieldNames.join(", ")} }` : "{}";
   const updateDestructuring =
     allFieldNames.length > 0 ? `{ id, ${allFieldNames.join(", ")} }` : "{ id }";
 
-  // Generate encrypted field assignments
-  const encryptedFields = allFieldNames
-    .map((name: any) => `    ${name}: encryptCommonField(${name})`)
+  const encryptedFields = fields
+    .map((field: any) => {
+      const fieldName = field.name;
+      if (field.type == "String") {
+        return `    ${fieldName}: encryptCommonField(${fieldName})`;
+      } else {
+        if (field.ref) {
+          const refName = field.name.replace(/Id$/, "");
+          return `    ${refName}: ${fieldName}`;
+        } else return `    ${fieldName}`;
+      }
+    })
     .join(",\n");
   const createEncryptedObject = encryptedFields
     ? `{ ${encryptedFields} }`
@@ -134,7 +164,8 @@ function generateController(modelName: any, fields: any) {
     .filter(Boolean)
     .join("\n");
 
-  return `import { encryptCommonField } from "../encryption/commonEncryption.js";
+  return `import mongoose from "mongoose";
+  import { encryptCommonField } from "../encryption/commonEncryption.js";
   import {
     decryptAndEncryptDataByUserKey,
     decryptAndEncryptListByUserKey,
@@ -174,16 +205,13 @@ function generateController(modelName: any, fields: any) {
         req.body,
         ENCRYPT_FIELDS.UPDATE_${upperSnakeCaseModel}
       );
-      ${
-        requiredFields.length > 0
-          ? `if (!${requiredFields.join(" || !")} || !id) {`
-          : "if (!id) {"
-      }
+      if (!id || !mongoose.isValidObjectId(id)) {
         return makeErrorResponse({
           res,
-          message: "Invalid form",
+          message: "id is required",
         });
       }
+  ${validationCheck}
   ${refChecks}
       const ${lowerModel} = await ${upperModel}.findById(id);
       if (!${lowerModel}) {

@@ -30,6 +30,7 @@ const API_HEADER = {
   AUTHHORIZATION: "authorization",
   MESSAGE_SIGNATURE: "message-signature",
   TIMESTAMP: "timestamp",
+  CLIENT_REQUEST_ID: "client-request-id",
 };
 
 const ENV = {
@@ -102,7 +103,8 @@ const ENCRYPT_FIELDS = {
   REQUEST_MFA_FORM: ["email", "password"],
   RESET_PASSWORD_FORM: ["userId", "newPassword", "otp"],
   CHANGE_PASSWORD_FORM: ["oldPassword", "newPassword"],
-  USER: ["email", "username", "password", "secret", "code"],
+  CHANGE_PIN_FORM: ["oldPin", "newPin", "currentPassword"],
+  USER: ["email", "username", "password", "secret", "code", "pin"],
   ...ACCOUNT_ENCRYPT_FIELDS,
   ...PLATFORM_ENCRYPT_FIELDS,
   ...LINK_GROUP_ENCRYPT_FIELDS,

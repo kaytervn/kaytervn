@@ -227,6 +227,54 @@ const changeUserPassword = async (req, res) => {
   }
 };
 
+const changePin = async (req, res) => {
+  try {
+    const { oldPin, newPin, currentPassword } = decryptClientData(
+      req.body,
+      ENCRYPT_FIELDS.CHANGE_PIN_FORM
+    );
+    if (!oldPin || !newPin || !currentPassword) {
+      return makeErrorResponse({ res, message: "Invalid form" });
+    }
+
+    const user = decryptCommonData(
+      await User.findById(req.token.id),
+      ENCRYPT_FIELDS.USER
+    );
+    if (!user) {
+      return makeErrorResponse({ res, message: "User not found" });
+    }
+    if (!(await comparePassword(currentPassword, user.password))) {
+      return makeErrorResponse({
+        res,
+        message: "Current password is incorrect",
+      });
+    }
+    if (!(await comparePassword(oldPin, user.pin))) {
+      return makeErrorResponse({
+        res,
+        message: "Old pin is incorrect",
+      });
+    }
+    if (await comparePassword(newPin, user.pin)) {
+      return makeErrorResponse({
+        res,
+        message: "New pin must be different from old pin",
+      });
+    }
+    await User.updateOne(
+      { _id: req.token.id },
+      { pin: encryptCommonField(await encodePassword(newPin)) }
+    );
+    return makeSuccessResponse({
+      res,
+      message: "Change PIN success",
+    });
+  } catch (error) {
+    return makeErrorResponse({ res, message: error.message });
+  }
+};
+
 const requestResetMfa = async (req, res) => {
   try {
     const { email, password } = decryptClientData(
@@ -327,20 +375,20 @@ const verifyUserToken = async (req, res) => {
 const requestKey = async (req, res) => {
   try {
     const { username } = req.token;
-    const { password } = decryptClientData(
+    const { pin } = decryptClientData(
       req.body,
       ENCRYPT_FIELDS.REQUEST_KEY_FORM
     );
-    if (!password) {
+    if (!pin) {
       return makeErrorResponse({ res, message: "Invalid form" });
     }
     let user = await User.findOne({ username: encryptCommonField(username) });
     if (!user) {
-      return makeErrorResponse({ res, message: "Invalid password" });
+      return makeErrorResponse({ res, message: "Invalid pin" });
     }
     user = decryptCommonData(user, ENCRYPT_FIELDS.USER);
-    if (!user || !(await comparePassword(password, user.password))) {
-      return makeErrorResponse({ res, message: "Invalid password" });
+    if (!user || !(await comparePassword(pin, user.pin))) {
+      return makeErrorResponse({ res, message: "Invalid pin" });
     }
     const { publicKey, privateKey } = generateRSAKeyPair();
     putPublicKey(username, extractBase64FromPem(publicKey));
@@ -366,4 +414,5 @@ export {
   requestKey,
   verifyUserToken,
   changeUserPassword,
+  changePin,
 };
