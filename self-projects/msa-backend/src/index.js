@@ -23,6 +23,9 @@ import { cloudinaryRouter } from "./routes/cloudinaryRouter.js";
 import { linkGroupRouter } from "./routes/linkGroupRouter.js";
 import { accountRouter } from "./routes/accountRouter.js";
 import { backupCodeRouter } from "./routes/backupCodeRouter.js";
+import { idNumberRouter } from "./routes/idNumberRouter.js";
+import { bankNumberRouter } from "./routes/bankNumberRouter.js";
+import { bankRouter } from "./routes/bankRouter.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -46,6 +49,9 @@ app.use("/v1/platform", platformRouter);
 app.use("/v1/link-group", linkGroupRouter);
 app.use("/v1/account", accountRouter);
 app.use("/v1/backup-code", backupCodeRouter);
+app.use("/v1/id-number", idNumberRouter);
+app.use("/v1/bank-number", bankNumberRouter);
+app.use("/v1/bank", bankRouter);
 
 const PORT = getConfigValue(CONFIG_KEY.PORT) || 6676;
 httpServer.listen(PORT, () => {

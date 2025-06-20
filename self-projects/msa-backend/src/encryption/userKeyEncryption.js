@@ -5,6 +5,7 @@ import {
   encryptData,
 } from "../services/encryptionService.js";
 import { decryptCommonData, decryptCommonField } from "./commonEncryption.js";
+import { decryptEbankData } from "./ebankEncryption.js";
 
 const getUserKey = (token) => {
   const { secretKey } = token;
@@ -50,6 +51,18 @@ const decryptAndEncryptListByUserKey = (token, list, fields) => {
   );
 };
 
+const decryptAndEncryptDataByUserKeyForEbank = (token, item, fields) => {
+  return encryptDataByUserKey(token, decryptEbankData(item, fields), fields);
+};
+
+const decryptAndEncryptListByUserKeyForEbank = (token, list, fields) => {
+  return (
+    list.map((item) =>
+      decryptAndEncryptDataByUserKeyForEbank(token, item, fields)
+    ) || []
+  );
+};
+
 export {
   getUserKey,
   decryptFieldByUserKey,
@@ -60,4 +73,6 @@ export {
   encryptListByUserKey,
   decryptAndEncryptListByUserKey,
   decryptAndEncryptDataByUserKey,
+  decryptAndEncryptDataByUserKeyForEbank,
+  decryptAndEncryptListByUserKeyForEbank,
 };

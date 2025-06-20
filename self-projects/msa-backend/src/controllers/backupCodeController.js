@@ -35,6 +35,13 @@ const createBackupCode = async (req, res) => {
         });
       }
     }
+    const encryptedName = encryptCommonField(code);
+    if (await BackupCode.findOne({ code: encryptedName })) {
+      return makeErrorResponse({
+        res,
+        message: "Code existed",
+      });
+    }
     await BackupCode.create({
       code: encryptCommonField(code),
       account: accountId,
@@ -75,6 +82,17 @@ const updateBackupCode = async (req, res) => {
           message: "Not found ref account",
         });
       }
+    }
+    const encryptedName = encryptCommonField(code);
+    const existingObj = await BackupCode.findOne({
+      code: encryptedName,
+      _id: { $ne: id },
+    });
+    if (existingObj) {
+      return makeErrorResponse({
+        res,
+        message: "Code existed",
+      });
     }
     const backupCode = await BackupCode.findById(id);
     if (!backupCode) {
