@@ -1,0 +1,34 @@
+@startuml SQ
+autonumber
+title SD48. Nhập khóa hệ thống
+actor "Actor" as actor
+boundary "HomeView" as view
+control "AccountController" as controller
+control "KeyService" as service
+activate actor
+actor -> view: enter server key
+deactivate actor
+activate view
+view -> controller: call api POST /verify-key
+activate controller
+controller -> service: verify key
+alt key is valid
+activate service
+service -> service: active server keys
+service --> controller: callback
+deactivate service
+controller --> view: return success message
+deactivate controller
+else key is invalid
+activate service
+service --> controller: callback
+deactivate service
+activate controller
+controller --> view: return error message
+deactivate controller
+end
+view -> view: display message
+activate view
+deactivate view
+deactivate view
+@enduml

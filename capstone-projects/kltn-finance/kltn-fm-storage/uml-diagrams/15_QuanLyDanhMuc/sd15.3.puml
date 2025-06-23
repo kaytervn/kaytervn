@@ -1,0 +1,35 @@
+@startuml SQ
+autonumber
+title SD15.3. Xóa danh mục
+actor "Actor" as actor
+boundary "ManageCategoryView" as manageView
+control "CategoryController" as controller
+entity "CategoryRepository" as model
+database "Database" as database
+activate actor
+  actor -> manageView : Swipe category to delete
+activate manageView
+    manageView -> actor : Confirm deletion
+    alt User confirms
+        manageView -> controller : Call DELETE /v1/categories/{id}
+        activate controller
+activate controller
+        controller -> model : Inject repository
+activate model
+        model -> database : deleteById()
+        activate database
+activate database
+        database --> model : Delete success
+deactivate database
+        deactivate database
+        model --> controller : Notify success
+deactivate model
+        deactivate model
+        controller --> manageView : Return success
+deactivate controller
+        deactivate controller
+        manageView -> manageView : Update category list
+        manageView -> actor : Notify "Category deleted successfully"
+    else User cancels
+        manageView -> actor : Cancel delete
+    end

@@ -1,0 +1,11 @@
+{
+  "description": "{{description}}",
+  "expirationDate": "{{expirationDate}}",
+  "money": "{{money}}",
+  "periodKind": "{{periodKind}}",
+  "serviceGroupId": "{{serviceGroupId}}",
+  "startDate": "{{startDate}}",
+  "tagId": "{{tagId}}",
+  "kind": "{{kind}}",
+  "name": "{{name}}"
+}

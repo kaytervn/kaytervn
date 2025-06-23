@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Checked State -->
+    <item android:state_checked="true">
+        <layer-list>
+            <!-- Inner Circle -->
+            <item android:left="2dp" android:right="2dp" android:top="2dp" android:bottom="2dp">
+                <shape android:shape="oval">
+                    <solid android:color="#FF6200EE"/> <!-- Inner color when checked -->
+                </shape>
+            </item>
+            <!-- Border -->
+            <item>
+                <shape android:shape="oval">
+                    <stroke android:width="2dp" android:color="#FF6200EE"/> <!-- Border color when checked -->
+                    <solid android:color="#FFFFFF"/> <!-- Background color -->
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <!-- Unchecked State -->
+    <item>
+        <layer-list>
+            <!-- Inner Circle (hidden in unchecked state) -->
+            <item android:left="2dp" android:right="2dp" android:top="2dp" android:bottom="2dp">
+                <shape android:shape="oval">
+                    <solid android:color="#FFFFFF00"/> <!-- Transparent color -->
+                </shape>
+            </item>
+            <!-- Border -->
+            <item>
+                <shape android:shape="oval">
+                    <stroke android:width="2dp" android:color="#FF6200EE"/> <!-- Border color when unchecked -->
+                    <solid android:color="#FFFFFF"/> <!-- Background color -->
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>

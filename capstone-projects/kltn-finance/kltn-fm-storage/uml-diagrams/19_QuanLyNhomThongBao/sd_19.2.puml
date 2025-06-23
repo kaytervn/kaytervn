@@ -1,0 +1,36 @@
+@startuml SQ
+autonumber
+title SD19.2. Sửa nhóm thông báo
+actor "Actor" as actor
+boundary "ManageGroupNotificationView" as view
+boundary "CreateManageGroupNotificationView" as create
+control "GroupNotificationController" as controller
+entity "GroupNotificationRepository" as model
+database "Database" as database
+activate actor
+ actor -> view : click Edit button
+activate view
+    view -> create : navigate to Edit page with data
+activate create
+    create -> view : display Edit Group Notification form
+    actor -> create : edit Group Name and Description
+    actor -> create : click Save button
+    create -> controller : call PUT API /v1/group-notifications/{id}
+    activate controller
+activate controller
+    controller -> model : inject repository
+    activate model
+activate model
+    model -> database : updateGroupNotification()
+    activate database
+activate database
+    database --> model : return success
+deactivate database
+    deactivate database
+    model --> controller : success message
+deactivate model
+    deactivate model
+    controller --> create : display success message
+deactivate controller
+    deactivate controller
+    create -> view : update group list

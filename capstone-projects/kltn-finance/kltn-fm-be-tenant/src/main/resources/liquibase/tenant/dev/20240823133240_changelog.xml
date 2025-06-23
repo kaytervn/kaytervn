@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Finance" id="1724419969811-1">
+        <addColumn tableName="db_fn_transaction">
+            <column name="added_by" type="bigint" afterColumn="document"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1724419969811-2">
+        <addColumn tableName="db_fn_transaction">
+            <column name="approved_by" type="bigint" afterColumn="added_by"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1724419969811-3">
+        <addColumn tableName="db_fn_transaction">
+            <column name="approved_date" type="datetime" afterColumn="approved_by"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1724419969811-4">
+        <addForeignKeyConstraint baseColumnNames="added_by" baseTableName="db_fn_transaction" constraintName="FK49ousghpstn8u4ejcdc8dyjxp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724419969811-5">
+        <addForeignKeyConstraint baseColumnNames="approved_by" baseTableName="db_fn_transaction" constraintName="FK6am2kxuy3txyfljvhe9wq8xrh" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

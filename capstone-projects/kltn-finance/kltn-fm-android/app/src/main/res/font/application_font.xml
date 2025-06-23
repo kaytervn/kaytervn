@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--    https://github.com/sahibjotsaggu/San-Francisco-Pro-Fonts-->
+    <!-- android API 26+ -> android:fontStyle     16+ -> app:fontStyle -->
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/sf_regular"
+
+        app:fontStyle="normal"
+        app:fontWeight="400"
+        app:font="@font/sf_regular"/>
+
+    <!-- android API 26+ -> android:fontStyle     16+ -> app:fontStyle -->
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="700"
+        android:font="@font/sf_bold"
+
+        app:fontStyle="normal"
+        app:fontWeight="700"
+        app:font="@font/sf_bold"/>
+
+
+    <!-- android API 26+ -> android:fontStyle     16+ -> app:fontStyle -->
+    <font
+        android:fontStyle="italic"
+        android:fontWeight="400"
+        android:font="@font/sf_italic"
+
+        app:fontStyle="italic"
+        app:fontWeight="400"
+        app:font="@font/sf_italic"/>
+
+    <!-- android API 26+ -> android:fontStyle     16+ -> app:fontStyle -->
+    <font
+        android:fontStyle="italic"
+        android:fontWeight="700"
+        android:font="@font/sf_bold_italic"
+
+        app:fontStyle="italic"
+        app:fontWeight="700"
+        app:font="@font/sf_italic"/>
+</font-family>

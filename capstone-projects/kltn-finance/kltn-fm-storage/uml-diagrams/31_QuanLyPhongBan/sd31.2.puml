@@ -1,0 +1,51 @@
+@startuml SQ
+autonumber
+title SD31.2. Sửa phòng ban
+actor "Actor" as actor
+boundary "ManageDepartmentView" as manageView
+control "DepartmentController" as controller
+entity "DepartmentRepository" as model
+database "Database" as database
+activate actor
+    actor -> manageView : Select a department to edit
+activate manageView
+    manageView -> controller : Request department details
+    activate controller
+activate controller
+    controller -> model : Inject repository
+activate model
+    model -> database : findById()
+    activate database
+activate database
+    database --> model : Return department details
+deactivate database
+    deactivate database
+    model --> controller : Return details
+deactivate model
+    deactivate model
+    controller --> manageView : Render edit form
+deactivate controller
+    deactivate controller
+    actor -> manageView : Input updated name and description
+    manageView -> controller : Submit edit form
+    activate controller
+activate controller
+    controller -> model : Inject repository
+activate model
+    model -> database : sava(department)
+    activate database
+activate database
+    database --> model : Update success
+deactivate database
+    deactivate database
+    model --> controller : Notify success
+deactivate model
+    deactivate model
+    controller --> manageView : Return success
+deactivate controller
+    deactivate controller
+    manageView -> actor : Notify "Department updated successfully"
+    manageView -> manageView : Display department list
+activate manageView
+deactivate manageView
+deactivate manageView

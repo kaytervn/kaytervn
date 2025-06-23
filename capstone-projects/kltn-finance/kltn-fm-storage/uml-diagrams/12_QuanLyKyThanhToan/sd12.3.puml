@@ -1,0 +1,69 @@
+@startuml SQ
+autonumber
+title SD12.3. Bỏ giao dịch ra khỏi kỳ thanh toán
+actor "Actor" as actor
+boundary "PaymentPeriod\nView" as view
+boundary "Transaction\nView" as detail
+control "Transaction\nController" as controller
+entity "PaymentPeriod\nRepository" as model
+entity "Transaction\nRepository" as transModel
+database "Database" as database
+activate actor
+actor -> view : click view detail
+activate view
+view -> detail : redirect to
+deactivate view
+activate detail
+detail -> controller : call api GET /list
+activate controller
+controller -> transModel : inject repository
+activate transModel
+transModel -> database : find data
+activate database
+database --> transModel : return data
+deactivate database
+transModel --> controller: return list objects
+deactivate transModel
+controller --> detail : return list object
+deactivate controller
+detail -> detail: display data
+actor -> detail : click remove button
+deactivate actor
+detail -> controller : call api PUT /remove-from-period
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : update data
+activate database
+database --> model : callback
+deactivate database
+model --> controller: callback
+deactivate model
+controller -> model : inject repository
+activate model
+model -> database : recalculate period
+activate database
+database --> model : callback
+deactivate database
+model --> controller: callback
+deactivate model
+controller --> detail: return message
+deactivate controller
+detail -> detail: display message
+detail -> controller : call api GET /list
+activate controller
+controller -> transModel : inject repository
+activate transModel
+transModel -> database : find data
+activate database
+database --> transModel : return data
+deactivate database
+transModel --> controller: return list objects
+deactivate transModel
+controller --> detail : return list object
+deactivate controller
+detail -> detail: display data
+activate detail
+deactivate detail
+deactivate detail
+@enduml

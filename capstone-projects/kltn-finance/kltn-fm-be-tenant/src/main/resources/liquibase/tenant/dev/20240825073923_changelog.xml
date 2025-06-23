@@ -1,0 +1,108 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Finance" id="1724571572621-1">
+        <createTable tableName="db_fn_key_information_permission">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_key_information_permissionPK"/>
+            </column>
+            <column name="account_id" type="BIGINT"/>
+            <column name="permission_kind" type="INT"/>
+            <column name="key_information_id" type="BIGINT"/>
+            <column name="key_information_group_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1724571572621-2">
+        <createTable tableName="db_fn_task_permission">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_task_permissionPK"/>
+            </column>
+            <column name="account_id" type="BIGINT"/>
+            <column name="permission_kind" type="INT"/>
+            <column name="task_id" type="BIGINT"/>
+            <column name="project_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1724571572621-3">
+        <createTable tableName="db_fn_transaction_permission">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_transaction_permissionPK"/>
+            </column>
+            <column name="account_id" type="BIGINT"/>
+            <column name="permission_kind" type="INT"/>
+            <column name="transaction_id" type="BIGINT"/>
+            <column name="transaction_group_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1724571572621-4">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_fn_task_permission" constraintName="FK15bbv1senhfahtn3nd3w6bh70" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724571572621-5">
+        <addForeignKeyConstraint baseColumnNames="project_id" baseTableName="db_fn_task_permission" constraintName="FK33hkspdem0oi5284xl3eg6o9k" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_project" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724571572621-6">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_fn_key_information_permission" constraintName="FK3rky13owihrcqhtca7hyrv8tu" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724571572621-7">
+        <addForeignKeyConstraint baseColumnNames="key_information_id" baseTableName="db_fn_key_information_permission" constraintName="FK6527j9drufw3omlfhnnkxx9nf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_key_information" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724571572621-8">
+        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="db_fn_task_permission" constraintName="FK82wo8ukwfnnmnet0giwydvh7l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_task" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724571572621-9">
+        <addForeignKeyConstraint baseColumnNames="key_information_group_id" baseTableName="db_fn_key_information_permission" constraintName="FKjhxrs8yymiggo1ki0pni5xftk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_key_information_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724571572621-10">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_fn_transaction_permission" constraintName="FKkyfm0tlxmdnpgv4h722tdaeu6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724571572621-11">
+        <addForeignKeyConstraint baseColumnNames="transaction_group_id" baseTableName="db_fn_transaction_permission" constraintName="FKla922abeipcm77wyx8dlygxgd" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_transaction_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724571572621-12">
+        <addForeignKeyConstraint baseColumnNames="transaction_id" baseTableName="db_fn_transaction_permission" constraintName="FKo3i27rup8ebi5uyuhi81np3ex" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_transaction" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

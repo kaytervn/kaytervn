@@ -1,0 +1,6 @@
+{
+  "name": "{{name}}",
+  "note": "{{note}}",
+  "organizationId": "{{organizationId}}",
+  "tagId": "{{tagId}}"
+}

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_log_out"
+    android:layout_margin="@dimen/_12sdp"
+    android:orientation="vertical"
+    >
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/exit_app"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:textColor="@color/red_orange"
+        android:textSize="@dimen/_14ssp"
+        android:fontFamily="@font/lato_bold"
+        android:layout_gravity="center_horizontal"
+        />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/question_out_app"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:textColor="#696969"
+        android:textSize="@dimen/_13ssp"
+        android:fontFamily="@font/lato_medium"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_weight="2"
+        android:padding="@dimen/_2sdp"
+        >
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_gray"
+            android:text="@string/cancel"
+            android:textColor="@color/black_gray"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/lato_bold"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:padding="@dimen/_1sdp"
+            >
+        </Button>
+
+        <Button
+            android:id="@+id/btn_exit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_red"
+            android:textColor="@color/white"
+            android:text="@string/exit"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/lato_bold"
+            android:layout_marginStart="@dimen/_10sdp"
+            >
+        </Button>
+    </LinearLayout>
+
+
+</LinearLayout>

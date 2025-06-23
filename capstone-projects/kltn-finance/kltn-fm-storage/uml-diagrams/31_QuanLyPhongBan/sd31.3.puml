@@ -1,0 +1,35 @@
+@startuml SQ
+autonumber
+title SD31.3. Xóa phòng ban
+actor "Actor" as actor
+boundary "ManageDepartmentView" as manageView
+control "DepartmentController" as controller
+entity "DepartmentRepository" as model
+database "Database" as database
+activate actor
+    actor -> manageView : Swipe to delete a department
+activate manageView
+    manageView -> actor : Confirm deletion
+    alt User confirms
+        manageView -> controller : Call DELETE /departments/{id}
+        activate controller
+activate controller
+        controller -> model : Inject repository
+activate model
+        model -> database : DELETE FROM departments WHERE id=?
+        activate database
+activate database
+        database --> model : Delete success
+deactivate database
+        deactivate database
+        model --> controller : Notify success
+deactivate model
+        deactivate model
+        controller --> manageView : Return success
+deactivate controller
+        deactivate controller
+        manageView -> manageView : Refresh department list
+        manageView -> actor : Notify "Department deleted successfully"
+    else User cancels
+        manageView -> actor : Cancel delete
+    end

@@ -1,0 +1,69 @@
+@startuml SQ
+autonumber
+title SD22.1. Tạo key
+actor "Actor" as actor
+boundary "KeyInformationView" as view
+boundary "CreateKeyInformationView" as create
+control "KeyInformationController" as controller
+entity "KeyInformationRepository" as model
+entity "KeyInformationGroupRepository" as group
+database "Database" as database
+activate actor
+actor -> view: click create button
+activate view
+view -> create: redirect to
+deactivate view
+activate create
+actor -> create: enter input data
+deactivate actor
+opt attach documents
+ref over actor
+SD09. Đính kèm tài liệu
+end ref
+end
+alt enter valid input
+create -> controller: call api POST /create
+activate controller
+controller -> group : inject repository
+activate group
+group -> database : find data
+activate database
+database --> group: return data
+deactivate database
+group --> controller : return object
+deactivate group
+controller -> controller: set relationship
+controller -> model: inject repository
+activate model
+model -> database: create new data
+activate database
+database --> model: callback
+deactivate database
+model --> controller: callback
+deactivate model
+controller --> create: callback
+deactivate controller
+create -> create: display success message
+create -> view: redirect to
+deactivate create
+activate view
+view -> controller: call api GET /list
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view: return list
+deactivate controller
+view -> view: display data
+else enter invalid input
+view -> view: display error message
+activate view
+deactivate view
+deactivate view
+end
+@enduml

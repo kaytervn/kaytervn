@@ -1,0 +1,73 @@
+@startuml SQ
+autonumber
+title SD35. Nhắn tin
+actor "Actor" as actor
+boundary "ChatView" as view
+boundary "ChatRoomView" as chatRoomView
+control "ChatRoomController" as controller
+entity "ChatRoomRepository" as model
+control "MessageController" as messageController
+entity "MessageRepository" as messageModel
+database "Database" as database
+activate actor
+actor -> view: select chat room
+activate view
+view -> chatRoomView: redirect to
+deactivate view
+activate chatRoomView
+chatRoomView -> controller: call api GET /get
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return object
+deactivate model
+controller --> chatRoomView: return object
+deactivate controller
+chatRoomView -> messageController: call api GET /list
+activate messageController
+messageController -> messageModel: inject repository
+activate messageModel
+messageModel -> database: find data
+activate database
+database --> messageModel: return data
+deactivate database
+messageModel --> messageController: return object
+deactivate messageModel
+messageController --> chatRoomView: return object
+deactivate messageController
+chatRoomView -> chatRoomView: display data
+actor -> chatRoomView: input message
+deactivate actor
+chatRoomView -> messageController: call api POST /create
+activate messageController
+messageController -> messageModel: inject repository
+activate messageModel
+messageModel -> database: save data
+activate database
+database --> messageModel: callback
+deactivate database
+messageModel --> messageController: callback
+deactivate messageModel
+messageController --> chatRoomView: callback
+deactivate messageController
+chatRoomView -> messageController: call api GET /list
+activate messageController
+messageController -> messageModel: inject repository
+activate messageModel
+messageModel -> database: find data
+activate database
+database --> messageModel: return data
+deactivate database
+messageModel --> messageController: return object
+deactivate messageModel
+messageController --> chatRoomView: return object
+deactivate messageController
+chatRoomView -> chatRoomView: scroll to bottom
+activate chatRoomView
+deactivate chatRoomView
+deactivate chatRoomView
+@enduml

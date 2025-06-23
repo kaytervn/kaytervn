@@ -1,0 +1,55 @@
+@startuml SQ
+autonumber
+title SD23. Quản lý công ty
+actor "Actor" as actor
+boundary "ManageCompanyView" as manageView
+boundary "CreateCompanyPageView" as createView
+boundary "EditCompanyPageView" as editView
+control "CompanyController" as controller
+entity "CompanyRepository" as model
+database "Database" as database
+' Main Flow
+activate actor
+actor -> manageView : access Manage Company page
+activate manageView
+manageView -> controller : call GET API /v1/companies
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : findAllCompanies()
+activate database
+database --> model : return list of companies
+deactivate database
+model --> controller : return company data
+deactivate model
+controller --> manageView : return company list
+deactivate controller
+manageView -> manageView : display company list
+activate manageView
+deactivate manageView
+deactivate manageView
+' TH1. Create Company
+opt TH1. Người dùng tạo công ty
+  ref over actor
+SD23.1. Tạo công ty
+end ref
+end
+' TH2. Edit Company
+opt TH2. Người dùng chỉnh sửa công ty
+  ref over actor
+SD23.2. Sửa công ty
+end ref
+end
+' TH3. Delete Company
+opt TH3. Người dùng xóa công ty
+  ref over actor
+SD23.3. Xóa công ty
+end ref
+end
+' TH4. Assign Company Permissions (UC24)
+opt TH4. Người dùng thực hiện phân quyền công ty
+  ref over actor
+SD23.4. Phân quyền công ty
+end ref
+end
+@enduml

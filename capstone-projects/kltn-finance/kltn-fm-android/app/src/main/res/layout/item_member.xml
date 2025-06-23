@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="item"
+            type="com.finance.data.model.api.response.chat.AutoCompleteAccountResponse"/>
+        <variable
+            name="isOwner"
+            type="Boolean" />
+        <import type="android.view.View"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_ava"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:src="@drawable/ic_user_default"
+            android:layout_marginStart="@dimen/_10sdp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_medium"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/white"
+            android:text="@{item.fullName, default=`No name`}"
+            android:layout_toEndOf="@id/img_ava"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_centerVertical="true"
+            />
+
+        <ImageView
+            android:id="@+id/img_delete"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_delete"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:visibility="@{isOwner ? View.VISIBLE : View.GONE}"
+            />
+    </RelativeLayout>
+</layout>

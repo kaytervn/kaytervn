@@ -1,0 +1,31 @@
+@startuml SQ
+autonumber
+title SD08. Tải ảnh lên
+actor "Actor" as actor
+boundary "FE-App" as view
+control "FileController" as controller
+control "EncryptionService" as service
+activate actor
+actor -> view: upload file
+deactivate actor
+activate view
+view -> view: check file type
+alt file is image
+view -> controller: call api POST /upload
+activate controller
+controller -> controller: check file type
+controller -> service: encrypt file
+activate service
+service -> Server: store file
+service --> controller: return file path
+deactivate service
+controller --> view: return file path
+deactivate controller
+view -> view: display image
+else file is not image
+view -> view: display error message
+activate view
+deactivate view
+deactivate view
+end
+@enduml

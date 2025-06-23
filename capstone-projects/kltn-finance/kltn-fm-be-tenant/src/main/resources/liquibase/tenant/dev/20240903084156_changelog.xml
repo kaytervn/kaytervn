@@ -1,0 +1,48 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Finance" id="1725352926383-1">
+        <createTable tableName="db_fn_debit">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_debitPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="state" type="INT"/>
+            <column name="money" type="VARCHAR(255)"/>
+            <column name="transaction_date" type="datetime"/>
+            <column name="note" type="TEXT"/>
+            <column name="document" type="TEXT"/>
+            <column name="added_by" type="BIGINT"/>
+            <column name="category_id" type="BIGINT"/>
+            <column name="transaction_id" type="BIGINT"/>
+            <column name="transaction_group_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1725352926383-2">
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="transaction_id" baseTableName="db_fn_debit" constraintName="FK7om7g3swowdkdduhbilti9owu" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_transaction" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1725352926383-3">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="db_fn_debit" constraintName="FK9nqgxgytvmfmw7tetba75tprv" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_category" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1725352926383-4">
+        <addForeignKeyConstraint baseColumnNames="added_by" baseTableName="db_fn_debit" constraintName="FKjressawqtcxmywv5hnhd2wr1s" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1725352926383-5">
+        <addForeignKeyConstraint baseColumnNames="transaction_group_id" baseTableName="db_fn_debit" constraintName="FKqq8dv84gyvlffmpjfk0wcjpxm" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_transaction_group" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

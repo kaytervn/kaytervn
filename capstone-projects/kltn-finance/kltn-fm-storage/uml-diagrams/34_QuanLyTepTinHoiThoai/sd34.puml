@@ -1,0 +1,59 @@
+@startuml SQ
+autonumber
+title SD34. Quản lý tệp tin hội thoại
+actor "Actor" as actor
+boundary "ChatView" as view
+boundary "ChatRoomView" as chatRoomView
+control "ChatRoomController" as controller
+entity "ChatRoomRepository" as model
+control "MessageController" as messageController
+entity "MessageRepository" as messageModel
+database "Database" as database
+activate actor
+actor -> view: select chat room
+activate view
+view -> chatRoomView: redirect to
+deactivate view
+activate chatRoomView
+chatRoomView -> controller: call api GET /get
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return object
+deactivate model
+controller --> chatRoomView: return object
+deactivate controller
+chatRoomView -> messageController: call api GET /list
+activate messageController
+messageController -> messageModel: inject repository
+activate messageModel
+messageModel -> database: find data
+activate database
+database --> messageModel: return data
+deactivate database
+messageModel --> messageController: return object
+deactivate messageModel
+messageController --> chatRoomView: return object
+deactivate messageController
+chatRoomView -> chatRoomView: display data
+actor -> chatRoomView: click info icon
+chatRoomView -> chatRoomView: display info panel
+actor -> chatRoomView: select file
+chatRoomView -> chatRoomView: display file modal
+activate chatRoomView
+deactivate chatRoomView
+deactivate chatRoomView
+opt search files
+actor -> chatRoomView: input search text
+deactivate actor
+activate chatRoomView
+chatRoomView -> chatRoomView: display search result
+activate chatRoomView
+deactivate chatRoomView
+deactivate chatRoomView
+end
+@enduml

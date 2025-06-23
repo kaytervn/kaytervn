@@ -1,0 +1,59 @@
+@startuml SQ
+autonumber
+title SD01. Đăng nhập
+actor "Actor" as actor
+boundary "LoginView" as loginView
+boundary "VerifyView" as verifyView
+boundary "HomeView" as homeView
+control "AccountController" as controller
+entity "AccountRepository" as model
+database "Database" as database
+activate actor
+actor -> loginView: input username, password,\ngrantType, tenantId
+activate loginView
+loginView -> controller: call api POST /login
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return object
+deactivate model
+controller --> loginView: callback
+deactivate controller
+alt account found
+loginView -> verifyView: redirect to
+activate verifyView
+actor -> verifyView: input totp
+deactivate actor
+verifyView -> controller: call api POST /verify-totp
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return object
+deactivate model
+controller -> controller: process mfa logic
+controller --> verifyView: callback
+deactivate controller
+alt totp is correct
+verifyView -> verifyView: display success message
+verifyView -> homeView: redirect to
+else
+verifyView -> verifyView: display error message
+activate verifyView
+deactivate verifyView
+deactivate verifyView
+end
+else account not found
+loginView -> loginView: display error message
+activate loginView
+deactivate loginView
+deactivate loginView
+end
+@enduml

@@ -1,0 +1,49 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Finance" id="1722950596907-1">
+        <createTable tableName="db_fn_service_notification_group">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_service_notification_groupPK"/>
+            </column>
+            <column name="service_id" type="BIGINT"/>
+            <column name="notification_group_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1722950596907-2">
+        <addColumn tableName="db_fn_department">
+            <column name="description" type="text" afterColumn="name"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1722950596907-3">
+        <addColumn tableName="db_fn_notification_group">
+            <column name="description" type="text" afterColumn="name"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1722950596907-4">
+        <addForeignKeyConstraint baseColumnNames="notification_group_id" baseTableName="db_fn_service_notification_group" constraintName="FK3g8hchxx37jchs5way2a6kmgj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_notification_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1722950596907-5">
+        <addForeignKeyConstraint baseColumnNames="service_id" baseTableName="db_fn_service_notification_group" constraintName="FK6vx4u25x6bne33rkvtlrtq77o" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_service" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1722950596907-6">
+        <dropForeignKeyConstraint baseTableName="db_fn_notification_group" constraintName="FK3klbyfh69g7kwv723s3dvxb73"/>
+    </changeSet>
+    <changeSet author="Finance" id="1722950596907-7">
+        <dropColumn columnName="service_id" tableName="db_fn_notification_group"/>
+    </changeSet>
+</databaseChangeLog>

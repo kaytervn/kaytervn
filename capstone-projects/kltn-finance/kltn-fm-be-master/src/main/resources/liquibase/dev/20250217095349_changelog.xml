@@ -1,0 +1,353 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Master" id="1739786039590-1">
+        <createTable tableName="db_mst_account">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_mst_accountPK"/>
+            </column>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="full_name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="avatar_path" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="is_mfa" type="BIT"/>
+            <column name="attempt_forget_pwd" type="INT"/>
+            <column name="attempt_login" type="INT"/>
+            <column name="is_super_admin" type="BIT"/>
+            <column name="last_login" type="datetime"/>
+            <column name="reset_pwd_code" type="VARCHAR(255)"/>
+            <column name="reset_pwd_time" type="datetime"/>
+            <column name="secret_key" type="VARCHAR(255)"/>
+            <column name="group_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-2">
+        <createTable tableName="db_mst_account_branch">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_mst_account_branchPK"/>
+            </column>
+            <column name="account_id" type="BIGINT"/>
+            <column name="branch_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-3">
+        <createTable tableName="db_mst_branch">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_mst_branchPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="description" type="TEXT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-4">
+        <createTable tableName="db_mst_customer">
+            <column name="account_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_mst_customerPK"/>
+            </column>
+            <column name="branch_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-5">
+        <createTable tableName="db_mst_db_config">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_mst_db_configPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="url" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="initialize" type="BIT"/>
+            <column name="max_connection" type="INT"/>
+            <column name="location_id" type="BIGINT"/>
+            <column name="server_provider_id" type="BIGINT"/>
+            <column name="driver_class_name" type="VARCHAR(255)"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-6">
+        <createTable tableName="db_mst_group">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_mst_groupPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-7">
+        <createTable tableName="db_mst_location">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_mst_locationPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="Master_id" type="VARCHAR(255)"/>
+            <column name="hotline" type="VARCHAR(255)"/>
+            <column name="logo_path" type="VARCHAR(255)"/>
+            <column name="settings" type="LONGTEXT"/>
+            <column name="start_date" type="datetime"/>
+            <column name="expired_date" type="datetime"/>
+            <column name="aes_secret_key" type="TEXT"/>
+            <column name="customer_id" type="BIGINT"/>
+            <column name="tag_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-8">
+        <createTable tableName="db_mst_permission">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_mst_permissionPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="permission_code" type="VARCHAR(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="action" type="VARCHAR(255)"/>
+            <column name="name_group" type="VARCHAR(255)"/>
+            <column name="show_menu" type="BIT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-9">
+        <createTable tableName="db_mst_permission_group">
+            <column name="group_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="permission_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-10">
+        <createTable tableName="db_mst_server_provider">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_mst_server_providerPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="url" type="VARCHAR(255)"/>
+            <column name="my_sql_root_user" type="VARCHAR(255)"/>
+            <column name="my_sql_root_password" type="VARCHAR(255)"/>
+            <column name="my_sql_jdbc_url" type="VARCHAR(255)"/>
+            <column name="current_Master_count" type="INT"/>
+            <column name="max_Master" type="INT"/>
+            <column name="driver_class_name" type="VARCHAR(255)"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-11">
+        <createTable tableName="db_mst_tag">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_mst_tagPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="color" type="VARCHAR(255)"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-12">
+        <addUniqueConstraint columnNames="name" constraintName="UC_DB_MST_GROUPNAME_COL" tableName="db_mst_group"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-13">
+        <addUniqueConstraint columnNames="name" constraintName="UC_DB_MST_PERMISSIONNAME_COL" tableName="db_mst_permission"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-14">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_mst_account_branch" constraintName="FK1ujptn2k00jyrrbeo8tis5pxr" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_mst_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-15">
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="db_mst_permission_group" constraintName="FK29ggdxqv11eanr5du5vxenknt" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_mst_permission" validate="true"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-16">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_mst_account" constraintName="FK9g4wqi9vnf186h3psxg1cmf7y" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_mst_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-17">
+        <addForeignKeyConstraint baseColumnNames="branch_id" baseTableName="db_mst_customer" constraintName="FKatu8d7ol8p84ry0qree3vm55c" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_mst_branch" validate="true"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-18">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_mst_location" constraintName="FKclehq1dugr79vq3oivyjqxtbk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_mst_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-19">
+        <addForeignKeyConstraint baseColumnNames="location_id" baseTableName="db_mst_db_config" constraintName="FKfc5s006hjdr9pdq8k7aenms81" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_mst_location" validate="true"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-20">
+        <addForeignKeyConstraint baseColumnNames="branch_id" baseTableName="db_mst_account_branch" constraintName="FKg4y0mvj7d0dco8cbrit1gxswr" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_mst_branch" validate="true"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-21">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_mst_permission_group" constraintName="FKicx3nkku7vpc168spmfmm8gkv" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_mst_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-22">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="db_mst_location" constraintName="FKivm5dcn9fxle15eb6mxun9ern" deferrable="false" initiallyDeferred="false" referencedColumnNames="account_id" referencedTableName="db_mst_customer" validate="true"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-23">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_mst_customer" constraintName="FKjcg518iora931ljwgbhmx3ftv" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_mst_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-24">
+        <addForeignKeyConstraint baseColumnNames="server_provider_id" baseTableName="db_mst_db_config" constraintName="FKoylu8ids7gr5d2hircmg7yom0" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_mst_server_provider" validate="true"/>
+    </changeSet>
+    <changeSet author="Master" id="1739786039590-25">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="oauth_client_details"/>
+            </not>
+        </preConditions>
+        <createTable tableName="oauth_client_details">
+            <column name="client_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="resource_ids" type="VARCHAR(255)"/>
+            <column name="client_secret" type="VARCHAR(255)"/>
+            <column name="scope" type="VARCHAR(255)"/>
+            <column name="authorized_grant_types" type="VARCHAR(255)"/>
+            <column name="web_server_redirect_uri" type="VARCHAR(255)"/>
+            <column name="authorities" type="VARCHAR(255)"/>
+            <column name="access_token_validity" type="INT"/>
+            <column name="refresh_token_validity" type="INT"/>
+            <column name="additional_information" type="VARCHAR(4096)"/>
+            <column name="autoapprove" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

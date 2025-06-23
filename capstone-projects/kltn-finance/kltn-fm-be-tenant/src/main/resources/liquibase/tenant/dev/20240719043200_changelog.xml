@@ -1,0 +1,99 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Finance" id="1721363528790-1">
+        <createTable tableName="db_fn_key_information">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_key_informationPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="description" type="TEXT"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="additional_information" type="TEXT"/>
+            <column name="account_id" type="BIGINT"/>
+            <column name="key_information_group_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1721363528790-2">
+        <createTable tableName="db_fn_key_information_group">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_key_information_groupPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1721363528790-3">
+        <createTable tableName="db_fn_transaction_group">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_transaction_groupPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1721363528790-4">
+        <addColumn tableName="db_fn_transaction">
+            <column name="transaction_group_id" type="bigint" afterColumn="category_id"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1721363528790-5">
+        <addForeignKeyConstraint baseColumnNames="transaction_group_id" baseTableName="db_fn_transaction" constraintName="FKf6mphh47llasrfihhykewtv2a" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_transaction_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1721363528790-6">
+        <addForeignKeyConstraint baseColumnNames="key_information_group_id" baseTableName="db_fn_key_information" constraintName="FKky6io47ek4kgyu985y07h0n32" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_key_information_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1721363528790-7">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_fn_key_information" constraintName="FKsaofbiuc7wm6yryw64vws9g8t" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1721363528790-8">
+        <dropForeignKeyConstraint baseTableName="db_fn_information" constraintName="FKijjapb4tqpwpo50vufd7mm06v"/>
+    </changeSet>
+    <changeSet author="Finance" id="1721363528790-9">
+        <dropTable tableName="db_fn_information"/>
+    </changeSet>
+</databaseChangeLog>

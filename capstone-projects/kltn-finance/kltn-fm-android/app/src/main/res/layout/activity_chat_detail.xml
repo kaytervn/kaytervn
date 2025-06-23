@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.chat.detail.ChatDetailViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.chat.detail.ChatDetailActivity" />
+        <import type="com.finance.constant.Constants"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@color/color_theme"
+            >
+            <LinearLayout
+                android:id="@+id/layout_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingVertical="@dimen/_15sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:onClick="@{()->a.onBackPressed()}"
+                >
+                <ImageView
+                    android:id="@+id/img_back"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:src="@drawable/ic_back"
+                    />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/layout_back"
+                android:visibility="@{vm.isSearch ? View.GONE : View.VISIBLE}"
+                >
+                <FrameLayout
+                    android:id="@+id/layout_avatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    >
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_avatar"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:scaleType="centerCrop"
+                        image_src="@{vm.chatRoomCurrent.avatar}"
+                        />
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_state"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="end|bottom"
+
+                        />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toEndOf="@id/layout_avatar"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:onClick="@{()->a.showDialogAddMember()}"
+                    >
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.chatRoomCurrent.name, default = `woijfoiwqjefoiewjfioewjfwoiefjwioefjio`}"
+                        android:fontFamily="@font/lato_bold"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textAllCaps="false"
+                        android:layout_marginBottom="@dimen/_3sdp"
+                        android:maxWidth="@dimen/_150sdp"
+                        />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:id="@+id/tv_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{(vm.chatRoomCurrent.kind == 2 &amp;&amp; vm.chatRoomCurrent.lastLogin != null) ? vm.getStatus(vm.chatRoomCurrent.lastLogin) : String.valueOf(vm.chatRoomCurrent.totalMembers + ` ` + @string/member), default = `Thành viên`}"
+                            android:fontFamily="@font/lato_medium"
+                            android:textSize="@dimen/_8ssp"
+                            android:textColor="@color/white"
+                            android:textAllCaps="false"
+
+                            />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/layout_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:visibility="@{vm.isSearch ? View.VISIBLE : View.GONE, default = gone}"
+                android:layout_toEndOf="@+id/layout_back"
+                >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <EditText
+                        android:id="@+id/edt_search"
+                        style="@style/AppEditTextInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="0dp"
+                        android:background="@drawable/bg_edit_txt_search"
+                        android:fontFamily="@font/lato_medium"
+                        android:hint="@string/search"
+                        android:paddingStart="@dimen/_35sdp"
+                        android:paddingEnd="@dimen/_50sdp"
+                        android:text="@={vm.textSearch}"
+                        android:textColor="@color/white"
+                        android:textColorHint="#77AFD0"
+                        android:textCursorDrawable="@drawable/cursor_color_search" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        android:src="@drawable/ic_search_2"
+                        android:scaleType="centerCrop"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:onClick="@{()->a.deleteEditSearch()}"
+                        android:layout_centerVertical="true"
+                        />
+                    <ImageView
+                        android:layout_width="@dimen/_23sdp"
+                        android:layout_height="@dimen/_23sdp"
+                        android:src="@drawable/ic_delete_search"
+                        android:scaleType="centerCrop"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:visibility="@{vm.isSearchEmpty.empty ? View.GONE : View.VISIBLE}"
+                        android:onClick="@{()->a.deleteEditSearch()}"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_search_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="@{!vm.isSearch ? View.VISIBLE : View.GONE}"
+                android:onClick="@{(v) -> vm.isShowSearch()}"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                >
+                <ImageView
+                    android:id="@+id/img_search"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
+                    android:src="@drawable/ic_search"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/layout_search_icon"
+                android:visibility="@{!vm.isSearch &amp;&amp; vm.chatRoomCurrent.isOwner ? View.VISIBLE : View.GONE}"
+                android:onClick="@{() -> a.showDialogUpdateDialog()}"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                >
+                <ImageView
+                    android:id="@+id/img_update_info"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
+                    android:src="@drawable/ic_update"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/layout_send_message"
+            android:layout_below="@+id/layout_title"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_2sdp"
+            android:visibility="@{!vm.isSearch  ? View.VISIBLE : View.GONE}"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_message_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/layout_send_message"
+            android:layout_below="@+id/layout_title"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_2sdp"
+            android:visibility="@{vm.isSearch &amp;&amp; !vm.textSearch.empty ? View.VISIBLE : View.GONE}"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/black"
+            android:text="@string/no_data"
+            android:layout_above="@id/layout_send_message"
+            android:layout_below="@+id/layout_title"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:visibility="@{vm.isSearch &amp;&amp; vm.textSearch.empty ? View.VISIBLE : View.GONE}"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/button_scroll_to_end"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_above="@+id/layout_send_message"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_arrow_down"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            />
+
+        <FrameLayout
+            android:id="@+id/layout_send_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/_3sdp"
+                android:background="@color/white"
+                android:paddingVertical="@dimen/_5sdp"
+                android:visibility="@{vm.chatRoomCurrent.kind == 2 || vm.settingCurrentChat.memberPermissions.allowSendMessage || vm.chatRoomCurrent.isOwner ? View.VISIBLE : View.GONE}"
+                >
+
+                <ImageView
+                    android:id="@+id/img_image"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:src="@drawable/ic_pin"
+                    android:padding="@dimen/_5sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:onClick="@{()->a.showDialogChooseFile()}"
+                    android:visibility="@{vm.isTyping ? View.GONE : View.VISIBLE}"
+                    />
+
+                <EditText
+                    android:id="@+id/edt_send_message"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:text="@={vm.editTextSend}"
+                    style="@style/EditTextChat"
+                    app:layout_constraintStart_toEndOf="@+id/img_image"
+                    app:layout_constraintEnd_toStartOf="@+id/button_send"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    />
+                <FrameLayout
+                    android:id="@+id/button_send"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:clickable="@{vm.editTextSend.empty &amp;&amp; !vm.isSending ? false : true}"
+                    >
+                    <ImageView
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/ic_send"
+                        android:visibility="@{vm.isSending ? View.INVISIBLE : View.VISIBLE}"
+                        />
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{!vm.isSending ? View.INVISIBLE : View.VISIBLE}"
+                        android:indeterminateTint="@color/color_theme"
+                        />
+                </FrameLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_theme"
+                android:visibility="@{(vm.chatRoomCurrent.kind == 1 &amp;&amp; !vm.settingCurrentChat.memberPermissions.allowSendMessage &amp;&amp; !vm.chatRoomCurrent.isOwner) ? View.VISIBLE : View.GONE, default = gone}"
+                android:paddingVertical="@dimen/_5sdp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_medium"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:text="@string/just_leader_can_send_message"
+                    />
+            </RelativeLayout>
+
+        </FrameLayout>
+
+    </RelativeLayout>
+</layout>

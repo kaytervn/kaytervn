@@ -1,0 +1,48 @@
+@startuml SQ
+autonumber
+title SD33. Quản lý hội thoại
+actor "Actor" as actor
+boundary "ChatView" as view
+control "ChatRoomController" as controller
+entity "ChatRoomRepository" as model
+database "Database" as database
+activate actor
+actor -> view : access to
+activate view
+view -> controller : call api GET /list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find data
+activate database
+database --> model : return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view : return list object
+deactivate controller
+view -> view: display data
+group otp [search conversation]
+actor -> view : enter keyword
+deactivate actor
+view -> view: update data display
+activate view
+deactivate view
+deactivate view
+end
+group frg [//TH1. Người dùng tạo hội thoại mới//]
+ref over actor
+SD33.1. Tạo hội thoại
+end ref
+end
+group frg [//TH2. Người dùng cập nhật hội thoại//]
+ref over actor
+SD33.2. Cập nhật hội thoại
+end ref
+end
+group frg [//TH3. Người dùng xóa hội thoại//]
+ref over actor
+SD33.3. Xóa hội thoại
+end ref
+end
+@enduml

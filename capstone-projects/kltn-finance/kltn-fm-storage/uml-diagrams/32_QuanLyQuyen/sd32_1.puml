@@ -1,0 +1,35 @@
+@startuml SQ
+autonumber
+title SD32.1. Tạo quyền
+actor "Actor" as actor
+boundary "ManageRoleView" as manageView
+control "RoleController" as controller
+entity "RoleRepository" as model
+database "Database" as database
+activate actor
+actor -> manageView : Click "Create"
+activate manageView
+    manageView -> actor : Display create form
+    actor -> manageView : Input role name, description, select permissions
+    manageView -> controller : Submit create form
+    activate controller
+activate controller
+    controller -> model : Inject repository
+activate model
+    model -> database : Call API POST /v1/role/create
+    activate database
+activate database
+    database --> model : Insert success
+deactivate database
+    deactivate database
+    model --> controller : Notify success
+deactivate model
+    deactivate model
+    controller --> manageView : Return success
+deactivate controller
+    deactivate controller
+    manageView -> actor : Notify "Role created successfully"
+    manageView -> manageView : Refresh role list
+activate manageView
+deactivate manageView
+deactivate manageView

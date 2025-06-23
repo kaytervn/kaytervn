@@ -1,0 +1,728 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Finance" id="1697783111984-1">
+        <createTable tableName="db_fn_account">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="kind" type="INT"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="full_name" type="VARCHAR(255)"/>
+            <column name="avatar_path" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="is_super_admin" type="BIT(1)"/>
+            <column name="group_id" type="BIGINT"/>
+            <column name="department_id" type="bigint"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_login" type="datetime"/>
+            <column name="reset_pwd_code" type="VARCHAR(255)"/>
+            <column name="reset_pwd_time" type="datetime"/>
+            <column name="attempt_forget_pwd" type="INT"/>
+            <column name="attempt_login" type="INT"/>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-2">
+        <createTable tableName="db_fn_group">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="kind" type="INT"/>
+            <column name="is_system_role" type="BIT(1)"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-3">
+        <createTable tableName="db_fn_permission">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="action" type="VARCHAR(255)"/>
+            <column name="show_menu" type="BIT(1)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name_group" type="VARCHAR(255)"/>
+            <column name="permission_code" type="VARCHAR(255)"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-4">
+        <createTable tableName="db_fn_permission_group">
+            <column name="group_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="permission_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-5">
+        <createTable tableName="db_fn_category">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_categoryPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="description" type="TEXT"/>
+            <column name="avatar" type="VARCHAR(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-6">
+        <createTable tableName="db_fn_department">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_departmentPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-7">
+        <createTable tableName="db_fn_service">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_servicePK"/>
+            </column>
+            <column name="category_id" type="bigint"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="money" type="DOUBLE PRECISION"/>
+            <column name="description" type="TEXT"/>
+            <column name="start_date" type="datetime"/>
+            <column name="period_kind" type="integer"/>
+            <column name="expiration_date" type="datetime"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-8">
+        <createTable tableName="db_fn_transaction">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_transactionPK"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="money" type="DOUBLE PRECISION"/>
+            <column name="period" type="INT"/>
+            <column name="note" type="TEXT"/>
+            <column name="category_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-9">
+        <createTable tableName="db_fn_notification">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_notificationPK"/>
+            </column>
+            <column name="message" type="VARCHAR(255)"/>
+            <column name="state" type="INT"/>
+            <column name="account_id" type="BIGINT"/>
+            <column name="service_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-10">
+        <createTable tableName="db_fn_notification_group">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_notification_groupPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="service_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-11">
+        <createTable tableName="db_fn_service_schedule">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_service_schedulePK"/>
+            </column>
+            <column name="number_of_due_days" type="INT"/>
+            <column name="ordering" type="INT"/>
+            <column name="service_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-12">
+        <createTable tableName="db_fn_user_group_notification">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_user_group_notificationPK"/>
+            </column>
+            <column name="account_id" type="BIGINT"/>
+            <column name="notification_group_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-13">
+        <createTable tableName="oauth_access_token">
+            <column name="token_id" type="VARCHAR(255)"/>
+            <column name="token" type="LONGBLOB"/>
+            <column name="authentication_id" type="VARCHAR(255)"/>
+            <column name="user_name" type="VARCHAR(255)"/>
+            <column name="client_id" type="VARCHAR(255)"/>
+            <column name="authentication" type="LONGBLOB"/>
+            <column name="refresh_token" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-14">
+        <createTable tableName="oauth_approvals">
+            <column name="userId" type="VARCHAR(255)"/>
+            <column name="clientId" type="VARCHAR(255)"/>
+            <column name="scope" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(10)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="expiresAt" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="lastModifiedAt" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-15">
+        <createTable tableName="oauth_client_details">
+            <column name="client_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="resource_ids" type="VARCHAR(255)"/>
+            <column name="client_secret" type="VARCHAR(255)"/>
+            <column name="scope" type="VARCHAR(255)"/>
+            <column name="authorized_grant_types" type="VARCHAR(255)"/>
+            <column name="web_server_redirect_uri" type="VARCHAR(255)"/>
+            <column name="authorities" type="VARCHAR(255)"/>
+            <column name="access_token_validity" type="INT"/>
+            <column name="refresh_token_validity" type="INT"/>
+            <column name="additional_information" type="VARCHAR(4096)"/>
+            <column name="autoapprove" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-16">
+        <createTable tableName="oauth_client_token">
+            <column name="token_id" type="VARCHAR(255)"/>
+            <column name="token" type="LONGBLOB"/>
+            <column name="authentication_id" type="VARCHAR(255)"/>
+            <column name="user_name" type="VARCHAR(255)"/>
+            <column name="client_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-17">
+        <createTable tableName="oauth_code">
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="authentication" type="LONGBLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-18">
+        <createTable tableName="oauth_refresh_token">
+            <column name="token_id" type="VARCHAR(255)"/>
+            <column name="token" type="LONGBLOB"/>
+            <column name="authentication" type="LONGBLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-19">
+        <insert tableName="db_fn_account">
+            <column name="id" valueNumeric="2"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="username" value="admin"/>
+            <column name="email" value="droiddev.89@gmail.com"/>
+            <column name="password" value="{bcrypt}$2a$10$YMZFAA1FLQQzz29qLCtHG.8oBvq0g/6tpX0ODh269rckAU9lsgrrS"/>
+            <column name="full_name" value="Super Admin"/>
+            <column name="last_login" valueDate="2023-03-27T03:52:17"/>
+            <column name="avatar_path"/>
+            <column name="reset_pwd_code" value="0622"/>
+            <column name="reset_pwd_time" valueDate="2021-03-11T17:16:26"/>
+            <column name="attempt_forget_pwd" valueNumeric="0"/>
+            <column name="attempt_login"/>
+            <column name="is_super_admin" valueBoolean="true"/>
+            <column name="group_id" valueNumeric="15"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T00:22:30"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2023-04-16T14:52:55"/>
+            <column name="phone"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-20">
+        <insert tableName="db_fn_group">
+            <column name="id" valueNumeric="15"/>
+            <column name="name" value="ROLE SUPPER ADMIN"/>
+            <column name="description" value="Role for supper admin"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="is_system_role" valueBoolean="false"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T08:19:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2023-09-30T04:45:04"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-21">
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="6778614941024258"/>
+            <column name="name" value="Get account"/>
+            <column name="action" value="/v1/account/get"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Get account"/>
+            <column name="name_group" value="Account"/>
+            <column name="permission_code" value="ACC_V"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T02:19:16"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T02:19:16"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="6778614941024259"/>
+            <column name="name" value="Get list account"/>
+            <column name="action" value="/v1/account/list"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="description" value="Get list account"/>
+            <column name="name_group" value="Account"/>
+            <column name="permission_code" value="ACC_L"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T02:21:13"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T02:21:13"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="6778614941024261"/>
+            <column name="name" value="Create admin account"/>
+            <column name="action" value="/v1/account/create-admin"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Create admin account"/>
+            <column name="name_group" value="Account"/>
+            <column name="permission_code" value="ACC_C_AD"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T02:24:17"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T02:24:17"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="6778614941024263"/>
+            <column name="name" value="Update admin account"/>
+            <column name="action" value="/v1/account/update-admin"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Update admin account"/>
+            <column name="name_group" value="Account"/>
+            <column name="permission_code" value="ACC_U_AD"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T05:09:14"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T05:09:14"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="6778614941024260"/>
+            <column name="name" value="Delete account"/>
+            <column name="action" value="/v1/account/delete"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Delete account"/>
+            <column name="name_group" value="Account"/>
+            <column name="permission_code" value="ACC_D"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T02:21:34"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T02:21:34"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="6778614941024272"/>
+            <column name="name" value="Get group permission"/>
+            <column name="action" value="/v1/group/get"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Get group permission"/>
+            <column name="name_group" value="Permission"/>
+            <column name="permission_code" value="GR_V"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T04:57:34"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T04:57:34"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="6778614941024273"/>
+            <column name="name" value="Get list group permission"/>
+            <column name="action" value="/v1/group/list"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="description" value="Get list group permission"/>
+            <column name="name_group" value="Permission"/>
+            <column name="permission_code" value="GR_L"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T04:58:00"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T04:58:00"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="6778614941024271"/>
+            <column name="name" value="Create group permission"/>
+            <column name="action" value="/v1/group/create"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Create group permission"/>
+            <column name="name_group" value="Permission"/>
+            <column name="permission_code" value="GR_C"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T04:57:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T04:57:08"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="6778614941024274"/>
+            <column name="name" value="Update group permission"/>
+            <column name="action" value="/v1/group/update"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Update group permission"/>
+            <column name="name_group" value="Permission"/>
+            <column name="permission_code" value="GR_U"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T04:58:21"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T04:58:21"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="6778614941024275"/>
+            <column name="name" value="List permission"/>
+            <column name="action" value="/v1/permission/list"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="List permission"/>
+            <column name="name_group" value="Permission"/>
+            <column name="permission_code" value="PER_L"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-09-13T04:48:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-09-13T04:48:58"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="6778614941024276"/>
+            <column name="name" value="Create permission"/>
+            <column name="action" value="/v1/permission/create"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Create permission"/>
+            <column name="name_group" value="Permission"/>
+            <column name="permission_code" value="PER_C"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-09-13T04:49:13"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-09-13T04:49:13"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="6778614941024270"/>
+            <column name="name" value="Upload file"/>
+            <column name="action" value="/v1/file/upload"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Upload file"/>
+            <column name="name_group" value="file"/>
+            <column name="permission_code" value="FILE_U"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2022-09-21T04:34:33"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2022-09-21T04:34:33"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-22">
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024258"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024259"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024261"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024263"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024260"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024272"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024273"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024271"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024274"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024275"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024276"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024270"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-23">
+        <insert tableName="oauth_client_details">
+            <column name="client_id" value="abc_client"/>
+            <column name="resource_ids"/>
+            <column name="client_secret" value="{bcrypt}$2a$12$zlKHpSw7.8asgQFCexLLkudLYkd9wQGElMps2yVG5p4vm2f.CTYcy"/>
+            <column name="scope" value="read,write"/>
+            <column name="authorized_grant_types"
+                    value="password,refresh_token,client_credentials,authorization_code"/>
+            <column name="web_server_redirect_uri"/>
+            <column name="authorities" value="ROLE_CLIENT,ROLE_TRUSTED_CLIENT"/>
+            <column name="access_token_validity" valueNumeric="2592000"/>
+            <column name="refresh_token_validity" valueNumeric="2592000"/>
+            <column name="additional_information"/>
+            <column name="autoapprove"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-24">
+        <createIndex indexName="FKi109re56lruai5trbtbtwswu6" tableName="db_fn_permission_group">
+            <column name="permission_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-25">
+        <createIndex indexName="FKkwktf6145nb9dqrgemft4isdi" tableName="db_fn_permission_group">
+            <column name="group_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-26">
+        <createIndex indexName="FKq43gkcct4py9h5wfjdwcpaj9w" tableName="db_fn_account">
+            <column name="group_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-27">
+        <createIndex indexName="oauth_refresh_token_id" tableName="oauth_access_token">
+            <column name="token_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-28">
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="db_fn_permission_group"
+                                 constraintName="FK3fhlobbbeuhf2o9rji0hos6ul" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_fn_permission" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-29">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_fn_permission_group"
+                                 constraintName="FKkwktf6145nb9dqrgemft4isdi" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_fn_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-30">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_fn_account"
+                                 constraintName="FKt24ved32tlgedttymq32ojjj4" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_fn_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-31">
+        <addForeignKeyConstraint baseColumnNames="department_id" baseTableName="db_fn_account"
+                                 constraintName="FKrvpdlhoom1v6m5q9otwrmviwm" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_fn_department" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-32">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="db_fn_service"
+                                 constraintName="FKbbvs57d6sti3tjhd5y3u7lwqy" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_fn_category" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-33">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="db_fn_transaction"
+                                 constraintName="FKngxcrqdjbbkku9dp8ljpid1ox" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_fn_category" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-34">
+        <addForeignKeyConstraint baseColumnNames="service_id" baseTableName="db_fn_notification_group" constraintName="FK3klbyfh69g7kwv723s3dvxb73" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_service" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-35">
+        <addForeignKeyConstraint baseColumnNames="notification_group_id" baseTableName="db_fn_user_group_notification" constraintName="FK5x7mxhcjbbxamrs1hg4ky9td1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_notification_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-36">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_fn_user_group_notification" constraintName="FKadjfumpqhu5gel6uf6y477l6q" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-37">
+        <addForeignKeyConstraint baseColumnNames="service_id" baseTableName="db_fn_notification" constraintName="FKaebgdasubcxgjsn41gaqanu46" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_service" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-38">
+        <addForeignKeyConstraint baseColumnNames="service_id" baseTableName="db_fn_service_schedule" constraintName="FKolluwdogtkrcuygf6j5bf4fxi" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_service" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1697783111984-39">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_fn_notification" constraintName="FKp8mny1o1fgddcymhixcx9gjaa" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

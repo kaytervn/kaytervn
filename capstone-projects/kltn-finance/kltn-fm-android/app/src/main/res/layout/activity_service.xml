@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.service.ServiceViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.service.ServiceActivity"/>
+        <import type="com.finance.constant.Constants"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+        <RelativeLayout
+            android:id="@+id/layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@color/color_theme"
+            >
+            <LinearLayout
+                android:id="@+id/layout_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingVertical="@dimen/_12sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:onClick="@{()->a.onBackPressed()}"
+                >
+                <ImageView
+                    android:id="@+id/img_back"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:src="@drawable/ic_back"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/service_management"
+                android:fontFamily="@font/lato_black"
+                android:textSize="@dimen/_16ssp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/layout_back"
+                android:visibility="@{vm.isSearch ? View.GONE : View.VISIBLE, default=visible}"
+                />
+            <FrameLayout
+                android:id="@+id/layout_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:visibility="@{vm.isSearch ? View.VISIBLE : View.GONE}"
+                android:layout_toEndOf="@+id/layout_back"
+                >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+                    <EditText
+                        android:id="@+id/edt_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        style="@style/AppEditTextInfo"
+                        android:layout_marginTop="0dp"
+                        android:fontFamily="@font/lato_medium"
+                        android:hint="@string/search_service_name"
+                        android:textColorHint="#77AFD0"
+                        android:textCursorDrawable="@drawable/cursor_color_search"
+                        android:paddingEnd="@dimen/_50sdp"
+                        android:paddingStart="@dimen/_35sdp"
+                        android:textColor="@color/white"
+                        android:background="@drawable/bg_edit_txt_search"
+
+                        />
+                    <ImageView
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        android:src="@drawable/ic_search_2"
+                        android:scaleType="centerCrop"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:onClick="@{()->a.deleteEditSearch()}"
+
+                        android:layout_centerVertical="true"
+                        />
+                    <ImageView
+                        android:layout_width="@dimen/_23sdp"
+                        android:layout_height="@dimen/_23sdp"
+                        android:src="@drawable/ic_delete_search"
+                        android:scaleType="centerCrop"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:visibility="@{vm.isSearchEmpty.empty ? View.GONE : View.VISIBLE}"
+                        android:onClick="@{()->a.deleteEditSearch()}"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="@{!vm.isSearch &amp;&amp; vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_SERVICE_LIST) ? View.VISIBLE : View.GONE}"
+                android:onClick="@{(v) -> vm.isShowSearch()}"
+                android:paddingHorizontal="@dimen/_15sdp"
+                >
+                <ImageView
+                    android:id="@+id/img_search"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
+                    android:src="@drawable/ic_search"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_title"
+            android:background="@color/white"
+            android:layout_marginBottom="0dp"
+            android:paddingBottom="0dp"
+            android:visibility="@{!vm.isSearch &amp;&amp; vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_SERVICE_LIST) ? View.VISIBLE : View.GONE}"
+
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_7sdp"
+                android:background="@drawable/bg_filter_kind"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/expiration_day"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:layout_marginVertical="@dimen/_3sdp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:background="@{vm.sort == 3 ? @drawable/bg_white_corner : @drawable/bg_blank}"
+                    android:onClick="@{() -> a.sortServiceByExpirationDate()}"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/created_day"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:layout_marginVertical="@dimen/_3sdp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:background="@{vm.sort == 0 ? @drawable/bg_white_corner : @drawable/bg_blank}"
+                    android:onClick="@{() -> a.sortServiceByCreatedDate()}"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_SERVICE_LIST) ? View.VISIBLE : View.GONE}"
+            android:layout_below="@+id/layout_filter"
+            android:background="@color/color_bg_tran">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_services"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"></androidx.recyclerview.widget.RecyclerView>
+            </RelativeLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+        <include
+            android:id="@+id/layout_no_data"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_SERVICE_LIST) &amp;&amp; vm.totalElements == 0 ? View.VISIBLE:View.GONE}"
+            layout="@layout/layout_empty_data"
+            android:layout_centerInParent="true"
+            />
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{!vm.isValidKey  ? View.VISIBLE : View.GONE}"
+            android:id="@+id/layout_invalid_key"
+            layout="@layout/layout_invalid_key"
+            android:layout_centerInParent="true"
+            bind:des="@{@string/invalid_key}"
+            />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_add"
+            android:visibility="@{vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_SERVICE_CREATE) ? View.VISIBLE : View.GONE}"
+            android:layout_gravity="end|bottom"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:onClick="@{()->a.addNewService()}"
+            style="@style/AppButtonGlobal"
+            >
+        </de.hdodenhof.circleimageview.CircleImageView>
+
+
+    </RelativeLayout>
+</layout>

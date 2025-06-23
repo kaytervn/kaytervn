@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="ivm"
+            type="com.finance.data.model.api.response.task.TaskResponse" />
+        <import type="com.finance.utils.NumberUtils"/>
+        <import type="com.finance.utils.AESUtils"   />
+        <variable name="secretKey"
+            type="String"/>
+        <import type="com.finance.utils.DateUtils"/>
+        <import type="android.view.View"/>
+        <variable name="permissionChangeState" type="Boolean" />
+        <variable name="permissionDelete" type="Boolean" />
+        <import type="com.finance.constant.Constants"/>
+    </data>
+
+    <com.finance.ui.swipe.SwipeRevealLayout
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mode="same_level"
+        app:dragEdge="right"
+        android:layout_marginBottom="@dimen/_5sdp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+            <FrameLayout
+                android:id="@+id/layout_change_state"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_pay"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:visibility="@{permissionChangeState &amp;&amp; ivm.state == 1  ? View.VISIBLE : View.GONE}"
+                >
+                <ImageView
+                    android:id="@+id/img_change_state"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:src="@drawable/ic_completed"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    />
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/layout_delete"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_delete"
+                android:visibility="@{permissionDelete ? View.VISIBLE : View.GONE}"
+                >
+                <ImageView
+                    android:id="@+id/img_delete"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:src="@drawable/ic_delete"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/_10sdp"
+                android:paddingTop="@dimen/_10sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginHorizontal="@dimen/_4sdp"
+                android:background="@drawable/bg_tran"
+                >
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:textColor="@color/black_full"
+                    android:textSize="@dimen/_12ssp"
+                    android:text="@{ivm.name, default=NguyenVanAwefwefwefewfwqưdqwdqwdqwdqwdqwdq}"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:maxWidth="@dimen/_170sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                     />
+
+                <TextView
+                    android:id="@+id/tv_project"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_italic"
+                    android:textColor="@color/black_full"
+                    android:textSize="@dimen/_12ssp"
+                    android:text='@{ivm.project.name !=null ? (@string/project + " " +AESUtils.decrypt(secretKey, ivm.project.name, false)) : @string/not_part_of_any_project, default=name_projectiwqidqwidoqdqpwdiqpodiqpowdqowdp}'
+                    android:layout_marginTop="@dimen/_7sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:maxWidth="@dimen/_250sdp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_organization"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_italic"
+                    android:textColor="@color/black_full"
+                    android:textSize="@dimen/_12ssp"
+                    android:text='@{ivm.project.organization !=null ? (@string/organization + " " + AESUtils.decrypt(secretKey, ivm.project.organization.name, false)) : @string/not_part_of_any_organization, default=name_project}'
+                    android:layout_marginTop="@dimen/_7sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_project"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:maxWidth="@dimen/_250sdp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    />
+
+                <ImageView
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:src="@{ivm.state == 1 ? @drawable/ic_processing : @drawable/ic_completed, default=@drawable/ic_processing}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:scaleType="centerCrop"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.finance.ui.swipe.SwipeRevealLayout>
+</layout>

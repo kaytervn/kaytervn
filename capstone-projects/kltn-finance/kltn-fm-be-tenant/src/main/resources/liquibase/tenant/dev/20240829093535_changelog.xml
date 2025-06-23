@@ -1,0 +1,71 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Finance" id="1724924143947-1">
+        <dropForeignKeyConstraint baseTableName="db_fn_task" constraintName="FK8vwjwdhyevux36ibqg9y42t17"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="parent_id" baseTableName="db_fn_task" constraintName="FK8vwjwdhyevux36ibqg9y42t17" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_task" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-2">
+        <dropForeignKeyConstraint baseTableName="db_fn_task_permission" constraintName="FK15bbv1senhfahtn3nd3w6bh70"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="account_id" baseTableName="db_fn_task_permission" constraintName="FK15bbv1senhfahtn3nd3w6bh70" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-3">
+        <dropForeignKeyConstraint baseTableName="db_fn_task_permission" constraintName="FK33hkspdem0oi5284xl3eg6o9k"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="project_id" baseTableName="db_fn_task_permission" constraintName="FK33hkspdem0oi5284xl3eg6o9k" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_project" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-4">
+        <dropForeignKeyConstraint baseTableName="db_fn_key_information_permission" constraintName="FK3rky13owihrcqhtca7hyrv8tu"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="account_id" baseTableName="db_fn_key_information_permission" constraintName="FK3rky13owihrcqhtca7hyrv8tu" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-5">
+        <dropForeignKeyConstraint baseTableName="db_fn_key_information_permission" constraintName="FK6527j9drufw3omlfhnnkxx9nf"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="key_information_id" baseTableName="db_fn_key_information_permission" constraintName="FK6527j9drufw3omlfhnnkxx9nf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_key_information" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-6">
+        <dropForeignKeyConstraint baseTableName="db_fn_task_permission" constraintName="FK82wo8ukwfnnmnet0giwydvh7l"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="task_id" baseTableName="db_fn_task_permission" constraintName="FK82wo8ukwfnnmnet0giwydvh7l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_task" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-7">
+        <dropForeignKeyConstraint baseTableName="db_fn_key_information_permission" constraintName="FKjhxrs8yymiggo1ki0pni5xftk"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="key_information_group_id" baseTableName="db_fn_key_information_permission" constraintName="FKjhxrs8yymiggo1ki0pni5xftk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_key_information_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-8">
+        <dropForeignKeyConstraint baseTableName="db_fn_transaction_permission" constraintName="FKkyfm0tlxmdnpgv4h722tdaeu6"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="account_id" baseTableName="db_fn_transaction_permission" constraintName="FKkyfm0tlxmdnpgv4h722tdaeu6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-9">
+        <dropForeignKeyConstraint baseTableName="db_fn_transaction_permission" constraintName="FKla922abeipcm77wyx8dlygxgd"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="transaction_group_id" baseTableName="db_fn_transaction_permission" constraintName="FKla922abeipcm77wyx8dlygxgd" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_transaction_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-10">
+        <dropForeignKeyConstraint baseTableName="db_fn_transaction_permission" constraintName="FKo3i27rup8ebi5uyuhi81np3ex"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="transaction_id" baseTableName="db_fn_transaction_permission" constraintName="FKo3i27rup8ebi5uyuhi81np3ex" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_transaction" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-11">
+        <dropForeignKeyConstraint baseTableName="db_fn_service_notification_group" constraintName="FK3g8hchxx37jchs5way2a6kmgj"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="notification_group_id" baseTableName="db_fn_service_notification_group" constraintName="FK3g8hchxx37jchs5way2a6kmgj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_notification_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-12">
+        <dropForeignKeyConstraint baseTableName="db_fn_service_notification_group" constraintName="FK6vx4u25x6bne33rkvtlrtq77o"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="service_id" baseTableName="db_fn_service_notification_group" constraintName="FK6vx4u25x6bne33rkvtlrtq77o" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_service" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-13">
+        <dropForeignKeyConstraint baseTableName="db_fn_service_schedule" constraintName="FKolluwdogtkrcuygf6j5bf4fxi"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="service_id" baseTableName="db_fn_service_schedule" constraintName="FKolluwdogtkrcuygf6j5bf4fxi" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_service" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-14">
+        <dropForeignKeyConstraint baseTableName="db_fn_transaction_history" constraintName="FKdxmlw3jnxteoqks064nvgyyo6"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="transaction_id" baseTableName="db_fn_transaction_history" constraintName="FKdxmlw3jnxteoqks064nvgyyo6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_transaction" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-15">
+        <dropForeignKeyConstraint baseTableName="db_fn_transaction_history" constraintName="FKe2oil90fu2585kyya859mld5r"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="account_id" baseTableName="db_fn_transaction_history" constraintName="FKe2oil90fu2585kyya859mld5r" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-16">
+        <dropForeignKeyConstraint baseTableName="db_fn_user_group_notification" constraintName="FK5x7mxhcjbbxamrs1hg4ky9td1"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="notification_group_id" baseTableName="db_fn_user_group_notification" constraintName="FK5x7mxhcjbbxamrs1hg4ky9td1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_notification_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1724924143947-17">
+        <dropForeignKeyConstraint baseTableName="db_fn_user_group_notification" constraintName="FKadjfumpqhu5gel6uf6y477l6q"/>
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="account_id" baseTableName="db_fn_user_group_notification" constraintName="FKadjfumpqhu5gel6uf6y477l6q" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

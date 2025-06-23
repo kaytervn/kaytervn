@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cache Insights</title>
+    <link rel="icon" href="./finance_logo.png" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              },
+            },
+            animation: {
+              "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- API Key Modal -->
+    <div
+      id="apiKeyModal"
+      class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity duration-300 opacity-0 invisible"
+    >
+      <div
+        class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-md transform transition-transform duration-300 scale-95"
+      >
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+            Authentication Required
+          </h2>
+          <div class="text-primary-500 text-2xl">
+            <i class="fas fa-key"></i>
+          </div>
+        </div>
+
+        <p class="text-gray-600 dark:text-gray-300 mb-6">
+          Please enter your API key to access Cache Insights.
+        </p>
+
+        <div class="relative">
+          <input
+            type="text"
+            id="apiKeyInput"
+            class="w-full border border-gray-300 dark:border-gray-600 p-4 pr-12 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition duration-200"
+            placeholder="Enter your API key"
+          />
+          <div
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          >
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+
+        <p id="errorText" class="text-red-500 text-sm mt-2 hidden font-medium">
+          <i class="fas fa-exclamation-circle mr-1"></i> Invalid API Key
+        </p>
+
+        <div class="mt-6">
+          <button
+            onclick="saveApiKey()"
+            class="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center"
+          >
+            <i class="fas fa-sign-in-alt mr-2"></i> Authenticate
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div
+      id="confirmModal"
+      class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity duration-300 opacity-0 invisible"
+    >
+      <div
+        class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 transform transition-transform duration-300 scale-95"
+      >
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold text-gray-800" id="confirmTitle">
+            Confirmation
+          </h2>
+          <div class="text-red-500 text-2xl">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+        </div>
+        <p class="text-gray-600 mb-6" id="confirmMessage"></p>
+        <div class="flex justify-end space-x-3">
+          <button
+            id="confirmCancelBtn"
+            class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg transition duration-200"
+          >
+            Cancel
+          </button>
+          <button
+            id="confirmOkBtn"
+            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-200"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-6xl mx-auto py-8 px-4 sm:px-6">
+      <!-- Header -->
+      <header class="mb-8">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center space-x-3">
+            <div class="bg-primary-600 text-white p-3 rounded-xl shadow-lg">
+              <i class="fas fa-database text-xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800">Cache Insights</h1>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <button
+              id="downloadBackupBtn"
+              class="flex items-center bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-200 shadow-md"
+            >
+              <i class="fas fa-download mr-2"></i> Download Backup
+            </button>
+            <button
+              id="uploadBackupBtn"
+              class="flex items-center bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition duration-200 shadow-md"
+            >
+              <i class="fas fa-upload mr-2"></i> Upload Backup
+            </button>
+            <button
+              id="resetCacheBtn"
+              class="flex items-center bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-200 shadow-md"
+            >
+              <i class="fas fa-trash-alt mr-2"></i> Reset Cache
+            </button>
+            <button
+              id="logoutBtn"
+              class="flex items-center bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg transition duration-200 shadow-md"
+            >
+              <i class="fas fa-sign-out-alt mr-2"></i> Exit
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Hidden file input for upload -->
+      <input type="file" id="backupFileInput" class="hidden" accept=".zip" />
+
+      <!-- Stats Overview -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div
+          class="bg-white rounded-xl shadow-md p-6 border-l-4 border-primary-500"
+        >
+          <div class="flex justify-between items-center">
+            <h3 class="text-gray-500 font-medium">Total Keys</h3>
+            <span class="text-primary-500 bg-primary-100 p-2 rounded-full">
+              <i class="fas fa-key"></i>
+            </span>
+          </div>
+          <p id="totalKeys" class="text-3xl font-bold text-gray-800 mt-2">-</p>
+        </div>
+
+        <div
+          class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500"
+        >
+          <div class="flex justify-between items-center">
+            <h3 class="text-gray-500 font-medium">Active Sessions</h3>
+            <span class="text-green-500 bg-green-100 p-2 rounded-full">
+              <i class="fas fa-users"></i>
+            </span>
+          </div>
+          <p id="activeSessions" class="text-3xl font-bold text-gray-800 mt-2">
+            -
+          </p>
+        </div>
+
+        <div
+          class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500"
+        >
+          <div class="flex justify-between items-center">
+            <h3 class="text-gray-500 font-medium">Cache Size</h3>
+            <span class="text-purple-500 bg-purple-100 p-2 rounded-full">
+              <i class="fas fa-hdd"></i>
+            </span>
+          </div>
+          <p id="cacheSize" class="text-3xl font-bold text-gray-800 mt-2">-</p>
+        </div>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center md:space-x-4">
+          <div class="relative flex-grow mb-4 md:mb-0">
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Search keys..."
+              class="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition duration-200"
+            />
+            <div
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            >
+              <i class="fas fa-search"></i>
+            </div>
+          </div>
+
+          <div class="flex space-x-2">
+            <select
+              id="sortOptions"
+              class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition duration-200"
+            >
+              <option value="time-desc">Newest First</option>
+              <option value="time-asc">Oldest First</option>
+              <option value="key-asc">Key (A-Z)</option>
+              <option value="key-desc">Key (Z-A)</option>
+            </select>
+
+            <button
+              id="refreshBtn"
+              class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition duration-200"
+            >
+              <i class="fas fa-sync-alt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key List -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+          <h2 class="text-xl font-bold text-gray-800">Cached Keys</h2>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="hidden p-12 text-center">
+          <div class="inline-block animate-spin text-primary-500 text-4xl mb-4">
+            <i class="fas fa-circle-notch"></i>
+          </div>
+          <p class="text-gray-500">Loading cache data...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden p-12 text-center">
+          <div class="text-gray-400 text-6xl mb-4">
+            <i class="fas fa-database"></i>
+          </div>
+          <h3 class="text-xl font-medium text-gray-700 mb-2">No Keys Found</h3>
+          <p class="text-gray-500 max-w-md mx-auto">
+            Your cache is currently empty. Keys will appear here once they are
+            added to the cache.
+          </p>
+        </div>
+
+        <!-- Key List -->
+        <div id="keyListContainer" class="divide-y divide-gray-200">
+          <!-- Keys will be rendered here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Detail Modal -->
+    <div
+      id="keyDetailModal"
+      class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity duration-300 opacity-0 invisible"
+    >
+      <div
+        class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-0 transform transition-transform duration-300 scale-95"
+      >
+        <div class="bg-primary-500 text-white px-6 py-4 rounded-t-xl">
+          <div class="flex justify-between items-center">
+            <h2 class="text-xl font-bold" id="detailKeyName">Key Details</h2>
+            <button
+              onclick="closeDetailModal()"
+              class="text-white hover:text-gray-200 transition duration-200"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <div class="space-y-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1"
+                >Key</label
+              >
+              <div
+                id="detailKey"
+                class="bg-gray-100 p-3 rounded-lg font-mono text-sm break-all"
+              >
+                -
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1"
+                >Session ID</label
+              >
+              <div
+                id="detailSession"
+                class="bg-gray-100 p-3 rounded-lg font-mono text-sm break-all"
+              >
+                -
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1"
+                >Time</label
+              >
+              <div id="detailTime" class="bg-gray-100 p-3 rounded-lg">-</div>
+            </div>
+          </div>
+
+          <div class="mt-8 space-x-3 flex justify-end">
+            <button
+              id="copyKeyBtn"
+              class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg transition duration-200"
+            >
+              <i class="fas fa-copy mr-1"></i> Copy Key
+            </button>
+            <button
+              id="detailDeleteBtn"
+              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-200"
+            >
+              <i class="fas fa-trash-alt mr-1"></i> Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="fixed bottom-4 right-4 z-50"></div>
+
+    <script>
+      const MEDIA_BASE = "/v1/media";
+      const API_BASE = "/v1/cache";
+      const LOCAL_STORAGE_KEY = "cache_api_key";
+      let allKeys = [];
+      let selectedKey = null;
+
+      document.addEventListener("DOMContentLoaded", () => {
+        checkApiKey();
+        attachEventListeners();
+      });
+
+      function attachEventListeners() {
+        document
+          .getElementById("resetCacheBtn")
+          .addEventListener("click", () =>
+            showConfirmModal(
+              "resetCache",
+              "Are you sure you want to reset the entire cache? This action cannot be undone."
+            )
+          );
+        document
+          .getElementById("logoutBtn")
+          .addEventListener("click", () =>
+            showConfirmModal(
+              "logout",
+              "Are you sure you want to log out? Your API key will be removed from this browser."
+            )
+          );
+        document
+          .getElementById("refreshBtn")
+          .addEventListener("click", fetchKeys);
+        document
+          .getElementById("searchInput")
+          .addEventListener("input", filterKeys);
+        document
+          .getElementById("sortOptions")
+          .addEventListener("change", sortAndRenderKeys);
+        document
+          .getElementById("copyKeyBtn")
+          .addEventListener("click", copyKeyToClipboard);
+        document
+          .getElementById("downloadBackupBtn")
+          .addEventListener("click", downloadBackup);
+        document
+          .getElementById("uploadBackupBtn")
+          .addEventListener("click", () =>
+            document.getElementById("backupFileInput").click()
+          );
+        document
+          .getElementById("backupFileInput")
+          .addEventListener("change", uploadBackup);
+      }
+
+      function checkApiKey() {
+        const apiKey = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (!apiKey) {
+          showModal("apiKeyModal");
+        } else {
+          fetchKeys();
+        }
+      }
+
+      function saveApiKey() {
+        const apiKey = document.getElementById("apiKeyInput").value.trim();
+        if (apiKey) {
+          localStorage.setItem(LOCAL_STORAGE_KEY, apiKey);
+          hideModal("apiKeyModal");
+          document.getElementById("errorText").classList.add("hidden");
+          fetchKeys();
+          showToast("Authentication successful", "success");
+        } else {
+          document.getElementById("errorText").classList.remove("hidden");
+          document.getElementById("errorText").textContent =
+            "API key cannot be empty";
+        }
+      }
+
+      function showConfirmModal(action, message, key = null) {
+        document.getElementById("confirmTitle").textContent =
+          action === "logout"
+            ? "Confirm Logout"
+            : action === "resetCache"
+            ? "Confirm Reset"
+            : "Confirm Delete";
+        document.getElementById("confirmMessage").textContent = message;
+        showModal("confirmModal");
+
+        const confirmOkBtn = document.getElementById("confirmOkBtn");
+        const confirmCancelBtn = document.getElementById("confirmCancelBtn");
+
+        const newConfirmOkBtn = confirmOkBtn.cloneNode(true);
+        const newConfirmCancelBtn = confirmCancelBtn.cloneNode(true);
+        confirmOkBtn.parentNode.replaceChild(newConfirmOkBtn, confirmOkBtn);
+        confirmCancelBtn.parentNode.replaceChild(
+          newConfirmCancelBtn,
+          confirmCancelBtn
+        );
+
+        newConfirmCancelBtn.addEventListener("click", () =>
+          hideModal("confirmModal")
+        );
+        newConfirmOkBtn.addEventListener("click", () => {
+          hideModal("confirmModal");
+          if (action === "logout") logout();
+          else if (action === "resetCache") resetCache();
+          else if (action === "delete" && key) deleteKey(key);
+        });
+      }
+
+      function logout() {
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+        showToast("You've been logged out successfully", "info");
+        showModal("apiKeyModal");
+      }
+
+      async function fetchKeys() {
+        const apiKey = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (!apiKey) return;
+
+        toggleLoadingState(true);
+
+        try {
+          const response = await fetch(`${API_BASE}/get-all-keys`, {
+            headers: { "x-api-key": apiKey },
+          });
+
+          if (!response.ok) {
+            if (response.status === 401) {
+              throw new Error("Invalid API Key");
+            } else {
+              throw new Error("Failed to fetch keys");
+            }
+          }
+
+          const result = await response.json();
+          allKeys = result.data || [];
+          updateStats();
+          sortAndRenderKeys();
+        } catch (error) {
+          console.error("Error fetching keys:", error);
+          if (error.message === "Invalid API Key") {
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
+            showModal("apiKeyModal");
+            document.getElementById("errorText").classList.remove("hidden");
+            document.getElementById("errorText").textContent =
+              "Invalid API Key";
+          } else {
+            showToast("Failed to fetch cache data", "error");
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
+            showModal("apiKeyModal");
+            document.getElementById("errorText").classList.remove("hidden");
+            document.getElementById("errorText").textContent =
+              "Please re-authenticate";
+          }
+        } finally {
+          toggleLoadingState(false);
+        }
+      }
+
+      function updateStats() {
+        document.getElementById("totalKeys").textContent = allKeys.length;
+
+        const uniqueSessions = new Set(allKeys.map((item) => item.session))
+          .size;
+        document.getElementById("activeSessions").textContent = uniqueSessions;
+
+        const estimatedSize = Math.round(JSON.stringify(allKeys).length / 1024);
+        document.getElementById(
+          "cacheSize"
+        ).textContent = `~${estimatedSize} KB`;
+      }
+
+      function filterKeys() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const filteredKeys = searchTerm
+          ? allKeys.filter((item) =>
+              item.key.toLowerCase().includes(searchTerm)
+            )
+          : allKeys;
+
+        renderKeys(filteredKeys);
+      }
+
+      function sortAndRenderKeys() {
+        const sortOption = document.getElementById("sortOptions").value;
+        const filteredKeys = [...allKeys];
+
+        switch (sortOption) {
+          case "time-desc":
+            filteredKeys.sort((a, b) => parseTime(b.time) - parseTime(a.time));
+            break;
+          case "time-asc":
+            filteredKeys.sort((a, b) => parseTime(a.time) - parseTime(b.time));
+            break;
+          case "key-asc":
+            filteredKeys.sort((a, b) => a.key.localeCompare(b.key));
+            break;
+          case "key-desc":
+            filteredKeys.sort((a, b) => b.key.localeCompare(a.key));
+            break;
+        }
+
+        renderKeys(filteredKeys);
+      }
+
+      function renderKeys(keys) {
+        const container = document.getElementById("keyListContainer");
+        container.innerHTML = "";
+
+        if (keys.length === 0) {
+          document.getElementById("emptyState").classList.remove("hidden");
+        } else {
+          document.getElementById("emptyState").classList.add("hidden");
+        }
+
+        keys.forEach((item) => {
+          const { key, session, time } = item;
+          const keyItem = document.createElement("div");
+          keyItem.className = "p-4 hover:bg-gray-50 transition duration-200";
+
+          const formattedTime = formatApiTime(time);
+
+          keyItem.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex-grow min-w-0">
+              <div class="flex items-center">
+                <div class="mr-3 text-primary-500">
+                  <i class="fas fa-key"></i>
+                </div>
+                <div class="truncate">
+                  <h3 class="font-medium truncate">${key}</h3>
+                  <p class="text-sm text-gray-500 mt-1">
+                    <span class="inline-flex items-center">
+                      <i class="fas fa-clock mr-1 text-xs"></i> 
+                      <span>${formattedTime}</span>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="flex space-x-2">
+              <button class="view-details-btn p-2 text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-full transition duration-200">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button class="delete-key-btn p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-full transition duration-200">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          </div>
+        `;
+
+          const viewDetailsBtn = keyItem.querySelector(".view-details-btn");
+          viewDetailsBtn.addEventListener("click", () => showDetails(item));
+
+          const deleteBtn = keyItem.querySelector(".delete-key-btn");
+          deleteBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            showConfirmModal(
+              "delete",
+              `Are you sure you want to delete the key "${key}"?`,
+              key
+            );
+          });
+
+          container.appendChild(keyItem);
+        });
+      }
+
+      function showDetails(item) {
+        selectedKey = item.key;
+
+        document.getElementById("detailKeyName").textContent = truncateMiddle(
+          item.key,
+          20
+        );
+        document.getElementById("detailKey").textContent = item.key;
+        document.getElementById("detailSession").textContent = item.session;
+        document.getElementById("detailTime").textContent = formatApiTime(
+          item.time
+        );
+
+        document.getElementById("detailDeleteBtn").onclick = () => {
+          closeDetailModal();
+          showConfirmModal(
+            "delete",
+            `Are you sure you want to delete the key "${item.key}"?`,
+            item.key
+          );
+        };
+
+        showModal("keyDetailModal");
+      }
+
+      function closeDetailModal() {
+        hideModal("keyDetailModal");
+        selectedKey = null;
+      }
+
+      function copyKeyToClipboard() {
+        const keyText = document.getElementById("detailKey").textContent;
+        navigator.clipboard
+          .writeText(keyText)
+          .then(() => {
+            showToast("Key copied to clipboard", "success");
+          })
+          .catch(() => {
+            showToast("Failed to copy key", "error");
+          });
+      }
+
+      async function deleteKey(key) {
+        const apiKey = localStorage.getItem(LOCAL_STORAGE_KEY);
+
+        try {
+          const response = await fetch(`${API_BASE}/remove-key/${key}`, {
+            method: "DELETE",
+            headers: { "x-api-key": apiKey },
+          });
+
+          if (!response.ok) throw new Error("Failed to delete key");
+
+          showToast("Key deleted successfully", "success");
+          fetchKeys();
+        } catch (error) {
+          showToast("Failed to delete key", "error");
+        }
+      }
+
+      async function resetCache() {
+        const apiKey = localStorage.getItem(LOCAL_STORAGE_KEY);
+
+        try {
+          const response = await fetch(`${API_BASE}/reset`, {
+            method: "DELETE",
+            headers: { "x-api-key": apiKey },
+          });
+
+          if (!response.ok) throw new Error("Failed to reset cache");
+
+          showToast("Cache reset successfully", "success");
+          fetchKeys();
+        } catch (error) {
+          showToast("Failed to reset cache", "error");
+        }
+      }
+
+      function parseTime(timeStr) {
+        const [datePart, timePart] = timeStr.split(" ");
+        const [day, month, year] = datePart.split("/").map(Number);
+        const [hours, minutes, seconds] = timePart.split(":").map(Number);
+        return new Date(year, month - 1, day, hours, minutes, seconds);
+      }
+
+      function formatApiTime(timeStr) {
+        if (/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/.test(timeStr)) {
+          return timeStr;
+        }
+        const date = new Date(timeStr);
+        if (isNaN(date.getTime())) return "Invalid Date";
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        const seconds = String(date.getSeconds()).padStart(2, "0");
+        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+      }
+
+      function toggleLoadingState(isLoading) {
+        const loadingState = document.getElementById("loadingState");
+        const keyListContainer = document.getElementById("keyListContainer");
+        const emptyState = document.getElementById("emptyState");
+
+        if (isLoading) {
+          loadingState.classList.remove("hidden");
+          keyListContainer.classList.add("hidden");
+          emptyState.classList.add("hidden");
+        } else {
+          loadingState.classList.add("hidden");
+          keyListContainer.classList.remove("hidden");
+        }
+      }
+
+      function showModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.remove("invisible", "opacity-0");
+        modal.classList.add("opacity-100");
+
+        const modalContent = modal.querySelector("div");
+        setTimeout(() => {
+          modalContent.classList.remove("scale-95");
+          modalContent.classList.add("scale-100");
+        }, 10);
+      }
+
+      function hideModal(modalId) {
+        const modal = document.getElementById(modalId);
+        const modalContent = modal.querySelector("div");
+
+        modalContent.classList.remove("scale-100");
+        modalContent.classList.add("scale-95");
+
+        setTimeout(() => {
+          modal.classList.remove("opacity-100");
+          modal.classList.add("invisible", "opacity-0");
+        }, 200);
+      }
+
+      function showToast(message, type) {
+        const toast = document.createElement("div");
+        let icon, bgColor;
+
+        switch (type) {
+          case "success":
+            icon = "fa-check-circle";
+            bgColor = "bg-green-500";
+            break;
+          case "error":
+            icon = "fa-exclamation-circle";
+            bgColor = "bg-red-500";
+            break;
+          case "info":
+            icon = "fa-info-circle";
+            bgColor = "bg-blue-500";
+            break;
+          default:
+            icon = "fa-info-circle";
+            bgColor = "bg-gray-700";
+        }
+
+        toast.className = `mb-3 ${bgColor} text-white p-4 rounded-lg shadow-lg flex items-center transform translate-x-full transition-transform duration-300 max-w-md`;
+        toast.innerHTML = `
+        <div class="mr-3">
+          <i class="fas ${icon}"></i>
+        </div>
+        <div class="flex-grow">${message}</div>
+        <button class="ml-4 focus:outline-none hover:text-gray-200">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+
+        const container = document.getElementById("toastContainer");
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.remove("translate-x-full");
+        }, 10);
+
+        const closeBtn = toast.querySelector("button");
+        closeBtn.addEventListener("click", () => {
+          removeToast(toast);
+        });
+
+        setTimeout(() => {
+          removeToast(toast);
+        }, 5000);
+      }
+
+      function removeToast(toast) {
+        toast.classList.add("translate-x-full");
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }
+
+      function truncateMiddle(str, maxLength) {
+        if (str.length <= maxLength) return str;
+
+        const ellipsis = "...";
+        const charsToShow = maxLength - ellipsis.length;
+        const frontChars = Math.ceil(charsToShow / 2);
+        const backChars = Math.floor(charsToShow / 2);
+
+        return (
+          str.substring(0, frontChars) +
+          ellipsis +
+          str.substring(str.length - backChars)
+        );
+      }
+
+      async function downloadBackup() {
+        const apiKey = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (!apiKey) {
+          showToast("Please authenticate first", "error");
+          return;
+        }
+
+        try {
+          toggleLoadingState(true);
+          const response = await fetch(`${MEDIA_BASE}/download-backup`, {
+            headers: { "x-api-key": apiKey },
+          });
+
+          if (!response.ok) {
+            if (response.status === 401) {
+              throw new Error("Invalid API Key");
+            }
+            throw new Error("Failed to download backup");
+          }
+
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `backup-${Date.now()}.zip`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+
+          showToast("Backup downloaded successfully", "success");
+        } catch (error) {
+          console.error("Error downloading backup:", error);
+          if (error.message === "Invalid API Key") {
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
+            showModal("apiKeyModal");
+            showToast("Invalid API Key, please re-authenticate", "error");
+          } else {
+            showToast("Failed to download backup", "error");
+          }
+        } finally {
+          toggleLoadingState(false);
+        }
+      }
+
+      async function uploadBackup(event) {
+        const apiKey = localStorage.getItem(LOCAL_STORAGE_KEY);
+        const file = event.target.files[0];
+
+        if (!apiKey) {
+          showToast("Please authenticate first", "error");
+          return;
+        }
+
+        if (!file) {
+          return;
+        }
+
+        if (!file.name.endsWith(".zip")) {
+          showToast("Please upload a ZIP file", "error");
+          event.target.value = "";
+          return;
+        }
+
+        try {
+          toggleLoadingState(true);
+          const formData = new FormData();
+          formData.append("zipFile", file);
+
+          const response = await fetch(`${MEDIA_BASE}/push-backup`, {
+            method: "POST",
+            headers: {
+              "x-api-key": apiKey,
+            },
+            body: formData,
+          });
+
+          if (!response.ok) {
+            if (response.status === 401) {
+              throw new Error("Invalid API Key");
+            }
+            throw new Error("Failed to upload backup");
+          }
+
+          const result = await response.json();
+          showToast(
+            result.message || "Backup uploaded successfully",
+            "success"
+          );
+          fetchKeys();
+        } catch (error) {
+          console.error("Error uploading backup:", error);
+          if (error.message === "Invalid API Key") {
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
+            showModal("apiKeyModal");
+            showToast("Invalid API Key, please re-authenticate", "error");
+          } else {
+            showToast("Failed to upload backup", "error");
+          }
+        } finally {
+          toggleLoadingState(false);
+          event.target.value = "";
+        }
+      }
+    </script>
+  </body>
+</html>

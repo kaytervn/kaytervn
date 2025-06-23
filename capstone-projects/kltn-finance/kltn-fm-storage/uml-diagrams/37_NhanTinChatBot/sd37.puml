@@ -1,0 +1,94 @@
+@startuml SQ
+autonumber
+title SD37. Nhắn tin Chatbot
+actor "Actor" as actor
+boundary "ChatView" as view
+boundary "ChatRoomView" as chatRoomView
+control "ChatRoomController" as controller
+entity "ChatRoomRepository" as model
+control "ChatHistoryController" as chatHistoryController
+entity "ChatHistoryRepository" as chatHistoryModel
+control "CacheService" as service
+database "Database" as database
+activate actor
+actor -> view: select AI chat room
+activate view
+view -> chatRoomView: redirect to
+deactivate view
+activate chatRoomView
+chatRoomView -> controller: call api GET /get
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return object
+deactivate model
+controller --> chatRoomView: return object
+deactivate controller
+chatRoomView -> chatHistoryController: call api GET /list
+activate chatHistoryController
+chatHistoryController -> chatHistoryModel: inject repository
+activate chatHistoryModel
+chatHistoryModel -> database: find data
+activate database
+database --> chatHistoryModel: return data
+deactivate database
+chatHistoryModel --> chatHistoryController: return object
+deactivate chatHistoryModel
+chatHistoryController --> chatRoomView: return object
+deactivate chatHistoryController
+chatRoomView -> chatRoomView: display data
+actor -> chatRoomView: input message
+deactivate actor
+chatRoomView -> chatHistoryController: call api POST /create
+activate chatHistoryController
+chatHistoryController -> chatHistoryModel: inject repository
+activate chatHistoryModel
+chatHistoryModel -> database: save data
+activate database
+database --> chatHistoryModel: callback
+deactivate database
+chatHistoryModel --> chatHistoryController: callback
+deactivate chatHistoryModel
+chatHistoryController -> chatHistoryModel: inject repository
+activate chatHistoryModel
+chatHistoryModel -> database: find all history
+activate database
+database --> chatHistoryModel: return data
+deactivate database
+chatHistoryModel --> chatHistoryController: return list objects
+deactivate chatHistoryModel
+chatHistoryController -> service: send history data
+activate service
+service --> chatHistoryController: return response
+deactivate service
+chatHistoryController -> chatHistoryModel: inject repository
+activate chatHistoryModel
+chatHistoryModel -> database: save response
+activate database
+database --> chatHistoryModel: callback
+deactivate database
+chatHistoryModel --> chatHistoryController: callback
+deactivate chatHistoryModel
+chatHistoryController --> chatRoomView: callback
+deactivate chatHistoryController
+chatRoomView -> chatHistoryController: call api GET /list
+activate chatHistoryController
+chatHistoryController -> chatHistoryModel: inject repository
+activate chatHistoryModel
+chatHistoryModel -> database: find data
+activate database
+database --> chatHistoryModel: return data
+deactivate database
+chatHistoryModel --> chatHistoryController: return list object
+deactivate chatHistoryModel
+chatHistoryController --> chatRoomView: return list object
+deactivate chatHistoryController
+chatRoomView -> chatRoomView: update display
+activate chatRoomView
+deactivate chatRoomView
+deactivate chatRoomView
+@enduml

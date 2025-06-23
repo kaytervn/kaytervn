@@ -1,0 +1,45 @@
+@startuml SQ
+autonumber
+title SD03. Đổi mật khẩu
+actor "Actor" as actor
+boundary "ChangePasswordView" as view
+control "AccountController" as controller
+entity "AccountRepository" as model
+database "Database" as database
+activate actor
+actor -> view : enter current password,\nnew password,\nconfirm password
+deactivate actor
+alt enter valid input
+activate view
+view -> controller : call api PUT /change-password
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find by current user
+activate database
+database --> model : return data
+deactivate database
+model --> controller : return object
+deactivate model
+controller -> controller: check passwords
+alt passwords are valid
+controller -> model : inject repository
+activate model
+model -> database : update user password
+activate database
+database --> model : callback
+deactivate database
+model --> controller : callback
+deactivate model
+controller -> view: reeturn success message
+else passwords are invalid
+controller -> view: return error message
+end
+view -> view: display message
+else enter invalid input
+view -> view: display error message
+activate view
+deactivate view
+deactivate view
+end
+@enduml

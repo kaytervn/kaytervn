@@ -1,0 +1,59 @@
+@startuml SQ
+autonumber
+title SD10. Quản lý giao dịch
+actor "Actor" as actor
+boundary "Transaction\nView" as view
+boundary "TransactionCreate\nView" as createView
+control "Transaction\nController" as controller
+entity "Transaction\nRepository" as model
+database "Database" as database
+activate actor
+actor -> view : access to
+activate view
+view -> controller : call api GET /list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find data
+activate database
+database --> model : return data
+deactivate database
+model --> controller : return list object
+deactivate model
+controller --> view : return list transactions
+deactivate controller
+view -> view: update display
+group frg [//TH1. Người dùng tìm kiếm giao dịch//]
+actor -> view : enter search criterias
+deactivate actor
+view -> view: update data display
+activate view
+deactivate view
+deactivate view
+end
+group frg [//TH2. Người dùng tạo giao dịch//]
+ref over actor
+SD10.1. Tạo giao dịch
+end ref
+end
+group frg [//TH3. Người dùng sửa giao dịch//]
+ref over actor
+SD10.2. Sửa giao dịch
+end ref
+end
+group frg [//TH4. Người dùng xóa giao dịch//]
+ref over actor
+S10.3. Xóa giao dịch
+end ref
+end
+group frg [//TH5. Người dùng xét duyệt giao dịch//]
+ref over actor
+SD10.4. Xét duyệt giao dịch
+end ref
+end
+group frg [//TH6. Người dùng xuất tệp Excel giao dịch//]
+ref over actor
+SD10.5. Xuất tệp Excel
+end ref
+end
+@enduml

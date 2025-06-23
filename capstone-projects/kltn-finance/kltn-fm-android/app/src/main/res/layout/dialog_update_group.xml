@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- dialog_update_group_info.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_5sdp"
+    android:background="@drawable/bg_dialog"
+    android:orientation="vertical"
+    android:padding="@dimen/_5sdp">
+
+    <!-- Header với nút đóng -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/lato_bold"
+            android:text="Cập nhật nhóm"
+            android:textColor="@color/color_theme"
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_close"
+            />
+
+    </RelativeLayout>
+
+    <!-- Ảnh nhóm -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_7sdp"
+
+            android:text="Ảnh nhóm"
+            android:textColor="@color/sub_title"
+            android:textSize="@dimen/_11ssp" />
+
+        <RelativeLayout
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="start">
+
+            <ImageView
+                android:id="@+id/img_group_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_img_upload"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_update"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_camera"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- Tên nhóm -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_7sdp"
+                android:fontFamily="@font/lato_semibold"
+                android:text="Tên nhóm"
+                android:textColor="@color/sub_title"
+                android:textSize="@dimen/_11ssp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_7sdp"
+                android:text=" *"
+                android:textColor="@color/error_color"
+                android:textSize="@dimen/_12ssp" />
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/edt_group_name"
+            style="@style/AppEditTextInput"
+            android:hint="Nhập tên nhóm"
+            android:inputType="text"
+            />
+
+    </LinearLayout>
+
+    <!-- Cài đặt nhóm -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:fontFamily="@font/lato_semibold"
+            android:text="Cài đặt nhóm"
+            android:textColor="@color/sub_title"
+            android:textSize="@dimen/_11ssp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato_bold"
+                android:textColor="@color/black_full"
+                android:text="Cho phép thành viên gửi tin nhắn"
+                android:textSize="@dimen/_12ssp" />
+
+            <Switch
+                android:id="@+id/switch_allow_send_messages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+
+        <!-- Cho phép thành viên cập nhật thông tin nhóm -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato_bold"
+                android:textColor="@color/black_full"
+                android:text="Cho phép thành viên cập nhật thông tin nhóm"
+                android:textSize="16sp" />
+
+            <Switch
+                android:id="@+id/switch_allow_update_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+
+        <!-- Cho phép thành viên mời thêm thành viên -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato_bold"
+                android:textColor="@color/black_full"
+                android:text="Cho phép thành viên mời thêm thành viên"
+                android:textSize="16sp" />
+
+            <Switch
+                android:id="@+id/switch_allow_add_members"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/ButtonSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginEnd="12dp"
+            android:minWidth="80dp"
+            android:text="Hủy"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_update"
+            style="@style/ButtonPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:minWidth="100dp"
+            android:text="Cập nhật"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</LinearLayout>

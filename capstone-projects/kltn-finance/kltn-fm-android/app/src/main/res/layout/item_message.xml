@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="item"
+            type="com.finance.data.model.api.response.chat.detail.ChatDetailResponse"/>
+        <import type="android.view.View"/>
+        <import type="com.finance.utils.AESUtils"/>
+        <variable name="secretKey"
+            type="String"/>
+        <variable name="isSender"
+            type="Boolean"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_8sdp"
+        >
+        <TextView
+            android:id="@+id/tv_is_edited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/edited"
+            android:textColor="@color/color_theme"
+            android:layout_marginBottom="@dimen/_1sdp"
+            android:visibility="@{item.isUpdated ? View.VISIBLE : View.GONE}"
+            />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/DropDownMenu"
+            android:layout_marginVertical="@dimen/_2sdp"
+            >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_sender"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardElevation="@dimen/_2sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
+                style="@style/Widget.MaterialComponents.CardView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_sender"
+                app:cardBackgroundColor="@{isSender ? @color/sent_bubble_color : @color/received_bubble_color}"
+                >
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:id="@+id/textViewMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_13ssp"
+                        android:textColor="@{ isSender ? @color/text_sent_color : @color/text_received_color}"
+                        android:maxWidth="@dimen/_200sdp"
+                        android:padding="@dimen/_8sdp"
+                        android:text="@{item.isDeleted ? @string/text_removed : item.content}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:visibility="@{(item.content != null &amp;&amp; !item.content.isEmpty) || item.isDeleted ? View.VISIBLE : View.GONE }"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_documents"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_edit"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewMessage"
+                        app:layout_constraintStart_toStartOf="parent"
+                        />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_reactions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_3sdp"
+                        android:layout_marginBottom="@dimen/_3sdp"
+                        android:layout_below="@id/textViewMessage"
+                        app:layout_constraintTop_toBottomOf="@id/list_documents"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</layout>

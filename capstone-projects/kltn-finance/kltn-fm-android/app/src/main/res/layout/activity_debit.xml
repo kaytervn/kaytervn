@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.debit.DebitViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.debit.DebitActivity" />
+        <import type="com.finance.utils.NumberUtils"/>
+        <import type="com.finance.constant.Constants"/>
+        <import type="android.view.View"/>
+    </data>
+
+
+    <RelativeLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <RelativeLayout
+            android:id="@+id/layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_theme"
+            >
+            <LinearLayout
+                android:id="@+id/layout_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingVertical="@dimen/_15sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:onClick="@{()->a.onBackPressed()}"
+                >
+                <ImageView
+                    android:id="@+id/img_back"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:src="@drawable/ic_back"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/debit_management"
+                android:fontFamily="@font/lato_bold"
+                android:paddingVertical="@dimen/_12sdp"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_centerHorizontal="true"
+                android:visibility="@{vm.isSearch ? View.GONE : View.VISIBLE, default=gone}"
+                />
+            <FrameLayout
+                android:id="@+id/layout_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:visibility="@{vm.isSearch ? View.VISIBLE : View.GONE}"
+                android:layout_toEndOf="@+id/layout_back"
+                >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <EditText
+                        android:id="@+id/edt_search"
+                        style="@style/AppEditTextInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="0dp"
+                        android:background="@drawable/bg_edit_txt_search"
+                        android:fontFamily="@font/lato_medium"
+                        android:hint="@string/search_debit_name"
+                        android:paddingStart="@dimen/_35sdp"
+                        android:paddingEnd="@dimen/_50sdp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#77AFD0"
+                        android:textCursorDrawable="@drawable/cursor_color_search" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        android:src="@drawable/ic_search_2"
+                        android:scaleType="centerCrop"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:onClick="@{()->a.deleteEditSearch()}"
+
+                        android:layout_centerVertical="true"
+                        />
+                    <ImageView
+                        android:layout_width="@dimen/_23sdp"
+                        android:layout_height="@dimen/_23sdp"
+                        android:src="@drawable/ic_delete_search"
+                        android:scaleType="centerCrop"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:visibility="@{vm.isSearchEmpty.empty ? View.GONE : View.VISIBLE}"
+                        android:onClick="@{()->a.deleteEditSearch()}"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="@{!vm.isSearch &amp;&amp; vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_DEBIT_LIST) ? View.VISIBLE : View.GONE}"
+                android:onClick="@{(v) -> vm.isShowSearch()}"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                >
+                <ImageView
+                    android:id="@+id/img_search"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
+                    android:src="@drawable/ic_search"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/bg_debit_sum"
+            android:layout_below="@+id/layout_title"
+            android:paddingVertical="@dimen/_7sdp"
+            android:visibility="@{!vm.isSearch &amp;&amp; vm.isValidKey ? View.VISIBLE : View.GONE}"
+            >
+            <ImageView
+               android:id="@+id/img_debit"
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:src="@drawable/ic_sum_debit"
+                android:scaleType="fitXY"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_centerVertical="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:fontFamily="@font/lato_bold"
+                android:textSize="@dimen/_14ssp"
+                android:text="@string/debit_sum"
+                android:textColor="@color/red_orange"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/img_debit"
+                android:layout_marginStart="@dimen/_10sdp"
+                />
+            <TextView
+                android:id="@+id/tv_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:fontFamily="@font/lato_bold"
+                android:textSize="@dimen/_14sdp"
+                android:textColor="@color/black_full"
+                android:text="@{NumberUtils.custom_money_debit(vm.totalDebit), default=@string/money_default}"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_total"
+            android:visibility="@{vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_DEBIT_LIST) ? View.VISIBLE : View.GONE}"
+            >
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_debits"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/_10sdp"
+                android:background="@color/color_bg_tran"
+                >
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+</layout>

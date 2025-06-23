@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="dialog"
+            type="com.finance.ui.dialog.YesNoDialog" />
+
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_dialog_log_out"
+            android:layout_margin="@dimen/_12sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dialog.title}"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/lato_bold"
+                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/black_full"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:weightSum="2"
+                android:padding="@dimen/_2sdp"
+                >
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_btn_gray"
+                    android:textColor="@color/black_gray"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_14ssp"
+                    android:fontFamily="@font/lato_bold"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:text="@{dialog.textCancel}"
+                    android:onClick="@{()->dialog.cancel()}"
+                    android:layout_marginVertical="@dimen/_1sdp"
+                    >
+                </Button>
+
+                <Button
+                    android:id="@+id/btn_signout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_btn_aprrove"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_14ssp"
+                    android:fontFamily="@font/lato_bold"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="@{dialog.textConfirm}"
+                    android:onClick="@{()->dialog.confirm()}"
+                    android:layout_marginVertical="@dimen/_1sdp"
+                    >
+                </Button>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

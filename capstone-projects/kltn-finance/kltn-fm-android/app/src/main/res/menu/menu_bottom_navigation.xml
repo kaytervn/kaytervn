@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_home"
+        android:icon="@drawable/ic_transaction"
+        android:title="@string/transaction"
+
+        />
+    <item android:id="@+id/menu_activity"
+        android:icon="@drawable/ic_statistics"
+        android:title="@string/menu_statistic"
+        />
+    <item android:id="@+id/menu_favourite"
+        android:icon="@drawable/ic_key"
+        android:title="@string/menu_key"
+        />
+    <item android:id="@+id/menu_notification"
+        android:icon="@drawable/ic_task"
+        android:title="@string/note"
+        
+        />
+    <item android:id="@+id/menu_account"
+        android:icon="@drawable/ic_account"
+        android:title="@string/menu_account"
+        />
+</menu>

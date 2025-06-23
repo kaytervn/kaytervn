@@ -1,0 +1,40 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:paddingVertical="@dimen/_12sdp"
+    android:paddingHorizontal="@dimen/_20sdp"
+    android:background="@drawable/bg_progressbar"
+    android:layout_marginHorizontal="@dimen/_20sdp"
+    app:cardCornerRadius="@dimen/_15sdp"
+   >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_12sdp"
+        android:paddingHorizontal="@dimen/_20sdp"
+        >
+        <ProgressBar
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:indeterminateTint="@color/color_theme"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:lines="2"
+            android:gravity="left|center_vertical"
+            android:text="@string/pls_wait"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:id="@+id/progressbar_msg"
+            android:textColor="@color/color_theme"
+            android:fontFamily="@font/roboto_500"
+            android:textSize="@dimen/_11ssp"
+            />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.category.CategoryViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.category.CategoryActivity" />
+        <import type="com.finance.constant.Constants"/>
+        <import type="android.view.View"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{@string/category_management}"
+            bind:a ="@{a}"/>
+
+        <LinearLayout
+            android:id="@+id/layout_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/layout_header"
+            android:background="@color/white"
+            android:layout_marginBottom="0dp"
+            android:paddingBottom="0dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_4sdp"
+                android:background="@drawable/bg_filter_kind"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/kind_1"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:layout_marginVertical="@dimen/_4sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:background="@{vm.kind == 1 ? @drawable/bg_white_corner : @drawable/bg_blank}"
+                    android:onClick="@{()->a.setKind(1)}"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/kind_2"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:layout_marginVertical="@dimen/_4sdp"
+                    android:background="@{vm.kind == 2 ? @drawable/bg_white_corner : @drawable/bg_blank}"
+                    android:onClick="@{()->a.setKind(2)}"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:visibility="@{vm.isValidKey ? View.VISIBLE :View.GONE}"
+            android:id="@+id/swipe_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_filter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/color_bg_tran"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcCategories"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/_15sdp"
+                />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{vm.isValidKey &amp;&amp; vm.totalElement == 0 ?View.VISIBLE:View.GONE}"
+            android:id="@+id/layout_empty"
+            layout="@layout/layout_empty_data"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            bind:des="@{@string/data_empty}"
+            />
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{!vm.isValidKey ? View.VISIBLE : View.GONE}"
+            android:id="@+id/layout_invalid_key"
+            layout="@layout/layout_invalid_key"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            bind:des="@{@string/invalid_key}"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_add"
+            android:onClick="@{()->a.navigateToDetails()}"
+            android:visibility="@{a.checkPermission(Constants.PERMISSION_CATEGORY_CREATE) &amp;&amp; vm.isValidKey ?View.VISIBLE:View.GONE}"
+            android:layout_gravity="end|bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/AppButtonGlobal"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

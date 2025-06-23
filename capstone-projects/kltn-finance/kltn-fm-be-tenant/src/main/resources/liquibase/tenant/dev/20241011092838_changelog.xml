@@ -1,0 +1,167 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Finance" id="1728638928503-1">
+        <createTable tableName="db_fn_tag">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_tagPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="color_code" type="VARCHAR(255)"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1728638928503-2">
+        <addColumn tableName="db_fn_debit">
+            <column name="tag_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1728638928503-3">
+        <addColumn tableName="db_fn_key_information">
+            <column name="tag_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1728638928503-4">
+        <addColumn tableName="db_fn_project">
+            <column name="tag_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1728638928503-5">
+        <addColumn tableName="db_fn_service">
+            <column name="tag_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1728638928503-6">
+        <addColumn tableName="db_fn_transaction">
+            <column name="tag_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1728638928503-7">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_fn_transaction" constraintName="FK87bcg2lkgb5k7cs0fjv6ob835" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1728638928503-8">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_fn_debit" constraintName="FKcaq6iooa5g2ff5cxuctybbomy" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1728638928503-9">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_fn_service" constraintName="FKj7okghntbairdg48sgs05kvta" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1728638928503-10">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_fn_key_information" constraintName="FKomkxii02widm5nxm1xtr28hvu" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1728638928503-11">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_fn_project" constraintName="FKsw7mod1qwt4njj0b00xicb92s" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1728638928503-12">
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="7851051984257024"/>
+            <column name="name" value="Create tag"/>
+            <column name="action" value="/v1/tag/create"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Create tag"/>
+            <column name="name_group" value="Tag"/>
+            <column name="permission_code" value="TAG_C"/>
+            <column name="is_system" valueBoolean="false"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2024-10-12T04:18:23"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2024-10-12T04:18:23"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="7851051988058112"/>
+            <column name="name" value="Delete tag"/>
+            <column name="action" value="/v1/tag/delete"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Delete tag"/>
+            <column name="name_group" value="Tag"/>
+            <column name="permission_code" value="TAG_D"/>
+            <column name="is_system" valueBoolean="false"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2024-10-12T04:18:23"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2024-10-12T04:18:23"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="7851051991728128"/>
+            <column name="name" value="Get tag"/>
+            <column name="action" value="/v1/tag/get"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Get tag"/>
+            <column name="name_group" value="Tag"/>
+            <column name="permission_code" value="TAG_V"/>
+            <column name="is_system" valueBoolean="false"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2024-10-12T04:18:23"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2024-10-12T04:18:23"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="7851051994742784"/>
+            <column name="name" value="Get list tag"/>
+            <column name="action" value="/v1/tag/list"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Get list tag"/>
+            <column name="name_group" value="Tag"/>
+            <column name="permission_code" value="TAG_L"/>
+            <column name="is_system" valueBoolean="false"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2024-10-12T04:18:23"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2024-10-12T04:18:23"/>
+        </insert>
+        <insert tableName="db_fn_permission">
+            <column name="id" valueNumeric="7851051998216192"/>
+            <column name="name" value="Update tag"/>
+            <column name="action" value="/v1/tag/update"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Update tag"/>
+            <column name="name_group" value="Tag"/>
+            <column name="permission_code" value="TAG_U"/>
+            <column name="is_system" valueBoolean="false"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2024-10-12T04:18:23"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2024-10-12T04:18:23"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Finance" id="1728638928503-13">
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="7851051984257024"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="7851051988058112"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="7851051991728128"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="7851051994742784"/>
+        </insert>
+        <insert tableName="db_fn_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="7851051998216192"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

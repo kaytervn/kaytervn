@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_25sdp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:background="@drawable/bg_dialog_log_out"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/lato_bold"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/service_payment"
+                />
+            <LinearLayout
+                android:id="@+id/layout_title_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date"
+                    style="@style/AppTvTitleForEditText"
+                    android:textSize="@dimen/_14ssp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{" " + @string/asterisk,default=@string/asterisk}'
+                    android:textColor="@color/red"
+                    android:fontFamily="@font/lato_medium"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/layout_pick_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/tv_pick_date"
+                    android:layout_width="@dimen/_180sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:layout_marginTop="0dp"
+                    android:hint="@string/hint_date_default"
+                    android:focusable="false"
+                    android:textSize="@dimen/_12ssp"
+                    />
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:src="@drawable/ic_pick_date"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/tv_pick_date"
+
+                    />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:weightSum="2"
+                android:padding="@dimen/_2sdp"
+                >
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_btn_gray"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black_gray"
+                    android:textSize="@dimen/_12ssp"
+                    android:layout_margin="@dimen/_1sdp"
+                    />
+
+                <Button
+                    android:id="@+id/btn_confirm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_btn_aprrove"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/pay_service"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:layout_marginVertical="@dimen/_1sdp"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</layout>

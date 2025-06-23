@@ -1,0 +1,73 @@
+@startuml SQ
+autonumber
+title SD16.6. Thêm nhóm thông báo vào dịch vụ
+actor "Actor" as actor
+boundary "ServiceView" as view
+boundary "ServiceGroupNotification\nView" as groupView
+control "ServiceGroupNotification\nController" as controller
+entity "ServiceGroupNotification\nRepository" as model
+database "Database" as database
+activate actor
+actor -> view : click notification button
+activate view
+view -> groupView : redirect to
+deactivate view
+activate groupView
+groupView -> controller : call api GET /list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find data
+activate database
+database --> model : return data
+deactivate database
+model --> controller : return list objects
+deactivate model
+controller --> groupView : return list
+deactivate controller
+groupView -> groupView: display data
+activate groupView
+deactivate groupView
+deactivate groupView
+opt add new group
+actor -> groupView : choose group
+activate groupView
+groupView -> controller : call api POST /create
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : create new record
+activate database
+database --> model : callback
+deactivate database
+model --> controller : callback
+deactivate model
+controller --> groupView : return message
+deactivate controller
+groupView -> groupView : update display
+activate groupView
+deactivate groupView
+deactivate groupView
+end
+opt delete group
+actor -> groupView : click delete button
+deactivate actor
+activate groupView
+groupView -> controller : call api DELETE /delete
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : delete record
+activate database
+database --> model : callback
+deactivate database
+model --> controller : callback
+deactivate model
+controller --> groupView : return message
+deactivate controller
+groupView -> groupView : update display
+activate groupView
+deactivate groupView
+deactivate groupView
+end
+@enduml

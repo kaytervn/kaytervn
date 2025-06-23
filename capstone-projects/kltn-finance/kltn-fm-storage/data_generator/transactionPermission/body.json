@@ -1,0 +1,5 @@
+{
+  "accountId": "{{accountId}}",
+  "transactionGroupId": "{{transactionGroupId}}",
+  "permissionKind": 2
+}

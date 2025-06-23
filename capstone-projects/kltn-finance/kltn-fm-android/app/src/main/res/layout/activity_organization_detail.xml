@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.organization.detail.OrganizationDetailViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.organization.detail.OrganizationDetailActivity" />
+        <import type="android.view.View"/>
+        <import type="com.finance.constant.Constants"/>
+        <import type="com.finance.utils.AESUtils"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:onClick="@{()->a.hideKeyboard()}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{vm.isCreate ?@string/add_new_organization : @string/detail_organization}"
+            bind:a ="@{a}"
+            />
+
+        <androidx.core.widget.NestedScrollView
+            android:onClick="@{()->a.hideKeyboard()}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_header"
+            app:layout_constraintBottom_toTopOf="@+id/btnEPUpdate"
+            android:layout_marginBottom="@dimen/_15sdp">
+            <LinearLayout
+                android:onClick="@{()->a.hideKeyboard()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_7sdp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/logo_organization"
+                        />
+                </LinearLayout>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_80sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    app:cardCornerRadius="@dimen/_60sdp"
+                    android:layout_gravity="center_horizontal"
+                    >
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/img_logo"
+                            android:layout_width="@dimen/_80sdp"
+                            android:layout_height="@dimen/_80sdp"
+                            android:src="@drawable/bg_ava"
+                            android:onClick="@{(v)-> a.showDialogChooseImage()}"
+                            android:layout_gravity="center_horizontal"
+                            />
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_33sdp"
+                            android:layout_gravity="bottom"
+                            android:background="#80696969"
+                            android:onClick="@{(v)-> a.showDialogChooseImage()}"
+                            >
+                            <ImageView
+                                android:layout_width="@dimen/_26sdp"
+                                android:layout_height="@dimen/_26sdp"
+                                android:src="@drawable/ic_camera_choose"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="@dimen/_3sdp"
+                                android:onClick="@{(v)-> a.showDialogChooseImage()}"
+                                />
+                        </FrameLayout>
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/organization_name"
+
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_12sdp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_organization_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:hint="@string/input_organization"
+                    android:focusable="@{a.checkPermission(Constants.PERMISSION_ORGANIZATION_UPDATE)}"
+                    android:text="@{vm.name}"
+                    />
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btnEPUpdate"
+            style="@style/AppButtonStyle"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:visibility="@{a.checkPermission(Constants.PERMISSION_ORGANIZATION_UPDATE) ? View.VISIBLE : View.GONE}"
+            android:onClick="@{()->a.doDone()}"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+        </Button>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

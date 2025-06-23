@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="com.finance.data.model.api.response.chat.MessageReaction" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_15sdp"
+        android:background="@drawable/bg_dialog">
+
+        <!-- 5 biểu tượng cảm xúc xếp hàng ngang -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/emoji_like"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="@string/emoji_like"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/emoji_love"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="❤"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/emoji_cry"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="@string/emoji_cry"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/emoji_happy"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="\u263A\uFE0F️"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/emoji_smile"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="@string/emoji_smile"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider_edit"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:id="@+id/option_edit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingHorizontal="@dimen/_12sdp">
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_edit"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:padding="@dimen/_1sdp"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/update"
+                android:textSize="@dimen/_15ssp"
+                android:textColor="@color/color_theme" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider_recall"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Option Thu hồi -->
+        <LinearLayout
+            android:id="@+id/option_recall"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingHorizontal="@dimen/_12sdp">
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_remove"
+                android:layout_marginEnd="@dimen/_12sdp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/remove"
+                android:textSize="@dimen/_15ssp"
+                android:textColor="@color/red_orange" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

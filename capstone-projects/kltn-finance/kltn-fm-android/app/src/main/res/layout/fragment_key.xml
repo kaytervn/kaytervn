@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.fragment.key.KeyFragmentViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.fragment.key.KeyFragment" />
+        <import type="com.finance.constant.Constants"/>
+        <import type="android.view.View"/>
+        <import type="android.text.TextUtils"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:onClick="@{()->a.closeFilter()}"
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+
+
+            <RelativeLayout
+                android:id="@+id/layout_title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:background="@color/color_theme"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_management"
+                    android:fontFamily="@font/lato_black"
+                    android:paddingVertical="@dimen/_12sdp"
+                    android:textSize="@dimen/_18sdp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:visibility="@{vm.isSearch ? View.GONE : View.VISIBLE, default=gone}"
+                    />
+                <FrameLayout
+                    android:id="@+id/layout_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:visibility="@{vm.isSearch ? View.VISIBLE : View.GONE}"
+
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+                        <RelativeLayout
+                            android:id="@+id/layout_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:onClick="@{(v)->vm.isShowSearch() | a.hideKeyboard() | a.deleteEditSearch()}"
+                            android:layout_centerVertical="true"
+                            android:paddingEnd="@dimen/_15sdp"
+                            android:paddingStart="@dimen/_10sdp"
+                            >
+                            <ImageView
+                                android:id="@+id/img_back"
+                                android:layout_width="@dimen/_13sdp"
+                                android:layout_height="@dimen/_13sdp"
+                                android:src="@drawable/ic_back"
+                                android:layout_centerVertical="true"
+                                />
+                        </RelativeLayout>
+
+                        <EditText
+                            android:id="@+id/edt_search"
+                            style="@style/AppEditTextInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_marginStart="-2dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_toEndOf="@+id/layout_back"
+                            android:background="@drawable/bg_edit_txt_search"
+                            android:fontFamily="@font/lato_medium"
+                            android:hint="@string/search_key_name"
+                            android:paddingStart="@dimen/_35sdp"
+                            android:paddingEnd="@dimen/_50sdp"
+                            android:text="@={vm.textName}"
+                            android:textColor="@color/white"
+                            android:textColorHint="#77AFD0"
+                            android:textCursorDrawable="@drawable/cursor_color_search" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_17sdp"
+                            android:layout_height="@dimen/_17sdp"
+                            android:src="@drawable/ic_search_2"
+                            android:scaleType="centerCrop"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:onClick="@{()->a.deleteEditSearch()}"
+                            android:layout_toEndOf="@+id/layout_back"
+                            android:layout_centerVertical="true"
+                            />
+                        <ImageView
+                            android:layout_width="@dimen/_23sdp"
+                            android:layout_height="@dimen/_23sdp"
+                            android:src="@drawable/ic_delete_search"
+                            android:scaleType="centerCrop"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:visibility="@{vm.isSearchEmpty.empty ? View.GONE : View.VISIBLE}"
+                            android:onClick="@{()->a.deleteEditSearch()}"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            />
+                    </RelativeLayout>
+
+                </FrameLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/layout_filter"
+                    android:visibility="@{!vm.isSearch &amp;&amp; vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_KEY_INFO_LIST) ? View.VISIBLE : View.GONE}"
+                    android:onClick="@{(v) -> vm.isShowSearch()}"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    >
+                    <ImageView
+                        android:id="@+id/img_search"
+                        android:layout_width="@dimen/_23sdp"
+                        android:layout_height="@dimen/_23sdp"
+                        android:src="@drawable/ic_search"
+                        android:layout_gravity="center"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="@{!vm.isSearch &amp;&amp; vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_KEY_INFO_LIST)?View.VISIBLE:View.GONE}"
+                    android:onClick="@{()->a.navigateToFilter()}"
+                    android:paddingHorizontal="@dimen/_15sdp"
+                    >
+                    <ImageView
+                        android:id="@+id/img_filter"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:src="@drawable/ic_filter"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="center"
+                        />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:onClick="@{()->a.closeFilter()}"
+            android:visibility="@{vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_KEY_INFO_LIST)?View.VISIBLE:View.GONE}"
+            android:id="@+id/swipe_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/color_bg_tran"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <androidx.recyclerview.widget.RecyclerView
+                    android:onClick="@{()->a.closeFilter()}"
+                    android:id="@+id/rcKeys"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    />
+            </RelativeLayout>
+
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_KEY_INFO_LIST) &amp;&amp; vm.totalElement == 0 ?View.VISIBLE:View.GONE}"
+            android:id="@+id/layout_empty"
+            layout="@layout/layout_empty_data"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            bind:des="@{@string/data_empty}"
+            />
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{!vm.isValidKey ? View.VISIBLE : View.GONE}"
+            android:id="@+id/layout_invalid_key"
+            layout="@layout/layout_invalid_key"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            bind:des="@{@string/invalid_key}"
+            />
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{vm.isValidKey &amp;&amp; !a.checkPermission(Constants.PERMISSION_KEY_INFO_LIST)?View.VISIBLE:View.GONE}"
+            android:id="@+id/layout_not_permission"
+            layout="@layout/layout_invalid_key"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            bind:des="@{@string/not_permission}"
+            />
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_add"
+            style="@style/AppButtonGlobal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="@{vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_KEY_INFO_CREATE)?View.VISIBLE:View.GONE}"
+            android:onClick="@{()->a.navigateToDetails()}"
+            >
+        </de.hdodenhof.circleimageview.CircleImageView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

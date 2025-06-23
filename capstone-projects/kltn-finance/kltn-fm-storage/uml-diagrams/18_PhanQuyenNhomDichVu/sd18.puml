@@ -1,0 +1,47 @@
+@startuml SQ
+autonumber
+title SD18. Phân quyền nhóm dịch vụ
+actor "Actor" as actor
+boundary "ServiceView" as view
+boundary "ServicePermission\nView" as permission
+control "ServicePermission\nController" as controller
+entity "ServicePermission\nRepository" as model
+database "Database" as database
+activate actor
+actor -> view: click permission button
+activate view
+view -> permission: redirect to
+deactivate view
+activate permission
+permission -> controller: call api GET /list
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> permission: return list object
+deactivate controller
+permission -> permission: display data
+group frg [//TH1. Người dùng tìm kiếm tài khoản//]
+actor -> permission : enter search criterias
+deactivate actor
+permission -> permission: update data display
+activate permission
+deactivate permission
+deactivate permission
+end
+group frg [//TH2. Người dùng thêm tài khoản//]
+ref over actor
+SD18.1. Thêm tài khoản
+end ref
+end
+group frg [//TH3. Người dùng xóa tài khoản//]
+ref over actor
+SD18.2. Xóa tài khoản
+end ref
+end
+@enduml

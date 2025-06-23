@@ -1,0 +1,49 @@
+@startuml SQ
+autonumber
+title SD11. Quản lý công nợ
+actor "Actor" as actor
+boundary "Debit\nView" as view
+boundary "DebitCreate\nView" as createView
+control "Debit\nController" as controller
+entity "Debit\nRepository" as model
+database "Database" as database
+activate actor
+actor -> view : access to
+activate view
+view -> controller : call api GET /list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find data
+activate database
+database --> model : return data
+deactivate database
+model --> controller : return list object
+deactivate model
+controller --> view : return list Debits
+deactivate controller
+view -> view: update display
+group frg [//TH1. Người dùng tìm kiếm công nợ//]
+actor -> view : enter search criterias
+deactivate actor
+view -> view: update data display
+activate view
+deactivate view
+deactivate view
+end
+group frg [//TH2. Người dùng sửa công nợ//]
+ref over actor
+SD10.1. Sửa công nợ
+end ref
+end
+group frg [//TH3. Người dùng xóa công nợ//]
+ref over actor
+S10.2. Xóa công nợ
+end ref
+end
+group frg [//TH4. Người dùng xét duyệt công nợ//]
+ref over actor
+SD10.3. Xét duyệt công nợ
+end ref
+end
+@enduml

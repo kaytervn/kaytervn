@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog"
+    android:layout_marginHorizontal="@dimen/_20sdp"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm_reject_transaction"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:textColor="@color/red_orange"
+        android:textSize="@dimen/_14ssp"
+        android:fontFamily="@font/lato_bold"
+        android:layout_gravity="center_horizontal"
+        />
+
+
+    <EditText
+        android:id="@+id/edit_reason_reject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/AppEditTextInfo"
+        android:hint="@string/input_reason_reject"
+        android:textColorHint="@color/color_hint"
+        android:focusable="true"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:singleLine="false"
+        android:minLines="4"
+        android:gravity="top"
+        android:paddingVertical="@dimen/_10sdp"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingEnd="@dimen/_15sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:background="@drawable/bg_reason"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_weight="2"
+        android:padding="@dimen/_2sdp"
+        >
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_gray"
+            android:text="@string/cancel"
+            android:textColor="@color/black_gray"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/lato_bold"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_1sdp"
+            >
+        </Button>
+        <Button
+            android:id="@+id/btn_reject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_red"
+            android:textColor="@color/white"
+            android:text="@string/reject"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/lato_bold"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_1sdp"
+            >
+        </Button>
+    </LinearLayout>
+
+
+</LinearLayout>

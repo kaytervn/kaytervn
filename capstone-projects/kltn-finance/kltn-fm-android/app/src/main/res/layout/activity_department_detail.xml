@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.department.details.DepartmentDetailsViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.department.details.DepartmentDetailActivity" />
+        <import type="android.view.View"/>
+        <import type="com.finance.constant.Constants"/>
+        <import type="android.text.InputType"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:onClick="@{()->a.hideKeyboard()}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{vm.isCreate ? @string/add_new_department : @string/department_details}"
+            bind:a ="@{a}"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:onClick="@{()->a.hideKeyboard()}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_header"
+            app:layout_constraintBottom_toTopOf="@+id/btnEPUpdate"
+            android:layout_marginBottom="@dimen/_15sdp">
+            <LinearLayout
+                android:onClick="@{()->a.hideKeyboard()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/department_name"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_14ssp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_department"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:hint="@string/input_department_name"
+                    android:enabled="@{a.checkPermission(Constants.PERMISSION_DEPARTMENT_UPDATE)}"
+                    android:text="@={vm.name}"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    >
+                    <TextView
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/description"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=" *"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_14ssp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_department_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppEditTextInputDescription"
+                    android:hint="@string/input_des"
+                    android:textColorHint="@color/color_hint"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:enabled="@{a.checkPermission(Constants.PERMISSION_DEPARTMENT_UPDATE)}"
+                    android:text="@={vm.description}"
+                    />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btnEPUpdate"
+            style="@style/AppButtonStyle"
+            android:onClick="@{()->vm.doDone()}"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+        </Button>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

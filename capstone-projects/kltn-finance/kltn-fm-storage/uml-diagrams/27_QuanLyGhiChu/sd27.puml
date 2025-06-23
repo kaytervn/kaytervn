@@ -1,0 +1,48 @@
+@startuml SQ
+autonumber
+title SD27. Quản lý ghi chú
+actor "Actor" as actor
+boundary "NoteView" as view
+control "ProjectController" as controller
+entity "ProjectRepository" as model
+database "Database" as database
+activate actor
+actor -> view : access to
+activate view
+view -> controller : call api GET /list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find data
+activate database
+database --> model : return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view : return list object
+deactivate controller
+view -> view: display data
+group frg [//TH1. Người dùng tìm kiếm ghi chú//]
+actor -> view : enter search criterias
+deactivate actor
+view -> view: update data display
+activate view
+deactivate view
+deactivate view
+end
+group frg [//TH2. Người dùng tạo ghi chú//]
+ref over actor
+SD27.1. Tạo ghi chú
+end ref
+end
+group frg [//TH3. Người dùng sửa ghi chú//]
+ref over actor
+SD27.2. Sửa ghi chú
+end ref
+end
+group frg [//TH4. Người dùng xóa ghi chú//]
+ref over actor
+SD27.3. Xóa ghi chú
+end ref
+end
+@enduml

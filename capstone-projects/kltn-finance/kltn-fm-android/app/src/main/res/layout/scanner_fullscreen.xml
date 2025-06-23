@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:id="@+id/zxing_barcode_scanner"
+        app:zxing_use_texture_view="true"/>
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/_20sdp"
+            android:layout_gravity="center_vertical"
+            android:text="@string/scan_qr_code_message"
+            android:textColor="@color/white" />
+        <TextView
+            android:layout_marginVertical="@dimen/_26sdp"
+            android:id="@+id/or"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:text="@string/or"
+            android:textColor="@color/white" />
+        <Button
+            android:layout_marginTop="@dimen/_6sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:id="@+id/gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_16sdp"
+            android:background="@drawable/gallery_button"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/or_choose_from_gallery"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+
+</FrameLayout>

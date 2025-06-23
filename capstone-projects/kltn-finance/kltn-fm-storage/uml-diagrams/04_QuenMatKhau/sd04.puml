@@ -1,0 +1,93 @@
+@startuml SQ
+autonumber
+title SD04. Quên mật khẩu
+actor "Actor" as actor
+boundary "ForgotPassWordView" 
+boundary "VerifyView"
+boundary "LoginView"
+control "AccountController" as controller
+control "EmailService" as service
+entity "AccountRepository" as model
+database "Database" as database
+activate actor
+actor -> ForgotPassWordView : enter email, tenantId
+activate ForgotPassWordView
+ForgotPassWordView -> controller : call api POST /request-forget-password
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find by email
+alt user exists
+activate database
+database --> model : return data
+deactivate database
+model --> controller : return object
+deactivate model
+controller -> service : send OTP to email
+activate service
+service --> controller : callback
+deactivate service
+controller --> ForgotPassWordView : return message
+deactivate controller
+ForgotPassWordView -> ForgotPassWordView: display success message
+ForgotPassWordView -> VerifyView : redirect to
+activate VerifyView
+actor -> VerifyView: enter otp, password, confirm password
+deactivate actor
+alt enter valid information
+VerifyView -> controller : call api POST /reset-password
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find user
+activate database
+database --> model : return data
+deactivate database
+model --> controller : return object
+deactivate model
+controller -> controller: check otp
+alt otp is correct
+controller -> model : inject repository
+activate model
+model -> database : update password
+activate database
+database --> model : callback
+deactivate database
+model --> controller : callback
+deactivate model
+controller --> VerifyView : return success message
+deactivate controller
+VerifyView -> VerifyView: display message
+VerifyView -> LoginView : redirect to
+else otp is incorrect
+activate controller
+controller --> VerifyView : return error message
+deactivate controller
+VerifyView -> VerifyView: display message
+activate VerifyView
+deactivate VerifyView
+deactivate VerifyView
+end
+else enter invalid information to verify
+activate VerifyView
+VerifyView -> VerifyView: display error message
+activate VerifyView
+deactivate VerifyView
+deactivate VerifyView
+end
+else user not found
+activate database
+database --> model: return null
+deactivate database
+activate model
+model --> controller : return null
+deactivate model
+activate controller
+controller --> ForgotPassWordView : return message
+deactivate controller
+ForgotPassWordView -> ForgotPassWordView: display error message
+activate ForgotPassWordView
+deactivate ForgotPassWordView
+deactivate ForgotPassWordView
+end
+@enduml

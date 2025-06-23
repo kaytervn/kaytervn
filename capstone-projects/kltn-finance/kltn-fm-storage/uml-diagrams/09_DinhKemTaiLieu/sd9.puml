@@ -1,0 +1,48 @@
+@startuml SQ
+autonumber
+title SD09. Đính kèm tài liệu
+actor "Actor" as actor
+boundary "FE-App" as view
+control "FileController" as controller
+control "EncryptionService" as service
+activate actor
+actor -> view: upload file
+activate view
+view -> controller: call api POST /upload
+activate controller
+controller -> service: encrypt file
+activate service
+service -> Server: store file
+service --> controller: return file path
+deactivate service
+controller --> view: return file path
+deactivate controller
+view -> view: update display
+activate view
+deactivate view
+deactivate view
+opt download file
+actor -> view: click download
+activate view
+view -> controller: call api GET /download
+activate controller
+controller -> service: decrypt file
+activate service
+service -> Server: retrieve file
+service --> controller: return file
+deactivate service
+controller --> view: return file
+deactivate controller
+view --> actor: download file
+deactivate view
+end
+opt delete file
+actor -> view: click delete
+deactivate actor
+activate view
+view -> view: delete file\nand update display
+activate view
+deactivate view
+deactivate view
+end
+@enduml

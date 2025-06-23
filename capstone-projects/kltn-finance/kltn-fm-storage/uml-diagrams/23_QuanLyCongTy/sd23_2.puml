@@ -1,0 +1,43 @@
+@startuml SQ
+autonumber
+title SD23.2. Sửa công ty
+actor "Actor" as actor
+boundary "ManageCompanyView" as manageView
+boundary "CreateCompanyPageView" as createView
+boundary "EditCompanyPageView" as editView
+control "CompanyController" as controller
+entity "CompanyRepository" as model
+database "Database" as database
+activate actor
+ actor -> manageView : click Edit button on a company
+activate manageView
+    manageView -> editView : navigate to Edit page with data
+    activate editView
+activate editView
+    editView -> editView : display Edit Company form
+    actor -> editView : edit Company Name and Description
+    actor -> editView : click Save button
+    editView -> controller : call PUT API /v1/companies/{id}
+    activate controller
+activate controller
+    controller -> model : inject repository
+    activate model
+activate model
+    model -> database : updateCompany()
+    activate database
+activate database
+    database --> model : return success
+deactivate database
+    deactivate database
+    model --> controller : success message
+deactivate model
+    deactivate model
+    controller --> editView : display success message
+deactivate controller
+    editView -> manageView : return to Manage Company page
+    manageView -> manageView : update company list
+activate manageView
+deactivate manageView
+deactivate manageView
+    deactivate editView
+    deactivate controller

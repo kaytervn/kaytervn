@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.main.MainViewModel" />
+
+        <variable name="a"
+            type="com.finance.ui.main.MainActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/main_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+            />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_48sdp"
+            app:menu="@menu/menu_bottom_navigation"
+            app:labelVisibilityMode="labeled"
+            android:background="@color/white"
+            app:itemBackground="@drawable/bg_item_selected"
+            android:theme="@style/ThemeOverlay.App.BottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:itemTextAppearanceActive="@style/BottomNavigationTextAppearanceActive"
+            app:itemTextAppearanceInactive="@style/BottomNavigationTextAppearanceInactive"
+            app:itemTextColor="@color/custom_bottom_navigation"
+            app:itemIconTint="@color/custom_bottom_navigation"
+            app:itemIconSize="@dimen/_17sdp"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

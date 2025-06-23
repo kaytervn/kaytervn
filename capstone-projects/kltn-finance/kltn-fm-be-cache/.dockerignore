@@ -1,0 +1,11 @@
+Dockerfile
+.dockerignore
+.git
+.gitignore
+/node_modules
+/vendor
+/.idea
+.idea/
+.env
+package-lock.json
+/uploads

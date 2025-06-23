@@ -1,0 +1,926 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Master" id="1739846395035-1">
+        <insert tableName="db_mst_group">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="Role Admin"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="description" value="Role for admin"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-17T17:41:57"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:30:35"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-2">
+        <insert tableName="db_mst_account">
+            <column name="id" valueNumeric="1"/>
+            <column name="username" value="admin"/>
+            <column name="full_name" value="Super Admin"/>
+            <column name="email" value="superadmin@gmail.com"/>
+            <column name="phone"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="avatar_path"/>
+            <column name="password" value="{bcrypt}$2a$10$YMZFAA1FLQQzz29qLCtHG.8oBvq0g/6tpX0ODh269rckAU9lsgrrS"/>
+            <column name="is_mfa"/>
+            <column name="attempt_forget_pwd"/>
+            <column name="attempt_login"/>
+            <column name="is_super_admin" valueBoolean="true"/>
+            <column name="last_login"/>
+            <column name="reset_pwd_code"/>
+            <column name="reset_pwd_time"/>
+            <column name="secret_key"/>
+            <column name="group_id" valueNumeric="1"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-17T17:40:45"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-17T17:40:50"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-3">
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="Create permission"/>
+            <column name="permission_code" value="PER_C"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/permission/create"/>
+            <column name="name_group" value="Permission"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T09:02:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T09:02:12"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Get list permissions"/>
+            <column name="permission_code" value="PER_L"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/permission/list"/>
+            <column name="name_group" value="Permission"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T09:03:12"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T09:03:14"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053909487616"/>
+            <column name="name" value="Create admin account"/>
+            <column name="permission_code" value="ACC_C_AD"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/account/create-admin"/>
+            <column name="name_group" value="Account"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:57"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:57"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053914238976"/>
+            <column name="name" value="Delete account"/>
+            <column name="permission_code" value="ACC_D"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/account/delete"/>
+            <column name="name_group" value="Account"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:57"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:57"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053916598272"/>
+            <column name="name" value="Get account"/>
+            <column name="permission_code" value="ACC_V"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/account/get"/>
+            <column name="name_group" value="Account"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:58"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053919252480"/>
+            <column name="name" value="Get list account"/>
+            <column name="permission_code" value="ACC_L"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/account/list"/>
+            <column name="name_group" value="Account"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:58"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053921972224"/>
+            <column name="name" value="Reset mfa account"/>
+            <column name="permission_code" value="ACC_R_MFA"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/account/reset-mfa"/>
+            <column name="name_group" value="Account"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:58"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053925019648"/>
+            <column name="name" value="Update admin account"/>
+            <column name="permission_code" value="ACC_U_AD"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/account/update-admin"/>
+            <column name="name_group" value="Account"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:58"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053928099840"/>
+            <column name="name" value="Create branch"/>
+            <column name="permission_code" value="BR_C"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/branch/create"/>
+            <column name="name_group" value="Branch"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:58"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053931737088"/>
+            <column name="name" value="Delete branch"/>
+            <column name="permission_code" value="BR_D"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/branch/delete"/>
+            <column name="name_group" value="Branch"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:58"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053934915584"/>
+            <column name="name" value="Get branch"/>
+            <column name="permission_code" value="BR_V"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/branch/get"/>
+            <column name="name_group" value="Branch"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:58"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053937176576"/>
+            <column name="name" value="Get list branch"/>
+            <column name="permission_code" value="BR_L"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/branch/list"/>
+            <column name="name_group" value="Branch"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:58"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053939535872"/>
+            <column name="name" value="Update branch"/>
+            <column name="permission_code" value="BR_U"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/branch/update"/>
+            <column name="name_group" value="Branch"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:58"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053941993472"/>
+            <column name="name" value="Create customer"/>
+            <column name="permission_code" value="CU_C"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/customer/create"/>
+            <column name="name_group" value="Customer"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:58"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053944516608"/>
+            <column name="name" value="Delete customer"/>
+            <column name="permission_code" value="CU_D"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/customer/delete"/>
+            <column name="name_group" value="Customer"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:58"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053947596800"/>
+            <column name="name" value="Get customer"/>
+            <column name="permission_code" value="CU_V"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/customer/get"/>
+            <column name="name_group" value="Customer"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:58"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053949661184"/>
+            <column name="name" value="Get list customer"/>
+            <column name="permission_code" value="CU_L"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/customer/list"/>
+            <column name="name_group" value="Customer"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053952872448"/>
+            <column name="name" value="Update customer"/>
+            <column name="permission_code" value="CU_U"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/customer/update"/>
+            <column name="name_group" value="Customer"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053956411392"/>
+            <column name="name" value="Create db config"/>
+            <column name="permission_code" value="DB_C_C"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/db-config/create"/>
+            <column name="name_group" value="Db Config"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053960048640"/>
+            <column name="name" value="Get db config"/>
+            <column name="permission_code" value="DB_C_V"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/db-config/get"/>
+            <column name="name_group" value="Db Config"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053963587584"/>
+            <column name="name" value="Get list db config"/>
+            <column name="permission_code" value="DB_C_L"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/db-config/list"/>
+            <column name="name_group" value="Db Config"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053966700544"/>
+            <column name="name" value="Update db config"/>
+            <column name="permission_code" value="DB_C_U"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/db-config/update"/>
+            <column name="name_group" value="Db Config"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053969059840"/>
+            <column name="name" value="Create group"/>
+            <column name="permission_code" value="GR_C"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/group/create"/>
+            <column name="name_group" value="Group"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053972107264"/>
+            <column name="name" value="Get group"/>
+            <column name="permission_code" value="GR_V"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/group/get"/>
+            <column name="name_group" value="Group"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053974859776"/>
+            <column name="name" value="Get list group"/>
+            <column name="permission_code" value="GR_L"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/group/list"/>
+            <column name="name_group" value="Group"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053979250688"/>
+            <column name="name" value="Update group"/>
+            <column name="permission_code" value="GR_U"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/group/update"/>
+            <column name="name_group" value="Group"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053982003200"/>
+            <column name="name" value="Create location"/>
+            <column name="permission_code" value="LO_C"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/location/create"/>
+            <column name="name_group" value="Location"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:28:00"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:28:00"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053984198656"/>
+            <column name="name" value="Delete location"/>
+            <column name="permission_code" value="LO_D"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/location/delete"/>
+            <column name="name_group" value="Location"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:28:00"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:28:00"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053987049472"/>
+            <column name="name" value="Get location"/>
+            <column name="permission_code" value="LO_V"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/location/get"/>
+            <column name="name_group" value="Location"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:28:00"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:28:00"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053990260736"/>
+            <column name="name" value="Get list location"/>
+            <column name="permission_code" value="LO_L"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/location/list"/>
+            <column name="name_group" value="Location"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:28:00"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:28:00"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053992783872"/>
+            <column name="name" value="Update location"/>
+            <column name="permission_code" value="LO_U"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/location/update"/>
+            <column name="name_group" value="Location"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:28:00"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:28:00"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053996847104"/>
+            <column name="name" value="Create tag"/>
+            <column name="permission_code" value="TA_C"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/tag/create"/>
+            <column name="name_group" value="Tag"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:28:00"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:28:00"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216053999206400"/>
+            <column name="name" value="Delete tag"/>
+            <column name="permission_code" value="TA_D"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/tag/delete"/>
+            <column name="name_group" value="Tag"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:28:00"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:28:00"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216054001532928"/>
+            <column name="name" value="Get tag"/>
+            <column name="permission_code" value="TA_V"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/tag/get"/>
+            <column name="name_group" value="Tag"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:28:00"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:28:00"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216054005137408"/>
+            <column name="name" value="Get list tag"/>
+            <column name="permission_code" value="TA_L"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/tag/list"/>
+            <column name="name_group" value="Tag"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:28:00"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:28:00"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216054007758848"/>
+            <column name="name" value="Update tag"/>
+            <column name="permission_code" value="TA_U"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/tag/update"/>
+            <column name="name_group" value="Tag"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:28:00"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:28:00"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-4">
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053909487616"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053914238976"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053916598272"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053919252480"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053921972224"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053925019648"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053928099840"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053931737088"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053934915584"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053937176576"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053939535872"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053941993472"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053944516608"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053947596800"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053949661184"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053952872448"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053956411392"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053960048640"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053963587584"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053966700544"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053969059840"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053972107264"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053974859776"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053979250688"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053982003200"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053984198656"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053987049472"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053990260736"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053992783872"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053996847104"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216053999206400"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216054001532928"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216054005137408"/>
+        </insert>
+        <insert tableName="db_mst_permission_group">
+            <column name="group_id" valueNumeric="1"/>
+            <column name="permission_id" valueNumeric="8216054007758848"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-5">
+        <insert tableName="oauth_client_details">
+            <column name="client_id" value="abc_client"/>
+            <column name="resource_ids"/>
+            <column name="client_secret" value="{bcrypt}$2a$12$zlKHpSw7.8asgQFCexLLkudLYkd9wQGElMps2yVG5p4vm2f.CTYcy"/>
+            <column name="scope" value="read,write"/>
+            <column name="authorized_grant_types" value="password,refresh_token,client_credentials,authorization_code"/>
+            <column name="web_server_redirect_uri"/>
+            <column name="authorities" value="ROLE_CLIENT,ROLE_TRUSTED_CLIENT"/>
+            <column name="access_token_validity" valueNumeric="2592000"/>
+            <column name="refresh_token_validity" valueNumeric="2592000"/>
+            <column name="additional_information"/>
+            <column name="autoapprove"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-6">
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216051726358848"/>
+            <column name="name" value="Create account branch"/>
+            <column name="permission_code" value="ACC_B_C"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/account-branch/create"/>
+            <column name="name_group" value="Account Branch"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T09:02:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T09:02:12"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216127566358848"/>
+            <column name="name" value="Get list account branch"/>
+            <column name="permission_code" value="ACC_B_L"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/account-branch/list"/>
+            <column name="name_group" value="Account Branch"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T09:02:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T09:02:12"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216121827558848"/>
+            <column name="name" value="Delete account branch"/>
+            <column name="permission_code" value="ACC_B_D"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/account-branch/delete"/>
+            <column name="name_group" value="Account Branch"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T09:02:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T09:02:12"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-7">
+        <insert tableName="db_mst_group">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Role Super Admin"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="description" value="Role for super admin"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-17T17:41:57"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:30:35"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-8">
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216051726351111"/>
+            <column name="name" value="Create server provider"/>
+            <column name="permission_code" value="SE_P_C"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/server-provider/create"/>
+            <column name="name_group" value="Server Provider"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T09:02:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T09:02:12"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216051726351112"/>
+            <column name="name" value="Get list server provider"/>
+            <column name="permission_code" value="SE_P_L"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/server-provider/list"/>
+            <column name="name_group" value="Server Provider"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T09:02:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T09:02:12"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216051726351113"/>
+            <column name="name" value="Delete server provider"/>
+            <column name="permission_code" value="SE_P_D"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/server-provider/delete"/>
+            <column name="name_group" value="Server provider"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T09:02:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T09:02:12"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216051726351114"/>
+            <column name="name" value="Update server provider"/>
+            <column name="permission_code" value="SE_P_U"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/server-provider/update"/>
+            <column name="name_group" value="Server provider"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T09:02:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T09:02:12"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216051726351115"/>
+            <column name="name" value="Get server provider"/>
+            <column name="permission_code" value="SE_P_V"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/server-provider/get"/>
+            <column name="name_group" value="Server provider"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T09:02:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T09:02:12"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-9">
+        <addColumn tableName="db_mst_server_provider">
+            <column name="current_tenant_count" type="integer" afterColumn="my_sql_jdbc_url"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-10">
+        <addColumn tableName="db_mst_server_provider">
+            <column name="max_tenant" type="integer" afterColumn="current_tenant_count"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-11">
+        <addColumn tableName="db_mst_location">
+            <column name="tenant_id" type="varchar(255)" afterColumn="name"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-12">
+        <dropColumn columnName="Master_id" tableName="db_mst_location"/>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-13">
+        <dropColumn columnName="current_Master_count" tableName="db_mst_server_provider"/>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-14">
+        <dropColumn columnName="max_Master" tableName="db_mst_server_provider"/>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-15">
+        <insert tableName="db_mst_group">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="Role Customer"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="description" value="Role for customer"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-17T17:41:57"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:30:35"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-16">
+        <dropForeignKeyConstraint baseTableName="db_mst_location" constraintName="FKclehq1dugr79vq3oivyjqxtbk"/>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-17">
+        <dropTable tableName="db_mst_tag"/>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-18">
+        <dropColumn columnName="tag_id" tableName="db_mst_location"/>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-19">
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216051726351116"/>
+            <column name="name" value="Input server key"/>
+            <column name="permission_code" value="ACC_I_K"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/account/input-key"/>
+            <column name="name_group" value="Account"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T09:02:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T09:02:12"/>
+        </insert>
+        <insert tableName="db_mst_permission">
+            <column name="id" valueNumeric="8216051726351117"/>
+            <column name="name" value="Clear server key"/>
+            <column name="permission_code" value="ACC_C_K"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="action" value="/v1/account/clear-key"/>
+            <column name="name_group" value="Account"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T09:02:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T09:02:12"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-20">
+        <sql>
+            <![CDATA[
+            UPDATE oauth_client_details
+            SET authorized_grant_types = 'password,customer,employee'
+            WHERE client_id = 'abc_client';
+            ]]>
+        </sql>
+    </changeSet>
+    <changeSet author="Master" id="1739846395035-21">
+        <dropColumn columnName="aes_secret_key" tableName="db_mst_location"/>
+    </changeSet>
+</databaseChangeLog>

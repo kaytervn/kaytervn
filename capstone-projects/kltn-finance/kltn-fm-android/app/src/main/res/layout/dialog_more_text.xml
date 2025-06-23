@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="content"
+            type="String" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:background="@color/white"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{title, default = name}"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/_14ssp"
+                android:paddingVertical="@dimen/_12sdp"
+                android:fontFamily="@font/lato_bold"
+                android:textColor="@color/color_theme"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{content, default = content}"
+                android:layout_below="@+id/tv_header_title"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:fontFamily="@font/lato_regular"
+                android:textColor="@color/black_full"
+                android:textSize="@dimen/_13ssp"
+                />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</layout>

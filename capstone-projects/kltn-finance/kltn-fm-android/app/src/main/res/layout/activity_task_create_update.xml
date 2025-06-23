@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.task.create_or_update.TaskCreateUpdateViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.task.create_or_update.TaskCreateUpdateActivity" />
+        <import type="com.finance.utils.NumberUtils"/>
+        <import type="com.finance.utils.DeviceUtils"/>
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:onClick="@{()->a.hideKeyboard()}"
+        >
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{vm.isCreated ? @string/create_new_task : @string/update_task}"
+            bind:a ="@{a}"
+            />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_below="@+id/layout_header"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:onClick="@{()->a.hideKeyboard()}"
+            android:layout_above="@+id/btn_create"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/_7sdp"
+                android:onClick="@{()->a.hideKeyboard()}"
+                >
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_title"
+                        android:text="@string/project"
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" *"
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/lato_bold"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/DropDownMenu"
+
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+                        app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopStart="@dimen/_8sdp"
+                        app:boxStrokeColor="@color/normal_brown"
+                        app:boxStrokeWidthFocused="@dimen/_1sdp"
+                        app:endIconTint="@color/gray_cbb"
+                        android:enabled="@{vm.isHaveProject &amp;&amp; !vm.isSubTask &amp;&amp; !vm.fromProject ? true : false, default=false}"
+                        >
+                        <AutoCompleteTextView
+                            android:id="@+id/cbb_project"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:textSize="@dimen/_12ssp"
+                            android:paddingVertical="0dp"
+                            android:textCursorDrawable="@drawable/cursor_color"
+                            android:fontFamily="@font/lato_medium"
+                            style="@style/AppSpinner"
+                            android:background="@{vm.isHaveProject &amp;&amp; !vm.isSubTask  &amp;&amp; !vm.fromProject ? @drawable/bg_cbb_enable : @drawable/bg_cbb_disable, default= @drawable/bg_cbb_disable}"
+                            >
+                        </AutoCompleteTextView>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/state"
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_marginStart="@dimen/_2sdp"
+
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" *"
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/lato_bold"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/DropDownMenu"
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+                        app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopStart="@dimen/_8sdp"
+                        app:boxStrokeColor="@color/normal_brown"
+                        app:boxStrokeWidthFocused="@dimen/_1sdp"
+                        app:endIconTint="@color/gray_cbb"
+
+                        >
+                        <AutoCompleteTextView
+                            android:id="@+id/cbb_state"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:textSize="@dimen/_12ssp"
+                            android:paddingVertical="0dp"
+                            android:textCursorDrawable="@drawable/cursor_color"
+                            android:focusable="false"
+                            android:fontFamily="@font/lato_medium"
+                            style="@style/AppSpinner"
+                            android:background="@drawable/bg_cbb_enable"
+                            >
+                        </AutoCompleteTextView>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_title"
+                        android:text="@string/task_name"
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_marginStart="@dimen/_2sdp"
+
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" *"
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/lato_bold"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_task_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:hint="@string/enter_task_name"
+                    android:text="@{a.decrypt(vm.taskResponse.name)}"
+                    />
+
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_title"
+                        android:text="@string/task_content"
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_task_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppEditTextInputDescription"
+                    android:hint="@string/enter_task_note"
+                    android:textColorHint="@color/color_hint"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="@{a.decrypt(vm.taskResponse.note)}"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_title_document"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/document"
+                        style="@style/AppTvTitleForEditText"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_title_document"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:orientation="vertical"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        >
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcv_documents"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:orientation="vertical"
+                            >
+                        </androidx.recyclerview.widget.RecyclerView>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_100sdp"
+                            android:background="@drawable/bg_img_upload"
+                            android:layout_gravity="center"
+                            android:onClick="@{()->a.showDialogChooseFile()}"
+
+                            >
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:orientation="vertical"
+                                >
+                                <ImageView
+                                    android:id="@+id/img_upload_file"
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:textSize="@dimen/_15ssp"
+                                    android:textColor="#FFFFFF"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:textStyle="bold"
+                                    android:src="@drawable/ic_upload"
+                                    />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:text="@string/download_file"
+                                    android:textColor="@color/color_theme"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:textSize="@dimen/_12ssp"
+                                    />
+                            </LinearLayout>
+                        </FrameLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+
+
+        <Button
+            android:id="@+id/btn_create"
+            style="@style/AppButtonStyle"
+            android:layout_marginVertical="@dimen/_15sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:onClick="@{()->a.createOrUpdateTask()}"
+            android:text="@{vm.isCreated ? @string/create : @string/update, default=@string/create}"
+            android:layout_alignParentBottom="true"
+            />
+    </RelativeLayout>
+</layout>

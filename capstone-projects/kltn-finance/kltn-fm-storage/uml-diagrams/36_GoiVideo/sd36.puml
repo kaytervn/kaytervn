@@ -1,0 +1,73 @@
+@startuml SQ
+autonumber
+title SD36. Gọi video
+actor "Actor" as actor
+boundary "ChatView" as view
+boundary "ChatRoomView" as chatRoomView
+control "ChatRoomController" as controller
+entity "ChatRoomRepository" as model
+control "MessageController" as messageController
+entity "MessageRepository" as messageModel
+control "MediaService" as service
+database "Database" as database
+activate actor
+actor -> view: select chat room
+activate view
+view -> chatRoomView: redirect to
+deactivate view
+activate chatRoomView
+chatRoomView -> controller: call api GET /get
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return object
+deactivate model
+controller --> chatRoomView: return object
+deactivate controller
+chatRoomView -> messageController: call api GET /list
+activate messageController
+messageController -> messageModel: inject repository
+activate messageModel
+messageModel -> database: find data
+activate database
+database --> messageModel: return data
+deactivate database
+messageModel --> messageController: return object
+deactivate messageModel
+messageController --> chatRoomView: return object
+deactivate messageController
+chatRoomView -> chatRoomView: display data
+actor -> chatRoomView: click phone icon
+chatRoomView -> chatRoomView: display call modal
+chatRoomView -> service: connect to server
+activate service
+service --> chatRoomView: return status
+deactivate service
+chatRoomView -> chatRoomView: display status
+activate chatRoomView
+deactivate chatRoomView
+deactivate chatRoomView
+opt turn on/off camera/micro
+actor -> chatRoomView: click camera/micro icon
+activate chatRoomView
+chatRoomView -> service: turn on/off camera/micro signal
+chatRoomView -> chatRoomView: update display
+activate chatRoomView
+deactivate chatRoomView
+deactivate chatRoomView
+end
+opt end call
+actor -> chatRoomView: click end call 
+deactivate actor
+activate chatRoomView
+chatRoomView -> service: shutdown connection
+chatRoomView -> chatRoomView: close modal
+activate chatRoomView
+deactivate chatRoomView
+deactivate chatRoomView
+end
+@enduml

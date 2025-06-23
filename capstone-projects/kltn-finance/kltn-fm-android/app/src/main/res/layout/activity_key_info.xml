@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.key.infor.KeyInfoViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.key.infor.KeyInfoActivity" />
+        <import type="android.view.View"/>
+        <import type="com.finance.constant.Constants"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            android:elevation="@dimen/_10sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            bind:a ="@{a}"
+            bind:title ="@{@string/key_details}"
+            />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:elevation="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@id/layout_document"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_header"
+
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_10sdp"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/AppTvTitleDetailInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:text="@string/name" />
+
+                    <TextView
+                        android:id="@+id/tv_transaction_name"
+                        style="@style/AppTvInforDetailTransaction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:gravity="end"
+                        android:maxWidth="@dimen/_150sdp"
+                        android:text='@{a.decrypt(vm.keyResponse.name)}' />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:background="@color/divider"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_below="@+id/tv_transaction_name"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/AppTvTitleDetailInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:text="@string/type" />
+
+                    <TextView
+                        android:id="@+id/tv_transaction_date_created"
+                        style="@style/AppTvInforDetailTransaction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:gravity="end"
+                        android:text='@{vm.keyResponse.kind == 1 ? "Server" : "Web" }' />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:background="@color/divider"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_below="@+id/tv_transaction_date_created"
+                        />
+                </RelativeLayout>
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                   >
+
+                    <TextView
+                        style="@style/AppTvTitleDetailInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:text="@string/group"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_key_group"
+                        style="@style/AppTvInforDetailTransaction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="end"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:maxWidth="@dimen/_150sdp"
+                        android:text='@{a.decrypt(vm.keyResponse.keyInformationGroup.name), default=namekeynamekeynamekeynamekeynamekey}' />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:background="@color/divider"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_below="@+id/tv_key_group"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_organization"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        style="@style/AppTvTitleDetailInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:text="@string/organization"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_organization"
+                        style="@style/AppTvInforDetailTransaction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="end"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:maxWidth="@dimen/_150sdp"
+                        android:text='@{a.decrypt(vm.keyResponse.organization.name), default=namekeynamekeynamekeynamekeynamekey}' />
+
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/divider"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_below="@+id/layout_organization"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:visibility="@{vm.keyResponse.tag != null &amp;&amp; vm.keyResponse.tag.colorCode != null ? View.VISIBLE : View.GONE}"
+                    >
+
+                    <TextView
+                        style="@style/AppTvTitleDetailInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:text="@string/tag"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_tag"
+                        style="@style/AppTvInforDetailTransaction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@id/color_tag"
+                        android:layout_marginEnd="@dimen/_7sdp"
+                        android:gravity="end"
+                        android:maxWidth="@dimen/_150sdp"
+                        android:text='@{a.decrypt(vm.keyResponse.tag.name), default=tag_name}'
+
+                        />
+
+                    <ImageView
+                        android:id="@+id/color_tag"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_tag"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_centerVertical="true"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:background="@color/divider"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_below="@+id/tv_tag"
+                        />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:visibility="@{vm.keyResponse.kind == 2 ? View.VISIBLE : View.GONE}">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/AppTvTitleDetailInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:text="@string/username"
+                            />
+
+                        <TextView
+                            style="@style/AppTvInforDetailTransaction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/img_copy_username"
+                            android:gravity="end"
+                            android:text='@{vm.ggKey.username, default=username}'
+                            />
+
+                        <LinearLayout
+                            android:id="@+id/img_copy_username"
+                            android:onClick="@{()->a.copy(vm.ggKey.username)}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:paddingStart="@dimen/_7sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:visibility="@{vm.ggKey.username != null &amp;&amp; !vm.ggKey.username.trim().empty ? View.VISIBLE : View.GONE}"
+                            >
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="end"
+                                android:maxWidth="@dimen/_150sdp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_copy"
+                                />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:background="@color/divider"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_below="@+id/img_copy_username"
+                            />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/AppTvTitleDetailInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:text="@string/password"
+
+                            />
+
+                        <TextView
+                            style="@style/AppTvInforDetailTransaction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/img_copy_password"
+                            android:gravity="end"
+                            android:maxWidth="@dimen/_150sdp"
+                            android:text='@{vm.ggKey.password.replaceAll(".","*")}' />
+
+                        <LinearLayout
+                            android:id="@+id/img_copy_password"
+                            android:onClick="@{()->a.copy(vm.ggKey.password)}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:paddingStart="@dimen/_7sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:visibility="@{vm.ggKey.password != null &amp;&amp; !vm.ggKey.password.trim().empty ? View.VISIBLE : View.GONE}"
+                            >
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="end"
+                                android:maxWidth="@dimen/_150sdp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_copy"
+                                />
+                        </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:background="@color/divider"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_below="@+id/img_copy_password"
+                            />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            style="@style/AppTvTitleDetailInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:text="@string/phone_number"
+                            android:layout_centerVertical="true"
+                            />
+
+                        <TextView
+                            style="@style/AppTvInforDetailTransaction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/img_copy_phone"
+                            android:gravity="end"
+                            android:maxWidth="@dimen/_150sdp"
+                            android:text='@{vm.ggKey.phoneNumber}'
+                            android:layout_centerVertical="true"
+                            />
+
+                        <LinearLayout
+                            android:id="@+id/img_copy_phone"
+                            android:onClick="@{()->a.copy(vm.ggKey.phoneNumber)}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:paddingStart="@dimen/_7sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:visibility="@{vm.ggKey.phoneNumber != null &amp;&amp; !vm.ggKey.phoneNumber.trim().empty ? View.VISIBLE : View.GONE}"
+                            >
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="end"
+                                android:maxWidth="@dimen/_150sdp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_copy"
+                                />
+                        </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:background="@color/divider"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_below="@+id/img_copy_phone"
+                            />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:visibility="@{vm.keyResponse.kind == 1 ? View.VISIBLE : View.GONE}">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            style="@style/AppTvTitleDetailInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:text="@string/server_host"
+
+                            />
+
+                        <TextView
+                            style="@style/AppTvInforDetailTransaction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/img_copy_host"
+                            android:gravity="end"
+                            android:maxWidth="@dimen/_150sdp"
+                            android:text='@{vm.serverKey.host}' />
+
+                        <LinearLayout
+                            android:id="@+id/img_copy_host"
+                            android:onClick="@{()->a.copy(vm.serverKey.host)}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:paddingStart="@dimen/_7sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:visibility="@{vm.serverKey.host != null &amp;&amp; !vm.serverKey.host.trim().empty ? View.VISIBLE : View.GONE}"
+                            >
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="end"
+                                android:maxWidth="@dimen/_150sdp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_copy"
+                                />
+                        </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:background="@color/divider"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_below="@+id/img_copy_host"
+                            />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            style="@style/AppTvTitleDetailInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:text="@string/server_port"
+
+                            />
+
+                        <TextView
+                            style="@style/AppTvInforDetailTransaction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/img_copy_port"
+                            android:gravity="end"
+                            android:maxWidth="@dimen/_150sdp"
+                            android:text='@{vm.serverKey.port}' />
+
+                        <LinearLayout
+                            android:id="@+id/img_copy_port"
+                            android:onClick="@{()->a.copy(vm.serverKey.port)}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:paddingStart="@dimen/_7sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:visibility="@{vm.serverKey.port != null &amp;&amp; !vm.serverKey.port.trim().empty ? View.VISIBLE : View.GONE}"
+                            >
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="end"
+                                android:maxWidth="@dimen/_150sdp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_copy"
+                                 />
+                        </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:background="@color/divider"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_below="@+id/img_copy_port"
+                            />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:visibility="@{vm.serverKey.privateKey != null &amp;&amp; !vm.serverKey.privateKey.trim().empty ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            style="@style/AppTvTitleDetailInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:text="@string/private_key"
+
+                            />
+
+                        <TextView
+                            style="@style/AppTvInforDetailTransaction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/img_copy_private_key"
+                            android:ellipsize="end"
+                            android:gravity="end"
+                            android:maxWidth="@dimen/_150sdp"
+                            android:maxLength="20"
+                            android:maxLines="1"
+                            android:text='@{vm.serverKey.privateKey.replaceAll(".","*")}'
+                            tools:ignore="RtlCompat" />
+
+                        <LinearLayout
+                            android:id="@+id/img_copy_private_key"
+                            android:onClick="@{()->a.copy(vm.serverKey.privateKey)}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:paddingStart="@dimen/_7sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            >
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="end"
+                                android:maxWidth="@dimen/_150sdp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_copy"
+                                 />
+                        </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:background="@color/divider"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_below="@+id/img_copy_private_key"
+                            />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/AppTvTitleDetailInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:text="@string/username"
+
+                            />
+
+                        <TextView
+                            style="@style/AppTvInforDetailTransaction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@id/img_copy_username_server"
+                            android:gravity="end"
+                            android:text='@{vm.serverKey.username}' />
+
+                        <LinearLayout
+                            android:id="@+id/img_copy_username_server"
+                            android:onClick="@{()->a.copy(vm.serverKey.username)}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:paddingStart="@dimen/_7sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:visibility="@{vm.serverKey.username != null &amp;&amp; !vm.serverKey.username.trim().empty ? View.VISIBLE : View.GONE}"
+                            >
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="end"
+                                android:maxWidth="@dimen/_150sdp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_copy"
+                                 />
+                        </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:background="@color/divider"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_below="@+id/img_copy_username_server"
+                            />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:visibility="@{vm.serverKey.password != null &amp;&amp; !vm.serverKey.password.trim().empty ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            style="@style/AppTvTitleDetailInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:maxWidth="@dimen/_150sdp"
+                            android:text="@string/password" />
+
+                        <TextView
+                            style="@style/AppTvInforDetailTransaction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/img_copy_password_server"
+                            android:gravity="end"
+                            android:text='@{!vm.isShowPassword ? vm.serverKey.password.replaceAll(".","*") : vm.serverKey.password}' />
+
+                        <LinearLayout
+                            android:id="@+id/img_copy_password_server"
+                            android:onClick="@{()->a.copy(vm.serverKey.password)}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:paddingStart="@dimen/_7sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:visibility="@{vm.serverKey.password != null &amp;&amp; !vm.serverKey.password.trim().empty ? View.VISIBLE : View.GONE}"
+                            >
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="end"
+                                android:maxWidth="@dimen/_150sdp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_copy"
+                                />
+                        </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:background="@color/divider"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_below="@+id/img_copy_password_server"
+                            />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        style="@style/AppTvTitleDetailInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_30sdp"
+                        android:text="@string/description"
+                        />
+
+
+                    <kr.co.prnd.readmore.ReadMoreTextView
+                        android:id="@+id/edit_group_service_description"
+                        style="@style/AppReadMoreDescriptionDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{a.decrypt(vm.keyResponse.description)}"
+                        android:textSize="@dimen/_14ssp"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        app:readMoreMaxLine="4"
+                        app:readMoreText="@string/read_more"
+                        app:readMoreColor="@color/color_read_more"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+        <RelativeLayout
+            android:id="@+id/layout_document"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:elevation="@dimen/_3sdp"
+            android:onClick="@{()->a.navigateToDocument()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="@{vm.totalDocuments > 0 ? View.VISIBLE : View.GONE}"
+            >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_alignParentTop="true"
+                android:background="@color/divider"
+                />
+            <ImageView
+                android:id="@+id/img_document"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:src="@drawable/ic_sub_task"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                />
+            <TextView
+                android:id="@+id/tv_title_document"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_regular"
+                android:textColor="@color/black_full"
+                android:text="@string/document_work"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_toEndOf="@+id/img_document"
+                android:textSize="@dimen/_14ssp"
+                android:layout_centerVertical="true"
+                />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/ic_detail_document"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_badge_round"
+                android:layout_marginEnd="@dimen/_10sdp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/white"
+                    android:text='@{String.valueOf(vm.totalDocuments), default=123}'
+                    android:layout_centerInParent="true"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:paddingTop="@dimen/_1sdp"
+                    android:paddingBottom="@dimen/_2sdp"
+                    />
+            </RelativeLayout>
+            <ImageView
+                android:id="@+id/ic_detail_document"
+                style="@style/ImageSeeDetail"
+                android:src="@drawable/ic_see_detail"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

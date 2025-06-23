@@ -1,0 +1,70 @@
+const fs = require("fs");
+
+const accountIds = [
+  8313653263695872, 8320740878581760, 8340623243018240, 8340623268478976,
+  8340623292366848, 8340623315599360, 8340623342403584, 8340623382085632,
+  8340623409840128, 8340623438053376, 8340623473246208, 8340623495036928,
+  8340623523217408, 8340623553691648, 8340623575252992, 8340623595995136,
+  8340623616966656, 8340623647571968, 8340623681912832, 8340623704227840,
+  8340623736209408, 8340623760031744, 8340623786475520, 8340623821406208,
+  8340623848865792, 8340623874719744,
+];
+
+const organizationIds = [
+  8322043802812416, 8322058899488768, 8322059032297472, 8340647124533248,
+  8340647133937664, 8340647140720640, 8340647148093440, 8340647155171328,
+  8340647163297792, 8340647169720320, 8340647176470528, 8340647183941632,
+  8340647190888448, 8340647197507584, 8340647204978688, 8340647213105152,
+  8340647220772864, 8340647227817984, 8340647238828032, 8340647248035840,
+  8340647257210880, 8340647266287616, 8340647274708992, 8340647282442240,
+  8340647291387904, 8340647298859008, 8340647307214848, 8340647315865600,
+  8340647323795456, 8340647332937728, 8340647342047232, 8340647351975936,
+  8340647358693376, 8340647367311360, 8340647374651392, 8340647382908928,
+  8340647393165312, 8340647402930176, 8340647411777536, 8340647419969536,
+  8340647428390912, 8340647436779520, 8340647443660800, 8340647451131904,
+  8340647461257216, 8340647470170112, 8340647476101120, 8340647483539456,
+  8340647491043328, 8340647496515584, 8340647503134720, 8340647509950464,
+  8340647519387648,
+];
+
+function shuffleArray(arr) {
+  return arr
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+}
+
+function generateAccountGroupPairs(accountIds, groupIds, ratio = 0.7) {
+  const result = [];
+
+  accountIds.forEach((accountId) => {
+    const shuffled = shuffleArray(groupIds);
+    const groupCount = Math.floor(groupIds.length * ratio);
+    const selected = shuffled.slice(0, groupCount);
+
+    selected.forEach((groupId) => {
+      result.push({ accountId, organizationId: groupId });
+    });
+  });
+
+  return result;
+}
+
+function jsonToCsv(data) {
+  const headers = Object.keys(data[0]);
+  const rows = data.map((row) =>
+    headers.map((header) => `"${row[header]}"`).join(",")
+  );
+  return [headers.join(","), ...rows].join("\n");
+}
+
+function saveToCsv(fileName, data) {
+  const csvContent = jsonToCsv(data);
+  fs.writeFileSync(fileName, csvContent, "utf8");
+  console.log(`File CSV đã được tạo: ${fileName}`);
+}
+
+const pairs = generateAccountGroupPairs(accountIds, organizationIds, 0.7);
+const timestamp = new Date().toISOString().replace(/[-T:.Z]/g, "");
+const fileName = `organization_permission_${timestamp}.csv`;
+saveToCsv(fileName, pairs);

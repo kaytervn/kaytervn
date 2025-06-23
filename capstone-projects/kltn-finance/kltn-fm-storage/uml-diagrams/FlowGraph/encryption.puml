@@ -1,0 +1,50 @@
+@startuml Encryption
+actor User
+participant "**Frontend**\nApplication" as FE
+participant "**Spring Boot**\nApplication" as BE
+database Database
+== Data Encryption ==
+activate User
+User -> FE: Input data
+activate FE
+FE -> BE: Send raw data
+activate BE
+BE -> BE: Encrypt raw data using\n**server secret key**
+BE -> Database: Save encrypted data
+== Request User Key ==
+User -> FE: Send request key
+FE -> BE: Call API GET /my-key
+BE -> BE: Generate **user secret key** and **RSA** key pair
+BE -> BE: Encrypt **secret key** with **public key**
+BE -> Database: Save **public key** and encrypted **secret key**
+BE --> User: Return **private key**
+deactivate BE
+== Data decryption ==
+User -> FE: Send request data
+FE -> BE: Call API to get data
+activate BE
+BE -> Database: Connect to Database
+activate Database
+Database --> BE: Return encrypted data
+deactivate Database
+BE -> BE: Decrypt **user secret key**\nusing **user public key**
+BE -> BE: Decrypt data using **server secret key**
+BE -> BE: Encrypt data using **user secret key**
+BE --> FE: Return encrypted data
+deactivate BE
+User -> FE: Enter **private key**
+deactivate User
+FE -> BE: Call API GET /my-key
+activate BE
+BE-> Database: Get current user
+activate Database
+Database --> BE: Return user data
+deactivate Database
+BE --> FE: Return **user secret key**
+deactivate BE
+FE -> FE: Decrypt **user secret key** using **private key**
+FE -> FE: Decrypt data using decrypted\n**user secret key**
+activate FE
+deactivate FE
+deactivate FE
+@enduml

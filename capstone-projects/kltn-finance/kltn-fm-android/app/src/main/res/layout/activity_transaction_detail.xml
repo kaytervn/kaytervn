@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.transaction.detail.TransactionDetailViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.transaction.detail.TransactionDetailActivity" />
+        <import type="com.finance.utils.NumberUtils"/>
+        <import type="com.finance.utils.AESUtils"/>
+        <import type="com.finance.utils.DateUtils"/>
+        <import type="android.graphics.Color"/>
+        <import type="android.view.View"/>
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{@string/transaction_detail}"
+            bind:a ="@{a}"
+            />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_below="@+id/layout_header"
+            android:scrollbars="none"
+            android:layout_above="@+id/layout_document"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/_20sdp"
+                    android:background="@color/white"
+                    >
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        >
+                        
+                        <ImageView
+                            android:id="@+id/img_state"
+                            android:layout_width="@dimen/_70sdp"
+                            android:layout_height="@dimen/_70sdp"
+                            android:src="@{vm.tran.state == 1 ? @drawable/ic_created : (vm.tran.state == 2 ? @drawable/ic_accept : (vm.tran.state == 3 ? @drawable/ic_reject : @drawable/ic_paid)), default=@drawable/ic_paid}"
+                            android:layout_centerHorizontal="true"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_total_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.tran.money!=null ? NumberUtils.custom_money_my_tran(Double.parseDouble(a.decrypt(vm.tran.money)), vm.tran.kind) : @string/money_default_min , default=@string/money_default}"
+                            android:textColor="@{vm.tran.kind == 1 ? @color/black : @color/red_orange}"
+                            android:fontFamily="@font/roboto_600"
+                            android:textSize="@dimen/_25sdp"
+                            android:layout_below="@+id/img_state"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            />
+                        <TextView
+                            android:id="@+id/tv_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.tran.state == 1 ? @string/state_1 : (vm.tran.state == 2 ? @string/state_2 : (vm.tran.state == 3 ? @string/state_3 : @string/state_4)), default=@string/state_4}"
+                            android:textColor="@{vm.tran.state == 1 ? @color/created : (vm.tran.state == 2 ? @color/accept : (vm.tran.state == 3 ? @color/reject : @color/paid)), default=@color/brown_text}"
+                            android:fontFamily="@font/lato_bold"
+                            android:textSize="@dimen/_14sdp"
+                            android:layout_below="@+id/tv_total_money"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_15sdp"
+                            />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_5sdp"
+                    android:background="@color/pink_light"
+                    />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@color/white"
+                        android:paddingBottom="@dimen/_10sdp"
+                        android:paddingHorizontal="@dimen/_7sdp"
+                        >
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+
+                            >
+                            <TextView
+                                android:id="@+id/tv_name"
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/transaction_name"
+
+                                />
+                            <TextView
+                                android:id="@+id/tv_transaction_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{a.decrypt(vm.tran.name), default=transaction_name_transaction_name}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:maxWidth="@dimen/_180sdp"
+                                android:textAlignment="textEnd"
+
+                                />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_name"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_7sdp"
+                            >
+
+                            <TextView
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/time"
+
+                                />
+                            <TextView
+                                android:id="@+id/tv_transaction_date_created"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{DateUtils.convertFromUTCToDefault(vm.tran.transactionDate), default=@string/date_default}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:maxWidth="@dimen/_180sdp"
+                                />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_date_created"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+
+                            >
+
+                            <TextView
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/transaction_kind"
+                                />
+                            <TextView
+                                android:id="@+id/tv_transaction_kind"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.tran.kind == 1 ? @string/kind_1 : @string/kind_2, default=@string/kind_1}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:maxWidth="@dimen/_180sdp"
+                                />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_kind"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+
+                            >
+                            <TextView
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/group_transaction"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_transaction_group"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:text="@{a.decrypt(vm.tran.transactionGroup.name), default=group1}"
+                                android:textAlignment="textEnd"
+                                android:maxWidth="@dimen/_180sdp"
+
+                                />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_group"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:visibility="@{vm.tran.tag != null ? View.VISIBLE : View.GONE}"
+                            >
+
+                            <TextView
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tag"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_tag"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{a.decrypt(vm.tran.tag.name), default=tag}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_toStartOf="@id/color_tag"
+                                android:maxWidth="@dimen/_180sdp"
+                                android:layout_marginEnd="@dimen/_7sdp"
+                                />
+
+                            <ImageView
+                                android:id="@+id/color_tag"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_alignParentEnd="true"
+                                android:src="@drawable/ic_tag"
+                                />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_tag"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+
+                            >
+
+                            <TextView
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/added_by"
+                                />
+                            <TextView
+                                android:id="@+id/tv_transaction_added_by"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.tran.addedBy.fullName, default=AddedBy}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:maxWidth="@dimen/_180sdp"
+                                />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_added_by"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            >
+
+                            <TextView
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/approve_by"
+                                />
+                            <TextView
+                                android:id="@+id/tv_transaction_approved_by"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.tran.approvedBy.fullName, default=ApprovedBy}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:maxWidth="@dimen/_180sdp"
+                                />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_approved_by"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            >
+
+                            <TextView
+                                android:id="@+id/tv_title_category"
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/category"
+
+                                />
+                            <TextView
+                                android:id="@+id/tv_transaction_category"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{a.decrypt(vm.tran.category.name), default=Category1ekfjfwfweiofjwioefjwiofjwefoij}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:maxWidth="@dimen/_180sdp"
+                                android:textAlignment="textEnd"
+
+                                />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_category"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            >
+                            <TextView
+                                android:id="@+id/tv_title_content"
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/content"
+
+                                />
+
+                            <kr.co.prnd.readmore.ReadMoreTextView
+                                style="@style/AppReadMoreDescriptionDetail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                app:readMoreMaxLine="4"
+                                app:readMoreText="@string/read_more"
+                                app:readMoreColor="@color/color_read_more"
+                                android:hint="@string/input_des"
+                                android:text="@{a.decrypt(vm.tran.note), default=ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContent}"
+                                />
+<!--                            <com.finance.utils.view_custom.ReadMoreTextView-->
+<!--                                style="@style/AppReadMoreDescriptionDetail"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginTop="@dimen/_5sdp"-->
+<!--                                app:readMoreMaxLine="10"-->
+<!--                                app:readMoreEndText="@string/read_more"-->
+<!--                                android:text="@{a.decrypt(vm.tran.note), default=ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContent}"-->
+<!--                                />-->
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+        <RelativeLayout
+            android:id="@+id/layout_document"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:elevation="@dimen/_3sdp"
+            android:onClick="@{()->a.navigateToDocument()}"
+            android:layout_alignParentBottom="true"
+            android:visibility="@{vm.totalDocuments > 0 ? View.VISIBLE : View.GONE}"
+            android:background="@color/white"
+            >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_alignParentTop="true"
+                android:background="@color/divider"
+                />
+            <ImageView
+                android:id="@+id/img_document"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:src="@drawable/ic_sub_task"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                />
+            <TextView
+                android:id="@+id/tv_title_document"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_regular"
+                android:textColor="@color/black_full"
+                android:text="@string/document_work"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_toEndOf="@+id/img_document"
+                android:textSize="@dimen/_14ssp"
+                android:layout_centerVertical="true"
+                />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/ic_detail_document"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_badge_round"
+                android:layout_marginEnd="@dimen/_10sdp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/white"
+                    android:text='@{String.valueOf(vm.totalDocuments), default=123}'
+                    android:layout_centerInParent="true"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:paddingTop="@dimen/_1sdp"
+                    android:paddingBottom="@dimen/_2sdp"
+                    />
+            </RelativeLayout>
+            <ImageView
+                android:id="@+id/ic_detail_document"
+                style="@style/ImageSeeDetail"
+                android:src="@drawable/ic_see_detail"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

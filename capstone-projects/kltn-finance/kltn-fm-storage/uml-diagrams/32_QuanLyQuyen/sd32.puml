@@ -1,0 +1,42 @@
+@startuml SQ
+autonumber
+title SD32. Quản lý quyền
+actor "Actor" as actor
+boundary "ManageRoleView" as manageView
+control "RoleController" as controller
+entity "RoleRepository" as model
+database "Database" as database
+' Main Flow
+activate actor
+actor -> manageView : Access "Manage Roles"
+activate manageView
+manageView -> controller : Call API GET /v1/role/list
+activate controller
+controller -> model : Inject repository
+activate model
+model -> database : findAll()
+activate database
+database --> model : Return role list
+deactivate database
+model --> controller : Return list
+deactivate model
+controller --> manageView : Render role list
+deactivate controller
+' Option TH1: Create Role
+opt TH1. Người dùng tạo quyền
+      ref over actor
+SD31.1.Thêm quyền
+end ref
+end
+' Option TH2: Edit Role
+opt TH2. Người dùng chỉnh sửa quyền
+   ref over actor
+SD31.2.Sửa quyền
+end ref
+end
+' Alternative Flow: Back Navigation
+alt User selects "Back"
+    actor -> manageView : Click "Back"
+    manageView --> actor : Navigate to previous screen
+end
+@enduml

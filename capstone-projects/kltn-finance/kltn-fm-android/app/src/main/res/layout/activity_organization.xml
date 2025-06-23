@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.organization.OrganizationViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.organization.OrganizationActivity" />
+        <import type="com.finance.constant.Constants"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{@string/organization_management}"
+            bind:a ="@{a}"
+            />
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_header"
+            android:background="@color/color_bg_tran"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_organizations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    />
+            </RelativeLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:id="@+id/layout_no_data"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_ORGANIZATION_LIST) &amp;&amp; vm.totalElements == 0 ? View.VISIBLE:View.GONE}"
+            layout="@layout/layout_empty_data"
+            android:layout_centerInParent="true"
+            />
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{!vm.isValidKey  ? View.VISIBLE : View.GONE}"
+            android:id="@+id/layout_invalid_key"
+            layout="@layout/layout_invalid_key"
+            android:layout_centerInParent="true"
+            bind:des="@{@string/invalid_key}"
+            />
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_add"
+            android:onClick="@{() -> a.addNewOrganization()}"
+            android:visibility="@{vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_ORGANIZATION_CREATE) ? View.VISIBLE : View.GONE}"
+            android:layout_gravity="end|bottom"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            style="@style/AppButtonGlobal"
+            >
+        </de.hdodenhof.circleimageview.CircleImageView>
+
+
+    </RelativeLayout>
+</layout>

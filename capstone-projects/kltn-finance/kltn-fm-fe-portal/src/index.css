@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@layer components {
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(100%);
+    cursor: pointer;
+    opacity: 0.9;
+  }
+
+  input[type="date"]:not(:focus):invalid {
+    color: transparent !important;
+  }
+
+  input[type="date"]::-webkit-datetime-edit {
+    color: inherit;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.no-arrows::-webkit-inner-spin-button,
+.no-arrows::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.no-arrows {
+  -moz-appearance: textfield;
+}

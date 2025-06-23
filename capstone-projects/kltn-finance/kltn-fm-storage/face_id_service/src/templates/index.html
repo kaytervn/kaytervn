@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Face ID Authentication</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #2b2d42;
+        --light: #f8f9fa;
+        --danger: #ef233c;
+        --success: #06d6a0;
+        --gray: #8d99ae;
+        --border-radius: 8px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+      }
+
+      body {
+        background-color: #f0f2f5;
+        color: var(--secondary);
+        line-height: 1.6;
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .container {
+        background-color: white;
+        border-radius: var(--border-radius);
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #eaeaea;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--secondary);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .header-right {
+        display: flex;
+        gap: 10px;
+      }
+
+      button {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background-color 0.2s;
+      }
+
+      button:hover {
+        background-color: var(--primary-dark);
+      }
+
+      button.danger {
+        background-color: var(--danger);
+      }
+
+      button.danger:hover {
+        background-color: #d90429;
+      }
+
+      button.outline {
+        background-color: transparent;
+        color: var(--primary);
+        border: 1px solid var(--primary);
+      }
+
+      button.outline:hover {
+        background-color: rgba(67, 97, 238, 0.1);
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--secondary);
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        transition: border-color 0.2s;
+      }
+
+      input[type="text"]:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      }
+
+      .webcam-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      video,
+      canvas {
+        width: 100%;
+        max-width: 400px;
+        border-radius: var(--border-radius);
+        background-color: #f0f2f5;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .buttons-container {
+        display: flex;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .result {
+        margin-top: 24px;
+        padding: 16px;
+        border-radius: var(--border-radius);
+        background-color: #f8f9fa;
+        border-left: 4px solid var(--gray);
+        display: none;
+      }
+
+      .result.success {
+        border-left-color: var(--success);
+        background-color: rgba(6, 214, 160, 0.1);
+      }
+
+      .result.error {
+        border-left-color: var(--danger);
+        background-color: rgba(239, 35, 60, 0.1);
+      }
+
+      /* Modal Styles */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        backdrop-filter: blur(4px);
+      }
+
+      .modal {
+        background-color: white;
+        border-radius: var(--border-radius);
+        padding: 30px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        animation: modalFadeIn 0.3s ease-out;
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .modal-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .api-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .api-status.authenticated {
+        background-color: rgba(6, 214, 160, 0.2);
+        color: #057a5b;
+      }
+
+      .api-status.unauthenticated {
+        background-color: rgba(239, 35, 60, 0.2);
+        color: #b91c2e;
+      }
+
+      button:disabled {
+        background-color: var(--gray);
+        cursor: not-allowed;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1><i class="fas fa-shield-alt"></i> Face ID Authentication</h1>
+        <div class="header-right">
+          <div id="apiStatus" class="api-status unauthenticated">
+            <i class="fas fa-times-circle"></i> Chưa xác thực
+          </div>
+          <button id="configApiBtn" class="outline">
+            <i class="fas fa-cog"></i> Cấu hình API
+          </button>
+        </div>
+      </header>
+
+      <div class="form-group">
+        <label for="userId"><i class="fas fa-user"></i> User ID:</label>
+        <input type="text" id="userId" placeholder="Nhập ID người dùng" />
+      </div>
+
+      <div class="webcam-container">
+        <video id="video" autoplay muted playsinline></video>
+        <canvas id="canvas" style="display: none"></canvas>
+
+        <div class="buttons-container">
+          <button
+            id="registerBtn"
+            onclick="captureAndSend('register')"
+            disabled
+          >
+            <i class="fas fa-user-plus"></i> Đăng ký
+          </button>
+          <button id="verifyBtn" onclick="captureAndSend('verify')" disabled>
+            <i class="fas fa-check-circle"></i> Xác thực
+          </button>
+        </div>
+      </div>
+
+      <div id="result" class="result">
+        <div id="resultContent"></div>
+      </div>
+    </div>
+
+    <!-- API Key Modal -->
+    <div id="apiKeyModal" class="modal-overlay">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 class="modal-title">
+            <i class="fas fa-key"></i> Cấu hình API Key
+          </h2>
+        </div>
+
+        <div class="form-group">
+          <label for="apiKey">API Key:</label>
+          <input type="text" id="apiKey" placeholder="Nhập API key của bạn" />
+        </div>
+
+        <div class="modal-footer">
+          <button id="cancelApiKey" class="outline">
+            <i class="fas fa-times"></i> Hủy
+          </button>
+          <button id="saveApiKey"><i class="fas fa-save"></i> Lưu</button>
+          <button id="removeApiKey" class="danger" style="display: none">
+            <i class="fas fa-trash"></i> Xóa API Key
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Variables
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("canvas");
+      const result = document.getElementById("result");
+      const resultContent = document.getElementById("resultContent");
+      const registerBtn = document.getElementById("registerBtn");
+      const verifyBtn = document.getElementById("verifyBtn");
+      const apiKeyModal = document.getElementById("apiKeyModal");
+      const configApiBtn = document.getElementById("configApiBtn");
+      const saveApiBtn = document.getElementById("saveApiKey");
+      const cancelApiBtn = document.getElementById("cancelApiKey");
+      const removeApiBtn = document.getElementById("removeApiKey");
+      const apiKeyInput = document.getElementById("apiKey");
+      const apiStatus = document.getElementById("apiStatus");
+
+      // API key storage name
+      const API_KEY_STORAGE = "face_id_api_key";
+
+      // Check if API key exists in storage
+      function checkApiKey() {
+        const apiKey = localStorage.getItem(API_KEY_STORAGE);
+        if (apiKey) {
+          apiStatus.innerHTML =
+            '<i class="fas fa-check-circle"></i> Đã xác thực';
+          apiStatus.className = "api-status authenticated";
+          removeApiBtn.style.display = "block";
+          apiKeyInput.value = apiKey;
+          registerBtn.disabled = false;
+          verifyBtn.disabled = false;
+          return true;
+        } else {
+          apiStatus.innerHTML =
+            '<i class="fas fa-times-circle"></i> Chưa xác thực';
+          apiStatus.className = "api-status unauthenticated";
+          removeApiBtn.style.display = "none";
+          apiKeyInput.value = "";
+          registerBtn.disabled = true;
+          verifyBtn.disabled = true;
+
+          // Show modal on page load if no API key
+          apiKeyModal.style.display = "flex";
+          return false;
+        }
+      }
+
+      // Initialize webcam
+      async function initWebcam() {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+          });
+          video.srcObject = stream;
+        } catch (err) {
+          showResult(`Lỗi truy cập webcam: ${err.message}`, false);
+          console.error("Webcam error:", err);
+        }
+      }
+
+      // Capture and send image
+      async function captureAndSend(endpoint) {
+        const userId = document.getElementById("userId").value.trim();
+        if (!userId && endpoint === "register") {
+          showResult("Vui lòng nhập User ID để đăng ký", false);
+          return;
+        }
+
+        // Show loading state
+        const btn = endpoint === "register" ? registerBtn : verifyBtn;
+        const originalBtnText = btn.innerHTML;
+        btn.innerHTML = `<div class="loading-spinner"></div> Đang xử lý...`;
+        btn.disabled = true;
+
+        try {
+          // Capture image
+          const ctx = canvas.getContext("2d");
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const base64 = canvas.toDataURL("image/jpeg");
+
+          // Get API key
+          const apiKey = localStorage.getItem(API_KEY_STORAGE);
+          if (!apiKey) {
+            showResult("Chưa cấu hình API key", false);
+            return;
+          }
+
+          // Prepare and send request
+          const payload = { image_data: base64, user_id: userId };
+          const response = await fetch(`/${endpoint}_webcam`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": apiKey,
+            },
+            body: JSON.stringify(payload),
+          });
+
+          const data = await response.json();
+
+          if (response.status === 401) {
+            localStorage.removeItem(API_KEY_STORAGE);
+            checkApiKey();
+            showResult("API key không hợp lệ hoặc đã hết hạn", false);
+            return;
+          }
+
+          // Display result
+          if (data.result) {
+            showResult(data.message, true);
+            if (data.data && data.data.user_id) {
+              resultContent.innerHTML += `<br>Người dùng: ${data.data.user_id}`;
+              if (data.data.conf) {
+                resultContent.innerHTML += `<br>Độ tin cậy: ${data.data.conf}`;
+              }
+            }
+          } else {
+            showResult(data.message, false);
+          }
+        } catch (error) {
+          showResult(`Lỗi: ${error.message}`, false);
+          console.error("Error:", error);
+        } finally {
+          // Restore button state
+          btn.innerHTML = originalBtnText;
+          btn.disabled = false;
+        }
+      }
+
+      // Show result message
+      function showResult(message, isSuccess) {
+        result.className = isSuccess ? "result success" : "result error";
+        resultContent.textContent = message;
+        result.style.display = "block";
+
+        // Auto hide after 5 seconds
+        setTimeout(() => {
+          result.style.display = "none";
+        }, 5000);
+      }
+
+      // Event Listeners
+      configApiBtn.addEventListener("click", () => {
+        apiKeyModal.style.display = "flex";
+      });
+
+      cancelApiBtn.addEventListener("click", () => {
+        apiKeyModal.style.display = "none";
+      });
+
+      saveApiBtn.addEventListener("click", () => {
+        const apiKey = apiKeyInput.value.trim();
+        if (apiKey) {
+          localStorage.setItem(API_KEY_STORAGE, apiKey);
+          apiKeyModal.style.display = "none";
+          checkApiKey();
+          showResult("API key đã được lưu thành công", true);
+        } else {
+          showResult("Vui lòng nhập API key", false);
+        }
+      });
+
+      removeApiBtn.addEventListener("click", () => {
+        localStorage.removeItem(API_KEY_STORAGE);
+        apiKeyModal.style.display = "none";
+        checkApiKey();
+        showResult("Đã xóa API key", true);
+      });
+
+      // Close modal when clicking outside
+      apiKeyModal.addEventListener("click", (e) => {
+        if (e.target === apiKeyModal) {
+          // Only allow closing if API key exists
+          if (localStorage.getItem(API_KEY_STORAGE)) {
+            apiKeyModal.style.display = "none";
+          }
+        }
+      });
+
+      // Initialize on page load
+      window.addEventListener("DOMContentLoaded", () => {
+        initWebcam();
+        checkApiKey();
+      });
+
+      // Handle enter key in API key input
+      apiKeyInput.addEventListener("keyup", (e) => {
+        if (e.key === "Enter") {
+          saveApiBtn.click();
+        }
+      });
+    </script>
+  </body>
+</html>

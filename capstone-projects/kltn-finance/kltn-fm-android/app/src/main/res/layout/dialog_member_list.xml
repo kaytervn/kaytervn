@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Danh sách thành viên"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:text="✕"
+            android:textColor="@color/red_orange"
+            android:textSize="@dimen/_16ssp" />
+
+    </RelativeLayout>
+
+    <!-- Add Member Button -->
+    <Button
+        android:id="@+id/btn_add_member"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_add_member"
+        android:drawableStart="@drawable/ic_person_add"
+        android:gravity="center"
+        android:text="Mời thành viên"
+        android:textColor="#FFFFFF"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:textSize="@dimen/_12ssp" />
+
+    <!-- Members RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_members"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="400dp"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

@@ -1,0 +1,35 @@
+@startuml SQ
+autonumber
+title SD15.1. Thêm mới danh mục
+actor "Actor" as actor
+boundary "ManageCategoryView" as manageView
+control "CategoryController" as controller
+entity "CategoryRepository" as model
+database "Database" as database
+activate actor
+actor -> manageView : Click "Create"
+activate manageView
+    manageView -> actor : Display create form
+    actor -> manageView : Input category name, type, and description
+    manageView -> controller : call API POST /v1/category/create
+    activate controller
+activate controller
+    controller -> model : Inject repository
+activate model
+    model -> database : save(category)
+    activate database
+activate database
+    database --> model : Insert success
+deactivate database
+    deactivate database
+    model --> controller : Notify success
+deactivate model
+    deactivate model
+    controller --> manageView : Return success
+deactivate controller
+    deactivate controller
+    manageView -> actor : Notify "Category created successfully"
+    manageView -> manageView : Update category list
+activate manageView
+deactivate manageView
+deactivate manageView

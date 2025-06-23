@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView android:id="@+id/text"
+    style="@style/text_item_des"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/_5sdp"
+    android:paddingLeft="@dimen/_10sdp"
+    android:paddingRight="@dimen/_25sdp"
+    android:gravity="center_vertical"
+    android:maxLines="1"
+    android:ellipsize="end"
+    android:textColor="@color/black"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

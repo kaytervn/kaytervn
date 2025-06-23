@@ -1,0 +1,47 @@
+@startuml SQ
+autonumber
+title SD14.1. Thêm tài khoản
+actor "Actor" as actor
+boundary "Transaction\nPermissionView" as view
+control "Transaction\nPermissionController" as controller
+entity "Transaction\nPermissionRepository" as model
+database "Database" as database
+activate actor
+actor -> view: click add button
+deactivate actor
+activate view
+view -> view: open add dialog
+alt click add
+view -> controller: call api POST /create
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: add data
+activate database
+database --> model: callback
+deactivate database
+model --> controller: callback
+deactivate model
+controller --> view: return message
+deactivate controller
+view -> view: display message
+view -> controller: call api GET /list
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view: return list
+deactivate controller
+view -> view: display data
+else click cancel
+view -> view: close dialog
+activate view
+deactivate view
+deactivate view
+end
+@enduml

@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.fragment.home.HomeFragmentViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.fragment.home.HomeFragment" />
+        <import type="com.finance.constant.Constants"/>
+        <import type="android.view.View"/>
+        <import type="android.text.TextUtils"/>
+        <import type="com.finance.utils.AESUtils"/>
+        <import type="com.finance.utils.NumberUtils"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <RelativeLayout
+            android:id="@+id/layout_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_theme"
+            >
+            <RelativeLayout
+                android:id="@+id/layout_title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:background="@color/color_theme"
+                >
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/transaction"
+                    android:fontFamily="@font/lato_black"
+                    android:paddingVertical="@dimen/_12sdp"
+                    android:textSize="@dimen/_18sdp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:visibility="@{vm.isSearch ? View.GONE : View.VISIBLE, default=gone}"
+                    />
+                <FrameLayout
+                    android:id="@+id/layout_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:visibility="@{vm.isSearch ? View.VISIBLE : View.GONE}"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <RelativeLayout
+                            android:id="@+id/layout_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:onClick="@{(v)->vm.isShowSearch() | a.hideKeyboard() | a.deleteEditSearch()}"
+                            android:layout_centerVertical="true"
+                            android:paddingEnd="@dimen/_15sdp"
+                            android:paddingStart="@dimen/_10sdp"
+                            >
+                            <ImageView
+                                android:id="@+id/img_back"
+                                android:layout_width="@dimen/_13sdp"
+                                android:layout_height="@dimen/_13sdp"
+                                android:src="@drawable/ic_back"
+                                android:layout_centerVertical="true"
+                                />
+                        </RelativeLayout>
+
+                        <EditText
+                            android:id="@+id/edt_search"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            style="@style/AppEditTextInfo"
+                            android:layout_marginTop="0dp"
+                            android:fontFamily="@font/lato_medium"
+                            android:hint="@string/search_transaction_name"
+                            android:textColorHint="#77AFD0"
+                            android:textCursorDrawable="@drawable/cursor_color_search"
+                            android:paddingEnd="@dimen/_50sdp"
+                            android:paddingStart="@dimen/_35sdp"
+                            android:textColor="@color/white"
+                            android:background="@drawable/bg_edit_txt_search"
+                            android:layout_toEndOf="@+id/layout_back"
+                            />
+                        <ImageView
+                            android:layout_width="@dimen/_17sdp"
+                            android:layout_height="@dimen/_17sdp"
+                            android:src="@drawable/ic_search_2"
+                            android:scaleType="centerCrop"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:onClick="@{()->a.deleteEditSearch()}"
+                            android:layout_toEndOf="@+id/layout_back"
+                            android:layout_centerVertical="true"
+                            />
+
+                        <ImageView
+                            android:layout_width="@dimen/_23sdp"
+                            android:layout_height="@dimen/_23sdp"
+                            android:src="@drawable/ic_delete_search"
+                            android:scaleType="centerCrop"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:visibility="@{vm.isSearchEmpty.empty ? View.GONE : View.VISIBLE}"
+                            android:onClick="@{()->a.deleteEditSearch()}"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            />
+                    </RelativeLayout>
+
+                </FrameLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="@{!vm.isSearch &amp;&amp; vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_TRANSACTION_LIST) ? View.VISIBLE : View.GONE}"
+                    android:onClick="@{(v) -> vm.isShowSearch() | a.showKeyBoard2()}"
+                    android:paddingHorizontal="@dimen/_15sdp"
+                    >
+                    <ImageView
+                        android:id="@+id/img_search"
+                        android:layout_width="@dimen/_23sdp"
+                        android:layout_height="@dimen/_23sdp"
+                        android:src="@drawable/ic_search"
+                        android:layout_gravity="center"
+                        />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_title"
+                android:id="@+id/layout_total"
+                android:paddingBottom="@dimen/_12sdp"
+                android:visibility="@{vm.isSearch ? View.GONE : View.VISIBLE}"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:weightSum="2"
+                    android:background="@drawable/bg_total"
+
+                    >
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_7sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:background="@drawable/bg_total_2"
+                        >
+                        <ImageView
+                            android:id="@id/img_total_income"
+                            android:layout_width="@dimen/_38sdp"
+                            android:layout_height="@dimen/_38sdp"
+                            android:src="@drawable/ic_total_income"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:fontFamily="@font/lato_bold"
+                            android:textSize="@dimen/_12ssp"
+                            android:text="@string/total_income"
+                            android:textColor="@color/brown_text_2"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            />
+                        <TextView
+                            android:id="@+id/tv_total_income"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/img_total_income"
+                            android:layout_marginBottom="@dimen/_7sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:fontFamily="@font/lato_bold"
+                            android:textSize="@dimen/_14sdp"
+                            android:textColor="@color/color_total_money"
+                            android:text="@{NumberUtils.custom_money(vm.totalIncome), default=@string/money_default}"
+                            android:textAlignment="textEnd"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_7sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:background="@drawable/bg_total_2"
+
+                        >
+                        <ImageView
+                            android:id="@id/img_total_expenditure"
+                            android:layout_width="@dimen/_38sdp"
+                            android:layout_height="@dimen/_38sdp"
+                            android:src="@drawable/ic_total_expenditure"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:fontFamily="@font/lato_bold"
+                            android:textSize="@dimen/_12ssp"
+                            android:text="@string/total_expenditure_2"
+                            android:textColor="@color/brown_text_2"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            />
+                        <TextView
+                            android:id="@+id/tv_total_expenditure"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/img_total_expenditure"
+                            android:layout_marginBottom="@dimen/_7sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:fontFamily="@font/lato_bold"
+                            android:textSize="@dimen/_14sdp"
+                            android:textColor="@color/color_total_money"
+                            android:text="@{NumberUtils.custom_money(vm.totalExpenditure), default=@string/money_default}"
+                            android:maxWidth="@dimen/_110sdp"
+                            android:textAlignment="textEnd"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/layout_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_total"
+                android:background="@color/white"
+                android:layout_marginBottom="0dp"
+                android:paddingBottom="0dp"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginHorizontal="@dimen/_4sdp"
+                    android:background="@drawable/bg_filter_kind"
+                    android:visibility="@{vm.isSearch ? View.GONE : View.VISIBLE}"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="@string/kind_1"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:paddingVertical="@dimen/_8sdp"
+                        android:layout_marginVertical="@dimen/_3sdp"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:background="@{vm.kind == 1 ? @drawable/bg_white_corner : @drawable/bg_blank}"
+                        android:onClick="@{() -> a.getTransByKind(1)}"
+                         />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="@string/kind_2"
+                        android:textSize="@dimen/_12sdp"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:paddingVertical="@dimen/_8sdp"
+                        android:layout_marginVertical="@dimen/_3sdp"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:background="@{vm.kind == 2 ? @drawable/bg_white_corner : @drawable/bg_blank}"
+                        android:onClick="@{() -> a.getTransByKind(2)}"
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="@string/all_text"
+                        android:textSize="@dimen/_12sdp"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:paddingVertical="@dimen/_8sdp"
+                        android:layout_marginVertical="@dimen/_3sdp"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/_4sdp"
+                        android:background="@{vm.kind == 0 ? @drawable/bg_white_corner : @drawable/bg_blank}"
+                        android:onClick="@{() -> a.getAllTrans()}"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/layout_filter"
+                android:background="@color/color_bg_tran"
+                >
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_TRANSACTION_LIST) ? View.VISIBLE : View.GONE}"
+                    >
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcv_transaction"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+                    </androidx.recyclerview.widget.RecyclerView>
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            </FrameLayout>
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/layout_no_data"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{vm.isValidKey &amp;&amp; vm.totalElements == 0 &amp;&amp; a.checkPermission(Constants.PERMISSION_TRANSACTION_LIST)  ? View.VISIBLE:View.GONE}"
+            layout="@layout/layout_empty_data"
+            android:layout_gravity="center"
+            bind:des="@{@string/data_empty}"
+            />
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{!vm.isValidKey  ? View.VISIBLE : View.GONE}"
+            android:id="@+id/layout_invalid_key"
+            layout="@layout/layout_invalid_key"
+            android:layout_gravity="center"
+            bind:des="@{@string/invalid_key}"
+            />
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/layout_not_permission"
+            android:visibility="@{vm.isValidKey &amp;&amp; !a.checkPermission(Constants.PERMISSION_TRANSACTION_LIST) ? View.VISIBLE : View.GONE}"
+            layout="@layout/layout_invalid_key"
+            android:layout_gravity="center"
+            bind:des="@{@string/not_permission}"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_add"
+            android:visibility="@{vm.isValidKey &amp;&amp; a.checkPermission(Constants.PERMISSION_TRANSACTION_CREATE) ? View.VISIBLE : View.GONE}"
+            android:layout_gravity="end|bottom"
+            android:onClick="@{()->a.addNewTransaction()}"
+            style="@style/AppButtonGlobal"
+            >
+        </de.hdodenhof.circleimageview.CircleImageView>
+        </FrameLayout>
+
+</layout>

@@ -1,0 +1,106 @@
+@startuml SQ
+autonumber
+title SD02. Cập nhật hồ sơ
+actor "Actor" as actor
+boundary "UpdateProfileView" as view
+control "AccountController" as controller
+control "FaceIdController" as faceIdController
+control "FaceIdService" as faceIdService
+entity "AccountRepository" as model
+database "Database" as database
+activate actor
+actor -> view : access to
+activate view
+view -> controller : call api GET /profile
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find by current user
+activate database
+database --> model : return data
+deactivate database
+model --> controller : return object
+deactivate model
+controller --> view : return object
+deactivate controller
+view -> view: display data
+actor -> view : edit information
+deactivate actor
+opt upload avatar
+ref over actor
+SD08. Tải ảnh lên
+end ref
+end
+alt enter valid input
+view -> controller : call api PUT /update-profile
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find current user
+activate database
+database --> model : return data
+deactivate database
+model --> controller : return object
+deactivate model
+controller -> controller: check password
+alt confirm password is correct
+controller -> model : inject repository
+activate model
+model -> database : update data
+activate database
+database --> model : callback
+deactivate database
+model --> controller : callback
+deactivate model
+controller --> view : return message
+else confirm password is incorrect
+controller -> view: return error message
+deactivate controller
+end
+view -> view: display message
+else enter invalid input
+view -> view: display error message
+activate view
+deactivate view
+deactivate view
+end
+opt register face id
+activate actor
+actor -> view: enter password
+activate view
+view -> faceIdController: call api POST /register
+activate faceIdController
+faceIdController -> model: inject repository
+activate model
+model -> database: find current user
+activate database
+database --> model: return data
+deactivate database
+model --> faceIdController: return object
+deactivate model
+faceIdController -> faceIdController: check password
+alt password is correct
+faceIdController -> faceIdService: call api POST /register
+activate faceIdService
+faceIdService --> faceIdController: return result
+deactivate faceIdService
+faceIdController --> view: callback
+alt register success
+view -> view: display success message
+else register fail
+view -> view: display error message
+activate view
+deactivate view
+deactivate view
+end
+else password is incorrect
+activate faceIdController
+faceIdController --> view: callback
+deactivate faceIdController
+activate view
+view -> view: display error message
+activate view
+deactivate view
+deactivate view
+end
+@enduml

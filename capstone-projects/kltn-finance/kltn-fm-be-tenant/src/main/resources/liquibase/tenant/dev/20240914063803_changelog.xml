@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Finance" id="1726295892613-1">
+        <createTable tableName="db_fn_service_permission">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_service_permissionPK"/>
+            </column>
+            <column name="permission_kind" type="INT"/>
+            <column name="account_id" type="BIGINT"/>
+            <column name="service_id" type="BIGINT"/>
+            <column name="service_group_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1726295892613-2">
+        <addColumn tableName="db_fn_transaction">
+            <column name="service_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1726295892613-3">
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="service_group_id" baseTableName="db_fn_service_permission" constraintName="FK7u3yt1wo6crjfwmvi8hb86oma" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_service_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1726295892613-4">
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="service_id" baseTableName="db_fn_service_permission" constraintName="FK9cnfmm7fa2nvka3t6s0i4k57t" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_service" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1726295892613-5">
+        <addForeignKeyConstraint baseColumnNames="service_id" baseTableName="db_fn_transaction" constraintName="FKnptcddvpvsk3y0cqel69k0740" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_service" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1726295892613-6">
+        <addForeignKeyConstraint onDelete="CASCADE" baseColumnNames="account_id" baseTableName="db_fn_service_permission" constraintName="FKq0fyv3ole7uq671sxovj0pwxb" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

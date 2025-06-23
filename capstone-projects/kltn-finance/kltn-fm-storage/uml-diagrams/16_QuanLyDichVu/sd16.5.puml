@@ -1,0 +1,80 @@
+@startuml SQ
+autonumber
+title SD16.5. Đặt lịch nhắc hẹn
+actor "Actor" as actor
+boundary "ServiceView" as view
+boundary "ServiceSchedule\nView" as scheduleView
+control "ServiceSchedule\nController" as controller
+entity "ServiceSchedule\nRepository" as model
+database "Database" as database
+activate actor
+actor -> view: click schedule button
+activate view
+view -> scheduleView: redirect to
+deactivate view
+activate scheduleView
+scheduleView -> controller: call api GET /list
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> scheduleView: return list
+deactivate controller
+scheduleView -> scheduleView: display data
+activate scheduleView
+deactivate scheduleView
+deactivate scheduleView
+opt create new schedule
+actor -> scheduleView: enter due days
+activate scheduleView
+scheduleView -> controller: call api POST /create
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: create new data
+activate database
+database --> model: callback
+deactivate database
+model --> controller: callback
+deactivate model
+controller --> scheduleView: return message
+deactivate controller
+end
+opt update schedule
+actor -> scheduleView: enter due days
+scheduleView -> controller: call api PUT /update
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: update data
+activate database
+database --> model: callback
+deactivate database
+model --> controller: callback
+deactivate model
+controller --> scheduleView: return message
+deactivate controller
+end
+opt delete schedule
+actor -> scheduleView: click delete button
+deactivate actor
+scheduleView -> controller: call api DELETE /delete
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: delete data
+activate database
+database --> model: callback
+deactivate database
+model --> controller: callback
+deactivate model
+controller --> scheduleView: return message
+deactivate controller
+deactivate scheduleView
+end
+@enduml

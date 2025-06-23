@@ -1,0 +1,92 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Tenant" id="1742699793536-1">
+        <createTable tableName="db_fn_group_permission">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_group_permissionPK"/>
+            </column>
+            <column name="permission_id" type="BIGINT"/>
+            <column name="group_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-2">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_fn_group_permission" constraintName="FKp6vnenqkwednbo9arhpv7rrxe" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_group" validate="true"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-3">
+        <dropForeignKeyConstraint baseTableName="db_fn_permission_group" constraintName="FK3fhlobbbeuhf2o9rji0hos6ul"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-4">
+        <dropForeignKeyConstraint baseTableName="db_fn_permission_group" constraintName="FKkwktf6145nb9dqrgemft4isdi"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-5">
+        <dropUniqueConstraint constraintName="UC_DB_FN_SETTINGKEY_NAME_COL" tableName="db_fn_setting"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-6">
+        <dropUniqueConstraint constraintName="name" tableName="db_fn_permission"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-7">
+        <dropTable tableName="db_fn_permission"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-8">
+        <dropTable tableName="db_fn_permission_group"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-9">
+        <dropTable tableName="db_fn_setting"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-10">
+        <dropTable tableName="oauth_access_token"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-11">
+        <dropTable tableName="oauth_approvals"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-12">
+        <dropTable tableName="oauth_client_details"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-13">
+        <dropTable tableName="oauth_client_token"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-14">
+        <dropTable tableName="oauth_code"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-15">
+        <dropTable tableName="oauth_refresh_token"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-16">
+        <dropColumn columnName="is_system_role" tableName="db_fn_group"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-17">
+        <dropColumn columnName="kind" tableName="db_fn_account"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-18">
+        <dropColumn columnName="kind" tableName="db_fn_group"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-19">
+        <dropColumn columnName="public_key" tableName="db_fn_account"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-20">
+        <dropColumn columnName="secret_key" tableName="db_fn_account"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1742699793536-21">
+        <sql>
+            <![CDATA[
+            DELETE FROM db_fn_account WHERE id = 2;
+            DELETE FROM db_fn_group WHERE id = 15;
+            ]]>
+        </sql>
+    </changeSet>
+</databaseChangeLog>

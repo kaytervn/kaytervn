@@ -1,0 +1,51 @@
+@startuml SQ
+autonumber
+title SD32.2. Sửa quyền
+actor "Actor" as actor
+boundary "ManageRoleView" as manageView
+control "RoleController" as controller
+entity "RoleRepository" as model
+database "Database" as database
+activate actor
+actor -> manageView : Click "Edit" on a specific role
+activate manageView
+    manageView -> controller :Call API GET /v1/role/get/{id}
+    activate controller
+activate controller
+    controller -> model : Inject repository
+activate model
+    model -> database : findById()
+    activate database
+activate database
+    database --> model : Return role details
+deactivate database
+    deactivate database
+    model --> controller : Return details
+deactivate model
+    deactivate model
+    controller --> manageView : Render edit form
+deactivate controller
+    deactivate controller
+    actor -> manageView : Input updated role name, description, select permissions
+    manageView -> controller : PUT API PUT /v1/role/update
+    activate controller
+activate controller
+    controller -> model : Inject repository
+activate model
+    model -> database : save(role)
+    activate database
+activate database
+    database --> model : Update success
+deactivate database
+    deactivate database
+    model --> controller : Notify success
+deactivate model
+    deactivate model
+    controller --> manageView : Return success
+deactivate controller
+    deactivate controller
+    manageView -> actor : Notify "Role updated successfully"
+    manageView -> manageView : Refresh role list
+activate manageView
+deactivate manageView
+deactivate manageView

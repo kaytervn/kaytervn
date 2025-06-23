@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="tagName"
+            type="String" />
+        <variable
+            name="selectedName"
+            type="String" />
+        <import type="com.finance.utils.DateUtils"/>
+        <import type="com.finance.utils.AESUtils"/>
+    </data>
+    <RelativeLayout
+        android:id="@+id/layout_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@{tagName == selectedName ? @drawable/bg_tag_kind_select : @drawable/bg_tag_kind}"
+        android:layout_marginEnd="@dimen/_12sdp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/_13ssp"
+            android:textColor="@{tagName == selectedName ? @color/white : @color/color_theme}"
+            android:text="@{tagName, default = tagName}"
+            android:paddingVertical="@dimen/_7sdp"
+            android:paddingHorizontal="@dimen/_15sdp"
+            />
+
+    </RelativeLayout>
+
+</layout>

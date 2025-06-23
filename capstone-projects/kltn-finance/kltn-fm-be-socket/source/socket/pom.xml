@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>noti.socket.app</artifactId>
+        <groupId>noti.socket.app</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>noti.socket</groupId>
+    <artifactId>noti.socket</artifactId>
+<dependencies>
+    <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-all</artifactId>
+        <version>4.1.65.Final</version>
+    </dependency>
+
+    <dependency>
+        <groupId>noti.common</groupId>
+        <artifactId>noti.common</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+        <groupId>noti.thread</groupId>
+        <artifactId>noti.thread</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+        <groupId>noti.queue</groupId>
+        <artifactId>noti.queue</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+        <groupId>redis.clients</groupId>
+        <artifactId>jedis</artifactId>
+        <version>2.9.0</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.10</version>
+    </dependency>
+
+    <dependency>
+        <groupId>com.auth0</groupId>
+        <artifactId>java-jwt</artifactId>
+        <version>4.4.0</version>
+    </dependency>
+
+</dependencies>
+<properties>
+    <maven.compile.source>11</maven.compile.source>
+    <maven.compile.target>11</maven.compile.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+</properties>
+
+<build>
+<plugins>
+
+    <!-- build jar -->
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+            <source>${maven.compile.source}</source>
+            <target>${maven.compile.target}</target>
+        </configuration>
+    </plugin>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+
+        <version>2.5</version>
+        <configuration>
+            <archive>
+                <manifest>
+                    <addClasspath>true</addClasspath>
+                </manifest>
+            </archive>
+        </configuration>
+        <executions>
+            <execution>
+                <id>backend-build-jar</id>
+                <phase>package</phase>
+                <goals>
+                    <goal>jar</goal>
+                </goals>
+                <configuration>
+                    <outputDirectory>target</outputDirectory>
+
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+
+    <!-- build runnable jar [Plugin to build Docker Image]-->
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4.1</version>
+        <configuration>
+            <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+            <archive>
+                <manifest>
+                    <mainClass>noti.socket.WebSocketServer</mainClass>
+                </manifest>
+            </archive>
+        </configuration>
+        <executions>
+            <execution>
+                <id>make-assembly</id>
+                <phase>package</phase>
+                <goals>
+                    <goal>single</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+
+
+    <!-- copy libraries -->
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.9</version>
+        <executions>
+            <execution>
+                <id>backend-copy-dependencies</id>
+                <phase>package</phase>
+                <goals>
+                    <goal>copy-dependencies</goal>
+                </goals>
+                <configuration>
+                    <outputDirectory>target/lib/</outputDirectory>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+
+    <!-- copy config -->
+    <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+            <execution>
+                <id>copy-resources</id>
+                <!-- here the phase you need -->
+                <phase>validate</phase>
+                <goals>
+                    <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                    <outputDirectory>target/configs/</outputDirectory>
+                    <resources>
+                        <resource>
+                            <directory>configs</directory>
+                            <filtering>true</filtering>
+                        </resource>
+                    </resources>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+</plugins>
+</build>
+</project>

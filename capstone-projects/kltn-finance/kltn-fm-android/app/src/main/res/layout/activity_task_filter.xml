@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.task.filter.TaskFilterViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.task.filter.TaskFilterActivity" />
+        <import type="com.finance.constant.Constants"/>
+        <import type="android.view.View"/>
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_bg_tran"
+        >
+        <RelativeLayout
+            android:id="@+id/layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/color_theme"
+                >
+
+                <TextView
+                    style="@style/text_title"
+                    android:id="@+id/tv_header_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="@dimen/_16sdp"
+                    android:paddingVertical="@dimen/_12sdp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    />
+
+                <ImageView
+                    android:id="@+id/btn_filter"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:src="@drawable/ic_filter"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:scaleType="centerCrop"
+                    android:onClick="@{() -> a.onBackPressed()}"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter"
+                    android:fontFamily="@font/lato_bold"
+                    android:textSize="@dimen/_15ssp"
+                    android:textColor="@color/white"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/btn_filter"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_done"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/completed"
+                    android:fontFamily="@font/lato_bold"
+                    android:textSize="@dimen/_15ssp"
+                    android:textColor="@color/white"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:paddingEnd="@dimen/_12sdp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:onClick="@{() -> a.filter()}"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete_all"
+                    android:fontFamily="@font/lato_bold"
+                    android:textSize="@dimen/_15ssp"
+                    android:textColor="@color/white"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/tv_done"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:onClick="@{() -> a.clearFilter()}"
+                    />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_title"
+            android:background="@color/white"
+
+            android:layout_marginBottom="0dp"
+            android:paddingBottom="0dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_4sdp"
+                android:background="@drawable/bg_filter_kind"
+
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/project"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:layout_marginVertical="@dimen/_3sdp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:background="@{vm.category == 1 ? @drawable/bg_white_corner : @drawable/bg_blank}"
+                    android:onClick="@{() -> a.selectCategory(1)}"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/organization"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:layout_marginVertical="@dimen/_3sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:background="@{vm.category == 2 ? @drawable/bg_white_corner : @drawable/bg_blank}"
+                    android:onClick="@{() -> a.selectCategory(2)}"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/layout_filter"
+            android:background="@color/color_bg_tran"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_selects"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    />
+            </RelativeLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+</layout>

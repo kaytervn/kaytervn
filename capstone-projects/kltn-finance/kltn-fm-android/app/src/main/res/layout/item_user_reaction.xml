@@ -1,0 +1,43 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="account"
+            type="com.finance.data.model.api.response.chat.AccountChatResponse" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/_12sdp"
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:src="@drawable/ic_remove"
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="User Name"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/lato_bold"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+    </LinearLayout>
+</layout>

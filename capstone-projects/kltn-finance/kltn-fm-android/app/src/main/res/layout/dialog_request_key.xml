@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="dialog"
+            type="com.finance.ui.dialog.DownLoadDialog" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_dialog"
+
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm_download_file"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:textColor="@color/approve"
+                android:textSize="@dimen/_14ssp"
+                android:fontFamily="@font/lato_bold"
+                android:layout_gravity="center_horizontal" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                >
+                <TextView
+                    android:id="@+id/tv_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password"
+                    style="@style/AppTvTitleForEditText"
+                    android:fontFamily="@font/lato_bold"
+                    android:textColor="@color/black_full"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text=" *"
+                    android:textColor="@color/red"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/layout_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                >
+
+                <EditText
+                    android:id="@+id/edit_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    style="@style/AppEditTextInput"
+                    android:hint="@string/input_password"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_40sdp"
+                    android:layout_marginTop="0dp"
+                    android:textColorHint="#C0C0C0"
+                    android:text="@={dialog.password}"
+
+                    />
+
+                <RelativeLayout
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_gravity="end|center_vertical"
+                    android:onClick="@{()-> dialog.isShowPassword()}"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    >
+                    <ImageView
+                        android:id="@+id/img_show_password"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@{ dialog.isShowPassword ? @drawable/ic_eye : @drawable/ic_eye_off, default = @drawable/ic_eye_off}"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        />
+                </RelativeLayout>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:padding="@dimen/_2sdp"
+                >
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_btn_gray"
+                    android:text="@string/cancel"
+                    android:textColor="@color/black_gray"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_14ssp"
+                    android:fontFamily="@font/lato_bold"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:onClick="@{()-> dialog.cancel()}"
+                    android:layout_marginVertical="@dimen/_1sdp"
+                    />
+
+                <Button
+                    android:id="@+id/btn_create_key"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_btn_aprrove"
+                    android:textColor="@color/white"
+                    android:text="@string/confirm"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_14ssp"
+                    android:fontFamily="@font/lato_bold"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:onClick="@{()-> dialog.confirm()}"
+                    android:layout_marginVertical="@dimen/_1sdp"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

@@ -1,0 +1,42 @@
+@startuml SQ
+autonumber
+title SD12.1. Duyệt kỳ thanh toán
+actor "Actor" as actor
+boundary "PaymentPeriod\nView" as view
+control "PaymentPeriod\nController" as controller
+entity "PaymentPeriod\nRepository" as model
+database "Database" as database
+activate actor
+actor -> view : click approve button
+deactivate actor
+activate view
+view -> controller : call api PUT /approve
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : update data
+activate database
+database --> model : callback
+deactivate database
+model --> controller: callback
+deactivate model
+controller --> view: return message
+deactivate controller
+view -> view: display message
+view -> controller : call api GET /list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find data
+activate database
+database --> model : return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view : return list object
+deactivate controller
+view -> view: display data
+activate view
+deactivate view
+deactivate view
+@enduml

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>WebSocket Customer Test</title>
+
+    <script language="javascript" type="text/javascript">
+      // var wsUri = "wss://finance-socket.onrender.com/ws";
+      var wsUri = "ws://localhost:8686/ws";
+
+      var output;
+      var tokenCutomer =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRfbmFtZSI6Im5haWwwMSIsInRlbmFudF9pbmZvIjoibmFpbDAxJjEiLCJncmFudF90eXBlIjoidmlldyIsImFkZGl0aW9uYWxfaW5mbyI6ImVKelROYXpSTmF3eHFMR3hBOUcrRmw3dXJzWXVUa0YrUUNFa1RsNXBUZzVJSG9qQXpMekV6QndEUXpWREFGYUJFN3M9IiwidXNlcl9uYW1lIjoiTThKR0UzREJSTiIsInBvc19pZCI6Ik04SkdFM0RCUk4iLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwic2Vzc2lvbl9pZCI6ImNkYmVmMGY0ZmVjODgwN2UyMzgzMThmMTUzMmM0NWI2IiwiZGV2aWNlX3R5cGUiOjIsImV4cCI6MTc0MDE5NDY1OCwianRpIjoiZTVmNDM2MzEtZmRjOS00Mzg3LTg4ZDgtMmU0OTNhNTJlZTgxIiwiY2xpZW50X2lkIjoiYWJjX2NsaWVudCJ9.a-XIGB0P1DOe8x9uJSyeMrncNWOSAKGjaudd5HRE-B0";
+
+      var Encode = function (obj) {
+        return JSON.stringify(obj);
+      };
+      var Decode = function (obj) {
+        return JSON.parse(obj);
+      };
+
+      function isJson(str) {
+        try {
+          JSON.parse(str);
+        } catch (e) {
+          return false;
+        }
+        return true;
+      }
+
+      function init() {
+        output = document.getElementById("output");
+        webSocket();
+      }
+      function webSocket() {
+        websocket = new WebSocket(wsUri);
+
+        websocket.onopen = onOpen;
+
+        websocket.onclose = onClose;
+
+        websocket.onmessage = onMessage;
+
+        websocket.onerror = onError;
+      }
+      function onOpen(evt) {
+        writeToScreen("CONNECTED");
+
+        var client_info = {
+          cmd: "CLIENT_VERIFY_TOKEN",
+          platform: 0,
+          clientVersion: "1.0",
+          lang: "vi",
+          token: tokenCutomer,
+          app: "CLIENT_APP",
+          data: {
+            app: "CLIENT_APP",
+          },
+        };
+        doSend(JSON.stringify(client_info));
+      }
+
+      function onClose(evt) {
+        writeToScreen("DISCONNECTED");
+      }
+
+      function onMessage(evt) {
+        writeToScreen(
+          '<span style="color: blue;">RESPONSE: ' +
+            doReceived(evt.data) +
+            "</span>"
+        );
+        // websocket.close();
+      }
+      function onError(evt) {
+        writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+      }
+
+      function doSend(message) {
+        writeToScreen("SENT: " + message);
+        websocket.send(message);
+      }
+      function doReceived(message) {
+        console.log("message: " + message);
+        var msgObj = JSON.parse(message);
+        if (msgObj.app === "BACKEND_SOCKET_APP" && msgObj.cmd === "SEND_MSG") {
+          doDeliverMsg(msgObj.data.messageId);
+        }
+        return message;
+      }
+
+      function writeToScreen(message) {
+        var pre = document.createElement("p");
+        pre.style.wordWrap = "break-word";
+        pre.innerHTML = message;
+        output.appendChild(pre);
+      }
+      function clearOutput() {
+        document.getElementById("output").innerHTML = "";
+      }
+      window.addEventListener("load", init, false);
+
+      function doPing() {
+        // var pingRequest = {
+        //   cmd: "CLIENT_PING",
+        //   platform: 0,
+        //   clientVersion: "1.0",
+        //   lang: "vi",
+        //   token: tokenCutomer,
+        //   app: "CLIENT_APP",
+        //   data: {
+        //     app: "CLIENT_APP",
+        //   },
+        // };
+        var pingRequest = {
+          cmd: "ACTIVE_PING",
+          app: "CLIENT_APP",
+        };
+        doSend(JSON.stringify(pingRequest));
+      }
+    </script>
+  </head>
+  <body>
+    <h2>WebSocket Customer Test</h2>
+    <div id="input">
+      <input type="submit" value="PING SERVER" onclick="return doPing();" />
+    </div>
+    <div id="output"></div>
+    <input type="submit" value="Clear" onclick="clearOutput()" />
+    <canvas id="canvas" width="300" height="300"></canvas>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/brown_stroke"
+    android:orientation="horizontal"
+    android:padding="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
+    >
+    <TextView
+        android:id="@+id/tv_member_group_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lato_medium"
+        android:textColor="@color/black_full"
+        android:text="@string/cancel"
+        android:layout_marginEnd="@dimen/_5sdp"
+        />
+    <ImageView
+        android:id="@+id/iv_member_group_icon"
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_cancel" />
+</LinearLayout>

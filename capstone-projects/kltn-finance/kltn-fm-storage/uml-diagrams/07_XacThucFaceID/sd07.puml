@@ -1,0 +1,45 @@
+@startuml SQ
+autonumber
+title SD07. Xác thực Face ID
+actor "Actor" as actor
+boundary "HomeView" as homeView
+boundary "ChatView" as chatView
+control "FaceIdController" as controller
+control "FaceIdService" as service
+entity "AccountRepository" as model
+database "Database" as database
+activate actor
+actor -> homeView: click chat icon
+activate homeView
+homeView -> chatView: redirect to
+deactivate homeView
+activate chatView
+chatView -> chatView: display verify face id modal
+actor -> chatView: click verify
+deactivate actor
+chatView -> controller: call api POST /verify
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find current user
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return object
+deactivate model
+controller -> service: call api POST /verify
+activate service
+service --> controller: return result
+deactivate service
+controller --> chatView: callback
+deactivate controller
+alt result matched
+chatView -> chatView: display success message
+chatView -> chatView: close modal
+else result not matched
+chatView -> chatView: display error message
+activate chatView
+deactivate chatView
+deactivate chatView
+end
+@enduml

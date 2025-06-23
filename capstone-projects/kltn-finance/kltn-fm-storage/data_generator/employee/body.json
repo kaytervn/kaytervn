@@ -1,0 +1,12 @@
+{
+  "address": "{{address}}",
+  "birthDate": "{{birthDate}}",
+  "departmentId": "{{departmentId}}",
+  "email": "{{email}}",
+  "fullName": "{{fullName}}",
+  "groupId": "{{groupId}}",
+  "password": "{{password}}",
+  "phone": "{{phone}}",
+  "status": "{{status}}",
+  "username": "{{username}}"
+}

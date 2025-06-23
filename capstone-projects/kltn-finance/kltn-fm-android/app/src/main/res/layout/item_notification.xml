@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="ivm"
+            type="com.finance.data.model.api.response.notification.NotificationResponse" />
+        <variable
+            name="secretKey"
+            type="String" />
+        <import type="com.finance.utils.DateUtils"/>
+        <import type="com.finance.utils.AESUtils"/>
+        <import type="com.finance.constant.Constants"/>
+        <variable name="permissionDelete" type="Boolean" />
+        <import type="android.view.View"/>
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.finance.ui.swipe.SwipeRevealLayout
+            android:id="@+id/swipeRevealLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:mode="same_level"
+            app:dragEdge="right"
+            android:layout_marginBottom="@dimen/_3sdp"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+                <FrameLayout
+                    android:id="@+id/layout_delete"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_delete"
+                    android:visibility="@{permissionDelete ? View.VISIBLE : View.GONE}"
+                    >
+                    <ImageView
+                        android:id="@+id/img_delete"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:src="@drawable/ic_delete"
+                        android:scaleType="fitXY"
+                        android:layout_gravity="center" />
+                </FrameLayout>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <RelativeLayout
+                    android:id="@+id/layoutNotification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_4sdp"
+                    android:background="@{ivm.state == 1 ? @drawable/bg_tran : @drawable/bg_notification_rectangle}"
+                    >
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        app:cardCornerRadius="@dimen/_30sdp"
+                        android:layout_marginStart="@dimen/_7sdp"
+                        android:background="@{ivm.state == 1 ? @drawable/bg_notification_be_read : @drawable/bg_notification}"
+                        >
+                        <ImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/ic_nofication"
+                            android:layout_gravity="center"
+                            />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/tv_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:textColor="#100D40"
+                        android:textSize="@dimen/_13ssp"
+                        android:maxWidth="@dimen/_220sdp"
+                        android:layout_toEndOf="@+id/cardView"
+                        android:layout_marginStart="@dimen/_7sdp"
+                        android:text="@{ivm.message, default=ItemNotification }"
+                        android:lineSpacingMultiplier="1.3"
+                        android:layout_centerVertical="true"
+                        />
+
+                    <ImageView
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:src="@drawable/ic_icon_circle"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_7sdp"
+                        android:visibility="@{ivm.state == Constants.NOTIFICATION_STATE_READ ? View.GONE : View.VISIBLE}"/>
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </com.finance.ui.swipe.SwipeRevealLayout>
+    </RelativeLayout>
+
+</layout>

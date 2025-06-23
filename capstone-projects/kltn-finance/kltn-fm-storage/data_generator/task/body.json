@@ -1,0 +1,6 @@
+{
+  "name": "{{name}}",
+  "note": "{{note}}",
+  "projectId": "{{projectId}}",
+  "state": "{{state}}"
+}

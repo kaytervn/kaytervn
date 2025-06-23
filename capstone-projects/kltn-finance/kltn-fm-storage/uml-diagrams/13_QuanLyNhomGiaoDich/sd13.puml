@@ -1,0 +1,48 @@
+@startuml SQ
+autonumber
+title SD13. Quản lý nhóm giao dịch
+actor "Actor" as actor
+boundary "TransactionGroup\nView" as view
+control "TransactionGroup\nController" as controller
+entity "TransactionGroup\nRepository" as model
+database "Database" as database
+activate actor
+actor -> view : access to
+activate view
+view -> controller : call api GET /list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find data
+activate database
+database --> model : return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view : return list object
+deactivate controller
+view -> view: display data
+group frg [//TH1. Người dùng tìm kiếm nhóm giao dịch//]
+actor -> view : enter search criterias
+deactivate actor
+view -> view: update data display
+activate view
+deactivate view
+deactivate view
+end
+group frg [//TH2. Người dùng tạo nhóm giao dịch//]
+ref over actor
+SD13.1. Tạo nhóm giao dịch
+end ref
+end
+group frg [//TH3. Người dùng sửa nhóm giao dịch//]
+ref over actor
+SD13.2. Sửa nhóm giao dịch
+end ref
+end
+group frg [//TH4. Người dùng xóa nhóm giao dịch//]
+ref over actor
+SD13.3. Xóa nhóm giao dịch
+end ref
+end
+@enduml

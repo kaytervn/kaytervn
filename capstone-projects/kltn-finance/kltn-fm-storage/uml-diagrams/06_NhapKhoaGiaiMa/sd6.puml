@@ -1,0 +1,56 @@
+@startuml SQ
+autonumber
+title SD06. Nhập khóa giải mã
+actor "Actor" as actor
+boundary "ProfileView" as view
+boundary "HomeView" as home
+control "AccountController" as controller
+control "KeyService" as service
+entity "AccountRepository" as model
+database "Database" as database
+activate actor
+actor -> view: click request key
+activate view
+view -> controller: call api GET /request-key
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find by current user
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return object
+deactivate model
+controller -> service: generate key
+activate service
+service --> controller: return key
+deactivate service
+controller --> view: return key
+deactivate controller
+view --> actor: download key file
+deactivate view
+actor->home: enter key
+deactivate actor
+activate home
+home -> controller: call api GET /my-key
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find by current user
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return object
+deactivate model
+controller --> home: return user key
+deactivate controller
+home -> home: decrypt key
+alt key is valid
+home -> home: display decrypted data
+else key is invalid
+home -> home: display error message
+activate home
+deactivate home
+deactivate home
+end
+@enduml

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="key"
+            type="com.finance.ui.dialog.InputKeyDialog" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:id="@+id/layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingTop="@dimen/_15sdp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:text="@string/please_enter_private_key"
+                    android:fontFamily="@font/lato_bold"
+                    android:textSize="@dimen/_14ssp"
+                    android:textColor="@color/color_theme"
+                    android:textAlignment="center"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <EditText
+                        style="@style/text_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:paddingVertical="@dimen/_7sdp"
+                        android:hint="@string/input_private_key"
+                        android:textColorHint="@color/color_hint"
+
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:background="@drawable/bg_input_key"
+                        android:inputType="textMultiLine"
+                        android:minLines="6"
+                        android:maxLines="6"
+                        android:text="@={key.privateKey}"
+                        />
+
+                    <EditText
+                        android:visibility="gone"
+                        style="@style/text_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_name"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/bg_edit_txt_custom"
+                        android:gravity="top"
+                        android:hint="Nhập secret key"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:maxLines="3"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:paddingStart="@dimen/_7sdp"
+                        android:text="@={key.secretKey}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:weightSum="2"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_2sdp"
+                    >
+
+                    <Button
+                        android:id="@+id/btn_cancel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_btn_gray"
+                        android:text="@string/cancel"
+                        android:textColor="@color/black_gray"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/_14ssp"
+                        android:fontFamily="@font/lato_bold"
+                        android:onClick="@{()->key.cancelInputKey()}"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/_7sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_1sdp"
+                        android:layout_gravity="center_vertical"
+                        >
+                    </Button>
+                    <Button
+                        android:onClick="@{()->key.confirmInputKey()}"
+                        android:id="@+id/btnPassConfirm"
+                        style="@style/AppButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_7sdp"
+                        android:layout_weight="1"
+                        android:enabled='@{key.privateKey != null &amp;&amp; !key.privateKey.empty}'
+                        android:text="@string/confirm"
+                        android:textSize="@dimen/_14ssp"
+                        android:textAllCaps="false"
+                        android:textAlignment="center"
+                        android:layout_marginVertical="@dimen/_1sdp"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</layout>

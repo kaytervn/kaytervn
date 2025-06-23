@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.debit.detail.DebitDetailViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.debit.detail.DebitDetailActivity" />
+        <import type="com.finance.utils.NumberUtils"/>
+        <import type="com.finance.utils.AESUtils"/>
+        <import type="com.finance.utils.DateUtils"/>
+        <import type="android.view.View"/>
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{@string/transaction_detail}"
+            bind:a ="@{a}"
+            />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/layout_header"
+                android:background="@color/pink_light"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/_20sdp"
+                    android:background="@color/white"
+                    >
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        >
+                        
+                        <ImageView
+                            android:id="@+id/img_state"
+                            android:layout_width="@dimen/_70sdp"
+                            android:layout_height="@dimen/_70sdp"
+                            android:src="@{vm.debit.state == 1 ? @drawable/ic_created : (vm.debit.state == 2 ? @drawable/ic_accept : (vm.debit.state == 3 ? @drawable/ic_reject : @drawable/ic_paid)), default=@drawable/ic_paid}"
+                            android:layout_centerHorizontal="true"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_total_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.debit.money!=null ? NumberUtils.custom_money_my_tran(Double.parseDouble(a.decrypt(vm.debit.money)), vm.debit.kind) : @string/money_default_min , default=@string/money_default}"
+                            android:textColor="@{vm.debit.kind == 1 ? @color/black : @color/red_orange}"
+                            android:fontFamily="@font/roboto_600"
+                            android:textSize="@dimen/_25sdp"
+                            android:layout_below="@+id/img_state"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            />
+                        <TextView
+                            android:id="@+id/tv_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.debit.state == 1 ? @string/state_1 : (vm.debit.state == 2 ? @string/state_2 : (vm.debit.state == 3 ? @string/state_3 : @string/state_4)), default=@string/state_4}"
+                            android:textColor="@{vm.debit.state == 1 ? @color/created : (vm.debit.state == 2 ? @color/accept : (vm.debit.state == 3 ? @color/reject : @color/paid)), default=@color/brown_text}"
+                            android:fontFamily="@font/roboto_600"
+                            android:textSize="@dimen/_14sdp"
+                            android:layout_below="@+id/tv_total_money"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_15sdp"
+                            />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@color/white"
+                        android:paddingBottom="@dimen/_10sdp"
+                        >
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            >
+                            <TextView
+                                android:id="@+id/tv_name"
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/debit_name"
+
+                                />
+                            <TextView
+                                android:id="@+id/tv_transaction_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{a.decrypt(vm.debit.name), default=transaction_name_transaction_name}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:maxWidth="@dimen/_180sdp"
+                                android:textAlignment="textEnd"
+
+                                />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_name"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_7sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            >
+
+                            <TextView
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/time"
+
+                                />
+                            <TextView
+                                android:id="@+id/tv_transaction_date_created"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{DateUtils.convertFromUTCToDefault(vm.debit.transactionDate), default=@string/date_default}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:maxWidth="@dimen/_180sdp"
+                                />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_date_created"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            >
+
+                            <TextView
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/transaction_kind"
+                                />
+                            <TextView
+                                android:id="@+id/tv_transaction_kind"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.debit.kind == 1 ? @string/kind_1 : @string/kind_2, default=@string/kind_1}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:maxWidth="@dimen/_180sdp"
+                                />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_kind"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            >
+                            <TextView
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/group_transaction"
+                                />
+                            <TextView
+                                android:id="@+id/tv_transaction_group"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:text="@{a.decrypt(vm.debit.transactionGroup.name), default=group1}"
+                                android:textAlignment="textEnd"
+                                android:maxWidth="@dimen/_180sdp"
+
+                                />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_group"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:visibility="@{vm.debit.tag != null ? View.VISIBLE : View.GONE}"
+                            >
+
+                            <TextView
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tag"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_tag"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{a.decrypt(vm.debit.tag.name), default=tag}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_toStartOf="@id/color_tag"
+                                android:maxWidth="@dimen/_180sdp"
+                                android:layout_marginEnd="@dimen/_7sdp"
+                                />
+
+                            <ImageView
+                                android:id="@+id/color_tag"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_alignParentEnd="true"
+                                android:src="@drawable/ic_tag"
+                                />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_tag"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            >
+
+                            <TextView
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/added_by"
+                                />
+                            <TextView
+                                android:id="@+id/tv_transaction_added_by"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.debit.addedBy.fullName, default=AddedBy}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:maxWidth="@dimen/_180sdp"
+                                />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_added_by"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            >
+
+                            <TextView
+                                android:id="@+id/tv_title_category"
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/category"
+
+                                />
+                            <TextView
+                                android:id="@+id/tv_transaction_category"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{a.decrypt(vm.debit.category.name), default=Category1ekfjfwfweiofjwioefjwiofjwefoij}"
+                                style="@style/AppTvInforDetailTransaction"
+                                android:layout_alignParentEnd="true"
+                                android:maxWidth="@dimen/_180sdp"
+                                android:textAlignment="textEnd"
+
+                                />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/divider"
+                                android:layout_below="@id/tv_transaction_category"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            >
+
+
+                            <TextView
+                                android:id="@+id/tv_title_content"
+                                style="@style/AppTvTitleDetailInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/content"
+
+                                />
+
+                            <kr.co.prnd.readmore.ReadMoreTextView
+                                style="@style/AppReadMoreDescriptionDetail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                app:readMoreMaxLine="4"
+                                app:readMoreText="@string/read_more"
+                                app:readMoreColor="@color/color_read_more"
+                                android:hint="@string/input_des"
+                                android:text="@{a.decrypt(vm.debit.note), default=ContentContentContentContentContentContentContentContentContentContent}"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_title"
+                            android:text="@string/document"
+                            style="@style/AppTvTitleDetailInfo"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:visibility="@{vm.isHaveDocument ? View.VISIBLE : View.GONE}"
+                            />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcv_documents"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginHorizontal="@dimen/_15sdp"
+                            />
+                    </LinearLayout>
+                </ScrollView>
+
+            </LinearLayout>
+    </RelativeLayout>
+</layout>

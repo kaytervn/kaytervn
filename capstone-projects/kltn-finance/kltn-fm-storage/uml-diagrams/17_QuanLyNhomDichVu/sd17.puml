@@ -1,0 +1,48 @@
+@startuml SQ
+autonumber
+title SD17. Quản lý nhóm dịch vụ
+actor "Actor" as actor
+boundary "ServiceGroup\nView" as view
+control "ServiceGroup\nController" as controller
+entity "ServiceGroup\nRepository" as model
+database "Database" as database
+activate actor
+actor -> view : access to
+activate view
+view -> controller : call api GET /list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find data
+activate database
+database --> model : return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view : return list object
+deactivate controller
+view -> view: display data
+group frg [//TH1. Người dùng tìm kiếm nhóm dịch vụ//]
+actor -> view : enter search criterias
+deactivate actor
+view -> view: update data display
+activate view
+deactivate view
+deactivate view
+end
+group frg [//TH2. Người dùng tạo nhóm dịch vụ//]
+ref over actor
+SD13.1. Tạo nhóm dịch vụ
+end ref
+end
+group frg [//TH3. Người dùng sửa nhóm dịch vụ//]
+ref over actor
+SD13.2. Sửa nhóm dịch vụ
+end ref
+end
+group frg [//TH4. Người dùng xóa nhóm dịch vụ//]
+ref over actor
+SD13.3. Xóa nhóm dịch vụ
+end ref
+end
+@enduml

@@ -1,0 +1,48 @@
+@startuml SQ
+autonumber
+title SD30. Quản lý người dùng
+actor "Actor" as actor
+boundary "AccountView" as view
+control "AccountController" as controller
+entity "AccountRepository" as model
+database "Database" as database
+activate actor
+actor -> view : access to
+activate view
+view -> controller : call api GET /list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find data
+activate database
+database --> model : return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view : return list object
+deactivate controller
+view -> view: display data
+group frg [//TH1. Người dùng tìm kiếm tài khoản//]
+actor -> view : enter search criterias
+deactivate actor
+view -> view: update data display
+activate view
+deactivate view
+deactivate view
+end
+group frg [//TH2. Người dùng tạo tài khoản//]
+ref over actor
+SD16.1. Tạo người dùng
+end ref
+end
+group frg [//TH3. Người dùng sửa tài khoản//]
+ref over actor
+SD16.2. Sửa người dùng
+end ref
+end
+group frg [//TH4. Người dùng xóa tài khoản//]
+ref over actor
+SD16.3. Xóa người dùng
+end ref
+end
+@enduml

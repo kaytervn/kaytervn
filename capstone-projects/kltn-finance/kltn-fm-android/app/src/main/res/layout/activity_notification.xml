@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.nofication.NotificationViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.nofication.NotificationActivity" />
+        <import type="com.finance.constant.Constants"/>
+        <import type="android.view.View"/>
+        <import type="android.text.TextUtils"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:onClick="@{()->vm.closeFilter()}"
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{@string/menu_notification}"
+            bind:a ="@{a}"
+            android:onClick="@{()->vm.closeFilter()}"
+            />
+
+        <androidx.cardview.widget.CardView
+            android:visibility="@{vm.isShowFilter ? View.VISIBLE : View.GONE}"
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_header"
+            app:layout_constraintEnd_toEndOf="parent">
+            <LinearLayout
+                android:id="@+id/layout_option"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_20sdp"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/_10sdp">
+                <LinearLayout
+                    android:onClick="@{()->a.readAllNotification()}"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_20sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_10sdp"
+                    >
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_read_all"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/read_all_notification"
+                            android:fontFamily="@font/lato_medium"
+                            android:textColor="@color/black_full"
+                            android:ellipsize="end"
+                            android:maxLines="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/divider"
+                    />
+
+                <LinearLayout
+                    android:onClick="@{()->a.deleteAllNotification()}"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/_20sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    >
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_delete"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_medium"
+                            android:textColor="@color/black_full"
+                            android:text="@string/delete_all_notification"
+
+                            android:ellipsize="end"
+                            android:maxLines="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:onClick="@{()->vm.closeFilter()}"
+            android:id="@+id/swipe_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/color_bg_tran"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcNotification"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/_15sdp" />
+            </RelativeLayout>
+
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{vm.totalElement == 0 ?View.VISIBLE:View.GONE}"
+            android:id="@+id/layout_empty"
+            layout="@layout/layout_empty_notification"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            bind:des="@{@string/no_notification}"
+            />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_dialog_log_out"
+    android:layout_margin="@dimen/_12sdp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_file"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/color_theme"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/lato_bold"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            >
+            <RelativeLayout
+                android:id="@+id/btn_camera"
+                android:layout_width="@dimen/_115sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:background="@drawable/bg_blue"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_1sdp"
+                >
+
+                <ImageView
+                    android:id="@+id/img_camera"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:src="@drawable/ic_camera"
+                    android:scaleType="centerCrop"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/camera"
+                    android:textColor="@color/color_theme"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_13ssp"
+                    android:fontFamily="@font/lato_bold"
+                    android:layout_below="@+id/img_camera"
+                    android:layout_centerHorizontal="true"
+
+                    >
+                </TextView>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/btn_galery"
+                android:layout_width="@dimen/_115sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:background="@drawable/bg_blue"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_1sdp"
+                android:layout_alignParentEnd="true"
+                >
+
+                <ImageView
+                    android:id="@+id/img_gallery"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:src="@drawable/ic_file"
+                    android:scaleType="fitCenter"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_gallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/library"
+                    android:textColor="@color/color_theme"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_13ssp"
+                    android:fontFamily="@font/lato_bold"
+                    android:layout_below="@+id/img_gallery"
+                    android:layout_centerHorizontal="true"
+
+                    >
+                </TextView>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

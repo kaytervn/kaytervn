@@ -1,0 +1,5 @@
+{
+  "accountId": "{{accountId}}",
+  "serviceGroupId": "{{serviceGroupId}}",
+  "permissionKind": 2
+}

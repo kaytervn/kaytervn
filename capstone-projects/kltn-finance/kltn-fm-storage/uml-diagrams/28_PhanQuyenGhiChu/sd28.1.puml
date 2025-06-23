@@ -1,0 +1,77 @@
+@startuml SQ
+autonumber
+title SD28.1. Thêm tài khoản
+actor "Actor" as actor
+boundary "NotePermissionView" as view
+control "ProjectPermissionController" as controller
+control "AccountController" as account
+entity "ProjectPermissionRepository" as model
+entity "ProjectRepository" as pj
+entity "AccountRepository" as acc
+database "Database" as database
+activate actor
+actor -> view: click add button
+activate view
+view -> view: open add dialog
+view -> account : call api GET /auto-complete
+activate account
+account -> acc : inject repository
+activate acc
+acc -> database : find data
+activate database
+database --> acc: return data
+deactivate database
+acc --> account: return list objects
+deactivate acc
+account --> view: display data
+deactivate account
+actor -> view: choose account
+deactivate actor
+view -> controller: call api POST /create
+activate controller
+controller -> pj : inject repository
+activate pj
+pj -> database : find data
+activate database
+database --> pj: return data
+deactivate database
+pj --> controller : return object
+deactivate pj
+controller -> controller: set relationship
+controller -> acc : inject repository
+activate acc
+acc -> database : find data
+activate database
+database --> acc: return data
+deactivate database
+acc --> controller : return object
+deactivate acc
+controller -> controller: set relationship
+controller -> model: inject repository
+activate model
+model -> database: add data
+activate database
+database --> model: callback
+deactivate database
+model --> controller: callback
+deactivate model
+controller --> view: return message
+deactivate controller
+view -> view: display message
+view -> controller: call api GET /list
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view: return list
+deactivate controller
+view -> view: display data
+activate view
+deactivate view
+deactivate view
+@enduml

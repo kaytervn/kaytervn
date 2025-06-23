@@ -1,0 +1,9 @@
+{
+  "additionalInformation": {{additionalInformation}},
+  "description": "{{description}}",
+  "keyInformationGroupId": "{{keyInformationGroupId}}",
+  "kind": "{{kind}}",
+  "name": "{{name}}",
+  "organizationId": "{{organizationId}}",
+  "tagId": "{{tagId}}"
+}

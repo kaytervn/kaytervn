@@ -1,0 +1,4 @@
+{
+  "serviceId": "{{serviceId}}",
+  "notificationGroupId": "{{notificationGroupId}}"
+}

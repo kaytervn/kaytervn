@@ -1,0 +1,47 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Finance" id="1720584892458-1">
+        <createTable tableName="db_fn_transaction_history">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_transaction_historyPK"/>
+            </column>
+            <column name="note" type="TEXT"/>
+            <column name="state" type="INT"/>
+            <column name="account_id" type="BIGINT"/>
+            <column name="transaction_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Finance" id="1720584892458-2">
+        <addForeignKeyConstraint baseColumnNames="transaction_id" baseTableName="db_fn_transaction_history" constraintName="FKdxmlw3jnxteoqks064nvgyyo6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_transaction" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1720584892458-3">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_fn_transaction_history" constraintName="FKe2oil90fu2585kyya859mld5r" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Finance" id="1720584892458-4">
+        <dropForeignKeyConstraint baseTableName="db_fn_transaction" constraintName="FKcfymmmqkakslh107lolpf6bdd"/>
+    </changeSet>
+    <changeSet author="Finance" id="1720584892458-5">
+        <dropColumn columnName="account_id" tableName="db_fn_transaction"/>
+    </changeSet>
+    <changeSet author="Finance" id="1720584892458-6">
+        <dropColumn columnName="period" tableName="db_fn_transaction"/>
+    </changeSet>
+    <changeSet author="Finance" id="1720584892458-7">
+        <dropColumn columnName="reason" tableName="db_fn_transaction"/>
+    </changeSet>
+</databaseChangeLog>

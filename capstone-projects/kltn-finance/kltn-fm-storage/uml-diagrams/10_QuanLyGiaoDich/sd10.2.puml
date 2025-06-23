@@ -1,0 +1,72 @@
+@startuml SQ
+autonumber
+title SD10.2. Sửa giao dịch
+actor "Actor" as actor
+boundary "Transaction\nView" as view
+boundary "UpdateTransaction\nView" as create
+control "Transaction\nController" as controller
+entity "Transaction\nRepository" as model
+database "Database" as database
+activate actor
+actor -> view: click update button
+activate view
+view -> create: redirect to
+deactivate view
+activate create
+create -> controller: call api GET /get
+activate controller
+controller->model:inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return object
+deactivate model
+controller --> create: return object
+deactivate controller
+create -> create: display data
+actor -> create: edit data
+deactivate actor
+opt attach documents
+ref over actor
+SD09. Đính kèm tài liệu
+end ref
+end
+alt enter valid input
+create -> controller: call api PUT /update
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: update data
+activate database
+database --> model: callback
+deactivate database
+model --> controller: callback
+deactivate model
+controller --> create: callback
+deactivate controller
+create -> create: display success message
+create -> view: redirect to
+deactivate create
+activate  view
+view -> controller: call api GET /list
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view: return list
+deactivate controller
+view -> view: display data
+else enter invalid input
+view -> view: display error message
+activate view
+deactivate view
+deactivate view
+end
+@enduml

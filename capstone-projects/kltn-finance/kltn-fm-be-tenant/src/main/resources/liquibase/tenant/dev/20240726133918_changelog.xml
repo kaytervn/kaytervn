@@ -1,0 +1,11 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Finance" id="1722001166980-1">
+        <addColumn tableName="db_fn_service">
+            <column name="kind" type="integer" afterColumn="name"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Finance" id="1722001166980-2">
+        <addForeignKeyConstraint baseColumnNames="service_group_id" baseTableName="db_fn_service" constraintName="FK10ilhybanwwxw0i802hp4ot3b" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_service_group" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

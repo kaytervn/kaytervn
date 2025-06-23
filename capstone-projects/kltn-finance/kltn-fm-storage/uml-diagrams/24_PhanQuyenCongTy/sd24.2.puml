@@ -1,0 +1,47 @@
+@startuml SQ
+autonumber
+title SD24.2. Xóa tài khoản
+actor "Actor" as actor
+boundary "OrganizationPermission\nView" as view
+control "OrganizationPermission\nController" as controller
+entity "OrganizationPermission\nRepository" as model
+database "Database" as database
+activate actor
+actor -> view: click detele button
+deactivate actor
+activate view
+view -> view: open confirm dialog
+alt click confirm
+view -> controller: call api DELETE /delete
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: delete record
+activate database
+database --> model: callback
+deactivate database
+model --> controller: callback
+deactivate model
+controller --> view: return message
+deactivate controller
+view -> view: display message
+view -> controller: call api GET /list
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view: return list
+deactivate controller
+view -> view: display data
+else click cancel
+view -> view: close dialog
+activate view
+deactivate view
+deactivate view
+end
+@enduml

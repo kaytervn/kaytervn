@@ -1,0 +1,35 @@
+@startuml SQ
+autonumber
+title SD31.1. Thêm phòng ban
+actor "Actor" as actor
+boundary "ManageDepartmentView" as manageView
+control "DepartmentController" as controller
+entity "DepartmentRepository" as model
+database "Database" as database
+activate actor
+actor -> manageView : Click "Create"
+activate manageView
+    manageView -> actor : Display create form
+    actor -> manageView : Input department name and description
+    manageView -> controller : Submit create form
+    activate controller
+activate controller
+    controller -> model : Inject repository
+activate model
+    model -> database : INSERT INTO departments (name, description)
+    activate database
+activate database
+    database --> model : Insert success
+deactivate database
+    deactivate database
+    model --> controller : Notify success
+deactivate model
+    deactivate model
+    controller --> manageView : Return success
+deactivate controller
+    deactivate controller
+    manageView -> actor : Notify "Department created successfully"
+    manageView -> manageView : Refresh department list
+activate manageView
+deactivate manageView
+deactivate manageView

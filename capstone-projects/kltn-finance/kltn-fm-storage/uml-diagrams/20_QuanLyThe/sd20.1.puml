@@ -1,0 +1,35 @@
+@startuml SQ
+autonumber
+title SD20.1. Thêm thẻ
+actor "Actor" as actor
+boundary "ManageTagView" as manageView
+control "TagController" as controller
+entity "TagRepository" as model
+database "Database" as database
+activate actor
+    actor -> manageView : Click "Create"
+activate manageView
+    manageView -> actor : Display create form
+    actor -> manageView : Input tag name, type, and color
+    manageView -> controller : Submit create form
+    activate controller
+activate controller
+    controller -> model : Inject repository
+activate model
+    model -> database : INSERT INTO tags (name, type, color)
+    activate database
+activate database
+    database --> model : Insert success
+deactivate database
+    deactivate database
+    model --> controller : Notify success
+deactivate model
+    deactivate model
+    controller --> manageView : Return success
+deactivate controller
+    deactivate controller
+    manageView -> actor : Notify "Tag created successfully"
+    manageView -> manageView : Update tag list
+activate manageView
+deactivate manageView
+deactivate manageView

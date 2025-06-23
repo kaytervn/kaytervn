@@ -1,0 +1,54 @@
+@startuml SQ
+autonumber
+title SD13.1. Tạo nhóm giao dịch
+actor "Actor" as actor
+boundary "TransactionGroup\nView" as view
+boundary "CreateTransactionGroup\nView" as create
+control "TransactionGroup\nController" as controller
+entity "TransactionGroup\nRepository" as model
+database "Database" as database
+activate actor
+actor -> view: click create button
+activate view
+view -> create: redirect to
+deactivate view
+activate create
+actor -> create: enter input data
+deactivate actor
+alt enter valid input
+create -> controller: call api POST /create
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: create new data
+activate database
+database --> model: callback
+deactivate database
+model --> controller: callback
+deactivate model
+controller --> create: return message
+deactivate controller
+create -> create: display success message
+create -> view: redirect to
+deactivate create
+activate view
+view -> controller: call api GET /list
+activate controller
+controller -> model: inject repository
+activate model
+model -> database: find data
+activate database
+database --> model: return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view: return list
+deactivate controller
+view -> view: display data
+else enter invalid input
+view -> view: display error message
+activate view
+deactivate view
+deactivate view
+end
+@enduml

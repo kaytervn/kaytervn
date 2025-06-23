@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background trong suốt -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+
+    <!-- Gạch chân dưới khi selected -->
+    <item android:gravity="bottom">
+        <shape android:shape="rectangle">
+            <solid android:color="#2196F3" />
+            <size android:height="3dp" />
+        </shape>
+    </item>
+
+</layer-list>

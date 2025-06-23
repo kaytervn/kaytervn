@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.transaction.group.detail.TransactionGroupDetailViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.transaction.group.detail.TransactionGroupDetailActivity" />
+        <import type="android.view.View"/>
+
+        <import type="com.finance.utils.AESUtils"/>
+        <import type="com.finance.constant.Constants"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:onClick="@{()->a.hideKeyboard()}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{vm.isCreate ?@string/add_new_group_transaction : @string/detail_group_transaction}"
+            bind:a ="@{a}"
+            />
+
+        <androidx.core.widget.NestedScrollView
+            android:onClick="@{()->a.hideKeyboard()}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_header"
+            app:layout_constraintBottom_toTopOf="@+id/btnEPUpdate"
+            app:layout_constraintVertical_bias="0.0"
+            >
+            <LinearLayout
+                android:onClick="@{()->a.hideKeyboard()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/group_transaction_name"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_12sdp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_group_transaction_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:hint="@string/input_group_transaction"
+                    android:enabled="@{vm.isCreate || a.checkPermission(Constants.PERMISSION_GROUP_TRANSACTION_UPDATE) &amp;&amp; !vm.isCreate}"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    >
+                    <TextView
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/description"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=" *"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_12sdp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_group_transaction_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppEditTextInputDescription"
+                    android:hint="@string/input_des"
+                    android:textColorHint="@color/color_hint"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:enabled="@{vm.isCreate || a.checkPermission(Constants.PERMISSION_GROUP_TRANSACTION_UPDATE) &amp;&amp; !vm.isCreate}"
+                    />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btnEPUpdate"
+            style="@style/AppButtonStyle"
+            android:layout_marginVertical="@dimen/_15sdp"
+            android:layout_marginHorizontal="@dimen/_7sdp"
+            android:onClick="@{()->a.createOrUpdateTransactionGroup()}"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="@{vm.isCreate || (a.checkPermission(Constants.PERMISSION_GROUP_TRANSACTION_UPDATE) &amp;&amp; !vm.isCreate) ? View.VISIBLE : View.GONE}"
+            >
+        </Button>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

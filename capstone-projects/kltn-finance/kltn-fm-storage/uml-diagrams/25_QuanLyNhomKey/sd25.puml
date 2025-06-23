@@ -1,0 +1,48 @@
+@startuml SQ
+autonumber
+title SD25. Quản lý nhóm key
+actor "Actor" as actor
+boundary "KeyInformationGroup\nView" as view
+control "KeyInformationGroup\nController" as controller
+entity "KeyInformationGroup\nRepository" as model
+database "Database" as database
+activate actor
+actor -> view : access to
+activate view
+view -> controller : call api GET /list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find data
+activate database
+database --> model : return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view : return list object
+deactivate controller
+view -> view: display data
+group frg [//TH1. Người dùng tìm kiếm nhóm key//]
+actor -> view : enter search criterias
+deactivate actor
+view -> view: update data display
+activate view
+deactivate view
+deactivate view
+end
+group frg [//TH2. Người dùng tạo nhóm key//]
+ref over actor
+SD13.1. Tạo nhóm key
+end ref
+end
+group frg [//TH3. Người dùng sửa nhóm key//]
+ref over actor
+SD13.2. Sửa nhóm key
+end ref
+end
+group frg [//TH4. Người dùng xóa nhóm key//]
+ref over actor
+SD13.3. Xóa nhóm key
+end ref
+end
+@enduml

@@ -1,0 +1,136 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Tenant" id="1744999368736-1">
+        <createTable tableName="db_fn_chat_room">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_chat_roomPK"/>
+            </column>
+            <column name="avatar" type="VARCHAR(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="settings" type="LONGTEXT"/>
+            <column name="owner_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Tenant" id="1744999368736-2">
+        <createTable tableName="db_fn_chat_room_member">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_chat_room_memberPK"/>
+            </column>
+            <column name="chat_room_id" type="BIGINT"/>
+            <column name="last_read_message_id" type="BIGINT"/>
+            <column name="member_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Tenant" id="1744999368736-3">
+        <createTable tableName="db_fn_message">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_messagePK"/>
+            </column>
+            <column name="content" type="TEXT"/>
+            <column name="document" type="TEXT"/>
+            <column name="is_deleted" type="BIT"/>
+            <column name="is_update" type="BIT"/>
+            <column name="chat_room_id" type="BIGINT"/>
+            <column name="parent_id" type="BIGINT"/>
+            <column name="sender_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Tenant" id="1744999368736-4">
+        <createTable tableName="db_fn_message_reaction">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_fn_message_reactionPK"/>
+            </column>
+            <column name="kind" type="INT"/>
+            <column name="account_id" type="BIGINT"/>
+            <column name="message_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Tenant" id="1744999368736-5">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_fn_message_reaction" constraintName="FK3n1571gdky5i94oh7vq1mrq5w" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1744999368736-6">
+        <addForeignKeyConstraint baseColumnNames="message_id" baseTableName="db_fn_message_reaction" constraintName="FK84m10qq7qt28jd56a97yg1ygn" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_message" validate="true"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1744999368736-7">
+        <addForeignKeyConstraint baseColumnNames="sender_id" baseTableName="db_fn_message" constraintName="FK9rs27qgwhdytmul9m85xr6o9s" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1744999368736-8">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="db_fn_chat_room" constraintName="FKd1scdn6ku4mgphycr2u6o9l8r" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1744999368736-9">
+        <addForeignKeyConstraint baseColumnNames="chat_room_id" baseTableName="db_fn_chat_room_member" constraintName="FKhxf2bamnw74p8y44lydi8a5fd" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_chat_room" validate="true"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1744999368736-10">
+        <addForeignKeyConstraint baseColumnNames="last_read_message_id" baseTableName="db_fn_chat_room_member" constraintName="FKigr1e17j1acla7nqwxq717wdu" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_message" validate="true"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1744999368736-11">
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="db_fn_message" constraintName="FKjx0xq3ljmpsoc3v37qvrp01v3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_message" validate="true"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1744999368736-12">
+        <addForeignKeyConstraint baseColumnNames="chat_room_id" baseTableName="db_fn_message" constraintName="FKq0fj76d0gt1ukdx0dallnm1wa" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_chat_room" validate="true"/>
+    </changeSet>
+    <changeSet author="Tenant" id="1744999368736-13">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="db_fn_chat_room_member" constraintName="FKqdgs4cvbu683p51kx0g4xwsdp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_fn_account" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.fragment.account.update.UpdateProfileViewModel" />
+
+        <variable name="a"
+            type="com.finance.ui.fragment.account.update.UpdateProfileActivity" />
+        <import type="android.text.TextUtils" />
+        <import type="android.view.View"/>
+        <import type="com.finance.utils.DateUtils"/>
+    </data>
+
+    <RelativeLayout
+        android:onClick="@{()->a.hideKeyboard()}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{@string/profile_update}"
+            bind:a ="@{a}"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/layout_header"
+            android:fillViewport="true"
+            android:scrollbars="none"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_above="@+id/btn_update"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:onClick="@{() -> a.hideKeyboard()}"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/_7sdp"
+                >
+                <androidx.cardview.widget.CardView
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_120sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    app:cardCornerRadius="@dimen/_60sdp"
+                    >
+                    <FrameLayout
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_120sdp">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/imgAvatar"
+                            android:layout_width="@dimen/_120sdp"
+                            android:layout_height="@dimen/_120sdp"
+                            android:src="@drawable/bg_ava"
+                            android:onClick="@{(v)-> a.showDialogChooseImage()}"
+                            android:layout_gravity="center_horizontal"
+                            />
+                        <FrameLayout
+                            android:layout_width="@dimen/_120sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_gravity="bottom"
+                            android:background="#80696969"
+                            android:onClick="@{(v)-> a.showDialogChooseImage()}"
+                            >
+                            <ImageView
+                                android:layout_width="@dimen/_35sdp"
+                                android:layout_height="@dimen/_35sdp"
+                                android:src="@drawable/ic_camera_choose"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="@dimen/_7sdp"
+                                android:onClick="@{(v)-> a.showDialogChooseImage()}"
+                                />
+                        </FrameLayout>
+                    </FrameLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    >
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fullname"
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{" " + @string/asterisk, default=@string/asterisk}'
+                        android:textColor="@color/red_text"
+                        android:textSize="@dimen/_14ssp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:hint="@string/input_fullname"
+                    android:text="@={vm.profile.fullName}"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/birth_date"
+                    style="@style/AppTvTitleForEditText"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    >
+                    <EditText
+                        android:id="@+id/pick_birth_day"
+                        android:layout_width="@dimen/_90sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        style="@style/AppEditTextInput"
+                        android:layout_marginTop="0dp"
+                        android:onClick="@{()->a.pickBirthDay()}"
+                        android:hint="dd/MM/yyyy"
+                        android:text="@{vm.accountResponseFromIntent.birthDate != null ? DateUtils.getDayMonthYear(DateUtils.convertFromUTCToDefaultApi(vm.accountResponseFromIntent.birthDate)) : null}"
+                        android:textAlignment="center"
+                        />
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:src="@drawable/ic_pick_date"
+                        android:onClick="@{()->a.pickBirthDay()}"
+                        android:layout_toEndOf="@+id/pick_birth_day"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/address"
+                    style="@style/AppTvTitleForEditText"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    />
+
+                <EditText
+                    android:id="@+id/edit_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+
+                    android:hint="@string/input_address"
+                    android:text="@{vm.accountResponseFromIntent.address}"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    >
+                    <TextView
+                        android:id="@+id/tv_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/email"
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{" " + @string/asterisk, default=@string/asterisk}'
+                        android:textColor="@color/red_text"
+                        android:textSize="@dimen/_14ssp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="@={vm.accountResponseFromIntent.email, default=email}"
+                    android:enabled="false"
+                    android:textColor="@color/color_hint"
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    >
+                    <TextView
+                        android:id="@+id/tv_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/username_title"
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{" " + @string/asterisk, default=@string/asterisk}'
+                        android:textColor="@color/red_text"
+                        android:textSize="@dimen/_14ssp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_username"
+                    android:layout_below="@+id/tv_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:text="@={vm.accountResponseFromIntent.username, default=username}"
+                    android:enabled="false"
+                    android:textColor="@color/color_hint"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    >
+                    <TextView
+                        android:id="@+id/tv_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/phone_number"
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{" " + @string/asterisk, default=@string/asterisk}'
+                        android:textColor="@color/red_text"
+                        android:textSize="@dimen/_14ssp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_phone"
+                    android:layout_below="@+id/tv_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:text="@={vm.accountResponseFromIntent.phone, default=123}"
+                    android:enabled="false"
+                    android:textColor="@color/color_hint"
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    >
+                    <TextView
+                        android:id="@+id/tv_department"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/department_name"
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{" " + @string/asterisk, default=@string/asterisk}'
+                        android:textColor="@color/red_text"
+                        android:textSize="@dimen/_14ssp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_department"
+                    android:layout_below="@+id/tv_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:text="@={vm.accountResponseFromIntent.department.name, default=department_name}"
+                    android:enabled="false"
+                    android:textColor="@color/color_hint"
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    >
+                    <TextView
+                        android:id="@+id/tv_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/password"
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{" " + @string/asterisk, default=@string/asterisk}'
+                        android:textColor="@color/red_text"
+                        android:textSize="@dimen/_14ssp"
+                        />
+                </LinearLayout>
+
+
+
+                <FrameLayout
+                    android:id="@+id/layout_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_password"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    >
+
+                    <EditText
+                        android:id="@+id/edit_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        style="@style/AppEditTextInputPassWord"
+                        android:hint="@string/input_password"
+                        android:text="@={vm.profile.oldPassword}"
+                        android:inputType="textPassword"
+                        />
+                    <RelativeLayout
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_gravity="end|center_vertical"
+                        android:onClick="@{(v)-> vm.showPassword()}"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        >
+                        <ImageView
+                            android:id="@+id/img_show_password"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:src="@{ vm.isShowPassword ? @drawable/ic_eye : @drawable/ic_eye_off, default = @drawable/ic_eye_off}"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            />
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btn_update"
+            style="@style/AppButtonStyle"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:onClick="@{()->a.updateProfile()}"
+            android:text="@string/save"
+            android:layout_marginHorizontal="@dimen/_7sdp"
+            android:layout_marginVertical="@dimen/_15sdp"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
+
+</layout>

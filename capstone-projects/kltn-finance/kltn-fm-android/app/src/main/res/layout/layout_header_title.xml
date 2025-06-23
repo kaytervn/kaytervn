@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="a"
+            type="androidx.appcompat.app.AppCompatActivity" />
+        <variable
+            name="isBack"
+            type="boolean" />
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/color_theme"
+            >
+
+            <TextView
+                style="@style/text_title"
+                android:id="@+id/tv_header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_bold"
+                android:text="@{title, default=hahah}"
+                android:layout_toEndOf="@id/layout_back"
+                android:layout_toStartOf="@id/layout_other"
+                android:textSize="@dimen/_16ssp"
+                android:paddingVertical="@dimen/_12sdp"
+                android:textColor="@color/white"
+                android:maxLines="2"
+                android:ellipsize="end"
+                />
+
+            <RelativeLayout
+                android:id="@+id/layout_back"
+                android:onClick="@{()->a.onBackPressed()}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_12sdp"
+                >
+                <ImageView
+                    android:id="@+id/button_back"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:src="@drawable/ic_back"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_12sdp"
+                android:layout_centerVertical="true"
+
+                android:layout_alignParentEnd="true"
+                >
+                <ImageView
+                    android:id="@+id/img_other"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    />
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

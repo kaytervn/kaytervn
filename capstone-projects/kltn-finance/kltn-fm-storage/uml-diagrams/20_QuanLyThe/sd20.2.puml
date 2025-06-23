@@ -1,0 +1,35 @@
+@startuml SQ
+autonumber
+title SD20.2. Sửa thẻ
+actor "Actor" as actor
+boundary "ManageTagView" as manageView
+control "TagController" as controller
+entity "TagRepository" as model
+database "Database" as database
+activate actor
+actor -> manageView : Select a tag to edit
+activate manageView
+    manageView -> actor : Display edit form
+    actor -> manageView : Input updated name and color
+    manageView -> controller : Call API PUT /v1/tag/update
+    activate controller
+activate controller
+    controller -> model : Inject repository
+activate model
+    model -> database : save(tag)
+    activate database
+activate database
+    database --> model : Update success
+deactivate database
+    deactivate database
+    model --> controller : Notify success
+deactivate model
+    deactivate model
+    controller --> manageView : Return success
+deactivate controller
+    deactivate controller
+    manageView -> actor : Notify "Tag updated successfully"
+    manageView -> manageView : Update tag list
+activate manageView
+deactivate manageView
+deactivate manageView

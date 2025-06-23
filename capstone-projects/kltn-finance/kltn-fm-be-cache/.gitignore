@@ -1,0 +1,7 @@
+/node_modules
+/vendor
+/.idea
+.idea/
+.env
+package-lock.json
+/uploads

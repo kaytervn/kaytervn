@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.debit.update.DebitUpdateViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.debit.update.DebitUpdateActivity" />
+        <import type="com.finance.utils.NumberUtils"/>
+        <import type="com.finance.utils.AESUtils"/>
+        <import type="com.finance.constant.Constants"/>
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:onClick="@{()->a.hideKeyboard()}"
+        >
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{@string/update_debit}"
+            bind:a ="@{a}"
+            />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_below="@+id/layout_header"
+            android:layout_above="@id/btn_update"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:onClick="@{()->a.hideKeyboard()}"
+
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/_7sdp"
+                android:onClick="@{()->a.hideKeyboard()}"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_18sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/transaction_kind"
+                        style="@style/AppTvTitleForEditText"
+
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" *"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_14ssp"
+                        />
+                </LinearLayout>
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/DropDownMenu"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+                        app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopStart="@dimen/_8sdp"
+                        app:boxStrokeColor="@color/normal_brown"
+                        app:boxStrokeWidthFocused="@dimen/_1sdp"
+                        app:endIconTint="@color/gray_cbb"
+
+                        >
+                        <AutoCompleteTextView
+                            android:id="@+id/cbb_debit_kind"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:textSize="@dimen/_12ssp"
+                            android:paddingVertical="0dp"
+                            android:textCursorDrawable="@drawable/cursor_color"
+                            android:focusable="false"
+                            android:background="@drawable/bg_cbb_enable"
+                            style="@style/AppSpinner"
+                            >
+                        </AutoCompleteTextView>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_title"
+                        android:text="@string/transaction_category"
+                        style="@style/AppTvTitleForEditText"
+                        />
+                </LinearLayout>
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/DropDownMenu"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_input_category"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+                        app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopStart="@dimen/_8sdp"
+                        app:boxStrokeColor="@color/normal_brown"
+                        app:boxStrokeWidthFocused="@dimen/_1sdp"
+                        app:endIconTint="@color/gray_cbb"
+                        >
+
+                        <AutoCompleteTextView
+                            android:id="@+id/cbb_debit_category"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:textSize="@dimen/_12ssp"
+                            android:fontFamily="@font/lato_medium"
+                            android:paddingVertical="0dp"
+                            android:textCursorDrawable="@drawable/cursor_color"
+                            android:enabled="@{vm.isHaveCategory ? true : false, default=false}"
+                            android:background="@{vm.isHaveCategory ? @drawable/bg_cbb_enable : @drawable/bg_cbb_disable, default= @drawable/bg_cbb_disable}"
+                            style="@style/AppSpinner"
+                            >
+
+                        </AutoCompleteTextView>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_title"
+                        android:text="@string/group_transaction"
+                        style="@style/AppTvTitleForEditText"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{" " + @string/asterisk,default=@string/asterisk}'
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/lato_medium"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/DropDownMenu"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_input_group_transaction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+                        app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopStart="@dimen/_8sdp"
+                        app:boxStrokeColor="@color/normal_brown"
+                        app:boxStrokeWidthFocused="@dimen/_1sdp"
+                        app:endIconTint="@color/gray_cbb"
+                        >
+                        <AutoCompleteTextView
+                            android:id="@+id/cbb_debit_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:textSize="@dimen/_12ssp"
+                            android:paddingVertical="0dp"
+                            android:textCursorDrawable="@drawable/cursor_color"
+                            android:enabled="@{vm.isHaveGroupTransaction ? true : false, default=false}"
+                            android:background="@{vm.isHaveGroupTransaction ? @drawable/bg_cbb_enable : @drawable/bg_cbb_disable, default= @drawable/bg_cbb_disable}"
+                            style="@style/AppSpinner"
+                            >
+                        </AutoCompleteTextView>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tag"
+                        style="@style/AppTvTitleForEditText"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/lato_medium"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    >
+                    <androidx.coordinatorlayout.widget.CoordinatorLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/DropDownMenu"
+                        >
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                            app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+                            app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+                            app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+                            app:boxCornerRadiusTopStart="@dimen/_8sdp"
+                            app:boxStrokeColor="@color/normal_brown"
+                            app:boxStrokeWidthFocused="@dimen/_1sdp"
+                            app:endIconTint="@color/gray_cbb"
+                            android:enabled="@{vm.isHaveTag ? true : false, default=false}"
+
+                            >
+                            <AutoCompleteTextView
+                                android:id="@+id/cbb_tag"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_35sdp"
+                                android:textSize="@dimen/_12ssp"
+                                android:paddingVertical="0dp"
+                                android:textCursorDrawable="@drawable/cursor_color"
+                                style="@style/AppSpinner"
+                                android:background="@{vm.isHaveTag ? @drawable/bg_cbb_enable : @drawable/bg_cbb_disable, default= @drawable/bg_cbb_disable}"
+                                >
+                            </AutoCompleteTextView>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                    <ImageView
+                        android:id="@+id/layout_color"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/ic_tag"
+                        android:visibility="gone"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginEnd="@dimen/_35sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        />
+                </FrameLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/added_by"
+                        style="@style/AppTvTitleForEditText"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" *"
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/DropDownMenu"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+                        app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopStart="@dimen/_8sdp"
+                        app:boxStrokeColor="@color/normal_brown"
+                        app:boxStrokeWidthFocused="@dimen/_1sdp"
+                        app:endIconTint="@color/gray_cbb"
+                        android:enabled="@{vm.isHaveAccount &amp;&amp; a.checkPermission(Constants.PERMISSION_DEBIT_UPDATE_FULL_AUTHENTICATION) ? true : false}"
+                        >
+                        <AutoCompleteTextView
+                            android:id="@+id/cbb_added_by"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:textSize="@dimen/_12ssp"
+                            android:paddingVertical="0dp"
+                            android:textCursorDrawable="@drawable/cursor_color"
+                            android:focusable="false"
+                            android:fontFamily="@font/roboto_medium"
+                            android:background="@{vm.isHaveAccount &amp;&amp; a.checkPermission(Constants.PERMISSION_DEBIT_UPDATE_FULL_AUTHENTICATION) ? @drawable/bg_cbb_enable : @drawable/bg_cbb_disable, default= @drawable/bg_cbb_disable}"
+                            style="@style/AppSpinner"
+                            >
+                        </AutoCompleteTextView>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/transaction_date"
+                        style="@style/AppTvTitleForEditText"
+
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" *"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_14ssp"
+                         />
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    >
+                    <EditText
+                        android:id="@+id/pick_debit_date"
+                        android:layout_width="@dimen/_90sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:focusable="false"
+                        android:hint="dd/MM/yyyy"
+                        android:onClick="@{()->a.pickDebitDate()}"
+                        style="@style/AppEditTextInput"
+                        android:textAlignment="center"
+                        android:layout_marginTop="0dp"
+                        />
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:src="@drawable/ic_pick_date"
+                        android:onClick="@{()->a.pickDebitDate()}"
+                        android:layout_toEndOf="@+id/pick_debit_date"
+                        android:layout_centerVertical="true"
+
+                        />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_title"
+                        android:text="@string/debit_name"
+                        style="@style/AppTvTitleForEditText"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" *"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_14ssp"
+
+                        />
+                </LinearLayout>
+
+
+                <EditText
+                    android:id="@+id/edit_debit_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:hint="@string/input_debit_name"
+                    android:text="@{a.decrypt(vm.debitRequest.name)}"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_title"
+                        android:text="@string/transaction_money"
+                        style="@style/AppTvTitleForEditText"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" *"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_14ssp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_debit_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:hint="@string/enter_money"
+                    android:inputType="number"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_title"
+                        android:text="@string/transaction_content"
+                        style="@style/AppTvTitleForEditText"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_debit_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppEditTextInputDescription"
+                    android:hint="@string/enter_transaction_note"
+                    android:text="@{a.decrypt(vm.debitRequest.note)}"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_title_document"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/document"
+                        style="@style/AppTvTitleForEditText"
+
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_title_document"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:orientation="vertical"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        >
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcv_documents"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:orientation="vertical"
+                            >
+                        </androidx.recyclerview.widget.RecyclerView>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_100sdp"
+                            android:background="@drawable/bg_img_upload"
+                            android:layout_gravity="center"
+                            android:onClick="@{()->a.showDialogChooseFile()}"
+
+                            >
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:orientation="vertical"
+                                >
+                                <ImageView
+                                    android:id="@+id/img_upload_file"
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:textSize="@dimen/_15ssp"
+                                    android:textColor="#FFFFFF"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:textStyle="bold"
+                                    android:src="@drawable/ic_upload"
+                                    />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:text="@string/download_file"
+                                    android:textColor="@color/color_theme"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:textSize="@dimen/_12ssp"
+                                    />
+                            </LinearLayout>
+
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/btn_update"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/btn_custom_enable"
+            android:text="@string/save"
+            android:gravity="center"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="#FFFFFF"
+            android:clickable="true"
+            android:fontFamily="@font/lato_bold"
+            android:textStyle="bold"
+            android:onClick="@{()->a.updateDebit()}"
+            android:layout_alignParentBottom="true"
+            android:textAllCaps="true"
+            android:layout_marginBottom="@dimen/_7sdp"
+            android:layout_marginHorizontal="@dimen/_7sdp"
+            />
+
+    </RelativeLayout>
+</layout>

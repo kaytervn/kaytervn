@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.tag.detail.TagDetailViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.tag.detail.TagDetailActivity" />
+        <import type="android.view.View"/>
+        <import type="com.finance.constant.Constants"/>
+        <import type="com.finance.utils.AESUtils"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:onClick="@{()->a.hideKeyboard()}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{vm.isCreate ?@string/add_new_project : @string/detail_project}"
+            bind:a ="@{a}"
+            />
+
+        <androidx.core.widget.NestedScrollView
+            android:onClick="@{()->a.hideKeyboard()}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_header"
+            app:layout_constraintBottom_toTopOf="@+id/btnEPUpdate"
+            android:layout_marginBottom="@dimen/_15sdp"
+            >
+            <LinearLayout
+                android:onClick="@{()->a.hideKeyboard()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_7sdp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    >
+                    <TextView
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tag_kind"
+
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{" " +@string/asterisk, default=@string/asterisk}'
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_12sdp"
+                        />
+                </LinearLayout>
+
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/DropDownMenu"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+                        app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+                        app:boxCornerRadiusTopStart="@dimen/_8sdp"
+                        app:boxStrokeColor="@color/normal_brown"
+                        app:boxStrokeWidthFocused="@dimen/_1sdp"
+                        app:endIconTint="@color/gray_cbb"
+                        android:enabled="@{vm.isCreate ? true : false, default=false}"
+                        >
+                        <AutoCompleteTextView
+                            android:id="@+id/cbb_tag_kind"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:textSize="@dimen/_12ssp"
+                            android:paddingVertical="0dp"
+                            android:textCursorDrawable="@drawable/cursor_color"
+                            android:fontFamily="@font/roboto_medium"
+                            style="@style/AppSpinner"
+                            android:background="@{vm.isCreate ? @drawable/bg_cbb_enable : @drawable/bg_cbb_disable, default= @drawable/bg_cbb_disable}"
+                            >
+                        </AutoCompleteTextView>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    >
+                    <TextView
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tag_name"
+
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{" " +@string/asterisk, default=@string/asterisk}'
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_12sdp"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_project_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    style="@style/AppEditTextInput"
+                    android:hint="@string/input_project"
+                    android:enabled="@{a.checkPermission(Constants.PERMISSION_PROJECT_UPDATE)}"
+                    android:text="@={vm.tag.name}"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    >
+                    <TextView
+                        style="@style/AppTvTitleForEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pick_color"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{" " +@string/asterisk, default=@string/asterisk}'
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_12sdp"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:onClick="@{()->a.openColorPicker()}"
+                    >
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:elevation="@dimen/_10sdp"
+                        android:onClick="@{()->a.openColorPicker()}"
+                        >
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:id="@+id/layout_color"
+                                android:layout_width="@dimen/_100sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:orientation="horizontal"
+                                android:background="#FFFFFF"
+                                android:padding="@dimen/_1sdp"
+                                >
+                            </LinearLayout>
+                            <FrameLayout
+                                android:id="@+id/layout_background"
+                                android:layout_width="@dimen/_100sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:orientation="horizontal"
+                                android:background="@drawable/bg_border_color"
+                                >
+                            </FrameLayout>
+                        </FrameLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <ImageView
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:src="@drawable/ic_pick_color"
+                        android:onClick="@{()->a.openColorPicker()}"
+                        android:layout_marginStart="@dimen/_25sdp"
+                        android:layout_gravity="center_vertical"
+                        />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btnEPUpdate"
+            style="@style/AppButtonStyle"
+            android:layout_marginHorizontal="@dimen/_7sdp"
+            android:layout_marginVertical="@dimen/_15sdp"
+            android:visibility="@{a.checkPermission(Constants.PERMISSION_PROJECT_UPDATE) ? View.VISIBLE : View.GONE}"
+            android:onClick="@{()->a.doDone()}"
+            android:text="@{vm.isCreate ? @string/create : @string/save}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,57 @@
+@startuml SQ
+autonumber
+title SD29. Quản lý công việc
+actor "Actor" as actor
+boundary "NoteView" as main
+boundary "TaskView" as view
+control "TaskController" as controller
+entity "TaskRepository" as model
+database "Database" as database
+activate actor
+actor -> main : click a record
+activate main
+main -> view : redirect to
+deactivate main
+activate view
+view -> controller : call api GET /list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find data
+activate database
+database --> model : return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view : return list object
+deactivate controller
+view -> view: display data
+group frg [//TH1. Người dùng tìm kiếm công việc//]
+actor -> view : enter search criterias
+deactivate actor
+view -> view: update data display
+activate view
+deactivate view
+deactivate view
+end
+group frg [//TH2. Người dùng tạo công việc//]
+ref over actor
+SD29.1. Tạo công việc
+end ref
+end
+group frg [//TH3. Người dùng sửa công việc//]
+ref over actor
+SD29.2. Sửa công việc
+end ref
+end
+group frg [//TH4. Người dùng xóa công việc//]
+ref over actor
+SD29.3. Xóa công việc
+end ref
+end
+group frg [//TH4. Người dùng đánh dấu hoàn thành công việc//]
+ref over actor
+SD29.4. Hoàn thành công việc
+end ref
+end
+@enduml

@@ -1,0 +1,12 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author=" Finance" id="1726336563796-1">
+        <dropForeignKeyConstraint baseTableName="db_fn_transaction" constraintName="FKnptcddvpvsk3y0cqel69k0740"/>
+    </changeSet>
+    <changeSet author=" Finance" id="1726336563796-2">
+        <dropColumn columnName="ignore_transaction" tableName="db_fn_service"/>
+    </changeSet>
+    <changeSet author=" Finance" id="1726336563796-3">
+        <dropColumn columnName="service_id" tableName="db_fn_transaction"/>
+    </changeSet>
+</databaseChangeLog>

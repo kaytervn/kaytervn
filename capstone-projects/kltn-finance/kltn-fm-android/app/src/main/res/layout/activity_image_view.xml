@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.image.ImageViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.image.ImageActivity" />
+        <import type="android.view.View"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_full">
+
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/photo_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="@{(v) -> vm.isShowHeader()}"
+            />
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:alpha="0.5"
+            android:background="@color/black_full"
+            android:visibility="@{vm.showHeader ? View.VISIBLE : View.GONE}"
+            >
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:visibility="@{vm.showHeader ? View.VISIBLE : View.GONE}"
+            android:elevation="@dimen/_8sdp"
+            >
+            <RelativeLayout
+                android:id="@+id/layout_back"
+                android:onClick="@{()->a.onBackPressed()}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_15sdp"
+                android:layout_centerVertical="true"
+                >
+
+                <ImageView
+                    android:id="@+id/button_back"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:src="@drawable/ic_back" />
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_image_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_bold"
+                android:textSize="@dimen/_14ssp"
+                android:paddingVertical="@dimen/_11sdp"
+                android:textColor="@color/white"
+                android:layout_toEndOf="@id/layout_back"
+                android:text="@string/image_name"
+                android:maxWidth="@dimen/_200sdp"
+                android:layout_centerVertical="true"
+                android:maxLines="1"
+                android:ellipsize="end"
+                />
+        </RelativeLayout>
+
+    </FrameLayout>
+</layout>

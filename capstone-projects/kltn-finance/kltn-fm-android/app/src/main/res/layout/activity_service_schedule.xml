@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.service.schedule.ServiceScheduleViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.service.schedule.ServiceScheduleActivity" />
+        <import type="android.view.View"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:onClick="@{()->a.hideKeyboard()}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/layout_header_title"
+            bind:title ="@{@string/service_schedule}"
+            bind:a ="@{a}"
+            />
+
+        <androidx.core.widget.NestedScrollView
+            android:onClick="@{()->a.hideKeyboard()}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_header"
+            app:layout_constraintBottom_toTopOf="@+id/btn_signin"
+            android:layout_marginBottom="@dimen/_15sdp">
+            <LinearLayout
+                android:onClick="@{()->a.hideKeyboard()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="@string/enter_day"
+                        android:textSize="@dimen/_14ssp"
+                        android:textColor="@color/black_full"
+                        />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        >
+                        <EditText
+                            android:id="@+id/edit_name_service_schedule"
+                            style="@style/text_edit"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_35sdp"
+                            android:hint="@string/days"
+                            android:paddingStart="@dimen/_7sdp"
+                            android:background="@drawable/bg_edit_txt_custom"
+                            android:singleLine="true"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:inputType="number"
+                            android:layout_marginTop="0dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_centerVertical="true"
+                            />
+                        <Button
+                            android:id="@+id/btn_create_service_schedule"
+                            style="@style/AppButtonStyle"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_gravity="center_vertical"
+                            android:text="@{vm.isUpdate ? @string/save:@string/create, default=@string/create}"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:onClick="@{()-> vm.isUpdate ? a.updateServiceSchedule(): a.addServiceSchedule()}"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            >
+                        </Button>
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+
+                <include
+                    android:id="@+id/layout_no_data"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:visibility="@{!vm.isHaveServiceSchedule ?View.VISIBLE:View.GONE, default=gone}"
+                    layout="@layout/layout_empty_data"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    bind:des="@{@string/data_empty}"
+                    />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@color/color_bg_tran"
+                        >
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcv_service_schedules"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            />
+                    </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            style="@style/AppButtonStyle"
+            android:layout_marginVertical="@dimen/_15sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:onClick="@{()->a.hideKeyboard() | vm.updateServiceSchedule()}"
+            android:background="@{vm.isHaveServiceSchedule ? @drawable/btn_custom_enable:@drawable/btn_custom_disable, default=@drawable/btn_custom_disable}"
+            android:enabled="@{vm.isHaveServiceSchedule?true:false}"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

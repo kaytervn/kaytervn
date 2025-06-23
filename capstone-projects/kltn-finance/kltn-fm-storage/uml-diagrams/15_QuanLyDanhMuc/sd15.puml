@@ -1,0 +1,42 @@
+@startuml SQ
+autonumber
+title SD15. Quản lý danh mục
+actor "Actor" as actor
+boundary "ManageCategoryView" as manageView
+control "CategoryController" as controller
+entity "CategoryRepository" as model
+database "Database" as database
+
+' Main Flow
+actor -> manageView : Access to
+manageView -> controller : call API GET /v1/category/list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : findAll()
+activate database
+database --> model : return list of categories
+deactivate database
+model --> controller : return list
+deactivate model
+controller --> manageView : return list of categories
+controller --> manageView : display
+deactivate controller
+
+' Option TH1: Create Category
+group frg [//TH1. Người dùng tạo danh mục//]
+ref over actor
+SD.15.1. Thêm danh mục
+end ref
+end
+group frg [//TH2. Người dùng chỉnh sửa danh mục//]
+ref over actor
+SD.15.2. Chỉnh sửa danh mục
+end ref
+end
+group frg [//TH3. Người dùng xóa danh mục//]
+ref over actor
+SD.15.3. Xóa danh mục
+end ref
+end
+@enduml

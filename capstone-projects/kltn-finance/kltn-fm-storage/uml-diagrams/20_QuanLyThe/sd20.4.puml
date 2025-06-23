@@ -1,0 +1,30 @@
+@startuml SQ
+autonumber
+title SD20.4. Lọc thẻ
+actor "Actor" as actor
+boundary "ManageTagView" as manageView
+control "TagController" as controller
+entity "TagRepository" as model
+database "Database" as database
+activate actor
+actor -> manageView : Select tag type (transaction, service, key, note)
+activate manageView
+    manageView -> controller : call API GET /v1/tag/list?kind=?
+    activate controller
+activate controller
+    controller -> model : Inject repository
+activate model
+    model -> database : findAll()
+    activate database
+activate database
+    database --> model : Return filtered list of tags
+deactivate database
+    deactivate database
+    model --> controller : Return filtered list
+deactivate model
+    deactivate model
+    controller --> manageView : Render filtered list
+deactivate controller
+    deactivate controller
+    manageView --> manageView : display list of tags
+    manageView -> actor : Display filtered list of tags

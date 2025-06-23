@@ -1,0 +1,36 @@
+@startuml SQ
+autonumber
+title SD15.2. Sửa danh mục
+actor "Actor" as actor
+boundary "ManageCategoryView" as manageView
+control "CategoryController" as controller
+entity "CategoryRepository" as model
+database "Database" as database
+' Option TH2: Edit Category
+activate actor
+    actor -> manageView : Select a category
+activate manageView
+    manageView -> actor : Display edit form
+    actor -> manageView : Input updated name and description
+    manageView -> controller : call API PUT /v1/category/update
+    activate controller
+activate controller
+    controller -> model : Inject repository
+activate model
+    model -> database : save(category)
+    activate database
+activate database
+    database --> model : Update success
+deactivate database
+    deactivate database
+    model --> controller : Notify success
+deactivate model
+    deactivate model
+    controller --> manageView : Return success
+deactivate controller
+    deactivate controller
+    manageView -> actor : Notify "Category updated successfully"
+    manageView -> manageView : Update category list
+activate manageView
+deactivate manageView
+deactivate manageView

@@ -1,0 +1,13 @@
+{
+  "addedBy": "{{addedBy}}",
+  "approvedBy": "{{approvedBy}}",
+  "categoryId": "{{categoryId}}",
+  "ignoreDebit": "{{ignoreDebit}}",
+  "kind": "{{kind}}",
+  "money": "{{money}}",
+  "name": "{{name}}",
+  "note": "{{note}}",
+  "tagId": "{{tagId}}",
+  "transactionDate": "{{transactionDate}}",
+  "transactionGroupId": "{{transactionGroupId}}"
+}

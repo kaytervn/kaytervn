@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}spring.log}"/>
+    <springProfile name="dev,staging">
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="com.tenant" level="DEBUG"/>
+        <root level="DEBUG">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+
+
+    <springProfile name="prod">
+
+        <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_FILE}</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <!-- each archived file, size max 10MB -->
+                <maxFileSize>10MB</maxFileSize>
+                <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+                <totalSizeCap>20GB</totalSizeCap>
+                <!-- 60 days to keep -->
+                <maxHistory>60</maxHistory>
+            </rollingPolicy>
+
+            <encoder>
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="com.tenant" level="INFO"/>
+        <root level="ERROR">
+            <appender-ref ref="FILE-ROLLING"/>
+        </root>
+    </springProfile>
+
+</configuration>

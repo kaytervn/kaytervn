@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.finance.ui.chat.ChatViewModel" />
+        <variable
+            name="a"
+            type="com.finance.ui.chat.ChatActivity" />
+        <import type="com.finance.constant.Constants"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@color/color_theme"
+            >
+            <LinearLayout
+                android:id="@+id/layout_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingVertical="@dimen/_15sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:onClick="@{()->a.onBackPressed()}"
+                >
+                <ImageView
+                    android:id="@+id/img_back"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:src="@drawable/ic_back"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chat"
+                android:fontFamily="@font/lato_bold"
+                android:paddingVertical="@dimen/_12sdp"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_centerInParent="true"
+                android:visibility="@{vm.isSearch ? View.GONE : View.VISIBLE}"
+                />
+            <FrameLayout
+                android:id="@+id/layout_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:visibility="@{vm.isSearch ? View.VISIBLE : View.GONE}"
+                android:layout_toEndOf="@+id/layout_back"
+                >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <EditText
+                        android:id="@+id/edt_search"
+                        style="@style/AppEditTextInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="0dp"
+                        android:background="@drawable/bg_edit_txt_search"
+                        android:fontFamily="@font/lato_medium"
+                        android:hint="@string/search"
+                        android:paddingStart="@dimen/_35sdp"
+                        android:paddingEnd="@dimen/_50sdp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#77AFD0"
+                        android:textCursorDrawable="@drawable/cursor_color_search" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        android:src="@drawable/ic_search_2"
+                        android:scaleType="centerCrop"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:onClick="@{()->a.deleteEditSearch()}"
+                        android:layout_centerVertical="true"
+                        />
+                    <ImageView
+                        android:layout_width="@dimen/_23sdp"
+                        android:layout_height="@dimen/_23sdp"
+                        android:src="@drawable/ic_delete_search"
+                        android:scaleType="centerCrop"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:visibility="@{vm.isSearchEmpty.empty ? View.GONE : View.VISIBLE}"
+                        android:onClick="@{()->a.deleteEditSearch()}"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/layout_search_button"
+                android:visibility="@{!vm.isSearch  ? View.VISIBLE : View.GONE}"
+                android:onClick="@{() -> a.createNewChatRoom()}"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                >
+                <ImageView
+                    android:id="@+id/img_plus"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
+                    android:src="@drawable/ic_plus"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_search_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="@{!vm.isSearch  ? View.VISIBLE : View.GONE}"
+                android:onClick="@{(v) -> vm.isShowSearch()}"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                >
+                <ImageView
+                    android:id="@+id/img_search"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
+                    android:src="@drawable/ic_search"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/layout_title">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_chat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+</layout>

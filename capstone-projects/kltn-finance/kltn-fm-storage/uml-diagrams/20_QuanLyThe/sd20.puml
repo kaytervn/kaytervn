@@ -1,0 +1,50 @@
+@startuml SQ
+autonumber
+title SD20. Quản lý thẻ
+actor "Actor" as actor
+boundary "ManageTagView" as manageView
+control "TagController" as controller
+entity "TagRepository" as model
+database "Database" as database
+' Main Flow
+activate actor
+actor -> manageView : Access "Tag Management"
+activate manageView
+manageView -> controller : Request list of tags (default: transactions)
+activate controller
+controller -> model : Inject repository
+activate model
+model -> database : findAll()
+activate database
+database --> model : Return list of tags
+deactivate database
+model --> controller : Return list
+deactivate model
+controller --> manageView : return list of tags
+deactivate controller
+manageView --> manageView : display list of tags
+activate manageView
+deactivate manageView
+deactivate manageView
+' Option TH1: Add Tag
+opt **Create Tag**
+  ref over actor
+SD20.1. Thêm thẻ
+end ref
+end
+opt **Edit Tag**
+  ref over actor
+SD20.2. Sửa thẻ
+end ref
+end
+opt **Delete Tag**
+  ref over actor
+SD20.3. Xóa thẻ
+end ref
+end
+opt **Alternative Flow: Filter Tags**
+  ref over actor
+SD20.4. Lọc thẻ
+end ref
+end
+@enduml

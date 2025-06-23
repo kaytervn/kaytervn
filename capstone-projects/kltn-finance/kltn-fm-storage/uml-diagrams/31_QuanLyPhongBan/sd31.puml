@@ -1,0 +1,43 @@
+@startuml SQ
+autonumber
+title SD31. Quản lý phòng ban
+actor "Actor" as actor
+boundary "ManageDepartmentView" as manageView
+control "DepartmentController" as controller
+entity "DepartmentRepository" as model
+database "Database" as database
+' Main Flow
+activate actor
+actor -> manageView : Access "Manage Department"
+activate manageView
+manageView -> controller : Request department list
+activate controller
+controller -> model : Inject repository
+activate model
+model -> database : SELECT * FROM departments
+activate database
+database --> model : Return department list
+deactivate database
+model --> controller : Return list
+deactivate model
+controller --> manageView : Render department list
+deactivate controller
+' Option TH1: Create Department
+opt **TH1. Người dùng tạo phòng ban**
+  ref over actor
+SD31.1.Người dùng tạo phòng ban
+end ref
+end
+' Option TH2: Edit Department
+opt **TH2. Người dùng chỉnh sửa phòng ban**
+  ref over actor
+SD31.2.Người dùng chỉnh sửa phòng ban
+end ref
+end
+' Option TH3: Delete Department
+opt **TH3.Người dùng xóa phòng ban**
+  ref over actor
+SD31.3.Người dùng xóa phòng ban
+end ref
+end
+@enduml

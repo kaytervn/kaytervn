@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "290670971714",
+    "firebase_url": "https://the-coffeehouse.firebaseio.com",
+    "project_id": "the-coffeehouse",
+    "storage_bucket": "the-coffeehouse.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290670971714:android:e4213f1a561902f8e196db",
+        "android_client_info": {
+          "package_name": "com.base.mvvm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290670971714-v1oi9o9fdh4dali5piiivtks3u1t1mpd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvUwgxHhEmY_NGgmk4UhI0utD3MXzewwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290670971714-v1oi9o9fdh4dali5piiivtks3u1t1mpd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,32 @@
+@startuml SQ
+autonumber
+title SD19.3. Xóa nhóm thông báo
+actor "Actor" as actor
+boundary "ManageGroupNotificationView" as view
+boundary "CreateManageGroupNotificationView" as create
+control "GroupNotificationController" as controller
+entity "GroupNotificationRepository" as model
+database "Database" as database
+activate actor
+    actor -> view : click Delete button
+activate view
+    view --> view : show confirmation dialog
+    actor -> view : confirm deletion
+    view -> controller : call DELETE API /v1/group-notifications/{id}
+    activate controller
+activate controller
+    controller -> model : inject repository
+    activate model
+activate model
+    model -> database : deleteGroupNotification()
+    activate database
+activate database
+    database --> model : return success
+deactivate database
+    deactivate database
+    model --> controller : success message
+deactivate model
+    deactivate model
+    controller --> view : update group list
+deactivate controller
+    view -> actor : notify deletion success

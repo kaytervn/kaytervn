@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.finance.data.model.api.response.chat.MessageReaction" />
+        <variable
+            name="positionSelected"
+            type="int" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_15sdp"
+        android:background="@drawable/bg_dialog">
+
+        <!-- 5 biểu tượng cảm xúc xếp hàng ngang -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/emoji_like"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="48dp"
+                android:text="@string/emoji_like"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:background="@{positionSelected == 1? @drawable/bg_emoji_selected : @drawable/bg_emoji_unselected}"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginEnd="@dimen/_5sdp"
+                />
+
+            <TextView
+                android:id="@+id/emoji_love"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="48dp"
+                android:text="❤"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:background="@{positionSelected == 2? @drawable/bg_emoji_selected : @drawable/bg_emoji_unselected}"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginEnd="@dimen/_5sdp"
+
+                />
+
+            <TextView
+                android:id="@+id/emoji_cry"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="48dp"
+                android:text="@string/emoji_cry"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:background="@{positionSelected == 3? @drawable/bg_emoji_selected : @drawable/bg_emoji_unselected}"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginEnd="@dimen/_5sdp"
+                />
+
+            <TextView
+                android:id="@+id/emoji_happy"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="48dp"
+                android:text="\u263A\uFE0F️"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:background="@{positionSelected == 4? @drawable/bg_emoji_selected : @drawable/bg_emoji_unselected}"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginEnd="@dimen/_5sdp"
+                />
+
+            <TextView
+                android:id="@+id/emoji_smile"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="48dp"
+                android:text="@string/emoji_smile"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:background="@{positionSelected == 5? @drawable/bg_emoji_selected : @drawable/bg_emoji_unselected}"
+                android:clickable="true"
+                android:focusable="true"
+                />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_users"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+</layout>

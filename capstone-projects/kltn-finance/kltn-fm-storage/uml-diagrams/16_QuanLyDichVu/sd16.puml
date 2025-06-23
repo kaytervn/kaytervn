@@ -1,0 +1,63 @@
+@startuml SQ
+autonumber
+title SD16. Quản lý dịch vụ
+actor "Actor" as actor
+boundary "ServiceView" as view
+control "ServiceController" as controller
+entity "ServiceRepository" as model
+database "Database" as database
+activate actor
+actor -> view : access to
+activate view
+view -> controller : call api GET /list
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : find data
+activate database
+database --> model : return data
+deactivate database
+model --> controller: return list objects
+deactivate model
+controller --> view : return list object
+deactivate controller
+view -> view: display data
+group frg [//TH1. Người dùng tìm kiếm dịch vụ//]
+actor -> view : enter search criterias
+deactivate actor
+view -> view: update data display
+activate view
+deactivate view
+deactivate view
+end
+group frg [//TH2. Người dùng tạo dịch vụ//]
+ref over actor
+SD16.1. Tạo dịch vụ
+end ref
+end
+group frg [//TH3. Người dùng sửa dịch vụ//]
+ref over actor
+SD16.2. Sửa dịch vụ
+end ref
+end
+group frg [//TH4. Người dùng xóa dịch vụ//]
+ref over actor
+SD16.3. Xóa dịch vụ
+end ref
+end
+group frg [//TH5. Người dùng thanh toán dịch vụ//]
+ref over actor
+SD16.4. Thanh toán dịch vụ
+end ref
+end
+group frg [//TH6. Người dùng đặt lịch nhắc hẹn//]
+ref over actor
+SD16.5. Đặt lịch nhắc hẹn
+end ref
+end
+group frg [//TH7. Người dùng thêm nhóm thông báo vào dịch vụ//]
+ref over actor
+SD16.6. Thêm nhóm thông báo vào dịch vụ
+end ref
+end
+@enduml

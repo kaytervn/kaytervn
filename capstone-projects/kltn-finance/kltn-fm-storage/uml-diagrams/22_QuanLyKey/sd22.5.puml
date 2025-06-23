@@ -1,0 +1,34 @@
+@startuml SQ
+autonumber
+title SD22.5. Giải mã mật khẩu
+actor "Actor" as actor
+boundary "DecryptPasswordView" as view
+control "KeyInformationController" as controller
+control "KeyService" as service
+activate actor
+actor -> view : enter encrypted key/password
+deactivate actor
+activate view
+view ->  controller: call api POST /decrypt
+activate controller
+controller -> service: decrypt password
+alt enter valid input
+activate service
+service --> controller: return decrypted password
+deactivate service
+controller --> view: return decrypted password
+deactivate controller
+view -> view: display decrypted password
+else enter invalid input
+activate service
+service --> controller: callback
+deactivate service
+activate controller
+controller --> view: return error message
+deactivate controller
+view -> view: display error message
+activate view
+deactivate view
+deactivate view
+end
+@enduml

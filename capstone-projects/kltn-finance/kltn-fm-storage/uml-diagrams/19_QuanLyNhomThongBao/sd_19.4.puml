@@ -1,0 +1,34 @@
+@startuml SQ
+autonumber
+title SD19.4.Xem người dùng trong nhóm thông báo
+actor "Actor" as actor
+boundary "ManageGroupNotificationView" as view
+boundary "CreateManageGroupNotificationView" as create
+control "GroupNotificationController" as controller
+entity "GroupNotificationRepository" as model
+database "Database" as database
+activate actor
+  actor -> view : click View Users button
+activate view
+    view -> controller : call GET API /v1/group-notifications/{id}/users
+    activate controller
+activate controller
+    controller -> model : inject repository
+    activate model
+activate model
+    model -> database : findUsersInGroup()
+    activate database
+activate database
+    database --> model : return users list
+deactivate database
+    deactivate database
+    model --> controller : return users data
+deactivate model
+    deactivate model
+    controller --> view : display users list
+deactivate controller
+    deactivate controller
+    view -> view : display users in group
+activate view
+deactivate view
+deactivate view

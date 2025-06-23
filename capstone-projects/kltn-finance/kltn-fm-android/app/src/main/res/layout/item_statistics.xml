@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="ivm"
+            type="com.finance.data.model.api.response.statistics.StatisticsResponse" />
+
+        <import type="com.finance.utils.NumberUtils"/>
+        <import type="com.finance.utils.DateUtils"/>
+        <import type="com.finance.utils.AESUtils"/>
+        <import type="android.view.View"/>
+        <variable
+            name="secretKey"
+            type="String" />
+    </data>
+    <com.finance.ui.swipe.SwipeRevealLayout
+        android:id="@+id/swipeRevealLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mode="same_level"
+        app:dragEdge="right"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+           >
+            <FrameLayout
+                android:id="@+id/layout_recalculate"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_accept"
+                android:layout_marginEnd="@dimen/_4sdp"
+                >
+                <ImageView
+                    android:id="@+id/img_recalculate"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:src="@drawable/ic_recalculate"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    />
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/layout_approve"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_accept"
+                android:layout_marginEnd="@dimen/_4sdp"
+                >
+                <ImageView
+                    android:id="@+id/img_approve"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:src="@drawable/ic_accept"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    />
+            </FrameLayout>
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/item_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_4sdp"
+                android:paddingVertical="@dimen/_15sdp"
+                android:background="@drawable/bg_tran"
+                android:layout_marginBottom="@dimen/_3sdp"
+                >
+
+                <ImageView
+                    android:id="@+id/img_state"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:src="@{ivm.state == 1 ? @drawable/ic_created : @drawable/ic_accept, default=@drawable/ic_accept}"
+                    android:layout_marginVertical="@dimen/_8sdp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/tv_month_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:text='@{"Tháng " + AESUtils.decrypt(secretKey, ivm.name,false), default=Thang072024}'
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_toEndOf="@id/img_state"
+                    android:layout_centerVertical="true"
+                    />
+                <RelativeLayout
+                    android:id="@+id/layout_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    >
+                    <TextView
+                        android:id="@+id/tv_money_income"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxWidth="@dimen/_110sdp"
+                        android:fontFamily="@font/lato_bold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp"
+                        android:text="@{NumberUtils.custom_money_my_tran(Double.valueOf(AESUtils.decrypt(secretKey, ivm.totalIncome,false)), 1), default=100}"
+                        android:layout_toStartOf="@id/img_arrow"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:maxWidth="@dimen/_110sdp"
+                        android:fontFamily="@font/lato_bold"
+                        android:textColor="@color/red_orange"
+                        android:textSize="@dimen/_12ssp"
+                        android:text='@{NumberUtils.custom_money_my_tran(Double.valueOf(AESUtils.decrypt(secretKey, ivm.totalExpenditure,false)), 2), default=100}'
+                        android:layout_toStartOf="@id/img_arrow"
+                        android:layout_below="@id/tv_money_income"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        />
+                    <ImageView
+                        android:id="@+id/img_arrow"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/tv_money_income"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_alignBottom="@id/tv_money"
+                        android:layout_alignParentEnd="true"
+                        android:scaleType="fitCenter"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:src="@{Double.valueOf(AESUtils.decrypt(secretKey, ivm.totalIncome,false))>Double.valueOf(AESUtils.decrypt(secretKey, ivm.totalExpenditure,false)) ? @drawable/ic_arrow_up : @drawable/ic_arrow_down, default=@drawable/ic_arrow_up}"
+                        />
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </FrameLayout>
+    </com.finance.ui.swipe.SwipeRevealLayout>
+
+</layout>

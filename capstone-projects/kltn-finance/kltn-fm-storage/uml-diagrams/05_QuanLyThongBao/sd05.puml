@@ -1,0 +1,92 @@
+@startuml SQ
+autonumber
+title SD05. Quản lý thông báo
+actor "Actor" as actor
+boundary "ManageNotificationView" as manageView
+control "NotificationController" as controller
+entity "NotificationRepository" as model
+database "Database" as database
+
+' Main Flow
+actor -> manageView : access to
+activate manageView
+
+' Display Notification List
+manageView -> controller : call API GET v1/notification/my-notification
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : findNotificationByAccountId()
+activate database
+database --> model : Return data
+deactivate database
+model --> controller : Return list of notifications
+deactivate model
+controller --> manageView : Return notifications
+deactivate controller
+
+' Option 1: Mark All as Read
+opt TH1. Người dùng xác nhận đọc hết
+    actor -> manageView : click "Read All"
+    manageView -> controller : call API PUT /v1/notification/read-all
+    activate controller
+    controller -> model : inject repository
+    activate model
+    model -> database : updateNotificationStateUnreadByAccountId()
+    activate database
+    database --> model : update success
+    deactivate database
+    model --> controller : notify success
+    deactivate model
+    controller --> manageView : return success
+    deactivate controller
+    manageView -> manageView : update UI (all marked as read)
+end
+
+' Option 2: View Unread Notifications
+opt TH2. Người dùng xem thông báo chưa đọc
+    actor -> manageView : click "Unread"
+    manageView -> controller : call API GET /v1/notification/my-notification?state=0
+    activate controller
+    controller -> model : inject repository
+    activate model
+    model -> database : findNotificationByAccountIdAndState()
+    activate database
+    database --> model : Return data
+    deactivate database
+    model --> controller : Return unread notification
+    deactivate model
+    controller --> manageView : Return unread notifications
+    deactivate controller
+    manageView -> manageView : Display unread notifications
+end
+
+' Option 3: Delete All Notifications
+opt TH3. Người dùng xóa hết thông báo
+    actor -> manageView : Click "Delete All"
+    manageView -> actor : Confirm "Are you sure you want to delete all notifications?"
+    alt User confirms deletion
+        manageView -> controller : call api DELETE /v1/notification/delete-all
+        activate controller
+        controller -> model : inject repository
+        activate model
+        model -> database : deleteByAccountId()
+        activate database
+        database --> model : Delete success
+        deactivate database
+        model --> controller : Notify success
+        deactivate model
+        controller --> manageView : Return success
+        deactivate controller
+        manageView -> manageView : Update UI (empty list)
+        manageView -> actor : Notify "All notifications deleted"
+    else User cancels deletion
+        manageView --> manageView: Display notification
+    end
+end
+
+manageView -> manageView : Display notification list
+activate manageView
+deactivate manageView
+
+@enduml

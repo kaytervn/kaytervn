@@ -1,0 +1,54 @@
+@startuml SQ
+autonumber
+title SD19.1. Quản lý nhóm thông báo
+actor "Actor" as actor
+boundary "ManageGroupNotificationView" as view
+boundary "CreateManageGroupNotificationView" as create
+control "GroupNotificationController" as controller
+entity "GroupNotificationRepository" as model
+database "Database" as database
+' Main Flow
+activate actor
+actor -> view : access to Manage Group Notification
+activate view
+view -> controller : call GET API /v1/group-notifications
+activate controller
+controller -> model : inject repository
+activate model
+model -> database : findGroupNotifications()
+activate database
+database --> model : return list of groups
+deactivate database
+model --> controller : return groups data
+deactivate model
+controller --> view : return group notification list
+deactivate controller
+view -> view : display group notifications
+activate view
+deactivate view
+deactivate view
+' TH1. Create Group Notification
+opt TH1. Create Group Notification
+     ref over actor
+SD19.1. Tạo nhóm thông báo
+end ref
+end
+' TH2. Edit Group Notification
+opt TH2. Edit Group Notification
+     ref over actor
+SD19.2. Sửa nhóm thông báo
+end ref
+end
+' TH3. Delete Group Notification
+opt TH3. Người dùng xóa nhóm thông báo
+   ref over actor
+SD19.3. Xóa nhóm thông báo
+end ref
+end
+' TH4. View Users in Group
+opt TH4. Người dùng xem người dùng trong nhóm thông báo
+   ref over actor
+SD19.4.Xem người dùng trong nhóm thông báo
+end ref
+end
+@enduml
