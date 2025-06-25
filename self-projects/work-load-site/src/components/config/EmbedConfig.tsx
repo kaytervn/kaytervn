@@ -55,7 +55,7 @@ const EMBED_LIST = [
     path: "/ducky-vs-pengy",
     icon: PlayIcon,
     color: "#9575CD",
-    url: BASE_EMBED_URL + "ducky-vs-pengy",
+    url: "https://drive.google.com/file/d/1RrF1g2UUmWC-ggAlDvmG1kiB-_kJX8wt/preview",
   },
   {
     label: "FPS Game Demo",
