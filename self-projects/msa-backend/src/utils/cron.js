@@ -10,24 +10,23 @@ import axios from "axios";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const getAppUrl = () => {
-  return getConfigValue(CONFIG_KEY.API_URL);
+const getAppUrls = () => {
+  const urls = getConfigValue(CONFIG_KEY.API_URL);
+  return urls.split(",").map((url) => url.trim()) || [];
 };
 
 const activeCommonServices = () => {
-  const url = getAppUrl();
-  if (!url) {
-    console.log("[WARN] No app url found");
-    return;
+  const urls = getAppUrls();
+  for (const url of urls) {
+    axios
+      .get(url)
+      .then(() => {
+        console.log(`[${url}] Reloaded`);
+      })
+      .catch(() => {
+        console.error(`[${url}] Error reloading`);
+      });
   }
-  axios
-    .get(url)
-    .then(() => {
-      console.log(`[${url}] Reloaded`);
-    })
-    .catch(() => {
-      console.error(`[${url}] Error reloading`);
-    });
 };
 
 const jobs = {
