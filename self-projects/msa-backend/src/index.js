@@ -9,7 +9,11 @@ import {
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { reloadWebsite } from "./utils/cron.js";
-import { checkSystemReady, verifySignature } from "./middlewares/auth.js";
+import {
+  checkSystemReady,
+  encryptResponseMiddleware,
+  verifySignature,
+} from "./middlewares/auth.js";
 import { keyRouter } from "./routes/keyRouter.js";
 import { getConfigValue, initKey } from "./config/appProperties.js";
 import { setupSocket } from "./config/socketHandler.js";
@@ -26,6 +30,9 @@ import { backupCodeRouter } from "./routes/backupCodeRouter.js";
 import { idNumberRouter } from "./routes/idNumberRouter.js";
 import { bankNumberRouter } from "./routes/bankNumberRouter.js";
 import { bankRouter } from "./routes/bankRouter.js";
+import { linkRouter } from "./routes/linkRouter.js";
+import { noteRouter } from "./routes/noteRouter.js";
+import { softwareRouter } from "./routes/softwareRouter.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -43,6 +50,7 @@ app.use("/v1/media", mediaRouter);
 app.use("/v1/category", categoryRouter);
 app.use("/v1/lesson", lessonRouter);
 app.use(verifySignature);
+app.use(encryptResponseMiddleware);
 // MSA API
 app.use("/v1/user", userRouter);
 app.use("/v1/platform", platformRouter);
@@ -52,6 +60,9 @@ app.use("/v1/backup-code", backupCodeRouter);
 app.use("/v1/id-number", idNumberRouter);
 app.use("/v1/bank-number", bankNumberRouter);
 app.use("/v1/bank", bankRouter);
+app.use("/v1/link", linkRouter);
+app.use("/v1/note", noteRouter);
+app.use("/v1/software", softwareRouter);
 
 const PORT = getConfigValue(CONFIG_KEY.PORT) || 6676;
 httpServer.listen(PORT, () => {

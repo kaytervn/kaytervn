@@ -1,5 +1,8 @@
 import { getAppProperties, getConfigValue } from "../config/appProperties.js";
-import { decryptClientField } from "../encryption/clientEncryption.js";
+import {
+  decryptClientField,
+  encryptClientField,
+} from "../encryption/clientEncryption.js";
 import { makeUnauthorizedExecption } from "../services/apiService.js";
 import { isValidSession } from "../services/cacheService.js";
 import { decrypt } from "../services/encryptionService.js";
@@ -153,4 +156,26 @@ const verifySignature = async (req, res, next) => {
   }
 };
 
-export { socketAuth, checkSystemReady, verifySignature, basicAuth, bearerAuth };
+const encryptResponseMiddleware = (req, res, next) => {
+  const originalJson = res.json;
+
+  res.json = function (body) {
+    try {
+      const encrypted = encryptClientField(JSON.stringify(body));
+      return originalJson.call(this, { data: encrypted });
+    } catch {
+      return originalJson.call(this, body);
+    }
+  };
+
+  next();
+};
+
+export {
+  socketAuth,
+  checkSystemReady,
+  verifySignature,
+  basicAuth,
+  bearerAuth,
+  encryptResponseMiddleware,
+};

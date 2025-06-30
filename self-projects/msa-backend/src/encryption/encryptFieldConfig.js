@@ -46,6 +46,18 @@ const LINK_ENCRYPT_FIELDS = {
   UPDATE_LINK: ["name", "link", "note"],
 };
 
+const NOTE_ENCRYPT_FIELDS = {
+  NOTE: ["name", "note"],
+  CREATE_NOTE: ["name", "note"],
+  UPDATE_NOTE: ["name", "note"],
+};
+
+const SOFTWARE_ENCRYPT_FIELDS = {
+  SOFTWARE: ["name", "link", "note"],
+  CREATE_SOFTWARE: ["name", "link", "note"],
+  UPDATE_SOFTWARE: ["name", "link", "note"],
+};
+
 export {
   ACCOUNT_ENCRYPT_FIELDS,
   PLATFORM_ENCRYPT_FIELDS,
@@ -55,4 +67,6 @@ export {
   BANK_NUMBER_ENCRYPT_FIELDS,
   ID_NUMBER_ENCRYPT_FIELDS,
   LINK_ENCRYPT_FIELDS,
+  NOTE_ENCRYPT_FIELDS,
+  SOFTWARE_ENCRYPT_FIELDS,
 };

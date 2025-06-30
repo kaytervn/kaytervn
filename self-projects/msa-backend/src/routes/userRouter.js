@@ -11,6 +11,7 @@ import {
   verifyUserToken,
   changeUserPassword,
   changePin,
+  requestKeyData,
 } from "../controllers/userController.js";
 import { clearKey } from "../controllers/keyController.js";
 import { basicAuth, bearerAuth } from "../middlewares/auth.js";
@@ -29,5 +30,6 @@ router.get("/clear-key", bearerAuth, clearKey);
 router.get("/verify-token", bearerAuth, verifyUserToken);
 router.put("/change-password", bearerAuth, changeUserPassword);
 router.put("/change-pin", bearerAuth, changePin);
+router.get("/request-key-data", bearerAuth, requestKeyData);
 
 export { router as userRouter };

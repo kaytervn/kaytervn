@@ -213,11 +213,11 @@ function generateController(modelName: any, fields: any) {
       }
   ${validationCheck}
   ${refChecks}
-      const ${lowerModel} = await ${upperModel}.findById(id);
-      if (!${lowerModel}) {
+      const ${lowerModel}Obj = await ${upperModel}.findById(id);
+      if (!${lowerModel}Obj) {
         return makeErrorResponse({ res, message: "Not found ${splitModelSpace}" });
       }
-      await ${lowerModel}.updateOne(${updateEncryptedObject});
+      await ${lowerModel}Obj.updateOne(${updateEncryptedObject});
       return makeSuccessResponse({ res, message: "Update ${splitModelSpace} success" });
     } catch (error) {
       return makeErrorResponse({ res, message: error.message });

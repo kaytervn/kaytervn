@@ -1,4 +1,7 @@
-import { decryptClientData } from "../encryption/clientEncryption.js";
+import {
+  decryptClientData,
+  encryptClientField,
+} from "../encryption/clientEncryption.js";
 import {
   decryptCommonData,
   decryptCommonField,
@@ -392,12 +395,42 @@ const requestKey = async (req, res) => {
     }
     const { publicKey, privateKey } = generateRSAKeyPair();
     putPublicKey(username, extractBase64FromPem(publicKey));
-    const fileContent = privateKey;
+    const fileContent = encryptClientField(privateKey);
     const buffer = Buffer.from(fileContent, "utf-8");
     const fileName = `request_key_${generateTimestamp()}.txt`;
     res.setHeader("Content-Type", "text/plain");
     res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
     res.send(buffer);
+  } catch (error) {
+    return makeErrorResponse({ res, message: error.message });
+  }
+};
+
+const requestKeyData = async (req, res) => {
+  try {
+    const { username } = req.token;
+    const { pin } = decryptClientData(
+      req.body,
+      ENCRYPT_FIELDS.REQUEST_KEY_FORM
+    );
+    if (!pin) {
+      return makeErrorResponse({ res, message: "Invalid form" });
+    }
+    let user = await User.findOne({ username: encryptCommonField(username) });
+    if (!user) {
+      return makeErrorResponse({ res, message: "Invalid pin" });
+    }
+    user = decryptCommonData(user, ENCRYPT_FIELDS.USER);
+    if (!user || !(await comparePassword(pin, user.pin))) {
+      return makeErrorResponse({ res, message: "Invalid pin" });
+    }
+    const { publicKey, privateKey } = generateRSAKeyPair();
+    putPublicKey(username, extractBase64FromPem(publicKey));
+    return makeSuccessResponse({
+      res,
+      data: { privateKey: encryptClientField(privateKey) },
+      message: "Request key success",
+    });
   } catch (error) {
     return makeErrorResponse({ res, message: error.message });
   }
@@ -415,4 +448,5 @@ export {
   verifyUserToken,
   changeUserPassword,
   changePin,
+  requestKeyData,
 };

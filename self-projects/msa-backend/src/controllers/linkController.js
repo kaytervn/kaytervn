@@ -31,6 +31,20 @@ const createLink = async (req, res) => {
         message: "Invalid form",
       });
     }
+    const encryptedName = encryptCommonField(name);
+    if (await Link.findOne({ name: encryptedName })) {
+      return makeErrorResponse({
+        res,
+        message: "Name existed",
+      });
+    }
+    const encryptedLink = encryptCommonField(link);
+    if (await Link.findOne({ link: encryptedLink })) {
+      return makeErrorResponse({
+        res,
+        message: "Link existed",
+      });
+    }
     if (linkGroupId) {
       const linkGroupExists = await LinkGroup.exists({ _id: linkGroupId });
       if (!linkGroupExists) {
@@ -77,6 +91,28 @@ const updateLink = async (req, res) => {
       return makeErrorResponse({
         res,
         message: "Invalid form",
+      });
+    }
+    const encryptedName = encryptCommonField(name);
+    const existingObj = await Link.findOne({
+      name: encryptedName,
+      _id: { $ne: id },
+    });
+    if (existingObj) {
+      return makeErrorResponse({
+        res,
+        message: "Name existed",
+      });
+    }
+    const encryptedLink = encryptCommonField(link);
+    const existingObjLink = await Link.findOne({
+      link: encryptedLink,
+      _id: { $ne: id },
+    });
+    if (existingObjLink) {
+      return makeErrorResponse({
+        res,
+        message: "Link existed",
       });
     }
     if (linkGroupId) {
