@@ -11,43 +11,14 @@ import {
   PLATFORM_ENCRYPT_FIELDS,
   SOFTWARE_ENCRYPT_FIELDS,
 } from "../encryption/encryptFieldConfig.js";
+import rateLimit from "express-rate-limit";
+import { getListConfigValues } from "../config/appProperties.js";
 
 const DATE_FORMAT = "DD/MM/YYYY HH:mm:ss";
 const TIMEZONE = "Asia/Ho_Chi_Minh";
 const JSON_LIMIT = "1000mb";
 const OTP_VALIDITY = 1; // 1 minute
 const RELOAD_INTERVAL = 50000; // 50 seconds
-
-const CORS_OPTIONS = {
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "message-signature",
-    "timestamp",
-    "x-api-key",
-  ],
-  exposedHeaders: ["Content-Disposition"],
-};
-
-const API_HEADER = {
-  X_API_KEY: "x-api-key",
-  AUTHHORIZATION: "authorization",
-  MESSAGE_SIGNATURE: "message-signature",
-  TIMESTAMP: "timestamp",
-  CLIENT_REQUEST_ID: "client-request-id",
-};
-
-const ENV = {
-  MONGODB_URI: process.env.MONGODB_URI,
-  MASTER_KEY: process.env.MASTER_KEY,
-};
-
-const SOCKET_CMD = {
-  CLIENT_PING: "CLIENT_PING",
-  CMD_LOCK_DEVICE: "CMD_LOCK_DEVICE",
-};
 
 const CONFIG_KEY = {
   JWT_SECRET: "JWT_SECRET",
@@ -68,6 +39,43 @@ const CONFIG_KEY = {
   PORT: "PORT",
   X_API_KEY: "X_API_KEY",
   UPLOAD_DIR: "UPLOAD_DIR",
+  ALLOWED_DOMAINS: "ALLOWED_DOMAINS",
+};
+
+const API_HEADER = {
+  X_API_KEY: "x-api-key",
+  AUTHORIZATION: "authorization",
+  MESSAGE_SIGNATURE: "message-signature",
+  TIMESTAMP: "timestamp",
+  CLIENT_REQUEST_ID: "client-request-id",
+};
+
+const LIMITER = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: {
+    result: false,
+    message: "Too many requests, please try again later",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const CORS_OPTIONS = {
+  origin: getListConfigValues(CONFIG_KEY.ALLOWED_DOMAINS) || "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", ...Object.values(API_HEADER)],
+  exposedHeaders: ["Content-Disposition"],
+};
+
+const ENV = {
+  MONGODB_URI: process.env.MONGODB_URI,
+  MASTER_KEY: process.env.MASTER_KEY,
+};
+
+const SOCKET_CMD = {
+  CLIENT_PING: "CLIENT_PING",
+  CMD_LOCK_DEVICE: "CMD_LOCK_DEVICE",
 };
 
 const ERROR_CODE = {
@@ -155,12 +163,12 @@ const MIME_TYPES = {
 };
 
 export {
+  CONFIG_KIND,
   CORS_OPTIONS,
   DATE_FORMAT,
   ERROR_CODE,
   ENV,
   CONFIG_KEY,
-  CONFIG_KIND,
   JSON_LIMIT,
   API_HEADER,
   TOTP,
@@ -172,4 +180,5 @@ export {
   MIME_TYPES,
   TIMEZONE,
   SOFTWARE_KIND,
+  LIMITER,
 };

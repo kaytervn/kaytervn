@@ -4,6 +4,7 @@ import {
   CONFIG_KEY,
   CORS_OPTIONS,
   JSON_LIMIT,
+  LIMITER,
   RELOAD_INTERVAL,
 } from "./utils/constant.js";
 import { createServer } from "http";
@@ -41,6 +42,7 @@ const io = new Server(httpServer, { cors: CORS_OPTIONS });
 app.use(cors(CORS_OPTIONS));
 app.use(express.json({ limit: JSON_LIMIT }));
 
+app.use(LIMITER);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/v1/key", keyRouter);
 app.use(checkSystemReady);

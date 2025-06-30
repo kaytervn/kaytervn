@@ -59,6 +59,15 @@ const initKey = async () => {
   }
 };
 
+const getListConfigValues = (key) => {
+  try {
+    const data = getConfigValue(key);
+    return data.split(",").map((item) => item.trim()) || [];
+  } catch {
+    return [];
+  }
+};
+
 export {
   getAppProperties,
   setMasterKey,
@@ -66,4 +75,5 @@ export {
   getLruCache,
   clearMasterKey,
   initKey,
+  getListConfigValues,
 };

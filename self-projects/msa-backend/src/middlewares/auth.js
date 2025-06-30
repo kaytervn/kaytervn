@@ -12,7 +12,7 @@ import { API_HEADER, CONFIG_KEY, ERROR_CODE } from "../utils/constant.js";
 import { Buffer } from "buffer";
 
 const basicAuth = (req, res, next) => {
-  const authHeader = req.headers[API_HEADER.AUTHHORIZATION];
+  const authHeader = req.headers[API_HEADER.AUTHORIZATION];
   if (!authHeader || !authHeader.startsWith("Basic ")) {
     return makeUnauthorizedExecption({
       res,
@@ -49,7 +49,7 @@ const basicAuth = (req, res, next) => {
 };
 
 const bearerAuth = async (req, res, next) => {
-  const authHeader = req.headers[API_HEADER.AUTHHORIZATION];
+  const authHeader = req.headers[API_HEADER.AUTHORIZATION];
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return makeUnauthorizedExecption({
       res,
@@ -136,7 +136,7 @@ const verifySignature = async (req, res, next) => {
     );
 
     try {
-      const payload = decrypt(clientRequestId, req?.body?.data);
+      const payload = decrypt(clientRequestId, req?.body?.request);
       req.body = JSON.parse(payload);
     } catch {
       req.body = null;

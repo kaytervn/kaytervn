@@ -4,19 +4,14 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 import { CONFIG_KEY } from "./constant.js";
-import { getConfigValue } from "../config/appProperties.js";
+import { getListConfigValues } from "../config/appProperties.js";
 import axios from "axios";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const getAppUrls = () => {
-  const urls = getConfigValue(CONFIG_KEY.API_URL);
-  return urls.split(",").map((url) => url.trim()) || [];
-};
-
 const activeCommonServices = () => {
-  const urls = getAppUrls();
+  const urls = getListConfigValues(CONFIG_KEY.API_URL);
   for (const url of urls) {
     axios
       .get(url)

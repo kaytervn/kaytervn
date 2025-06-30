@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { CONFIG_KIND } from "../utils/constant.js";
 
 const ConfigSchema = new mongoose.Schema({
   key: {
@@ -12,7 +11,6 @@ const ConfigSchema = new mongoose.Schema({
   },
   kind: {
     type: Number,
-    enum: [CONFIG_KIND.SYSTEM, CONFIG_KIND.RAW],
     required: true,
   },
 });
