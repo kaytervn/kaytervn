@@ -162,7 +162,7 @@ const encryptResponseMiddleware = (req, res, next) => {
   res.json = function (body) {
     try {
       const encrypted = encryptClientField(JSON.stringify(body));
-      return originalJson.call(this, { data: encrypted });
+      return originalJson.call(this, { response: encrypted });
     } catch {
       return originalJson.call(this, body);
     }
