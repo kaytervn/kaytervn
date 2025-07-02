@@ -1,3 +1,4 @@
+import { getConfigValue } from "../config/appProperties.js";
 import {
   decryptClientField,
   encryptClientField,
@@ -6,12 +7,19 @@ import {
   decryptCommonField,
   encryptCommonField,
 } from "../encryption/commonEncryption.js";
+import Config from "../models/configModel.js";
 import {
   makeErrorResponse,
   makeSuccessResponse,
 } from "../services/apiService.js";
-import { generateTimestamp } from "../services/generateService.js";
-import { DATABASE_MODELS } from "../utils/constant.js";
+import { encryptRSA } from "../services/encryptionService.js";
+import {
+  generateMd5,
+  generateOTP,
+  generateTimestamp,
+} from "../services/generateService.js";
+import { comparePassword, encodePassword } from "../services/jwtService.js";
+import { CONFIG_KEY, CONFIG_KIND, DATABASE_MODELS } from "../utils/constant.js";
 import { Buffer } from "buffer";
 import fs from "fs";
 
@@ -21,10 +29,24 @@ const downloadBackupData = async (req, res) => {
     for (const [key, model] of Object.entries(DATABASE_MODELS)) {
       backupData[key] = await model.find({}).lean();
     }
-    const encrypted = encryptClientField(
-      encryptCommonField(JSON.stringify(backupData))
+    const publicKey = await getConfigValue(CONFIG_KEY.MASTER_PUBLIC_KEY);
+    const apiKey = await getConfigValue(CONFIG_KEY.X_API_KEY);
+    const timestamp = generateTimestamp();
+    const session = generateMd5(apiKey + generateOTP(10) + timestamp);
+    const data = encryptClientField(JSON.stringify(backupData));
+    await Config.updateOne(
+      { key: CONFIG_KEY.BACKUP_FILE_SESSION },
+      {
+        $set: {
+          kind: CONFIG_KIND.SYSTEM,
+          value: encryptRSA(publicKey, await encodePassword(session)),
+        },
+      },
+      { upsert: true }
     );
-    const fileName = `backup-data-${generateTimestamp()}.txt`;
+    const object = { data, session: encryptClientField(session) };
+    const encrypted = encryptCommonField(JSON.stringify(object));
+    const fileName = `backup-data-${timestamp}.txt`;
     const buffer = Buffer.from(encrypted, "utf-8");
     res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
     res.setHeader("Content-Type", "text/plain");
@@ -54,9 +76,18 @@ const uploadBackupData = async (req, res) => {
       return makeErrorResponse({ res, message: "No file uploaded" });
     }
     const content = fs.readFileSync(req.file.path, "utf8");
-    const backupData = JSON.parse(
-      decryptCommonField(decryptClientField(content))
-    );
+    const { data, session } = JSON.parse(decryptCommonField(content));
+    const systemSession = getConfigValue(CONFIG_KEY.BACKUP_FILE_SESSION);
+    if (
+      !systemSession ||
+      !(await comparePassword(decryptClientField(session), systemSession))
+    ) {
+      return makeErrorResponse({
+        res,
+        message: "Backup file has been expired",
+      });
+    }
+    const backupData = JSON.parse(decryptClientField(data));
     if (!backupData || typeof backupData !== "object") {
       return makeErrorResponse({ res, message: "Invalid backup file" });
     }

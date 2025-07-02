@@ -20,4 +20,4 @@ const insertConfig = async () => {
   console.log("Config inserted successfully");
 };
 
-await insertConfig();
+// await insertConfig();
