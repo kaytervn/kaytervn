@@ -16,6 +16,7 @@ import useApi from "../../hooks/useApi";
 import RequestKey from "../../pages/auth/RequestKey";
 import ChangePassword from "../../pages/auth/ChangePassword";
 import { USER_CONFIG } from "../config/PageConfigDetails";
+import ChangePin from "../../pages/auth/ChangePin";
 
 const MainHeader = ({ breadcrumbs }: any) => {
   const { user, loading } = useApi();
@@ -29,6 +30,12 @@ const MainHeader = ({ breadcrumbs }: any) => {
     showModal: showChangePasswordForm,
     hideModal: hideChangePasswordForm,
     formConfig: changePasswordFormConfig,
+  } = useModal();
+  const {
+    isModalVisible: changePinFormVisible,
+    showModal: showChangePinForm,
+    hideModal: hideChangePinForm,
+    formConfig: changePinFormConfig,
   } = useModal();
   const {
     isModalVisible: requestKeyFormVisible,
@@ -94,6 +101,14 @@ const MainHeader = ({ breadcrumbs }: any) => {
     });
   };
 
+  const handleChangePin = () => {
+    setIsDropdownOpen(false);
+    showChangePinForm({
+      title: BUTTON_TEXT.CHANGE_PIN,
+      hideModal: hideChangePinForm,
+    });
+  };
+
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
@@ -134,6 +149,10 @@ const MainHeader = ({ breadcrumbs }: any) => {
         isVisible={changePasswordFormVisible}
         formConfig={changePasswordFormConfig}
       />
+      <ChangePin
+        isVisible={changePinFormVisible}
+        formConfig={changePinFormConfig}
+      />
       <header className="flex items-center justify-between w-full text-white">
         <div className="flex-1 min-w-0">
           <Breadcrumb2 items={breadcrumbs} />
@@ -166,6 +185,10 @@ const MainHeader = ({ breadcrumbs }: any) => {
                 <OptionButton
                   label={BUTTON_TEXT.CHANGE_PASSWORD}
                   onClick={handleChangePassword}
+                />
+                <OptionButton
+                  label={BUTTON_TEXT.CHANGE_PIN}
+                  onClick={handleChangePin}
                 />
                 <OptionButton
                   label={BUTTON_TEXT.CLEAR_SYSTEM_KEY}

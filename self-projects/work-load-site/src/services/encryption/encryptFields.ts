@@ -9,8 +9,9 @@ const ENCRYPT_FIELDS = {
   ACCOUNT: ["username", "password", "note"],
   PLATFORM: ["name"],
   CREATE_PLATFORM: ["name"],
-  UPDATE_PLATFORM: ["id", "name"],
+  UPDATE_PLATFORM: ["name"],
   CHANGE_PASSWORD_FORM: ["oldPassword", "newPassword", "confirmPassword"],
+  CHANGE_PIN_FORM: ["oldPin", "newPin", "currentPassword"],
 };
 
 export { ENCRYPT_FIELDS };

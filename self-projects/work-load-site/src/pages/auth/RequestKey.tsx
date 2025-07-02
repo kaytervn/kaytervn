@@ -13,8 +13,8 @@ const RequestKey = ({ isVisible, formConfig }: any) => {
   const { setToast } = useGlobalContext();
   const validate = (form: any) => {
     const newErrors: any = {};
-    if (!form.password.trim()) {
-      newErrors.password = "Invalid password";
+    if (!form.pin.trim()) {
+      newErrors.pin = "Invalid pin";
     }
     return newErrors;
   };
@@ -49,12 +49,12 @@ const RequestKey = ({ isVisible, formConfig }: any) => {
           <div className="flex flex-col space-y-4">
             <InputField2
               type="password"
-              title="Password"
+              title="PIN"
               isRequired={true}
-              placeholder="Enter password"
-              value={form?.password}
-              onChangeText={(value: any) => handleChange("password", value)}
-              error={errors?.password}
+              placeholder="Enter PIN"
+              value={form?.pin}
+              onChangeText={(value: any) => handleChange("pin", value)}
+              error={errors?.pin}
             />
             <ActionSection
               children={

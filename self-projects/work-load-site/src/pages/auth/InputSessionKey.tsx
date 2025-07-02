@@ -11,6 +11,7 @@ import { decryptRSA, extractBase64FromPem } from "../../types/utils";
 import { BASIC_MESSAGES, BUTTON_TEXT, TOAST } from "../../types/constant";
 import { LoadingDialog } from "../../components/form/Dialog";
 import { TextAreaField2 } from "../../components/form/TextareaField";
+import { decryptClientField } from "../../services/encryption/clientEncryption";
 
 const InputKeyForm = ({ isVisible, formConfig }: any) => {
   const { user, loading } = useApi();
@@ -18,12 +19,16 @@ const InputKeyForm = ({ isVisible, formConfig }: any) => {
   const [mySecretKey, setMySecretKey] = useState<any>(null);
   const validate = (form: any) => {
     const newErrors: any = {};
-    const key = extractBase64FromPem(form.sessionKey);
-    const decryptedKey = decryptRSA(key, mySecretKey);
-    if (!decryptedKey) {
+    try {
+      const key = extractBase64FromPem(decryptClientField(form.sessionKey));
+      const decryptedKey = decryptRSA(key, mySecretKey);
+      if (!decryptedKey) {
+        newErrors.sessionKey = "Invalid session key";
+      } else {
+        setSessionKey(decryptedKey);
+      }
+    } catch {
       newErrors.sessionKey = "Invalid session key";
-    } else {
-      setSessionKey(decryptedKey);
     }
     return newErrors;
   };
@@ -77,7 +82,7 @@ const InputKeyForm = ({ isVisible, formConfig }: any) => {
                 value={form?.sessionKey}
                 onChangeText={(value: any) => handleChange("sessionKey", value)}
                 error={errors?.sessionKey}
-                maxLength={2000}
+                maxLength={5000}
               />
               <ActionSection
                 children={

@@ -34,12 +34,14 @@ const initQuery = { name: "" };
 const Platform = () => {
   const { state } = useLocation();
   const customFilterData = useCallback((allData: any[], query: any) => {
-    return allData?.filter((item) => {
-      const nameFilter =
-        !query?.name ||
-        item.name.toLowerCase().includes(query.name.toLowerCase());
-      return nameFilter;
-    });
+    return allData
+      ?.filter((item) => {
+        const nameFilter =
+          !query?.name ||
+          item.name.toLowerCase().includes(query.name.toLowerCase());
+        return nameFilter;
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, []);
   const { setToast } = useGlobalContext();
   const {

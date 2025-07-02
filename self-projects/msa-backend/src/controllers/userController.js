@@ -183,6 +183,7 @@ const resetUserPassword = async (req, res) => {
         code: null,
       }
     );
+    handleSendMsgLockDevice(user.username);
     return makeSuccessResponse({
       res,
       message: "Reset password success",
@@ -341,6 +342,7 @@ const resetUserMfa = async (req, res) => {
       return makeErrorResponse({ res, message: "Invalid OTP" });
     }
     await User.updateOne({ _id: extractId }, { secret: null, otp: null });
+    handleSendMsgLockDevice(user.username);
     return makeSuccessResponse({
       res,
       message: "Reset mfa success",

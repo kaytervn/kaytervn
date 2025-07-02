@@ -241,6 +241,7 @@ const BUTTON_TEXT = {
   DONE: "Done",
   BACK: "Back",
   CHANGE_PASSWORD: "Change password",
+  CHANGE_PIN: "Change PIN",
   LOGOUT: "Logout",
   CLEAR_SYSTEM_KEY: "Clear system key",
 };

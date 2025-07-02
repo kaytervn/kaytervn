@@ -38,6 +38,16 @@ export const userController = (fetchApi: any) => {
     });
   };
 
+  const changePin = (payload: any) => {
+    return fetchApi({
+      apiUrl: ENV.MSA_API_URL,
+      endpoint: "/v1/user/change-pin",
+      method: METHOD.PUT,
+      payload,
+      authType: AUTH_TYPE.BEARER,
+    });
+  };
+
   const requestKey = (payload: any) => {
     return fetchApi({
       apiUrl: ENV.MSA_API_URL,
@@ -124,5 +134,6 @@ export const userController = (fetchApi: any) => {
     requestResetMfa,
     resetMfa,
     clearSystemKey,
+    changePin,
   };
 };
