@@ -63,6 +63,7 @@ const rollbackData = async (res, previousData) => {
 
 const uploadBackupData = async (req, res) => {
   const previousData = {};
+  let backupData;
   try {
     if (!req.file) {
       return makeErrorResponse({ res, message: "No file uploaded" });
@@ -70,33 +71,43 @@ const uploadBackupData = async (req, res) => {
     const content = fs.readFileSync(req.file.path, "utf8");
     const { data, session } = JSON.parse(decryptCommonField(content));
     const systemSession = getConfigValue(CONFIG_KEY.BACKUP_FILE_SESSION);
+    const decryptedSession = decryptClientField(session);
     if (
       !systemSession ||
-      !(await comparePassword(decryptClientField(session), systemSession))
+      !(await comparePassword(decryptedSession, systemSession))
     ) {
       return makeErrorResponse({
         res,
         message: "Backup file has been expired",
       });
     }
-    const backupData = JSON.parse(decryptClientField(data));
+    backupData = JSON.parse(decryptClientField(data));
     if (!backupData || typeof backupData !== "object") {
       return makeErrorResponse({ res, message: "Invalid backup file" });
     }
+  } catch {
+    return makeErrorResponse({
+      res,
+      message: "Invalid or tampered backup file",
+    });
+  }
+  try {
     for (const [key, model] of Object.entries(DATABASE_MODELS)) {
       previousData[key] = await model.find({}).lean();
     }
+  } catch {
+    return makeErrorResponse({
+      res,
+      message: "Error while restoring backup data",
+    });
+  }
+  try {
     for (const [key, model] of Object.entries(DATABASE_MODELS)) {
-      try {
-        if (Array.isArray(backupData[key])) {
-          await model.deleteMany({});
-          await model.insertMany(backupData[key]);
-        } else {
-          return await rollbackData(res, previousData);
-        }
-      } catch {
+      if (!Array.isArray(backupData[key])) {
         return await rollbackData(res, previousData);
       }
+      await model.deleteMany({});
+      await model.insertMany(backupData[key]);
     }
     return makeSuccessResponse({
       res,
