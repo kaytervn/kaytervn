@@ -147,9 +147,13 @@ const getBackupCode = async (req, res) => {
 
 const getListBackupCodes = async (req, res) => {
   try {
+    const query = {};
+    if (req.query.account) {
+      query.account = req.query.account;
+    }
     const objs = decryptAndEncryptListByUserKey(
       req.token,
-      await BackupCode.find().populate("account").lean(),
+      await BackupCode.find(query).populate("account").lean(),
       ENCRYPT_FIELDS.BACKUP_CODE
     );
     return makeSuccessResponse({

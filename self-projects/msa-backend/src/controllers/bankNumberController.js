@@ -161,9 +161,13 @@ const getBankNumber = async (req, res) => {
 
 const getListBankNumbers = async (req, res) => {
   try {
+    const query = {};
+    if (req.query.bank) {
+      query.bank = req.query.bank;
+    }
     const objs = decryptAndEncryptListByUserKeyForEbank(
       req.token,
-      await BankNumber.find().populate("bank").lean(),
+      await BankNumber.find(query).populate("bank").lean(),
       ENCRYPT_FIELDS.BANK_NUMBER
     );
     return makeSuccessResponse({
