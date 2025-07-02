@@ -40,6 +40,7 @@ const downloadBackupData = async (req, res) => {
       CONFIG_KIND.SYSTEM,
       await encodePassword(session)
     );
+    await initKey();
     const object = { data, session: encryptClientField(session) };
     const encrypted = encryptCommonField(JSON.stringify(object));
     const fileName = `backup-data-${timestamp}.txt`;

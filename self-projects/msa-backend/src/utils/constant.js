@@ -25,7 +25,6 @@ import Link from "../models/linkModel.js";
 import Platform from "../models/platformModel.js";
 import Note from "../models/noteModel.js";
 import Software from "../models/softwareModel.js";
-import User from "../models/userModel.js";
 
 const DATE_FORMAT = "DD/MM/YYYY HH:mm:ss";
 const TIMEZONE = "Asia/Ho_Chi_Minh";
@@ -160,7 +159,6 @@ const DATABASE_MODELS = {
   notes: Note,
   platforms: Platform,
   softwares: Software,
-  users: User,
 };
 
 const MIME_TYPES = {
