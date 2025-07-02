@@ -92,10 +92,10 @@ const uploadBackupData = async (req, res) => {
           await model.deleteMany({});
           await model.insertMany(backupData[key]);
         } else {
-          return rollbackData(res, previousData);
+          return await rollbackData(res, previousData);
         }
       } catch {
-        return rollbackData(res, previousData);
+        return await rollbackData(res, previousData);
       }
     }
     return makeSuccessResponse({
@@ -103,7 +103,7 @@ const uploadBackupData = async (req, res) => {
       message: "Backup restored successfully",
     });
   } catch {
-    return rollbackData(res, previousData);
+    return await rollbackData(res, previousData);
   } finally {
     if (req.file?.path) fs.unlinkSync(req.file.path);
   }
