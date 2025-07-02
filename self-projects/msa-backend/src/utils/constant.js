@@ -132,7 +132,7 @@ const ENCRYPT_FIELDS = {
   RESET_PASSWORD_FORM: ["userId", "newPassword", "otp"],
   CHANGE_PASSWORD_FORM: ["oldPassword", "newPassword"],
   CHANGE_PIN_FORM: ["oldPin", "newPin", "currentPassword"],
-  USER: ["email", "username", "password", "secret", "code", "pin"],
+  USER: ["email", "username", "password", "secret", "code", "pin", "otp"],
   ...ACCOUNT_ENCRYPT_FIELDS,
   ...PLATFORM_ENCRYPT_FIELDS,
   ...LINK_GROUP_ENCRYPT_FIELDS,
