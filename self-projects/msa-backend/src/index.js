@@ -3,6 +3,7 @@ import cors from "cors";
 import {
   CONFIG_KEY,
   CORS_OPTIONS,
+  ENV,
   JSON_LIMIT,
   LIMITER,
   RELOAD_INTERVAL,
@@ -68,7 +69,7 @@ app.use("/v1/note", noteRouter);
 app.use("/v1/software", softwareRouter);
 app.use("/v1/data-backup", dataBackupRouter);
 
-const PORT = getConfigValue(CONFIG_KEY.PORT) || 6676;
+const PORT = ENV.PORT || getConfigValue(CONFIG_KEY.PORT) || 6676;
 httpServer.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
