@@ -178,9 +178,13 @@ const getAccount = async (req, res) => {
 
 const getListAccounts = async (req, res) => {
   try {
+    const query = {};
+    if (req.query.ref) {
+      query.ref = req.query.ref;
+    }
     const objs = decryptAndEncryptListByUserKey(
       req.token,
-      await Account.find().populate("ref platform").lean(),
+      await Account.find(query).populate("ref platform").lean(),
       ENCRYPT_FIELDS.ACCOUNT
     );
     return makeSuccessResponse({
