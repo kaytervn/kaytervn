@@ -36,11 +36,13 @@ const setConfigValue = async (key, kind, value) => {
 };
 
 const initCache = () => {
-  try {
-    const ttl = parseInt(getConfigValue(CONFIG_KEY.JWT_VALIDITY));
-    LRU_CACHE = new LRUCache({ ttl, ttlAutopurge: true });
-  } catch {
-    LRU_CACHE = null;
+  if (!LRU_CACHE) {
+    try {
+      const ttl = parseInt(getConfigValue(CONFIG_KEY.JWT_VALIDITY));
+      LRU_CACHE = new LRUCache({ ttl, ttlAutopurge: true });
+    } catch {
+      LRU_CACHE = null;
+    }
   }
 };
 
