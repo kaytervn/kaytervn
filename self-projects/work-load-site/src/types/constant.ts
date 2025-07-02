@@ -240,10 +240,14 @@ const BUTTON_TEXT = {
   CANCEL: "Cancel",
   DONE: "Done",
   BACK: "Back",
+  UPLOAD: "Upload",
+  DOWNLOAD: "Download",
   CHANGE_PASSWORD: "Change password",
   CHANGE_PIN: "Change PIN",
   LOGOUT: "Logout",
   CLEAR_SYSTEM_KEY: "Clear system key",
+  DOWNLOAD_DATA_BACKUP: "Download data backup",
+  UPLOAD_DATA_BACKUP: "Upload data backup",
 };
 
 const ENV = {

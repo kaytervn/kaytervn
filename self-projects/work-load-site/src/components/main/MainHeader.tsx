@@ -19,7 +19,8 @@ import { USER_CONFIG } from "../config/PageConfigDetails";
 import ChangePin from "../../pages/auth/ChangePin";
 
 const MainHeader = ({ breadcrumbs }: any) => {
-  const { user, loading } = useApi();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { user, loading, dataBackup } = useApi();
   const { profile, setToast } = useGlobalContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -43,6 +44,26 @@ const MainHeader = ({ breadcrumbs }: any) => {
     hideModal: hideRequestKeyForm,
     formConfig: requestKeyFormConfig,
   } = useModal();
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const isTxtFile =
+      file.type === "text/plain" || file.name.toLowerCase().endsWith(".txt");
+    if (!isTxtFile) {
+      setToast("Invalid file type", TOAST.ERROR);
+      return;
+    }
+    const res = await dataBackup.upload(file);
+    if (res.result) {
+      setToast("Upload data backup successfully", TOAST.SUCCESS);
+    } else {
+      setToast(res.message, TOAST.ERROR);
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   const handleRequestKey = () => {
     setIsDropdownOpen(false);
@@ -109,6 +130,11 @@ const MainHeader = ({ breadcrumbs }: any) => {
     });
   };
 
+  const handleUploadDataBackup = () => {
+    setIsDropdownOpen(false);
+    fileInputRef.current?.click();
+  };
+
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
@@ -137,6 +163,28 @@ const MainHeader = ({ breadcrumbs }: any) => {
     });
   };
 
+  const handleDownloadDataBackup = async () => {
+    setIsDropdownOpen(false);
+    showModal({
+      title: BUTTON_TEXT.DOWNLOAD_DATA_BACKUP,
+      message: "You want to download data backup?",
+      confirmText: BUTTON_TEXT.DOWNLOAD,
+      color: "mediumseagreen",
+      onConfirm: async () => {
+        hideModal();
+        const res = await dataBackup.download();
+        if (res.result) {
+          setToast("File downloaded successfully", TOAST.SUCCESS);
+        } else {
+          setToast(res.message, TOAST.ERROR);
+        }
+      },
+      onCancel: () => {
+        hideModal();
+      },
+    });
+  };
+
   return (
     <>
       <LoadingDialog isVisible={loading} />
@@ -152,6 +200,13 @@ const MainHeader = ({ breadcrumbs }: any) => {
       <ChangePin
         isVisible={changePinFormVisible}
         formConfig={changePinFormConfig}
+      />
+      <input
+        type="file"
+        accept=".txt"
+        onChange={handleFileUpload}
+        ref={fileInputRef}
+        className="hidden"
       />
       <header className="flex items-center justify-between w-full text-white">
         <div className="flex-1 min-w-0">
@@ -189,6 +244,14 @@ const MainHeader = ({ breadcrumbs }: any) => {
                 <OptionButton
                   label={BUTTON_TEXT.CHANGE_PIN}
                   onClick={handleChangePin}
+                />
+                <OptionButton
+                  label={BUTTON_TEXT.DOWNLOAD_DATA_BACKUP}
+                  onClick={handleDownloadDataBackup}
+                />
+                <OptionButton
+                  label={BUTTON_TEXT.UPLOAD_DATA_BACKUP}
+                  onClick={handleUploadDataBackup}
                 />
                 <OptionButton
                   label={BUTTON_TEXT.CLEAR_SYSTEM_KEY}

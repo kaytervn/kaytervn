@@ -1,4 +1,5 @@
 import { categoryController } from "../controllers/categoryController.ts";
+import { dataBackupController } from "../controllers/dataBackupController.ts";
 import { lessonController } from "../controllers/lessonController.ts";
 import { mediaController } from "../controllers/mediaController.ts";
 import { platformController } from "../controllers/platformController.ts";
@@ -14,6 +15,7 @@ const useApi = () => {
 
   const user = userController(fetchApi);
   const platform = platformController(fetchApi);
+  const dataBackup = dataBackupController(fetchApi);
 
   return {
     user,
@@ -22,6 +24,7 @@ const useApi = () => {
     lesson,
     category,
     loading,
+    dataBackup,
   };
 };
 

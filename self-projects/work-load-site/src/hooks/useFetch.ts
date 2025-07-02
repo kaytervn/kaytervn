@@ -69,17 +69,16 @@ const useFetch = () => {
           break;
       }
 
-      if (!(options.payload instanceof FormData)) {
-        headers["Content-Type"] = "application/json";
-      }
-
       const payload = options.payload;
-      if (payload && !NOT_ENCRYPT_ENPOINTS.includes(options.endpoint)) {
-        const encryptedPayload = encrypt(
-          JSON.stringify(payload),
-          clientRequestId
-        );
-        options.payload = { request: encryptedPayload };
+      if (!(payload instanceof FormData)) {
+        headers["Content-Type"] = "application/json";
+        if (payload && !NOT_ENCRYPT_ENPOINTS.includes(options.endpoint)) {
+          const encryptedPayload = encrypt(
+            JSON.stringify(payload),
+            clientRequestId
+          );
+          options.payload = { request: encryptedPayload };
+        }
       }
 
       const response = await fetch(url, {
