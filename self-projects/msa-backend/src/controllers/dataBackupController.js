@@ -1,4 +1,8 @@
-import { getConfigValue, setConfigValue } from "../config/appProperties.js";
+import {
+  getConfigValue,
+  initKey,
+  setConfigValue,
+} from "../config/appProperties.js";
 import {
   decryptClientField,
   encryptClientField,
@@ -98,6 +102,7 @@ const uploadBackupData = async (req, res) => {
         return rollbackData(res, previousData);
       }
     }
+    await initKey();
     return makeSuccessResponse({
       res,
       message: "Backup restored successfully",

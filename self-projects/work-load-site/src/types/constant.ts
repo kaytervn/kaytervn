@@ -246,8 +246,8 @@ const BUTTON_TEXT = {
   CHANGE_PIN: "Change PIN",
   LOGOUT: "Logout",
   CLEAR_SYSTEM_KEY: "Clear system key",
-  DOWNLOAD_DATA_BACKUP: "Download data backup",
-  UPLOAD_DATA_BACKUP: "Upload data backup",
+  DOWNLOAD_DATA_BACKUP: "Download backup data",
+  UPLOAD_DATA_BACKUP: "Upload backup data",
 };
 
 const ENV = {

@@ -70,10 +70,10 @@ const clearMasterKey = () => {
 const initKey = async () => {
   const masterKey = ENV.MASTER_KEY;
   if (masterKey) {
-    console.log("Master key found");
+    console.log("[INIT-KEY] Master key found");
     await setMasterKey(masterKey);
   } else {
-    console.log("Master key not found");
+    console.log("[INIT-KEY] Master key not found");
   }
 };
 
