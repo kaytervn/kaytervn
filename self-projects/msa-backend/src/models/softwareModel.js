@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { SOFTWARE_KIND } from "../utils/constant.js";
 
 const SoftwareSchema = new mongoose.Schema({
   name: {
@@ -8,7 +7,7 @@ const SoftwareSchema = new mongoose.Schema({
   },
   kind: {
     type: Number,
-    enum: Object.values(SOFTWARE_KIND),
+    enum: [1, 2, 3, 4, 5, 6, 7],
     required: true,
   },
   link: {

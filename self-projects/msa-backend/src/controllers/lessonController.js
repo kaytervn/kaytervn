@@ -114,7 +114,8 @@ const getListLessons = async (req, res) => {
 
     const lessons = await Lesson.find(query)
       .populate("category", "name")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
 
     return makeSuccessResponse({
       res,

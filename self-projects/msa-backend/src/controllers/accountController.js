@@ -159,7 +159,7 @@ const deleteAccount = async (req, res) => {
 const getAccount = async (req, res) => {
   try {
     const id = req.params.id;
-    const account = await Account.findById(id).populate("ref platform");
+    const account = await Account.findById(id).populate("ref platform").lean();
     if (!account) {
       return makeErrorResponse({ res, message: "Not found account" });
     }
@@ -180,7 +180,7 @@ const getListAccounts = async (req, res) => {
   try {
     const objs = decryptAndEncryptListByUserKey(
       req.token,
-      await Account.find().populate("ref platform"),
+      await Account.find().populate("ref platform").lean(),
       ENCRYPT_FIELDS.ACCOUNT
     );
     return makeSuccessResponse({

@@ -46,7 +46,7 @@ const updateCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
   try {
     const id = req.params.id;
-    const category = await Category.findById(id);
+    const category = await Category.findById(id).lean();
     if (!category) {
       return makeErrorResponse({ res, message: "Category not found" });
     }
@@ -63,7 +63,7 @@ const deleteCategory = async (req, res) => {
 const getCategory = async (req, res) => {
   try {
     const id = req.params.id;
-    const category = await Category.findById(id);
+    const category = await Category.findById(id).lean();
     if (!category) {
       return makeErrorResponse({ res, message: "Category not found" });
     }

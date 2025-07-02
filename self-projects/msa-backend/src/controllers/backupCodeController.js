@@ -128,7 +128,7 @@ const deleteBackupCode = async (req, res) => {
 const getBackupCode = async (req, res) => {
   try {
     const id = req.params.id;
-    const backupCode = await BackupCode.findById(id).populate("account");
+    const backupCode = await BackupCode.findById(id).populate("account").lean();
     if (!backupCode) {
       return makeErrorResponse({ res, message: "Not found backup code" });
     }
@@ -149,7 +149,7 @@ const getListBackupCodes = async (req, res) => {
   try {
     const objs = decryptAndEncryptListByUserKey(
       req.token,
-      await BackupCode.find().populate("account"),
+      await BackupCode.find().populate("account").lean(),
       ENCRYPT_FIELDS.BACKUP_CODE
     );
     return makeSuccessResponse({

@@ -104,7 +104,7 @@ const deletePlatform = async (req, res) => {
 const getPlatform = async (req, res) => {
   try {
     const id = req.params.id;
-    const platform = await Platform.findById(id);
+    const platform = await Platform.findById(id).lean();
     if (!platform) {
       return makeErrorResponse({ res, message: "Platform not found" });
     }
@@ -125,7 +125,7 @@ const getListPlatforms = async (req, res) => {
   try {
     const platforms = decryptAndEncryptListByUserKey(
       req.token,
-      await Platform.find(),
+      await Platform.find().lean(),
       ENCRYPT_FIELDS.PLATFORM
     );
     return makeSuccessResponse({

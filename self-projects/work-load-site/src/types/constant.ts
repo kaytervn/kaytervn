@@ -203,6 +203,7 @@ const API_HEADER = {
   TIMESTAMP: "timestamp",
   AUTHORIZATION: "authorization",
   X_API_KEY: "x-api-key",
+  CLIENT_REQUEST_ID: "client-request-id",
 };
 
 const AUTH_TYPE = {

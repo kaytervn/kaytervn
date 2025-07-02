@@ -12,7 +12,20 @@ import {
   SOFTWARE_ENCRYPT_FIELDS,
 } from "../encryption/encryptFieldConfig.js";
 import rateLimit from "express-rate-limit";
-import { getListConfigValues } from "../config/appProperties.js";
+import Account from "../models/accountModel.js";
+import BackupCode from "../models/backupCodeModel.js";
+import Bank from "../models/bankModel.js";
+import BankNumber from "../models/bankNumberModel.js";
+import Category from "../models/categoryModel.js";
+import Config from "../models/configModel.js";
+import IdNumber from "../models/idNumberModel.js";
+import Lesson from "../models/lessonModel.js";
+import LinkGroup from "../models/linkGroupModel.js";
+import Link from "../models/linkModel.js";
+import Platform from "../models/platformModel.js";
+import Note from "../models/noteModel.js";
+import Software from "../models/softwareModel.js";
+import User from "../models/userModel.js";
 
 const DATE_FORMAT = "DD/MM/YYYY HH:mm:ss";
 const TIMEZONE = "Asia/Ho_Chi_Minh";
@@ -62,7 +75,7 @@ const LIMITER = rateLimit({
 });
 
 const CORS_OPTIONS = {
-  origin: getListConfigValues(CONFIG_KEY.ALLOWED_DOMAINS) || "*",
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", ...Object.values(API_HEADER)],
   exposedHeaders: ["Content-Disposition"],
@@ -131,6 +144,23 @@ const ENCRYPT_FIELDS = {
   ...SOFTWARE_ENCRYPT_FIELDS,
 };
 
+const DATABASE_MODELS = {
+  accounts: Account,
+  backupcodes: BackupCode,
+  banks: Bank,
+  banknumbers: BankNumber,
+  categories: Category,
+  configs: Config,
+  idnumbers: IdNumber,
+  lessons: Lesson,
+  linkgroups: LinkGroup,
+  links: Link,
+  notes: Note,
+  platforms: Platform,
+  softwares: Software,
+  users: User,
+};
+
 const MIME_TYPES = {
   // Images
   ".jpg": "image/jpeg",
@@ -181,4 +211,5 @@ export {
   TIMEZONE,
   SOFTWARE_KIND,
   LIMITER,
+  DATABASE_MODELS,
 };

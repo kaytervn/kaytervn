@@ -34,6 +34,7 @@ import { bankRouter } from "./routes/bankRouter.js";
 import { linkRouter } from "./routes/linkRouter.js";
 import { noteRouter } from "./routes/noteRouter.js";
 import { softwareRouter } from "./routes/softwareRouter.js";
+import { dataBackupRouter } from "./routes/dataBackupRouter.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -65,6 +66,7 @@ app.use("/v1/bank", bankRouter);
 app.use("/v1/link", linkRouter);
 app.use("/v1/note", noteRouter);
 app.use("/v1/software", softwareRouter);
+app.use("/v1/data-backup", dataBackupRouter);
 
 const PORT = getConfigValue(CONFIG_KEY.PORT) || 6676;
 httpServer.listen(PORT, () => {

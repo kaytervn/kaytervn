@@ -104,7 +104,7 @@ const deleteLinkGroup = async (req, res) => {
 const getLinkGroup = async (req, res) => {
   try {
     const id = req.params.id;
-    const obj = await LinkGroup.findById(id);
+    const obj = await LinkGroup.findById(id).lean();
     if (!obj) {
       return makeErrorResponse({ res, message: "Obj not found" });
     }
@@ -125,7 +125,7 @@ const getListLinkGroups = async (req, res) => {
   try {
     const objs = decryptAndEncryptListByUserKey(
       req.token,
-      await LinkGroup.find(),
+      await LinkGroup.find().lean(),
       ENCRYPT_FIELDS.LINK_GROUP
     );
     return makeSuccessResponse({

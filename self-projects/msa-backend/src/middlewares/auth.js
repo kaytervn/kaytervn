@@ -1,4 +1,8 @@
-import { getAppProperties, getConfigValue } from "../config/appProperties.js";
+import {
+  getAppProperties,
+  getConfigValue,
+  getListConfigValues,
+} from "../config/appProperties.js";
 import {
   decryptClientField,
   encryptClientField,
@@ -112,6 +116,17 @@ const checkSystemReady = (req, res, next) => {
 };
 
 const verifySignature = async (req, res, next) => {
+  const origin = req.headers.origin || "";
+  const referer = req.headers.referer || "";
+
+  const isValidDomain = getListConfigValues(CONFIG_KEY.ALLOWED_DOMAINS).some(
+    (domain) => origin.startsWith(domain) || referer.startsWith(domain)
+  );
+
+  if (!isValidDomain) {
+    return makeUnauthorizedExecption({ res, message: "Untrusted source" });
+  }
+
   const messageSignature = decryptClientField(
     req.headers[API_HEADER.MESSAGE_SIGNATURE]
   );
@@ -135,11 +150,13 @@ const verifySignature = async (req, res, next) => {
       clientId + clientSecret + timestamp + clientRequestId
     );
 
-    try {
-      const payload = decrypt(clientRequestId, req?.body?.request);
-      req.body = JSON.parse(payload);
-    } catch {
-      req.body = null;
+    if (req?.body?.request) {
+      try {
+        const payload = decrypt(clientRequestId, req?.body?.request);
+        req.body = JSON.parse(payload);
+      } catch {
+        req.body = null;
+      }
     }
 
     if (messageSignature !== systemSignature) {

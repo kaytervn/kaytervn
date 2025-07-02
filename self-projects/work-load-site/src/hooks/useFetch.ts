@@ -12,8 +12,11 @@ import {
   METHOD,
 } from "../types/constant";
 import { useGlobalContext } from "../components/config/GlobalProvider";
-import { getAuthHeader } from "../types/utils";
-import { encryptClientField } from "../services/encryption/clientEncryption";
+import { decrypt, encrypt, getAuthHeader } from "../types/utils";
+import {
+  decryptClientField,
+  encryptClientField,
+} from "../services/encryption/clientEncryption";
 
 interface FetchOptions {
   apiUrl: string;
@@ -25,6 +28,7 @@ interface FetchOptions {
 }
 
 const useFetch = () => {
+  const NOT_ENCRYPT_ENPOINTS = ["/v1/key/input-key"];
   const { refreshSessionTimeout, setIsUnauthorized } = useGlobalContext();
   const [loading, setLoading] = useState(false);
 
@@ -32,13 +36,15 @@ const useFetch = () => {
     setLoading(true);
 
     try {
-      const { timestamp, messageSignature } = getAuthHeader();
+      const { timestamp, messageSignature, clientRequestId } = getAuthHeader();
       const url = `${options.apiUrl}${options.endpoint}`;
       const headers: Record<string, string> = {
         ...options.headers,
         [`${API_HEADER.MESSAGE_SIGNATURE}`]:
           encryptClientField(messageSignature),
         [`${API_HEADER.TIMESTAMP}`]: encryptClientField(timestamp),
+        [`${API_HEADER.CLIENT_REQUEST_ID}`]:
+          encryptClientField(clientRequestId),
       };
 
       switch (options.authType) {
@@ -65,6 +71,15 @@ const useFetch = () => {
 
       if (!(options.payload instanceof FormData)) {
         headers["Content-Type"] = "application/json";
+      }
+
+      const payload = options.payload;
+      if (payload && !NOT_ENCRYPT_ENPOINTS.includes(options.endpoint)) {
+        const encryptedPayload = encrypt(
+          JSON.stringify(payload),
+          clientRequestId
+        );
+        options.payload = { request: encryptedPayload };
       }
 
       const response = await fetch(url, {
@@ -120,7 +135,11 @@ const useFetch = () => {
           refreshSessionTimeout();
         }
 
-        return data;
+        try {
+          return JSON.parse(decryptClientField(data?.response));
+        } catch {
+          return data;
+        }
       }
     } catch (err: any) {
       return { result: false, message: err.message || BASIC_MESSAGES.FAILED };
@@ -152,6 +171,7 @@ const useFetch = () => {
       if (queryString) {
         options.endpoint += `?${queryString}`;
       }
+      options.payload = null;
     }
 
     return handleFetch(options);

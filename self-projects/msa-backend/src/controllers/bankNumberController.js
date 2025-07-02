@@ -142,7 +142,7 @@ const deleteBankNumber = async (req, res) => {
 const getBankNumber = async (req, res) => {
   try {
     const id = req.params.id;
-    const bankNumber = await BankNumber.findById(id).populate("bank");
+    const bankNumber = await BankNumber.findById(id).populate("bank").lean();
     if (!bankNumber) {
       return makeErrorResponse({ res, message: "Not found bank number" });
     }
@@ -163,7 +163,7 @@ const getListBankNumbers = async (req, res) => {
   try {
     const objs = decryptAndEncryptListByUserKeyForEbank(
       req.token,
-      await BankNumber.find().populate("bank"),
+      await BankNumber.find().populate("bank").lean(),
       ENCRYPT_FIELDS.BANK_NUMBER
     );
     return makeSuccessResponse({

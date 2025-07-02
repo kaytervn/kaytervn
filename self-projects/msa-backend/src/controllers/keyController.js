@@ -40,7 +40,10 @@ const inputKey = async (req, res) => {
 
 const clearKey = async (req, res) => {
   try {
-    const users = decryptCommonList(await User.find(), ENCRYPT_FIELDS.USER);
+    const users = decryptCommonList(
+      await User.find().lean(),
+      ENCRYPT_FIELDS.USER
+    );
     for (const user of users) {
       handleSendMsgLockDevice(user.username);
     }

@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
-import { ACCOUNT_KIND } from "../utils/constant.js";
 import BackupCode from "./backupCodeModel.js";
 
 const AccountSchema = new mongoose.Schema({
   kind: {
     type: Number,
-    enum: [ACCOUNT_KIND.ROOT, ACCOUNT_KIND.LINKED],
+    enum: [1, 2],
     required: true,
   },
   username: {

@@ -11,6 +11,7 @@ const ConfigSchema = new mongoose.Schema({
   },
   kind: {
     type: Number,
+    enum: [1, 2],
     required: true,
   },
 });

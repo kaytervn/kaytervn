@@ -244,7 +244,7 @@ function generateController(modelName: any, fields: any) {
   const get${upperModel} = async (req, res) => {
     try {
       const id = req.params.id;
-      const ${lowerModel} = await ${upperModel}.findById(id)${populateFields};
+      const ${lowerModel} = await ${upperModel}.findById(id)${populateFields}.lean();
       if (!${lowerModel}) {
         return makeErrorResponse({ res, message: "Not found ${splitModelSpace}" });
       }
@@ -265,7 +265,7 @@ function generateController(modelName: any, fields: any) {
     try {
       const objs = decryptAndEncryptListByUserKey(
         req.token,
-        await ${upperModel}.find()${populateFields},
+        await ${upperModel}.find()${populateFields}.lean(),
         ENCRYPT_FIELDS.${upperSnakeCaseModel}
       );
       return makeSuccessResponse({

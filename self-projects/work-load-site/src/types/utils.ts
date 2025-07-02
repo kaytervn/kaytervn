@@ -31,12 +31,12 @@ const getCurrentDate_2 = () => {
   return `${day}${month}${year}.${hours}${minutes}${seconds}`;
 };
 
-const encrypt = (value: any) => {
-  return CryptoJS.AES.encrypt(value, myPublicSecretKey).toString();
+const encrypt = (value: any, key: any = myPublicSecretKey) => {
+  return CryptoJS.AES.encrypt(value, key).toString();
 };
 
-const decrypt = (encryptedValue: any) => {
-  const decrypted = CryptoJS.AES.decrypt(encryptedValue, myPublicSecretKey);
+const decrypt = (encryptedValue: any, key: any = myPublicSecretKey) => {
+  const decrypted = CryptoJS.AES.decrypt(encryptedValue, key);
   return decrypted.toString(CryptoJS.enc.Utf8);
 };
 
@@ -321,11 +321,12 @@ const extractBase64FromPem = (pem: any) => {
 };
 
 const getAuthHeader = () => {
+  const clientRequestId = generateUniqueId();
   const timestamp = generateTimestamp();
   const messageSignature = generateMd5(
-    ENV.CLIENT_ID + ENV.CLIENT_SECRET + timestamp
+    ENV.CLIENT_ID + ENV.CLIENT_SECRET + timestamp + clientRequestId
   );
-  return { timestamp, messageSignature };
+  return { timestamp, messageSignature, clientRequestId };
 };
 
 const getMimeType = (fileName: string) => {
