@@ -1,4 +1,4 @@
-import { getConfigValue } from "../config/appProperties.js";
+import { getConfigValue, setConfigValue } from "../config/appProperties.js";
 import {
   decryptClientField,
   encryptClientField,
@@ -7,12 +7,10 @@ import {
   decryptCommonField,
   encryptCommonField,
 } from "../encryption/commonEncryption.js";
-import Config from "../models/configModel.js";
 import {
   makeErrorResponse,
   makeSuccessResponse,
 } from "../services/apiService.js";
-import { encryptRSA } from "../services/encryptionService.js";
 import {
   generateMd5,
   generateOTP,
@@ -29,20 +27,14 @@ const downloadBackupData = async (req, res) => {
     for (const [key, model] of Object.entries(DATABASE_MODELS)) {
       backupData[key] = await model.find({}).lean();
     }
-    const publicKey = await getConfigValue(CONFIG_KEY.MASTER_PUBLIC_KEY);
     const apiKey = await getConfigValue(CONFIG_KEY.X_API_KEY);
     const timestamp = generateTimestamp();
     const session = generateMd5(apiKey + generateOTP(10) + timestamp);
     const data = encryptClientField(JSON.stringify(backupData));
-    await Config.updateOne(
-      { key: CONFIG_KEY.BACKUP_FILE_SESSION },
-      {
-        $set: {
-          kind: CONFIG_KIND.SYSTEM,
-          value: encryptRSA(publicKey, await encodePassword(session)),
-        },
-      },
-      { upsert: true }
+    await setConfigValue(
+      CONFIG_KEY.BACKUP_FILE_SESSION,
+      CONFIG_KIND.SYSTEM,
+      await encodePassword(session)
     );
     const object = { data, session: encryptClientField(session) };
     const encrypted = encryptCommonField(JSON.stringify(object));

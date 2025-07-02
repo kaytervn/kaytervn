@@ -2,7 +2,7 @@ import Config from "../models/configModel.js";
 import { CONFIG_KEY, CONFIG_KIND, ENV } from "../utils/constant.js";
 import { LRUCache } from "lru-cache";
 import dbConfig from "./dbConfig.js";
-import { decryptRSA } from "../services/encryptionService.js";
+import { decryptRSA, encryptRSA } from "../services/encryptionService.js";
 
 let APP_PROPERTIES = null;
 let LRU_CACHE = null;
@@ -15,6 +15,24 @@ const getConfigValue = (key) => {
     return null;
   }
   return APP_PROPERTIES[key];
+};
+
+const setConfigValue = async (key, kind, value) => {
+  const publicKey = getConfigValue(CONFIG_KEY.MASTER_PUBLIC_KEY);
+  if (!key || !value || !kind) return;
+  const encryptedValue =
+    kind === CONFIG_KIND.RAW ? value : encryptRSA(publicKey, value);
+
+  await Config.updateOne(
+    { key },
+    { $set: { kind, value: encryptedValue } },
+    { upsert: true }
+  );
+
+  const props = getAppProperties();
+  if (props) {
+    props[key] = value;
+  }
 };
 
 const initCache = () => {
@@ -72,6 +90,7 @@ export {
   getAppProperties,
   setMasterKey,
   getConfigValue,
+  setConfigValue,
   getLruCache,
   clearMasterKey,
   initKey,
