@@ -1,8 +1,4 @@
-import {
-  getConfigValue,
-  initKey,
-  setConfigValue,
-} from "../config/appProperties.js";
+import { getConfigValue, setConfigValue } from "../config/appProperties.js";
 import {
   decryptClientField,
   encryptClientField,
@@ -40,7 +36,6 @@ const downloadBackupData = async (req, res) => {
       CONFIG_KIND.SYSTEM,
       await encodePassword(session)
     );
-    await initKey();
     const object = { data, session: encryptClientField(session) };
     const encrypted = encryptCommonField(JSON.stringify(object));
     const fileName = `backup-data-${timestamp}.txt`;
@@ -103,7 +98,6 @@ const uploadBackupData = async (req, res) => {
         return rollbackData(res, previousData);
       }
     }
-    await initKey();
     return makeSuccessResponse({
       res,
       message: "Backup restored successfully",
