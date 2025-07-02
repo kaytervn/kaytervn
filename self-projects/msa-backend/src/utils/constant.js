@@ -17,7 +17,6 @@ import BackupCode from "../models/backupCodeModel.js";
 import Bank from "../models/bankModel.js";
 import BankNumber from "../models/bankNumberModel.js";
 import Category from "../models/categoryModel.js";
-import Config from "../models/configModel.js";
 import IdNumber from "../models/idNumberModel.js";
 import Lesson from "../models/lessonModel.js";
 import LinkGroup from "../models/linkGroupModel.js";
@@ -151,7 +150,6 @@ const DATABASE_MODELS = {
   banks: Bank,
   banknumbers: BankNumber,
   categories: Category,
-  configs: Config,
   idnumbers: IdNumber,
   lessons: Lesson,
   linkgroups: LinkGroup,
