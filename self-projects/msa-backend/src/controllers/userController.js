@@ -137,7 +137,8 @@ const requestForgotPassword = async (req, res) => {
     const rawData = `${user._id.toString()};${otp};${now}`;
     const userId = encryptCommonField(rawData);
     await user.updateOne({ code: encryptCommonField(otp) });
-    await sendEmail({ email, otp, subject: "RESET PASSWORD" });
+    const receiver = decryptCommonField(user.username);
+    await sendEmail({ receiver, email, otp, subject: "RESET PASSWORD" });
     return makeSuccessResponse({
       res,
       data: { userId },
@@ -301,7 +302,8 @@ const requestResetMfa = async (req, res) => {
     const rawData = `${user._id.toString()}&${otp}&${now}`;
     const userId = encryptCommonField(rawData);
     await user.updateOne({ otp: encryptCommonField(otp) });
-    await sendEmail({ email, otp, subject: "RESET MFA" });
+    const receiver = decryptCommonField(user.username);
+    await sendEmail({ receiver, email, otp, subject: "RESET MFA" });
     return makeSuccessResponse({
       res,
       data: { userId },

@@ -1,6 +1,9 @@
 import nodemailer from "nodemailer";
 import { getConfigValue } from "../config/appProperties.js";
-import { CONFIG_KEY } from "../utils/constant.js";
+import { CONFIG_KEY, TOTP } from "../utils/constant.js";
+import hbs from "nodemailer-express-handlebars";
+import path from "path";
+import { formatDate } from "../config/schemaConfig.js";
 
 const makeErrorResponse = ({ res, code, message, data }) => {
   return res.status(400).json({ result: false, code, message, data });
@@ -14,7 +17,7 @@ const makeSuccessResponse = ({ res, message, data }) => {
   return res.status(200).json({ result: true, message, data });
 };
 
-const sendEmail = async ({ email, otp, subject }) => {
+const sendEmail = async ({ receiver, email, otp, subject }) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -22,11 +25,32 @@ const sendEmail = async ({ email, otp, subject }) => {
       pass: getConfigValue(CONFIG_KEY.NODEMAILER_PASS),
     },
   });
+
+  const templatesDir = path.resolve("./src/templates");
+
+  transporter.use(
+    "compile",
+    hbs({
+      viewEngine: {
+        extname: ".hbs",
+        partialsDir: templatesDir,
+        defaultLayout: false,
+      },
+      viewPath: templatesDir,
+      extName: ".hbs",
+    })
+  );
+
   const mailOptions = {
-    from: `NO REPLY <${getConfigValue(CONFIG_KEY.NODEMAILER_USER)}>`,
+    from: `${TOTP.ISSUER} <${getConfigValue(CONFIG_KEY.NODEMAILER_USER)}>`,
     to: email,
     subject,
-    text: `OTP: ${otp}`,
+    template: "account-verification",
+    context: {
+      receiver,
+      code: otp,
+      date: formatDate(new Date()),
+    },
   };
   await transporter.sendMail(mailOptions);
 };
