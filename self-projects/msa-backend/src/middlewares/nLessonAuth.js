@@ -6,7 +6,7 @@ const nLessonsAuth = () => {
   return async (req, res, next) => {
     try {
       const apiKey = req.headers["x-api-key"];
-      if (!apiKey || getConfigValue(CONFIG_KEY.UPLOAD_DIR) !== apiKey) {
+      if (!apiKey || getConfigValue(CONFIG_KEY.X_API_KEY) !== apiKey) {
         return makeErrorResponse({
           res,
           data: {
