@@ -1,4 +1,5 @@
 import Category from "../models/categoryModel.js";
+import Lesson from "../models/lessonModel.js";
 import {
   makeErrorResponse,
   makeSuccessResponse,
@@ -46,9 +47,16 @@ const updateCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
   try {
     const id = req.params.id;
-    const category = await Category.findById(id).lean();
+    const category = await Category.findById(id);
     if (!category) {
       return makeErrorResponse({ res, message: "Category not found" });
+    }
+    const isUsed = await Lesson.exists({ category: id });
+    if (isUsed) {
+      return makeErrorResponse({
+        res,
+        message: "Cannot delete category",
+      });
     }
     await category.deleteOne();
     return makeSuccessResponse({

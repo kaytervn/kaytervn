@@ -93,7 +93,7 @@ const updateNote = async (req, res) => {
 const deleteNote = async (req, res) => {
   try {
     const id = req.params.id;
-    const note = await Note.findById(id).lean();
+    const note = await Note.findById(id);
     if (!note) {
       return makeErrorResponse({ res, message: "Not found note" });
     }

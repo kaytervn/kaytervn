@@ -91,7 +91,9 @@ const deleteLesson = async (req, res) => {
 const getLesson = async (req, res) => {
   try {
     const id = req.params.id;
-    const lesson = await Lesson.findById(id).populate("category", "name");
+    const lesson = await Lesson.findById(id)
+      .populate("category", "name")
+      .lean();
 
     if (!lesson) {
       return makeErrorResponse({ res, message: "Lesson not found" });
