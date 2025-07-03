@@ -21,7 +21,6 @@ const UpdateLesson = () => {
   const { setToast } = useGlobalContext();
   const { handleNavigateBack } = useQueryState({
     path: N_LESSONS_PAGE_CONFIG.LESSON.path,
-    requireSessionKey: true,
   });
   const { lesson, loading } = useApi();
   const { category } = useApi();
