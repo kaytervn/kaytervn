@@ -12,11 +12,12 @@ import {
   METHOD,
 } from "../types/constant";
 import { useGlobalContext } from "../components/config/GlobalProvider";
-import { decrypt, encrypt, getAuthHeader } from "../types/utils";
+import { encrypt, getAuthHeader } from "../types/utils";
 import {
   decryptClientField,
   encryptClientField,
 } from "../services/encryption/clientEncryption";
+import { minimatch } from "minimatch";
 
 interface FetchOptions {
   apiUrl: string;
@@ -28,7 +29,13 @@ interface FetchOptions {
 }
 
 const useFetch = () => {
-  const NOT_ENCRYPT_ENPOINTS = ["/v1/key/input-key"];
+  const NOT_ENCRYPT_ENPOINTS = [
+    "/v1/key/**",
+    "/v1/cloudinary/**",
+    "/v1/media/**",
+    "/v1/category/**",
+    "/v1/lesson/**",
+  ];
   const { refreshSessionTimeout, setIsUnauthorized } = useGlobalContext();
   const [loading, setLoading] = useState(false);
 
@@ -72,7 +79,10 @@ const useFetch = () => {
       const payload = options.payload;
       if (!(payload instanceof FormData)) {
         headers["Content-Type"] = "application/json";
-        if (payload && !NOT_ENCRYPT_ENPOINTS.includes(options.endpoint)) {
+        const isEncryptedEndpoint = !NOT_ENCRYPT_ENPOINTS.some((pattern) =>
+          minimatch(options.endpoint, pattern)
+        );
+        if (payload && isEncryptedEndpoint) {
           const encryptedPayload = encrypt(
             JSON.stringify(payload),
             clientRequestId
