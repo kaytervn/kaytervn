@@ -18,7 +18,7 @@ const ApiKeyDialog = ({ isOpen, onClose }: any) => {
   const [error, setError] = useState("");
 
   const handleSubmit = () => {
-    if (!apiKey.trim() || apiKey.trim().length != 128) {
+    if (!apiKey.trim() || apiKey.trim().length != 256) {
       setError("API key không hợp lệ");
       return;
     }
