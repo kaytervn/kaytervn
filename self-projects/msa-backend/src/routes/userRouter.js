@@ -13,7 +13,7 @@ import {
   changePin,
   requestKeyData,
 } from "../controllers/userController.js";
-import { clearKey } from "../controllers/keyController.js";
+import { clearKey, syncAppConfigs } from "../controllers/keyController.js";
 import { basicAuth, bearerAuth } from "../middlewares/auth.js";
 
 const router = express.Router();
@@ -31,5 +31,6 @@ router.get("/verify-token", bearerAuth, verifyUserToken);
 router.put("/change-password", bearerAuth, changeUserPassword);
 router.put("/change-pin", bearerAuth, changePin);
 router.get("/request-key-data", bearerAuth, requestKeyData);
+router.get("/sync-config", bearerAuth, syncAppConfigs);
 
 export { router as userRouter };

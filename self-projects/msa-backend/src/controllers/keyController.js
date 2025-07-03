@@ -2,6 +2,7 @@ import {
   clearMasterKey,
   getAppProperties,
   setMasterKey,
+  synchronizeConfig,
 } from "../config/appProperties.js";
 import { decryptCommonList } from "../encryption/commonEncryption.js";
 import User from "../models/userModel.js";
@@ -60,4 +61,12 @@ const clearKey = async (req, res) => {
   }
 };
 
-export { inputKey, clearKey };
+const syncAppConfigs = async (req, res) => {
+  await synchronizeConfig();
+  return makeSuccessResponse({
+    res,
+    message: "Synchronized successfully",
+  });
+};
+
+export { inputKey, clearKey, syncAppConfigs };

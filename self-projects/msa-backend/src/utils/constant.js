@@ -24,13 +24,12 @@ import Link from "../models/linkModel.js";
 import Platform from "../models/platformModel.js";
 import Note from "../models/noteModel.js";
 import Software from "../models/softwareModel.js";
-import Config from "../models/configModel.js";
-import User from "../models/userModel.js";
 
 const DATE_FORMAT = "DD/MM/YYYY HH:mm:ss";
 const TIMEZONE = "Asia/Ho_Chi_Minh";
 const JSON_LIMIT = "1000mb";
 const OTP_VALIDITY = 1; // 1 minute
+const REQUEST_VALIDITY = 2; // 2 minutes
 const RELOAD_INTERVAL = 50000; // 50 seconds
 
 const CONFIG_KEY = {
@@ -66,7 +65,7 @@ const API_HEADER = {
 
 const LIMITER = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 1000,
+  max: 500,
   message: {
     result: false,
     message: "Too many requests, please try again later",
@@ -159,8 +158,6 @@ const DATABASE_MODELS = {
   notes: Note,
   platforms: Platform,
   softwares: Software,
-  users: User,
-  configs: Config,
 };
 
 const MIME_TYPES = {
@@ -214,4 +211,5 @@ export {
   SOFTWARE_KIND,
   LIMITER,
   DATABASE_MODELS,
+  REQUEST_VALIDITY,
 };

@@ -33,13 +33,17 @@ const getNestedValue = (obj, path, defaultValue = null) => {
   return path.split(".").reduce((acc, key) => acc?.[key], obj) ?? defaultValue;
 };
 
-const verifyTimestamp = (timestamp) => {
-  const createdAt = new Date(timestamp);
-  const now = new Date();
-  if ((now - createdAt) / (60 * 1000) > OTP_VALIDITY) {
+const verifyTimestamp = (timestamp, validity = OTP_VALIDITY) => {
+  try {
+    const createdAt = new Date(timestamp);
+    const now = new Date();
+    if ((now - createdAt) / (60 * 1000) > validity) {
+      return false;
+    }
+    return true;
+  } catch {
     return false;
   }
-  return true;
 };
 
 const extractIdFromFilePath = (filePath) => {

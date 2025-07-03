@@ -10,3 +10,4 @@ Dockerfile
 package-lock.json
 /uploads
 /test
+/backup-uploads

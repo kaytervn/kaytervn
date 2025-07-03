@@ -1,12 +1,9 @@
 import { getConfigValue, setConfigValue } from "../config/appProperties.js";
 import {
-  decryptClientField,
-  encryptClientField,
-} from "../encryption/clientEncryption.js";
-import {
   decryptCommonField,
   encryptCommonField,
 } from "../encryption/commonEncryption.js";
+import { decryptEbankField, encryptEbankField } from "../encryption/ebankEncryption.js";
 import {
   makeErrorResponse,
   makeSuccessResponse,
@@ -30,13 +27,13 @@ const downloadBackupData = async (req, res) => {
     const apiKey = await getConfigValue(CONFIG_KEY.X_API_KEY);
     const timestamp = generateTimestamp();
     const session = generateMd5(apiKey + generateOTP(10) + timestamp);
-    const data = encryptClientField(JSON.stringify(backupData));
+    const data = encryptEbankField(JSON.stringify(backupData));
     await setConfigValue(
       CONFIG_KEY.BACKUP_FILE_SESSION,
       CONFIG_KIND.SYSTEM,
       await encodePassword(session)
     );
-    const object = { data, session: encryptClientField(session) };
+    const object = { data, session: encryptEbankField(session) };
     const encrypted = encryptCommonField(JSON.stringify(object));
     const fileName = `backup-data-${timestamp}.txt`;
     const buffer = Buffer.from(encrypted, "utf-8");
@@ -71,7 +68,7 @@ const uploadBackupData = async (req, res) => {
     const content = fs.readFileSync(req.file.path, "utf8");
     const { data, session } = JSON.parse(decryptCommonField(content));
     const systemSession = getConfigValue(CONFIG_KEY.BACKUP_FILE_SESSION);
-    const decryptedSession = decryptClientField(session);
+    const decryptedSession = decryptEbankField(session);
     if (
       !systemSession ||
       !(await comparePassword(decryptedSession, systemSession))
@@ -81,7 +78,7 @@ const uploadBackupData = async (req, res) => {
         message: "Backup file has been expired",
       });
     }
-    backupData = JSON.parse(decryptClientField(data));
+    backupData = JSON.parse(decryptEbankField(data));
     if (!backupData || typeof backupData !== "object") {
       return makeErrorResponse({ res, message: "Invalid backup file" });
     }

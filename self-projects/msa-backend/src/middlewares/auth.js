@@ -12,8 +12,14 @@ import { isValidSession } from "../services/cacheService.js";
 import { decrypt } from "../services/encryptionService.js";
 import { generateMd5 } from "../services/generateService.js";
 import { verifyToken } from "../services/jwtService.js";
-import { API_HEADER, CONFIG_KEY, ERROR_CODE } from "../utils/constant.js";
+import {
+  API_HEADER,
+  CONFIG_KEY,
+  ERROR_CODE,
+  REQUEST_VALIDITY,
+} from "../utils/constant.js";
 import { Buffer } from "buffer";
+import { verifyTimestamp } from "../utils/utils.js";
 
 const basicAuth = (req, res, next) => {
   const authHeader = req.headers[API_HEADER.AUTHORIZATION];
@@ -140,6 +146,14 @@ const verifySignature = async (req, res, next) => {
       res,
       code: ERROR_CODE.INVALID_SIGNATURE,
       message: "Invalid message signature",
+    });
+  }
+
+  if (!verifyTimestamp(timestamp, REQUEST_VALIDITY)) {
+    return makeUnauthorizedExecption({
+      res,
+      code: ERROR_CODE.INVALID_SIGNATURE,
+      message: "Request expired",
     });
   }
 

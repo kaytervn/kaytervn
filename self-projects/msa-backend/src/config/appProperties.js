@@ -36,14 +36,26 @@ const setConfigValue = async (key, kind, value) => {
 };
 
 const initCache = () => {
-  if (!LRU_CACHE) {
-    try {
-      const ttl = parseInt(getConfigValue(CONFIG_KEY.JWT_VALIDITY));
-      LRU_CACHE = new LRUCache({ ttl, ttlAutopurge: true });
-    } catch {
-      LRU_CACHE = null;
-    }
+  try {
+    const ttl = parseInt(getConfigValue(CONFIG_KEY.JWT_VALIDITY));
+    LRU_CACHE = new LRUCache({ ttl, ttlAutopurge: true });
+  } catch {
+    LRU_CACHE = null;
   }
+};
+
+const synchronizeConfig = async () => {
+  const masterKey = ENV.MASTER_KEY;
+  if (!masterKey) {
+    return;
+  }
+  const configData = await Config.find().lean();
+  configData.forEach((config) => {
+    APP_PROPERTIES[config.key] =
+      config.kind === CONFIG_KIND.RAW
+        ? config.value
+        : decryptRSA(masterKey, config.value);
+  });
 };
 
 const setMasterKey = async (masterKey) => {
@@ -54,13 +66,7 @@ const setMasterKey = async (masterKey) => {
   }
   APP_PROPERTIES[CONFIG_KEY.MONGODB_URI] = mongoUri;
   dbConfig();
-  const configData = await Config.find();
-  configData.forEach((config) => {
-    APP_PROPERTIES[config.key] =
-      config.kind === CONFIG_KIND.RAW
-        ? config.value
-        : decryptRSA(masterKey, config.value);
-  });
+  await synchronizeConfig();
   initCache();
 };
 
@@ -97,4 +103,5 @@ export {
   clearMasterKey,
   initKey,
   getListConfigValues,
+  synchronizeConfig,
 };

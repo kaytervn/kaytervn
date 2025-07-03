@@ -121,6 +121,14 @@ export const userController = (fetchApi: any) => {
       authType: AUTH_TYPE.BEARER,
     });
 
+  const syncSystemProps = () =>
+    fetchApi({
+      apiUrl: ENV.MSA_API_URL,
+      endpoint: "/v1/user/sync-config",
+      method: METHOD.GET,
+      authType: AUTH_TYPE.BEARER,
+    });
+
   return {
     login,
     verifyCreditial,
@@ -135,5 +143,6 @@ export const userController = (fetchApi: any) => {
     resetMfa,
     clearSystemKey,
     changePin,
+    syncSystemProps,
   };
 };

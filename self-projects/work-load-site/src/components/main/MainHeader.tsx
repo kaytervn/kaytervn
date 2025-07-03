@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { UserIcon } from "lucide-react";
+import { RefreshCcwIcon, UserIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../config/GlobalProvider";
 import useModal from "../../hooks/useModal";
@@ -185,6 +185,15 @@ const MainHeader = ({ breadcrumbs }: any) => {
     });
   };
 
+  const handleSyncAppProps = async () => {
+    const res = await user.syncSystemProps();
+    if (res.result) {
+      setToast("Synchronized successfully", TOAST.SUCCESS);
+    } else {
+      setToast(res.message, TOAST.ERROR);
+    }
+  };
+
   return (
     <>
       <LoadingDialog isVisible={loading} />
@@ -214,6 +223,13 @@ const MainHeader = ({ breadcrumbs }: any) => {
         </div>
 
         <div className="relative flex items-center space-x-4 flex-shrink-0">
+          <button
+            className="relative focus:outline-none"
+            onClick={handleSyncAppProps}
+            title="Synchronize properties"
+          >
+            <RefreshCcwIcon size={24} className="text-white" />
+          </button>
           <div className="relative" ref={dropdownRef}>
             <button
               className="flex items-center space-x-2 focus:outline-none"
