@@ -75,11 +75,6 @@ const Lesson = () => {
       accessor: "category.name",
       align: ALIGNMENT.LEFT,
     },
-    {
-      label: "Ngày tạo",
-      accessor: "createdAt",
-      align: ALIGNMENT.RIGHT,
-    },
     renderActionButton({
       renderChildren: (item: any) => (
         <>
