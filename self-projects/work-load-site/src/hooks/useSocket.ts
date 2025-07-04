@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useCallback } from "react";
 import { io } from "socket.io-client";
 import { ENV, LOCAL_STORAGE, SOCKET_CMD } from "../types/constant";
@@ -20,27 +21,27 @@ const useSocket = () => {
       socketRef.current = socket;
 
       socket.on("connect", () => {
-        console.log("Socket connected:", socket.id);
+        // console.log("Socket connected:", socket.id);
 
         socket.emit(SOCKET_CMD.CLIENT_PING, { token });
 
         socket.on(SOCKET_CMD.CLIENT_PING, (res) => {
-          console.log(res.message);
+          // console.log(res.message);
         });
       });
 
       socket.on("disconnect", () => {
-        console.log("Socket disconnected");
+        // console.log("Socket disconnected");
       });
 
       socket.on("connect_error", (err) => {
-        console.error("Socket connect error:", err.message);
+        // console.error("Socket connect error:", err.message);
       });
     } else {
       if (socketRef.current) {
         socketRef.current.disconnect();
         socketRef.current = null;
-        console.log("Socket disconnected due to missing token");
+        // console.log("Socket disconnected due to missing token");
       }
     }
 

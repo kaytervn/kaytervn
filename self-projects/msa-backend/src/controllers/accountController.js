@@ -17,13 +17,13 @@ const createAccount = async (req, res) => {
   try {
     const { kind, username, password, note, refId, platformId } =
       decryptDataByUserKey(req.token, req.body, ENCRYPT_FIELDS.CREATE_ACCOUNT);
-    if (
-      !kind ||
-      !username ||
-      !password ||
-      !platformId ||
-      !mongoose.isValidObjectId(platformId)
-    ) {
+    if (!kind || !platformId || !mongoose.isValidObjectId(platformId)) {
+      return makeErrorResponse({
+        res,
+        message: "Invalid form",
+      });
+    }
+    if (kind == ACCOUNT_KIND.ROOT && (!username || !password)) {
       return makeErrorResponse({
         res,
         message: "Invalid form",
@@ -53,14 +53,22 @@ const createAccount = async (req, res) => {
         });
       }
     }
-    await Account.create({
-      kind,
-      username: encryptCommonField(username),
-      password: encryptCommonField(password),
-      note: encryptCommonField(note),
-      ref: kind == ACCOUNT_KIND.LINKED ? refId : undefined,
-      platform: platformId,
-    });
+    if (kind == ACCOUNT_KIND.LINKED) {
+      await Account.create({
+        kind,
+        note: encryptCommonField(note),
+        ref: refId,
+        platform: platformId,
+      });
+    } else {
+      await Account.create({
+        kind,
+        username: encryptCommonField(username),
+        password: encryptCommonField(password),
+        note: encryptCommonField(note),
+        platform: platformId,
+      });
+    }
     return makeSuccessResponse({
       res,
       message: "Create account success",
@@ -80,12 +88,7 @@ const updateAccount = async (req, res) => {
         message: "id is required",
       });
     }
-    if (
-      !username ||
-      !password ||
-      !platformId ||
-      !mongoose.isValidObjectId(platformId)
-    ) {
+    if (!platformId || !mongoose.isValidObjectId(platformId)) {
       return makeErrorResponse({
         res,
         message: "Invalid form",
@@ -104,6 +107,12 @@ const updateAccount = async (req, res) => {
     if (!account) {
       return makeErrorResponse({ res, message: "Not found account" });
     }
+    if (account.kind == ACCOUNT_KIND.ROOT && (!username || !password)) {
+      return makeErrorResponse({
+        res,
+        message: "Invalid form",
+      });
+    }
     if (!refId && account.kind == ACCOUNT_KIND.LINKED) {
       return makeErrorResponse({
         res,
@@ -119,13 +128,20 @@ const updateAccount = async (req, res) => {
         });
       }
     }
-    await account.updateOne({
-      username: encryptCommonField(username),
-      password: encryptCommonField(password),
-      note: encryptCommonField(note),
-      ref: account.kind == ACCOUNT_KIND.LINKED ? refId : undefined,
-      platform: platformId,
-    });
+    if (account.kind == ACCOUNT_KIND.LINKED) {
+      await account.updateOne({
+        note: encryptCommonField(note),
+        ref: refId,
+        platform: platformId,
+      });
+    } else {
+      await account.updateOne({
+        username: encryptCommonField(username),
+        password: encryptCommonField(password),
+        note: encryptCommonField(note),
+        platform: platformId,
+      });
+    }
     return makeSuccessResponse({ res, message: "Update account success" });
   } catch (error) {
     return makeErrorResponse({ res, message: error.message });

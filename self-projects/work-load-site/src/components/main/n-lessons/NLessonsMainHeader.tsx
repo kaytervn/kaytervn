@@ -24,7 +24,6 @@ const NLessonsMainHeader = ({ breadcrumbs }: any) => {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    console.log(file.type);
     if (file.type !== "application/x-zip-compressed") {
       setToast("Định dạng tệp không hợp lệ", TOAST.ERROR);
       return;
