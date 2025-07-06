@@ -114,7 +114,7 @@ const deleteSoftware = async (req, res) => {
 const getSoftware = async (req, res) => {
   try {
     const id = req.params.id;
-    const software = await Software.findById(id).lean();
+    const software = await Software.findById(id);
     if (!software) {
       return makeErrorResponse({ res, message: "Not found software" });
     }
@@ -135,7 +135,7 @@ const getListSoftwares = async (req, res) => {
   try {
     const objs = decryptAndEncryptListByUserKey(
       req.token,
-      await Software.find().lean(),
+      await Software.find(),
       ENCRYPT_FIELDS.SOFTWARE
     );
     return makeSuccessResponse({

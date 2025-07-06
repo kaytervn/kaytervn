@@ -111,7 +111,7 @@ const deleteBank = async (req, res) => {
 const getBank = async (req, res) => {
   try {
     const id = req.params.id;
-    const bank = await Bank.findById(id).lean();
+    const bank = await Bank.findById(id);
     if (!bank) {
       return makeErrorResponse({ res, message: "Not found bank" });
     }
@@ -132,7 +132,7 @@ const getListBanks = async (req, res) => {
   try {
     const objs = decryptAndEncryptListByUserKeyForEbank(
       req.token,
-      await Bank.find().lean(),
+      await Bank.find(),
       ENCRYPT_FIELDS.BANK
     );
     return makeSuccessResponse({

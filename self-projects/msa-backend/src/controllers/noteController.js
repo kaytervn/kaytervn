@@ -110,7 +110,7 @@ const deleteNote = async (req, res) => {
 const getNote = async (req, res) => {
   try {
     const id = req.params.id;
-    const note = await Note.findById(id).lean();
+    const note = await Note.findById(id);
     if (!note) {
       return makeErrorResponse({ res, message: "Not found note" });
     }
@@ -131,7 +131,7 @@ const getListNotes = async (req, res) => {
   try {
     const objs = decryptAndEncryptListByUserKey(
       req.token,
-      await Note.find().lean(),
+      await Note.find(),
       ENCRYPT_FIELDS.NOTE
     );
     return makeSuccessResponse({

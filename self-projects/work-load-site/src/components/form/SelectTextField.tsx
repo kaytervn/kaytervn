@@ -11,6 +11,101 @@ import { getNestedValue } from "../../types/utils";
 import { decryptDataByUserKey } from "../../services/encryption/sessionEncryption";
 import { useGlobalContext } from "../config/GlobalProvider";
 
+const StaticSelectBox = ({ placeholder, onChange, dataMap, value }: any) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const items = Object.values(dataMap);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (!value && value !== 0) {
+      setSelectedItem(null);
+    } else if (items.length > 0) {
+      const foundItem = items.find((item: any) => item.value === value);
+      setSelectedItem(foundItem || null);
+    }
+  }, [value, items]);
+
+  const handleSelect = (item: any) => {
+    setSelectedItem(item);
+    onChange(item.value);
+    setIsOpen(false);
+  };
+
+  const handleClear = () => {
+    setSelectedItem(null);
+    onChange(null);
+  };
+
+  return (
+    <div ref={wrapperRef} className="w-full md:w-[10rem] relative">
+      <div
+        className="w-full flex items-center p-2 rounded-md bg-gray-600 cursor-pointer"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <div
+          className={`flex-1 text-sm truncate ${
+            selectedItem ? "text-gray-100" : "text-gray-300"
+          }`}
+        >
+          {selectedItem ? selectedItem.label : placeholder}
+        </div>
+        {selectedItem ? (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClear();
+            }}
+            className="p-1 text-gray-300 hover:text-gray-100 rounded-full hover:bg-gray-700 transition-colors duration-200"
+          >
+            <XIcon size={14} />
+          </button>
+        ) : (
+          <ChevronDownIcon size={16} className="text-gray-100" />
+        )}
+      </div>
+
+      {isOpen && (
+        <div className="absolute w-full mt-1 max-h-60 overflow-y-auto rounded-md bg-gray-600 shadow-lg z-10">
+          {items.length > 0 ? (
+            items.map((item: any, index: any) => (
+              <div
+                key={index}
+                className="p-2 hover:bg-gray-500 text-gray-100 cursor-pointer"
+                onClick={() => handleSelect(item)}
+              >
+                <span
+                  className={`px-2 py-1 rounded-md font-semibold text-xs whitespace-nowrap ${item.className}`}
+                >
+                  {item.label}
+                </span>
+              </div>
+            ))
+          ) : (
+            <div className="p-2 text-gray-300 text-sm">
+              {BASIC_MESSAGES.NO_DATA}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const SelectBox = ({
   value,
   onChange,
@@ -460,7 +555,7 @@ const SelectFieldLazy = ({
       const res = await fetchListApi({
         ...queryParams,
       });
-      const data = res?.data?.content || [];
+      const data = res?.data?.content || res?.data || [];
       setItems(
         data?.map((item: any) =>
           decryptDataByUserKey(sessionKey, item, decryptFields)
@@ -650,7 +745,9 @@ const SelectBoxLazy = ({
   labelKey = "name",
   queryParams,
   colorCodeField = "",
+  decryptFields = [],
 }: any) => {
+  const { sessionKey } = useGlobalContext();
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [items, setItems] = useState<any[]>([]);
@@ -677,8 +774,12 @@ const SelectBoxLazy = ({
       const res = await fetchListApi({
         ...queryParams,
       });
-      const data = res?.data?.content || [];
-      setItems(data);
+      const data = res?.data?.content || res?.data || [];
+      setItems(
+        data?.map((item: any) =>
+          decryptDataByUserKey(sessionKey, item, decryptFields)
+        )
+      );
       setFilteredItems(data.slice(0, ITEMS_PER_PAGE));
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -829,4 +930,5 @@ export {
   StaticSelectField,
   SelectFieldLazy,
   SelectBoxLazy,
+  StaticSelectBox,
 };

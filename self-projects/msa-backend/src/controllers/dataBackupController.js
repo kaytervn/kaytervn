@@ -3,7 +3,10 @@ import {
   decryptCommonField,
   encryptCommonField,
 } from "../encryption/commonEncryption.js";
-import { decryptEbankField, encryptEbankField } from "../encryption/ebankEncryption.js";
+import {
+  decryptEbankField,
+  encryptEbankField,
+} from "../encryption/ebankEncryption.js";
 import {
   makeErrorResponse,
   makeSuccessResponse,
@@ -22,7 +25,7 @@ const downloadBackupData = async (req, res) => {
   try {
     const backupData = {};
     for (const [key, model] of Object.entries(DATABASE_MODELS)) {
-      backupData[key] = await model.find({}).lean();
+      backupData[key] = await model.find({});
     }
     const apiKey = await getConfigValue(CONFIG_KEY.X_API_KEY);
     const timestamp = generateTimestamp();
@@ -90,7 +93,7 @@ const uploadBackupData = async (req, res) => {
   }
   try {
     for (const [key, model] of Object.entries(DATABASE_MODELS)) {
-      previousData[key] = await model.find({}).lean();
+      previousData[key] = await model.find({});
     }
   } catch {
     return makeErrorResponse({

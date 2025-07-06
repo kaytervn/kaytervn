@@ -163,6 +163,7 @@ const defaultTenantHeader = [
 const myPublicSecretKey = "D@y1aK3yDu0cC0n9";
 
 const ITEMS_PER_PAGE = 20;
+const GRID_TRUNCATE = 125;
 const TRUNCATE_LENGTH = 150;
 const FETCH_INTERVAL = 300;
 const SESSION_KEY_TIMEOUT = 2 * 60 * 60 * 1000; // 2 hours
@@ -248,6 +249,8 @@ const BUTTON_TEXT = {
   CLEAR_SYSTEM_KEY: "Clear system key",
   DOWNLOAD_DATA_BACKUP: "Download backup data",
   UPLOAD_DATA_BACKUP: "Upload backup data",
+  BACKUP_CODE: "Backup codes",
+  LINKED_ACCOUNTS: "Linked accounts",
 };
 
 const ENV = {
@@ -275,6 +278,19 @@ const Z_INDEXES = {
 const DOC_TITLE = {
   MSA: "MSA",
   N_LESSONS: "N Lessons",
+};
+
+const ACCOUNT_KIND_MAP = {
+  ROOT: {
+    value: 1,
+    label: "Root",
+    className: "bg-blue-900 text-blue-300",
+  },
+  LINKED: {
+    value: 2,
+    label: "Linked",
+    className: "bg-green-900 text-green-300",
+  },
 };
 
 export {
@@ -308,4 +324,6 @@ export {
   Z_INDEXES,
   MIME_TYPES,
   DOC_TITLE,
+  ACCOUNT_KIND_MAP,
+  GRID_TRUNCATE,
 };

@@ -112,7 +112,7 @@ const deleteIdNumber = async (req, res) => {
 const getIdNumber = async (req, res) => {
   try {
     const id = req.params.id;
-    const idNumber = await IdNumber.findById(id).lean();
+    const idNumber = await IdNumber.findById(id);
     if (!idNumber) {
       return makeErrorResponse({ res, message: "Not found id number" });
     }
@@ -133,7 +133,7 @@ const getListIdNumbers = async (req, res) => {
   try {
     const objs = decryptAndEncryptListByUserKey(
       req.token,
-      await IdNumber.find().lean(),
+      await IdNumber.find(),
       ENCRYPT_FIELDS.ID_NUMBER
     );
     return makeSuccessResponse({

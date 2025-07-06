@@ -1,7 +1,6 @@
 import Account from "../../pages/account/Account";
 import CreateAccount from "../../pages/account/CreateAccount";
 import UpdateAccount from "../../pages/account/UpdateAccount";
-import ViewAccount from "../../pages/account/ViewAccount";
 import ForgotPassword from "../../pages/auth/ForgotPassword";
 import Login from "../../pages/auth/Login";
 import RequestResetMfa from "../../pages/auth/RequestResetMfa";
@@ -83,11 +82,6 @@ const ACCOUNT_CONFIG = {
   },
   DELETE_ACCOUNT: {
     label: "Delete account",
-  },
-  VIEW_ACCOUNT: {
-    label: "View account",
-    path: "/account/view/:id",
-    element: <ViewAccount />,
   },
 };
 

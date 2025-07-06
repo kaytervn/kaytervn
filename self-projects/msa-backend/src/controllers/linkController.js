@@ -160,7 +160,7 @@ const deleteLink = async (req, res) => {
 const getLink = async (req, res) => {
   try {
     const id = req.params.id;
-    const link = await Link.findById(id).populate("linkGroup").lean();
+    const link = await Link.findById(id).populate("linkGroup");
     if (!link) {
       return makeErrorResponse({ res, message: "Not found link" });
     }
@@ -181,7 +181,7 @@ const getListLinks = async (req, res) => {
   try {
     const objs = decryptAndEncryptListByUserKey(
       req.token,
-      await Link.find().populate("linkGroup").lean(),
+      await Link.find().populate("linkGroup"),
       ENCRYPT_FIELDS.LINK
     );
     return makeSuccessResponse({

@@ -3,12 +3,16 @@ import { CONFIG_KEY, CONFIG_KIND, ENV } from "../utils/constant.js";
 import { LRUCache } from "lru-cache";
 import dbConfig from "./dbConfig.js";
 import { decryptRSA, encryptRSA } from "../services/encryptionService.js";
+import listEndpoints from "express-list-endpoints";
+import { match } from "path-to-regexp";
 
 let APP_PROPERTIES = null;
 let LRU_CACHE = null;
+let MATCH_ROUTES = [];
 
 const getAppProperties = () => APP_PROPERTIES;
 const getLruCache = () => LRU_CACHE;
+const getMatchRoutes = () => MATCH_ROUTES;
 
 const getConfigValue = (key) => {
   if (!APP_PROPERTIES) {
@@ -49,7 +53,7 @@ const synchronizeConfig = async () => {
   if (!masterKey) {
     return;
   }
-  const configData = await Config.find().lean();
+  const configData = await Config.find();
   configData.forEach((config) => {
     APP_PROPERTIES[config.key] =
       config.kind === CONFIG_KIND.RAW
@@ -94,6 +98,22 @@ const getListConfigValues = (key) => {
   }
 };
 
+const syncEndpointsConfig = async (app) => {
+  try {
+    const endpoints = listEndpoints(app);
+    const paths = [...new Set(endpoints.map((e) => e.path))];
+    const pathString = paths.join(",");
+    await Config.updateOne(
+      { key: CONFIG_KEY.ALLOWED_ENDPOINTS },
+      { $set: { kind: CONFIG_KIND.RAW, value: pathString } },
+      { upsert: true }
+    );
+    MATCH_ROUTES = paths.map((path) => match(path));
+  } catch {
+    console.log("Error when sync endpoints");
+  }
+};
+
 export {
   getAppProperties,
   setMasterKey,
@@ -104,4 +124,6 @@ export {
   initKey,
   getListConfigValues,
   synchronizeConfig,
+  syncEndpointsConfig,
+  getMatchRoutes,
 };

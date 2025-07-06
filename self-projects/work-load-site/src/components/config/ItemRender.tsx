@@ -1,8 +1,9 @@
-import { ALIGNMENT } from "../../types/constant";
+import { ALIGNMENT, GRID_TRUNCATE } from "../../types/constant";
 import {
   convertAlignment,
   getEnumItem,
   getNestedValue,
+  truncateString,
 } from "../../types/utils";
 
 const basicRender = ({ content, align = ALIGNMENT.LEFT }: any) => {
@@ -11,6 +12,25 @@ const basicRender = ({ content, align = ALIGNMENT.LEFT }: any) => {
       {content}
     </span>
   );
+};
+
+const renderTextAreaField = ({
+  label = "Note",
+  accessor = "note",
+  align = ALIGNMENT.LEFT,
+  truncateLength = GRID_TRUNCATE,
+}: any) => {
+  return {
+    label,
+    accessor,
+    align,
+    render: (item: any) => {
+      return basicRender({
+        align,
+        content: truncateString(item.note, truncateLength),
+      });
+    },
+  };
 };
 
 const renderEnum = ({
@@ -173,4 +193,5 @@ export {
   renderActionButton,
   renderIconField,
   renderMoneyField,
+  renderTextAreaField,
 };

@@ -80,8 +80,11 @@ const createAccount = async (req, res) => {
 
 const updateAccount = async (req, res) => {
   try {
-    const { id, username, password, note, refId, platformId } =
-      decryptDataByUserKey(req.token, req.body, ENCRYPT_FIELDS.UPDATE_ACCOUNT);
+    const { id, username, password, note, platformId } = decryptDataByUserKey(
+      req.token,
+      req.body,
+      ENCRYPT_FIELDS.UPDATE_ACCOUNT
+    );
     if (!id || !mongoose.isValidObjectId(id)) {
       return makeErrorResponse({
         res,
@@ -113,25 +116,9 @@ const updateAccount = async (req, res) => {
         message: "Invalid form",
       });
     }
-    if (!refId && account.kind == ACCOUNT_KIND.LINKED) {
-      return makeErrorResponse({
-        res,
-        message: "Invalid form",
-      });
-    }
-    if (refId) {
-      const refExists = await Account.exists({ _id: refId });
-      if (!refExists) {
-        return makeErrorResponse({
-          res,
-          message: "Not found ref account",
-        });
-      }
-    }
     if (account.kind == ACCOUNT_KIND.LINKED) {
       await account.updateOne({
         note: encryptCommonField(note),
-        ref: refId,
         platform: platformId,
       });
     } else {
@@ -175,7 +162,7 @@ const deleteAccount = async (req, res) => {
 const getAccount = async (req, res) => {
   try {
     const id = req.params.id;
-    const account = await Account.findById(id).populate("ref platform").lean();
+    const account = await Account.findById(id).populate("ref platform");
     if (!account) {
       return makeErrorResponse({ res, message: "Not found account" });
     }
@@ -200,7 +187,7 @@ const getListAccounts = async (req, res) => {
     }
     const objs = decryptAndEncryptListByUserKey(
       req.token,
-      await Account.find(query).populate("ref platform").lean(),
+      await Account.find(query).populate("ref platform"),
       ENCRYPT_FIELDS.ACCOUNT
     );
     return makeSuccessResponse({

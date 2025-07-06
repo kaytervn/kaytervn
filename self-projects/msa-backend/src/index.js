@@ -14,10 +14,15 @@ import { reloadWebsite } from "./utils/cron.js";
 import {
   checkSystemReady,
   encryptResponseMiddleware,
+  verifyEndpoint,
   verifySignature,
 } from "./middlewares/auth.js";
 import { keyRouter } from "./routes/keyRouter.js";
-import { getConfigValue, initKey } from "./config/appProperties.js";
+import {
+  getConfigValue,
+  initKey,
+  syncEndpointsConfig,
+} from "./config/appProperties.js";
 import { setupSocket } from "./config/socketHandler.js";
 import { userRouter } from "./routes/userRouter.js";
 import { platformRouter } from "./routes/platformRouter.js";
@@ -48,6 +53,7 @@ app.use(LIMITER);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/v1/key", keyRouter);
 app.use(checkSystemReady);
+app.use(verifyEndpoint);
 // N Lessons API
 app.use("/v1/cloudinary", cloudinaryRouter);
 app.use("/v1/media", mediaRouter);
@@ -74,7 +80,8 @@ httpServer.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-initKey();
+await initKey();
+await syncEndpointsConfig(app);
 setupSocket(io);
 setInterval(reloadWebsite, RELOAD_INTERVAL);
 export { io };

@@ -27,8 +27,8 @@ const PAGE_CONFIG = {
 };
 
 const DECRYPT_FIELDS = {
-  ACCOUNT: ["id", "username", "password", "note"],
-  PLATFORM: ["id", "name"],
+  ACCOUNT: ["username", "password", "note", "ref.username", "platform.name"],
+  PLATFORM: ["name"],
 };
 
 const SIDEBAR_MENUS = [

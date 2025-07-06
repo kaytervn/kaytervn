@@ -2,6 +2,7 @@ import {
   getAppProperties,
   getConfigValue,
   getListConfigValues,
+  getMatchRoutes,
 } from "../config/appProperties.js";
 import {
   decryptClientField,
@@ -202,6 +203,23 @@ const encryptResponseMiddleware = (req, res, next) => {
   next();
 };
 
+const verifyEndpoint = (req, res, next) => {
+  try {
+    const url = req.originalUrl;
+    const isMatched = getMatchRoutes().some((matcher) => matcher(url));
+    if (isMatched) {
+      return next();
+    } else {
+      return makeUnauthorizedExecption({
+        res,
+        message: "Invalid endpoint",
+      });
+    }
+  } catch (error) {
+    return makeUnauthorizedExecption({ res, message: error.message });
+  }
+};
+
 export {
   socketAuth,
   checkSystemReady,
@@ -209,4 +227,5 @@ export {
   basicAuth,
   bearerAuth,
   encryptResponseMiddleware,
+  verifyEndpoint,
 };
