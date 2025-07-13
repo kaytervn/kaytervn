@@ -92,7 +92,8 @@ const LinkAccount = () => {
     return allData
       .filter((item) => {
         const platformIdFilter =
-          !query?.platformId || item.platform?._id == query.platformId;
+          !query?.linkAccountPlatformId ||
+          item.platform?._id == query.linkAccountPlatformId;
         return platformIdFilter;
       })
       .sort((a, b) => {
