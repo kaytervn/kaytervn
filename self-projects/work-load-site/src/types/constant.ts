@@ -227,6 +227,7 @@ const BASIC_MESSAGES = {
 };
 
 const BUTTON_TEXT = {
+  CLEAR: "Clear",
   REQUEST_KEY: "Request key",
   HOME: "Home",
   SUBMIT: "Submit",
@@ -250,7 +251,7 @@ const BUTTON_TEXT = {
   DOWNLOAD_DATA_BACKUP: "Download backup data",
   UPLOAD_DATA_BACKUP: "Upload backup data",
   BACKUP_CODE: "Backup codes",
-  LINKED_ACCOUNTS: "Linked accounts",
+  LINKED_ACCOUNTS: "Link accounts",
 };
 
 const ENV = {
@@ -288,7 +289,7 @@ const ACCOUNT_KIND_MAP = {
   },
   LINKED: {
     value: 2,
-    label: "Linked",
+    label: "Link",
     className: "bg-green-900 text-green-300",
   },
 };

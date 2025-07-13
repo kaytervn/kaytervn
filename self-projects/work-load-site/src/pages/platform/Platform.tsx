@@ -85,13 +85,25 @@ const Platform = () => {
       accessor: "name",
       align: ALIGNMENT.LEFT,
     },
+    {
+      label: "Total accounts",
+      accessor: "totalAccounts",
+      align: ALIGNMENT.CENTER,
+    },
     renderActionButton({
-      renderChildren: (item: any) => (
-        <>
-          <ActionEditButton onClick={() => onUpdateButtonClick(item._id)} />
-          <ActionDeleteButton onClick={() => onDeleteButtonClick(item._id)} />
-        </>
-      ),
+      renderChildren: (item: any) => {
+        const hideDelete = item.totalAccounts > 0;
+        return (
+          <>
+            <ActionEditButton onClick={() => onUpdateButtonClick(item._id)} />
+            {!hideDelete && (
+              <ActionDeleteButton
+                onClick={() => onDeleteButtonClick(item._id)}
+              />
+            )}
+          </>
+        );
+      },
     }),
   ];
 

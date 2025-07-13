@@ -1,5 +1,7 @@
 import Account from "../../pages/account/Account";
+import BackupCode from "../../pages/account/backupCodes/BackupCode";
 import CreateAccount from "../../pages/account/CreateAccount";
+import LinkAccount from "../../pages/account/link/LinkAccount";
 import UpdateAccount from "../../pages/account/UpdateAccount";
 import ForgotPassword from "../../pages/auth/ForgotPassword";
 import Login from "../../pages/auth/Login";
@@ -135,6 +137,42 @@ const USER_CONFIG = {
   },
 };
 
+const LINK_ACCOUNT_CONFIG = {
+  LINK_ACCOUNT: {
+    name: "link_account",
+    label: "Link accounts",
+    path: "/account/link-account/:refId",
+    element: <LinkAccount />,
+  },
+  CREATE_LINK_ACCOUNT: {
+    label: "Create link account",
+  },
+  UPDATE_LINK_ACCOUNT: {
+    label: "Update link account",
+  },
+  DELETE_LINK_ACCOUNT: {
+    label: "Delete link account",
+  },
+};
+
+const BACKUP_CODE_CONFIG = {
+  BACKUP_CODE: {
+    name: "backup_code",
+    label: "Backup codes",
+    path: "/account/backup-code/:accountId",
+    element: <BackupCode />,
+  },
+  CREATE_BACKUP_CODE: {
+    label: "Create backup code",
+  },
+  UPDATE_BACKUP_CODE: {
+    label: "Update backup code",
+  },
+  DELETE_BACKUP_CODE: {
+    label: "Delete backup code",
+  },
+};
+
 export {
   ACCOUNT_CONFIG,
   PLATFORM_CONFIG,
@@ -142,4 +180,6 @@ export {
   CATEGORY_CONFIG,
   LESSON_CONFIG,
   N_LESSONS_CONFIG,
+  LINK_ACCOUNT_CONFIG,
+  BACKUP_CODE_CONFIG,
 };

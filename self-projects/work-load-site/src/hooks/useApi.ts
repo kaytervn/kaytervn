@@ -1,4 +1,5 @@
 import { accountController } from "../controllers/accountController.ts";
+import { backupCodeController } from "../controllers/backupCodeController.ts";
 import { categoryController } from "../controllers/categoryController.ts";
 import { dataBackupController } from "../controllers/dataBackupController.ts";
 import { lessonController } from "../controllers/lessonController.ts";
@@ -18,6 +19,7 @@ const useApi = () => {
   const platform = platformController(fetchApi);
   const dataBackup = dataBackupController(fetchApi);
   const account = accountController(fetchApi);
+  const backupCode = backupCodeController(fetchApi);
 
   return {
     user,
@@ -28,6 +30,7 @@ const useApi = () => {
     loading,
     dataBackup,
     account,
+    backupCode,
   };
 };
 

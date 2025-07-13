@@ -12,6 +12,7 @@ import {
   makeSuccessResponse,
 } from "../services/apiService.js";
 import { ACCOUNT_KIND, ENCRYPT_FIELDS } from "../utils/constant.js";
+import BackupCode from "../models/backupCodeModel.js";
 
 const createAccount = async (req, res) => {
   try {
@@ -142,7 +143,7 @@ const deleteAccount = async (req, res) => {
     if (!account) {
       return makeErrorResponse({ res, message: "Not found account" });
     }
-    const refExists = await Account.exists({ _id: account._id });
+    const refExists = await Account.exists({ ref: account._id });
     if (refExists) {
       return makeErrorResponse({
         res,
@@ -162,7 +163,14 @@ const deleteAccount = async (req, res) => {
 const getAccount = async (req, res) => {
   try {
     const id = req.params.id;
-    const account = await Account.findById(id).populate("ref platform");
+    const account = await Account.findById(id)
+      .populate("platform")
+      .populate({
+        path: "ref",
+        populate: {
+          path: "platform",
+        },
+      });
     if (!account) {
       return makeErrorResponse({ res, message: "Not found account" });
     }
@@ -185,11 +193,45 @@ const getListAccounts = async (req, res) => {
     if (req.query.ref) {
       query.ref = req.query.ref;
     }
+
+    const list = await Account.find(query)
+      .populate("platform")
+      .populate({
+        path: "ref",
+        populate: {
+          path: "platform",
+        },
+      });
+    const accountIds = list.map((acc) => acc._id);
+
+    const refCounts = await Account.aggregate([
+      { $match: { ref: { $in: accountIds } } },
+      { $group: { _id: "$ref", count: { $sum: 1 } } },
+    ]);
+
+    const refCountMap = new Map(
+      refCounts.map((item) => [item._id.toString(), item.count])
+    );
+
+    const backupCodeCounts = await BackupCode.aggregate([
+      { $match: { account: { $in: accountIds } } },
+      { $group: { _id: "$account", count: { $sum: 1 } } },
+    ]);
+
+    const backupCodeMap = new Map(
+      backupCodeCounts.map((item) => [item._id.toString(), item.count])
+    );
+
     const objs = decryptAndEncryptListByUserKey(
       req.token,
-      await Account.find(query).populate("ref platform"),
+      list.map((acc) => ({
+        ...acc.toObject(),
+        totalRefs: refCountMap.get(acc._id.toString()) || 0,
+        totalBackupCodes: backupCodeMap.get(acc._id.toString()) || 0,
+      })),
       ENCRYPT_FIELDS.ACCOUNT
     );
+
     return makeSuccessResponse({
       res,
       data: objs,

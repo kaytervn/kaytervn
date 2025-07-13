@@ -40,7 +40,7 @@ const ToolBar = ({
             className="bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm p-2 rounded-lg flex items-center transition-colors duration-200"
           >
             <EraserIcon size={16} />
-            <span className="ml-1">{BUTTON_TEXT.DELETE}</span>
+            <span className="ml-1">{BUTTON_TEXT.CLEAR}</span>
           </button>
         )}
         {onRefresh && (

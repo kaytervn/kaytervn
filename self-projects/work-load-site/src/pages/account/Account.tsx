@@ -10,6 +10,7 @@ import useModal from "../../hooks/useModal";
 import useApi from "../../hooks/useApi";
 import useGridViewLocal from "../../hooks/useGridViewLocal";
 import {
+  basicRender,
   renderActionButton,
   renderEnum,
 } from "../../components/config/ItemRender";
@@ -48,7 +49,9 @@ const Account = () => {
       ?.filter((item) => {
         const usernameFilter =
           !query?.username ||
-          item.username.toLowerCase().includes(query.username.toLowerCase());
+          (item?.username || item?.ref?.username || "")
+            .toLowerCase()
+            .includes(query.username.toLowerCase());
         const kindFilter = !query?.kind || item.kind == query.kind;
         const platformIdFilter =
           !query?.platformId || item.platform?._id == query.platformId;
@@ -96,29 +99,53 @@ const Account = () => {
       label: "Username",
       accessor: "username",
       align: ALIGNMENT.LEFT,
+      render: (item: any) => {
+        return basicRender({
+          content: item.ref.username
+            ? `(${item.ref?.platform?.name}) ${item.ref?.username}`
+            : item.username,
+        });
+      },
     },
     renderEnum({
       label: "Kind",
       accessor: "kind",
       dataMap: ACCOUNT_KIND_MAP,
     }),
+    {
+      label: "Link accounts",
+      accessor: "totalRefs",
+      align: ALIGNMENT.CENTER,
+    },
+    {
+      label: "Backup codes",
+      accessor: "totalBackupCodes",
+      align: ALIGNMENT.CENTER,
+    },
     renderActionButton({
-      renderChildren: (item: any) => (
-        <>
-          <BasicActionButton
-            onClick={() => onUpdateButtonClick(item._id)}
-            Icon={LinkIcon}
-            buttonText={BUTTON_TEXT.LINKED_ACCOUNTS}
-          />
-          <BasicActionButton
-            onClick={() => onUpdateButtonClick(item._id)}
-            Icon={HistoryIcon}
-            buttonText={BUTTON_TEXT.BACKUP_CODE}
-          />
-          <ActionEditButton onClick={() => onUpdateButtonClick(item._id)} />
-          <ActionDeleteButton onClick={() => onDeleteButtonClick(item._id)} />
-        </>
-      ),
+      renderChildren: (item: any) => {
+        const hideDelete = item.totalRefs > 0;
+        return (
+          <>
+            <BasicActionButton
+              onClick={() => onLinkAccountButtonClick(item._id)}
+              Icon={LinkIcon}
+              buttonText={BUTTON_TEXT.LINKED_ACCOUNTS}
+            />
+            <BasicActionButton
+              onClick={() => onBackupCodesButtonClick(item._id)}
+              Icon={HistoryIcon}
+              buttonText={BUTTON_TEXT.BACKUP_CODE}
+            />
+            <ActionEditButton onClick={() => onUpdateButtonClick(item._id)} />
+            {!hideDelete && (
+              <ActionDeleteButton
+                onClick={() => onDeleteButtonClick(item._id)}
+              />
+            )}
+          </>
+        );
+      },
     }),
   ];
 
@@ -140,6 +167,14 @@ const Account = () => {
 
   const onUpdateButtonClick = (id: any) => {
     navigate(`/account/update/${id}`, { state: { query } });
+  };
+
+  const onLinkAccountButtonClick = (id: any) => {
+    navigate(`/account/link-account/${id}`, { state: { query } });
+  };
+
+  const onBackupCodesButtonClick = (id: any) => {
+    navigate(`/account/backup-code/${id}`, { state: { query } });
   };
 
   return (

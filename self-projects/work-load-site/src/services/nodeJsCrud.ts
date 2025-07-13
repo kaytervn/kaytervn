@@ -398,12 +398,13 @@ const generateClientControllers = (modelName: any) => {
   const lowerPathCaseModel = splitModelName(modelName, "-").toLowerCase();
 
   const output = `export const ${lowerModel}Controller = (fetchApi: any) => {
-  const list = () =>
+  const list = (payload: any) =>
     fetchApi({
       apiUrl: ENV.MSA_API_URL,
       endpoint: "/v1/${lowerPathCaseModel}/list",
       method: METHOD.GET,
       authType: AUTH_TYPE.BEARER,
+      payload,
     });
 
   const get = (id: any) =>
@@ -584,6 +585,7 @@ const ${upperModel} = () => {
       activeItem={PAGE_CONFIG.${upperSnakeCaseModel}.name}
       renderContent={
         <>
+          <LoadingDialog isVisible={loading} />
           <ConfirmationDialog
             isVisible={deleteDialogVisible}
             formConfig={deleteDialogConfig}
@@ -701,7 +703,7 @@ const generateCreateLayout = (modelName: string, fields: any[]) => {
       activeItem={PAGE_CONFIG.${upperSnakeCaseModel}.name}
       renderContent={
         <>
-          <LoadingDialog isVisible={false} />
+          <LoadingDialog isVisible={loading} />
           <FormCard
             title={PAGE_CONFIG.CREATE_${upperSnakeCaseModel}.label}
             children={
@@ -841,7 +843,7 @@ const generateUpdateLayout = (modelName: string, fields: any[]) => {
       activeItem={PAGE_CONFIG.${upperSnakeCaseModel}.name}
       renderContent={
         <>
-          <LoadingDialog isVisible={false} />
+          <LoadingDialog isVisible={loading} />
           <FormCard
             title={PAGE_CONFIG.UPDATE_${upperSnakeCaseModel}.label}
             children={

@@ -11,7 +11,6 @@ import {
 } from "../../../components/config/PageConfig";
 import { renderActionButton } from "../../../components/config/ItemRender";
 import {
-  ACCOUNT_KIND_MAP,
   ALIGNMENT,
   BASIC_MESSAGES,
   ITEMS_PER_PAGE,
@@ -28,17 +27,17 @@ import {
 } from "../../../components/form/Dialog";
 import Sidebar2 from "../../../components/main/Sidebar2";
 import { CreateButton, ToolBar } from "../../../components/main/ToolBar";
-import { SelectBoxLazy } from "../../../components/form/SelectTextField";
 import { GridView } from "../../../components/main/GridView";
 import useQueryState from "../../../hooks/useQueryState";
 import { decryptDataByUserKey } from "../../../services/encryption/sessionEncryption";
-import CreateLinkAccount from "./CreateLinkAccount";
-import UpdateLinkAccount from "./UpdateLinkAccount";
+import CreateBackupCode from "./CreateBackupCode";
+import UpdateBackupCode from "./UpdateBackupCode";
+import { InputBox2 } from "../../../components/form/InputTextField";
 
-const initQuery = { linkAccountPlatformId: "" };
+const initQuery = { code: "" };
 
-const LinkAccount = () => {
-  const { refId } = useParams();
+const BackupCode = () => {
+  const { accountId } = useParams();
   const { state } = useLocation();
   const { setToast, sessionKey } = useGlobalContext();
   const {
@@ -47,9 +46,8 @@ const LinkAccount = () => {
     hideModal: hideDeleteDialog,
     formConfig: deleteDialogConfig,
   } = useModal();
-  const { account: apiList, loading: loadingList } = useApi();
-  const { account, loading } = useApi();
-  const { platform } = useApi();
+  const { backupCode: apiList, loading: loadingList } = useApi();
+  const { account, backupCode, loading } = useApi();
   const { handleNavigateBack } = useQueryState({
     path: PAGE_CONFIG.ACCOUNT.path,
     requireSessionKey: true,
@@ -69,12 +67,12 @@ const LinkAccount = () => {
   } = useModal();
 
   useEffect(() => {
-    if (!refId) {
+    if (!accountId) {
       handleNavigateBack();
       return;
     }
     const fetchData = async () => {
-      const res = await account.get(refId);
+      const res = await account.get(accountId);
       if (res.result) {
         const data = res.data;
         setFetchData(
@@ -86,21 +84,17 @@ const LinkAccount = () => {
     };
 
     fetchData();
-  }, [refId]);
+  }, [accountId]);
 
   const customFilterData = useCallback((allData: any[], query: any) => {
     return allData
-      .filter((item) => {
-        const platformIdFilter =
-          !query?.platformId || item.platform?._id == query.platformId;
-        return platformIdFilter;
+      ?.filter((item) => {
+        const codeFilter =
+          !query?.code ||
+          item.code.toLowerCase().includes(query.code.toLowerCase());
+        return codeFilter;
       })
-      .sort((a, b) => {
-        const platformCompare =
-          a.platform?.name?.localeCompare(b.platform?.name || "") || 0;
-        if (platformCompare !== 0) return platformCompare;
-        return a.username?.localeCompare(b.username || "");
-      });
+      .sort((a, b) => a.code.localeCompare(b.code));
   }, []);
 
   const {
@@ -115,14 +109,14 @@ const LinkAccount = () => {
     initQuery: state?.query || initQuery,
     filterData: customFilterData,
     fetchListApi: apiList.list,
-    queryParams: { ref: refId },
-    decryptFields: DECRYPT_FIELDS.ACCOUNT,
+    queryParams: { account: accountId },
+    decryptFields: DECRYPT_FIELDS.BACKUP_CODE,
   });
 
   const columns = [
     {
-      label: "Platform",
-      accessor: "platform.name",
+      label: "Code",
+      accessor: "code",
       align: ALIGNMENT.LEFT,
     },
     renderActionButton({
@@ -138,8 +132,8 @@ const LinkAccount = () => {
   const onDeleteButtonClick = (id: any) => {
     showDeleteDialog(
       configDeleteDialog({
-        label: PAGE_CONFIG.DELETE_LINK_ACCOUNT.label,
-        deleteApi: () => account.del(id),
+        label: PAGE_CONFIG.DELETE_BACKUP_CODE.label,
+        deleteApi: () => backupCode.del(id),
         refreshData: () => handleDeleteItem(id),
         hideModal: hideDeleteDialog,
         setToast,
@@ -150,17 +144,15 @@ const LinkAccount = () => {
   const onCreateButtonClick = () => {
     showCreateForm(
       configModalForm({
-        label: PAGE_CONFIG.CREATE_LINK_ACCOUNT.label,
-        fetchApi: account.create,
+        label: PAGE_CONFIG.CREATE_BACKUP_CODE.label,
+        fetchApi: backupCode.create,
         refreshData: handleRefreshData,
         hideModal: hideCreateForm,
         setToast,
         successMessage: BASIC_MESSAGES.CREATED,
         initForm: {
-          refId,
-          platformId: "",
-          note: "",
-          kind: ACCOUNT_KIND_MAP.LINKED.value,
+          accountId,
+          code: "",
         },
       })
     );
@@ -169,16 +161,15 @@ const LinkAccount = () => {
   const onUpdateButtonClick = (id: any) => {
     showUpdateForm(
       configModalForm({
-        label: PAGE_CONFIG.UPDATE_LINK_ACCOUNT.label,
-        fetchApi: account.update,
+        label: PAGE_CONFIG.UPDATE_BACKUP_CODE.label,
+        fetchApi: backupCode.update,
         refreshData: handleRefreshData,
         hideModal: hideUpdateForm,
         setToast,
         successMessage: BASIC_MESSAGES.UPDATED,
         initForm: {
           id,
-          platformId: "",
-          note: "",
+          code: "",
         },
       })
     );
@@ -194,7 +185,7 @@ const LinkAccount = () => {
           onClick: handleNavigateBack,
         },
         {
-          label: PAGE_CONFIG.LINK_ACCOUNT.label,
+          label: PAGE_CONFIG.BACKUP_CODE.label,
         },
       ]}
       activeItem={PAGE_CONFIG.ACCOUNT.name}
@@ -205,29 +196,23 @@ const LinkAccount = () => {
             isVisible={deleteDialogVisible}
             formConfig={deleteDialogConfig}
           />
-          <CreateLinkAccount
+          <CreateBackupCode
             isVisible={createFormVisible}
             formConfig={createFormConfig}
           />
-          <UpdateLinkAccount
+          <UpdateBackupCode
             isVisible={updateFormVisible}
             formConfig={updateFormConfig}
           />
           <ToolBar
             searchBoxes={
               <>
-                <SelectBoxLazy
-                  value={query.platformId}
-                  onChange={(value: any) => {
-                    handleSubmitQuery({
-                      ...query,
-                      platformId: value,
-                    });
-                  }}
-                  fetchListApi={platform.list}
-                  placeholder="Platform..."
-                  valueKey="_id"
-                  decryptFields={DECRYPT_FIELDS.PLATFORM}
+                <InputBox2
+                  value={query.code}
+                  onChangeText={(value: any) =>
+                    handleSubmitQuery({ ...query, code: value })
+                  }
+                  placeholder="Code..."
                 />
               </>
             }
@@ -250,4 +235,4 @@ const LinkAccount = () => {
   );
 };
 
-export default LinkAccount;
+export default BackupCode;

@@ -123,11 +123,27 @@ const getPlatform = async (req, res) => {
 
 const getListPlatforms = async (req, res) => {
   try {
+    const list = await Platform.find();
+    const platformIds = list.map((p) => p._id);
+
+    const accountCounts = await Account.aggregate([
+      { $match: { platform: { $in: platformIds } } },
+      { $group: { _id: "$platform", count: { $sum: 1 } } },
+    ]);
+
+    const accountCountMap = new Map(
+      accountCounts.map((item) => [item._id.toString(), item.count])
+    );
+
     const platforms = decryptAndEncryptListByUserKey(
       req.token,
-      await Platform.find(),
+      list.map((platform) => ({
+        ...platform.toObject(),
+        totalAccounts: accountCountMap.get(platform._id.toString()) || 0,
+      })),
       ENCRYPT_FIELDS.PLATFORM
     );
+
     return makeSuccessResponse({
       res,
       data: platforms,

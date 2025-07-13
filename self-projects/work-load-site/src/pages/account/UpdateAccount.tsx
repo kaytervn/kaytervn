@@ -19,7 +19,12 @@ import {
   decryptDataByUserKey,
   encryptDataByUserKey,
 } from "../../services/encryption/sessionEncryption";
-import { BASIC_MESSAGES, BUTTON_TEXT, TOAST } from "../../types/constant";
+import {
+  ACCOUNT_KIND_MAP,
+  BASIC_MESSAGES,
+  BUTTON_TEXT,
+  TOAST,
+} from "../../types/constant";
 import { useEffect, useState } from "react";
 
 const UpdateAccount = () => {
@@ -33,13 +38,17 @@ const UpdateAccount = () => {
   const { account, loading } = useApi();
   const { platform } = useApi();
 
+  const isRoot = () => form?.kind == ACCOUNT_KIND_MAP.ROOT.value;
+
   const validate = (form: any) => {
     const newErrors: any = {};
-    if (!form.username.trim()) {
-      newErrors.username = "Invalid username";
-    }
-    if (!form.password.trim()) {
-      newErrors.password = "Invalid password";
+    if (isRoot()) {
+      if (!form.username.trim()) {
+        newErrors.username = "Invalid username";
+      }
+      if (!form.password.trim()) {
+        newErrors.password = "Invalid password";
+      }
     }
     if (!form.platformId.trim()) {
       newErrors.platformId = "Invalid platform";
@@ -120,7 +129,11 @@ const UpdateAccount = () => {
           label: PAGE_CONFIG.ACCOUNT.label,
           onClick: handleNavigateBack,
         },
-        { label: `(${fetchData?.platform?.name}) ${fetchData?.username}` },
+        {
+          label: `(${
+            fetchData?.ref?.platform?.name || fetchData?.platform?.name
+          }) ${fetchData?.ref?.username || fetchData?.username}`,
+        },
       ]}
       activeItem={PAGE_CONFIG.ACCOUNT.name}
       renderContent={
@@ -141,29 +154,31 @@ const UpdateAccount = () => {
                   valueKey="_id"
                   decryptFields={DECRYPT_FIELDS.PLATFORM}
                 />
-                <div className="flex flex-row space-x-2">
-                  <InputField2
-                    title="Username"
-                    isRequired={true}
-                    placeholder="Enter username"
-                    value={form.username}
-                    onChangeText={(value: any) =>
-                      handleChange("username", value)
-                    }
-                    error={errors.username}
-                  />
-                  <InputField2
-                    title="Password"
-                    isRequired={true}
-                    placeholder="Enter password"
-                    value={form.password}
-                    onChangeText={(value: any) =>
-                      handleChange("password", value)
-                    }
-                    error={errors.password}
-                    type="password"
-                  />
-                </div>
+                {isRoot() && (
+                  <div className="flex flex-row space-x-2">
+                    <InputField2
+                      title="Username"
+                      isRequired={true}
+                      placeholder="Enter username"
+                      value={form.username}
+                      onChangeText={(value: any) =>
+                        handleChange("username", value)
+                      }
+                      error={errors.username}
+                    />
+                    <InputField2
+                      title="Password"
+                      isRequired={true}
+                      placeholder="Enter password"
+                      value={form.password}
+                      onChangeText={(value: any) =>
+                        handleChange("password", value)
+                      }
+                      error={errors.password}
+                      type="password"
+                    />
+                  </div>
+                )}
                 <TextAreaField2
                   title="Note"
                   placeholder="Enter note"

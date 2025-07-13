@@ -1,5 +1,12 @@
 const ACCOUNT_ENCRYPT_FIELDS = {
-  ACCOUNT: ["username", "password", "note", "ref.username", "platform.name"],
+  ACCOUNT: [
+    "username",
+    "password",
+    "note",
+    "ref.username",
+    "platform.name",
+    "ref.platform.name",
+  ],
   CREATE_ACCOUNT: ["username", "password", "note"],
   UPDATE_ACCOUNT: ["username", "password", "note"],
 };

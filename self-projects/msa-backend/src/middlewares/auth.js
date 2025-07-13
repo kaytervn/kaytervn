@@ -21,6 +21,7 @@ import {
 } from "../utils/constant.js";
 import { Buffer } from "buffer";
 import { verifyTimestamp } from "../utils/utils.js";
+import { parse } from "url";
 
 const basicAuth = (req, res, next) => {
   const authHeader = req.headers[API_HEADER.AUTHORIZATION];
@@ -205,7 +206,7 @@ const encryptResponseMiddleware = (req, res, next) => {
 
 const verifyEndpoint = (req, res, next) => {
   try {
-    const url = req.originalUrl;
+    const url = parse(req.originalUrl).pathname;
     const isMatched = getMatchRoutes().some((matcher) => matcher(url));
     if (isMatched) {
       return next();
