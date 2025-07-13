@@ -218,11 +218,11 @@ const LinkAccount = () => {
             searchBoxes={
               <>
                 <SelectBoxLazy
-                  value={query.platformId}
+                  value={query.linkAccountPlatformId}
                   onChange={(value: any) => {
                     handleSubmitQuery({
                       ...query,
-                      platformId: value,
+                      linkAccountPlatformId: value,
                     });
                   }}
                   fetchListApi={platform.list}
