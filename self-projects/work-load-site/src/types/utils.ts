@@ -4,6 +4,7 @@ import { colors, ENV, MIME_TYPES, myPublicSecretKey } from "./constant";
 import gifs from "./gifs";
 import SparkMD5 from "spark-md5";
 import forge from "node-forge";
+import Fuse from "fuse.js";
 
 const getCurrentDate = () => {
   const now = new Date();
@@ -346,6 +347,49 @@ const getMediaImage = (url: string) => {
   return `${ENV.MSA_API_URL}/v1/media/download/${url}`;
 };
 
+const normalizeVietnamese = (str: string) => {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .replace(/\s+/g, "")
+    .toLowerCase();
+};
+
+const deepGet = (obj: any, path: string): any => {
+  return path.split(".").reduce((acc, key) => acc?.[key], obj);
+};
+
+function createFuse<T>(
+  allData: T[],
+  keys: string[],
+  options: Partial<any> = {}
+): (query: string) => T[] {
+  const fuse = new Fuse(allData, {
+    keys,
+    threshold: 0.4,
+    distance: 100,
+    minMatchCharLength: 2,
+    ignoreLocation: true,
+    useExtendedSearch: true,
+    isCaseSensitive: false,
+    includeScore: false,
+    getFn: (obj, path) => {
+      if (typeof path !== "string") return null;
+      const value = deepGet(obj, path);
+      return typeof value === "string" ? normalizeVietnamese(value) : value;
+    },
+    ...options,
+  });
+
+  return (query: string): T[] => {
+    if (!query || query.trim() === "") return allData;
+    const normalizedQuery = normalizeVietnamese(query);
+    return fuse.search(normalizedQuery).map((res) => res.item);
+  };
+}
+
 export {
   getRandomGif,
   getRandomColor,
@@ -383,4 +427,6 @@ export {
   getMimeType,
   parseDocuments,
   getMediaImage,
+  normalizeVietnamese,
+  createFuse,
 };
