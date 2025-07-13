@@ -347,13 +347,15 @@ const getMediaImage = (url: string) => {
   return `${ENV.MSA_API_URL}/v1/media/download/${url}`;
 };
 
-const normalizeVietnamese = (str: string) => {
+const normalizeVietnamese = (str: any) => {
+  if (!str || typeof str !== "string") return "";
   return str
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/đ/g, "d")
     .replace(/Đ/g, "D")
     .replace(/\s+/g, "")
+    .replace(/[^\p{L}\p{N}]/gu, "")
     .toLowerCase();
 };
 

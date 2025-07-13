@@ -38,8 +38,9 @@ import {
   StaticSelectBox,
 } from "../../components/form/SelectTextField";
 import { HistoryIcon, LinkIcon } from "lucide-react";
+import { normalizeVietnamese } from "../../types/utils";
 
-const initQuery = { username: "", kind: "", platformId: "" };
+const initQuery = { keyword: "", kind: "", platformId: "", username: "" };
 
 const Account = () => {
   const { state } = useLocation();
@@ -52,10 +53,26 @@ const Account = () => {
           (item?.username || item?.ref?.username || "")
             .toLowerCase()
             .includes(query.username.toLowerCase());
+        const keywordFilter =
+          !query?.keyword ||
+          [
+            item?.username,
+            item?.ref?.username,
+            item?.note,
+            item?.platform?.name,
+          ]
+            .filter(Boolean)
+            .some((field) =>
+              normalizeVietnamese(field).includes(
+                normalizeVietnamese(query.keyword)
+              )
+            );
         const kindFilter = !query?.kind || item.kind == query.kind;
         const platformIdFilter =
           !query?.platformId || item.platform?._id == query.platformId;
-        return usernameFilter && kindFilter && platformIdFilter;
+        return (
+          keywordFilter && usernameFilter && kindFilter && platformIdFilter
+        );
       })
       .sort((a, b) => {
         const platformCompare =
@@ -195,6 +212,13 @@ const Account = () => {
           <ToolBar
             searchBoxes={
               <>
+                <InputBox2
+                  value={query.keyword}
+                  onChangeText={(value: any) =>
+                    handleSubmitQuery({ ...query, keyword: value })
+                  }
+                  placeholder="Searching..."
+                />
                 <SelectBoxLazy
                   value={query.platformId}
                   onChange={(value: any) => {
