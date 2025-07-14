@@ -216,7 +216,7 @@ const generateController = (modelName: any, fields: any) => {
         req.body,
         ENCRYPT_FIELDS.UPDATE_${upperSnakeCaseModel}
       );
-      if (!id || !mongoose.isValidObjectId(id)) {
+      if (!isValidObjectId(id) || !mongoose.isValidObjectId(id)) {
         return makeErrorResponse({
           res,
           message: "id is required",
@@ -792,7 +792,7 @@ const generateUpdateLayout = (modelName: string, fields: any[]) => {
   );
 
   useEffect(() => {
-    if (!id || !sessionKey) {
+    if (!isValidObjectId(id) || !sessionKey) {
       handleNavigateBack();
       return;
     }

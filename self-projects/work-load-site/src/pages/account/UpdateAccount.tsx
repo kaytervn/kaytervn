@@ -26,6 +26,7 @@ import {
   TOAST,
 } from "../../types/constant";
 import { useEffect, useState } from "react";
+import { isValidObjectId } from "../../types/utils";
 
 const UpdateAccount = () => {
   const { id } = useParams();
@@ -69,7 +70,7 @@ const UpdateAccount = () => {
   );
 
   useEffect(() => {
-    if (!id || !sessionKey) {
+    if (!isValidObjectId(id) || !sessionKey) {
       handleNavigateBack();
       return;
     }

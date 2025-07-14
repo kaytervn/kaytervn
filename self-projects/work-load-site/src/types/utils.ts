@@ -392,6 +392,17 @@ function createFuse<T>(
   };
 }
 
+const isValidObjectId = (id: any): boolean => {
+  if (!id) {
+    return false;
+  }
+  try {
+    return /^[a-fA-F0-9]{24}$/.test(id);
+  } catch {
+    return false;
+  }
+};
+
 export {
   getRandomGif,
   getRandomColor,
@@ -431,4 +442,5 @@ export {
   getMediaImage,
   normalizeVietnamese,
   createFuse,
+  isValidObjectId,
 };

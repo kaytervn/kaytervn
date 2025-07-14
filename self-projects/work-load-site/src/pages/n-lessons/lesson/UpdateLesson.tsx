@@ -15,6 +15,7 @@ import { SelectFieldLazy } from "../../../components/form/SelectTextField";
 import { TextAreaField2 } from "../../../components/form/TextareaField";
 import DocumentsField from "../../../components/form/DocumentsField";
 import { CancelButton, SubmitButton } from "../../../components/form/Button";
+import { isValidObjectId } from "../../../types/utils";
 
 const UpdateLesson = () => {
   const { id } = useParams();
@@ -38,7 +39,7 @@ const UpdateLesson = () => {
     useForm({}, validate);
 
   useEffect(() => {
-    if (!id) {
+    if (!isValidObjectId(id)) {
       handleNavigateBack();
       return;
     }
