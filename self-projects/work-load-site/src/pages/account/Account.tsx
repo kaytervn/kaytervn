@@ -58,6 +58,8 @@ const Account = () => {
           [
             item?.username,
             item?.ref?.username,
+            item?.ref?.platform?.name,
+            `(${item.ref?.platform?.name}) ${item.ref?.username}`,
             item?.note,
             item?.platform?.name,
           ]
