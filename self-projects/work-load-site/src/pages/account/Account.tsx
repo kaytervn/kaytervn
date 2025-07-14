@@ -32,6 +32,7 @@ import {
   ALIGNMENT,
   BUTTON_TEXT,
   ITEMS_PER_PAGE,
+  SORT_ACCOUNT_MAP,
 } from "../../types/constant";
 import {
   SelectBoxLazy,
@@ -40,13 +41,19 @@ import {
 import { HistoryIcon, LinkIcon } from "lucide-react";
 import { normalizeVietnamese } from "../../types/utils";
 
-const initQuery = { keyword: "", kind: "", platformId: "", username: "" };
+const initQuery = {
+  keyword: "",
+  kind: "",
+  platformId: "",
+  username: "",
+  sort: "",
+};
 
 const Account = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const customFilterData = useCallback((allData: any[], query: any) => {
-    return allData
+    const filtered = allData
       ?.filter((item) => {
         const usernameFilter =
           !query?.username ||
@@ -82,6 +89,27 @@ const Account = () => {
         if (platformCompare !== 0) return platformCompare;
         return a.username?.localeCompare(b.username || "");
       });
+    if (query?.sort == SORT_ACCOUNT_MAP.TOTAL_LINK_ACCOUNT_DESC.value) {
+      filtered.sort((a, b) => (b.totalRefs || 0) - (a.totalRefs || 0));
+    } else if (query?.sort == SORT_ACCOUNT_MAP.TOTAL_LINK_ACCOUNT_ASC.value) {
+      filtered.sort((a, b) => (a.totalRefs || 0) - (b.totalRefs || 0));
+    } else if (query?.sort == SORT_ACCOUNT_MAP.TOTAL_BACKUP_CODE_DESC.value) {
+      filtered.sort(
+        (a, b) => (b.totalBackupCodes || 0) - (a.totalBackupCodes || 0)
+      );
+    } else if (query?.sort == SORT_ACCOUNT_MAP.TOTAL_BACKUP_CODE_ASC.value) {
+      filtered.sort(
+        (a, b) => (a.totalBackupCodes || 0) - (b.totalBackupCodes || 0)
+      );
+    } else {
+      filtered.sort((a, b) => {
+        const platformCompare =
+          a.platform?.name?.localeCompare(b.platform?.name || "") || 0;
+        if (platformCompare !== 0) return platformCompare;
+        return a.username?.localeCompare(b.username || "");
+      });
+    }
+    return filtered;
   }, []);
   const { setToast } = useGlobalContext();
   const {
@@ -248,6 +276,14 @@ const Account = () => {
                   }}
                   dataMap={ACCOUNT_KIND_MAP}
                   placeholder="Kind..."
+                />
+                <StaticSelectBox
+                  value={query.sort}
+                  onChange={(value: any) => {
+                    handleSubmitQuery({ ...query, sort: value });
+                  }}
+                  dataMap={SORT_ACCOUNT_MAP}
+                  placeholder="Sort..."
                 />
               </>
             }

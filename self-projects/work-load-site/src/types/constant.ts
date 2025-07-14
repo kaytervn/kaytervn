@@ -294,6 +294,29 @@ const ACCOUNT_KIND_MAP = {
   },
 };
 
+const SORT_ACCOUNT_MAP = {
+  TOTAL_LINK_ACCOUNT_ASC: {
+    value: 1,
+    label: "Link accounts (ASC)",
+    className: "bg-green-800 text-green-200",
+  },
+  TOTAL_LINK_ACCOUNT_DESC: {
+    value: 2,
+    label: "Link accounts (DESC)",
+    className: "bg-green-800 text-green-200",
+  },
+  TOTAL_BACKUP_CODE_ASC: {
+    value: 3,
+    label: "Backup codes (ASC)",
+    className: "bg-indigo-800 text-indigo-200",
+  },
+  TOTAL_BACKUP_CODE_DESC: {
+    value: 4,
+    label: "Backup codes (DESC)",
+    className: "bg-indigo-800 text-indigo-200",
+  },
+};
+
 export {
   defaultInteger,
   defaultLong,
@@ -327,4 +350,5 @@ export {
   DOC_TITLE,
   ACCOUNT_KIND_MAP,
   GRID_TRUNCATE,
+  SORT_ACCOUNT_MAP,
 };
