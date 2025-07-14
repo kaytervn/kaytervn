@@ -317,6 +317,19 @@ const SORT_ACCOUNT_MAP = {
   },
 };
 
+const SORT_PLATFORM_MAP = {
+  TOTAL_ACCOUNT_ASC: {
+    value: 1,
+    label: "Total accounts (ASC)",
+    className: "bg-blue-800 text-blue-200",
+  },
+  TOTAL_ACCOUNT_DESC: {
+    value: 2,
+    label: "Total accounts (DESC)",
+    className: "bg-blue-800 text-blue-200",
+  },
+};
+
 export {
   defaultInteger,
   defaultLong,
@@ -351,4 +364,5 @@ export {
   ACCOUNT_KIND_MAP,
   GRID_TRUNCATE,
   SORT_ACCOUNT_MAP,
+  SORT_PLATFORM_MAP,
 };

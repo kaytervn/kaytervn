@@ -53,42 +53,33 @@ const Account = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const customFilterData = useCallback((allData: any[], query: any) => {
-    const filtered = allData
-      ?.filter((item) => {
-        const usernameFilter =
-          !query?.username ||
-          (item?.username || item?.ref?.username || "")
-            .toLowerCase()
-            .includes(query.username.toLowerCase());
-        const keywordFilter =
-          !query?.keyword ||
-          [
-            item?.username,
-            item?.ref?.username,
-            item?.ref?.platform?.name,
-            `(${item.ref?.platform?.name}) ${item.ref?.username}`,
-            item?.note,
-            item?.platform?.name,
-          ]
-            .filter(Boolean)
-            .some((field) =>
-              normalizeVietnamese(field).includes(
-                normalizeVietnamese(query.keyword)
-              )
-            );
-        const kindFilter = !query?.kind || item.kind == query.kind;
-        const platformIdFilter =
-          !query?.platformId || item.platform?._id == query.platformId;
-        return (
-          keywordFilter && usernameFilter && kindFilter && platformIdFilter
-        );
-      })
-      .sort((a, b) => {
-        const platformCompare =
-          a.platform?.name?.localeCompare(b.platform?.name || "") || 0;
-        if (platformCompare !== 0) return platformCompare;
-        return a.username?.localeCompare(b.username || "");
-      });
+    const filtered = allData?.filter((item) => {
+      const usernameFilter =
+        !query?.username ||
+        (item?.username || item?.ref?.username || "")
+          .toLowerCase()
+          .includes(query.username.toLowerCase());
+      const keywordFilter =
+        !query?.keyword ||
+        [
+          item?.username,
+          item?.ref?.username,
+          item?.ref?.platform?.name,
+          `(${item.ref?.platform?.name}) ${item.ref?.username}`,
+          item?.note,
+          item?.platform?.name,
+        ]
+          .filter(Boolean)
+          .some((field) =>
+            normalizeVietnamese(field).includes(
+              normalizeVietnamese(query.keyword)
+            )
+          );
+      const kindFilter = !query?.kind || item.kind == query.kind;
+      const platformIdFilter =
+        !query?.platformId || item.platform?._id == query.platformId;
+      return keywordFilter && usernameFilter && kindFilter && platformIdFilter;
+    });
     if (query?.sort == SORT_ACCOUNT_MAP.TOTAL_LINK_ACCOUNT_DESC.value) {
       filtered.sort((a, b) => (b.totalRefs || 0) - (a.totalRefs || 0));
     } else if (query?.sort == SORT_ACCOUNT_MAP.TOTAL_LINK_ACCOUNT_ASC.value) {

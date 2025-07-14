@@ -14,6 +14,7 @@ import {
   ALIGNMENT,
   BASIC_MESSAGES,
   ITEMS_PER_PAGE,
+  SORT_PLATFORM_MAP,
 } from "../../types/constant";
 import {
   configDeleteDialog,
@@ -29,22 +30,29 @@ import CreatePlatform from "./CreatePlatform";
 import UpdatePlatform from "./UpdatePlatform";
 import { ENCRYPT_FIELDS } from "../../services/encryption/encryptFields";
 import { normalizeVietnamese } from "../../types/utils";
+import { StaticSelectBox } from "../../components/form/SelectTextField";
 
-const initQuery = { name: "" };
+const initQuery = { name: "", sort: "" };
 
 const Platform = () => {
   const { state } = useLocation();
   const customFilterData = useCallback((allData: any[], query: any) => {
-    return allData
-      ?.filter((item) => {
-        const nameFilter =
-          !query?.name ||
-          normalizeVietnamese(item.name).includes(
-            normalizeVietnamese(query.name)
-          );
-        return nameFilter;
-      })
-      .sort((a, b) => a.name.localeCompare(b.name));
+    const filtered = allData?.filter((item) => {
+      const nameFilter =
+        !query?.name ||
+        normalizeVietnamese(item.name).includes(
+          normalizeVietnamese(query.name)
+        );
+      return nameFilter;
+    });
+    if (query?.sort == SORT_PLATFORM_MAP.TOTAL_ACCOUNT_DESC.value) {
+      filtered.sort((a, b) => (b.totalAccounts || 0) - (a.totalAccounts || 0));
+    } else if (query?.sort == SORT_PLATFORM_MAP.TOTAL_ACCOUNT_ASC.value) {
+      filtered.sort((a, b) => (a.totalAccounts || 0) - (b.totalAccounts || 0));
+    } else {
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    return filtered;
   }, []);
   const { setToast } = useGlobalContext();
   const {
@@ -186,6 +194,14 @@ const Platform = () => {
                     handleSubmitQuery({ ...query, name: value })
                   }
                   placeholder="Name..."
+                />
+                <StaticSelectBox
+                  value={query.sort}
+                  onChange={(value: any) => {
+                    handleSubmitQuery({ ...query, sort: value });
+                  }}
+                  dataMap={SORT_PLATFORM_MAP}
+                  placeholder="Sort..."
                 />
               </>
             }
