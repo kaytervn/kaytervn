@@ -82,8 +82,8 @@ const renderHrefLink = ({
 };
 
 const renderActionButton = ({
-  label = "Action",
-  accessor = "action",
+  label = "Actions",
+  accessor = "actions",
   align = ALIGNMENT.CENTER,
   renderChildren,
 }: any) => {

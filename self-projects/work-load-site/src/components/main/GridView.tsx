@@ -75,7 +75,7 @@ const GridView = ({
                   {data.map((item: any, index: any) => (
                     <tr
                       key={index}
-                      className="border-b border-gray-700 hover:bg-gray-700 transition-colors duration-150"
+                      className="border-b border-gray-700 hover:bg-gray-900 transition-colors duration-150"
                     >
                       <td className="p-2 text-left">
                         {index + 1 + currentPage * itemsPerPage}
