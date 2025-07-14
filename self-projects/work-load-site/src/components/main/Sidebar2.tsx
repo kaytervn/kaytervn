@@ -6,7 +6,10 @@ import { useEffect, useState, useRef } from "react";
 import { getStorageData, setStorageData } from "../../services/storages";
 import MainHeader from "./MainHeader";
 import UnauthorizedDialog from "../../pages/auth/UnauthorizedDialog";
-import { SIDEBAR_MENUS } from "../config/PageConfig";
+import {
+  NOT_REQUIRE_SESSION_KEY_PAGES,
+  SIDEBAR_MENUS,
+} from "../config/PageConfig";
 import "../../styles/Sidebar.css";
 import { LOCAL_STORAGE } from "../../types/constant";
 import InputSessionKey from "../../pages/auth/InputSessionKey";
@@ -132,6 +135,10 @@ const Sidebar2 = ({ activeItem, breadcrumbs, renderContent }: any) => {
       setStorageData(LOCAL_STORAGE.MSA_COLLAPSED_GROUPS, updatedGroups);
       return updatedGroups;
     });
+  };
+
+  const isSessionKeyTimeout = () => {
+    return !NOT_REQUIRE_SESSION_KEY_PAGES.has(activeItem) && !sessionKey;
   };
 
   return (
@@ -268,7 +275,7 @@ const Sidebar2 = ({ activeItem, breadcrumbs, renderContent }: any) => {
           </header>
 
           <main className="flex-1 p-4 bg-gray-800 overflow-auto">
-            {!sessionKey ? <InputSessionKey /> : renderContent}
+            {isSessionKeyTimeout() ? <InputSessionKey /> : renderContent}
           </main>
         </div>
       </div>

@@ -64,6 +64,7 @@ const loginUser = async (req, res) => {
     const accessToken = createToken({
       id: user._id,
       username: user.username,
+      email: user.email,
       secretKey: encryptCommonField(secretKey),
       sessionId,
     });

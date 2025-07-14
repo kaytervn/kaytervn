@@ -14,56 +14,22 @@ import {
 } from "../form/Dialog";
 import useApi from "../../hooks/useApi";
 import RequestKey from "../../pages/auth/RequestKey";
-import ChangePassword from "../../pages/auth/ChangePassword";
 import { USER_CONFIG } from "../config/PageConfigDetails";
-import ChangePin from "../../pages/auth/ChangePin";
+import { PAGE_CONFIG } from "../config/PageConfig";
 
 const MainHeader = ({ breadcrumbs }: any) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const { user, loading, dataBackup } = useApi();
+  const { user, loading } = useApi();
   const { profile, setToast } = useGlobalContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { isModalVisible, showModal, hideModal, formConfig } = useModal();
   const {
-    isModalVisible: changePasswordFormVisible,
-    showModal: showChangePasswordForm,
-    hideModal: hideChangePasswordForm,
-    formConfig: changePasswordFormConfig,
-  } = useModal();
-  const {
-    isModalVisible: changePinFormVisible,
-    showModal: showChangePinForm,
-    hideModal: hideChangePinForm,
-    formConfig: changePinFormConfig,
-  } = useModal();
-  const {
     isModalVisible: requestKeyFormVisible,
     showModal: showRequestKeyForm,
     hideModal: hideRequestKeyForm,
     formConfig: requestKeyFormConfig,
   } = useModal();
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const isTxtFile =
-      file.type === "text/plain" || file.name.toLowerCase().endsWith(".txt");
-    if (!isTxtFile) {
-      setToast("Invalid file type", TOAST.ERROR);
-      return;
-    }
-    const res = await dataBackup.upload(file);
-    if (res.result) {
-      setToast("Upload data backup successfully", TOAST.SUCCESS);
-    } else {
-      setToast(res.message, TOAST.ERROR);
-    }
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
 
   const handleRequestKey = () => {
     setIsDropdownOpen(false);
@@ -114,75 +80,8 @@ const MainHeader = ({ breadcrumbs }: any) => {
     });
   };
 
-  const handleChangePassword = () => {
-    setIsDropdownOpen(false);
-    showChangePasswordForm({
-      title: BUTTON_TEXT.CHANGE_PASSWORD,
-      hideModal: hideChangePasswordForm,
-    });
-  };
-
-  const handleChangePin = () => {
-    setIsDropdownOpen(false);
-    showChangePinForm({
-      title: BUTTON_TEXT.CHANGE_PIN,
-      hideModal: hideChangePinForm,
-    });
-  };
-
-  const handleUploadDataBackup = () => {
-    setIsDropdownOpen(false);
-    fileInputRef.current?.click();
-  };
-
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
-  };
-
-  const handleClearSystemKey = async () => {
-    setIsDropdownOpen(false);
-    showModal({
-      title: BUTTON_TEXT.CLEAR_SYSTEM_KEY,
-      message: "You want to clear system key?",
-      confirmText: BUTTON_TEXT.SUBMIT,
-      color: "crimson",
-      onConfirm: async () => {
-        hideModal();
-        const res = await user.clearSystemKey();
-        if (res.result) {
-          setToast("System key has been cleared", TOAST.SUCCESS);
-          removeSessionCache();
-          window.location.href = USER_CONFIG.LOGIN.path;
-        } else {
-          setToast(res.message, TOAST.ERROR);
-        }
-      },
-      onCancel: () => {
-        hideModal();
-      },
-    });
-  };
-
-  const handleDownloadDataBackup = async () => {
-    setIsDropdownOpen(false);
-    showModal({
-      title: BUTTON_TEXT.DOWNLOAD_DATA_BACKUP,
-      message: "You want to download data backup?",
-      confirmText: BUTTON_TEXT.DOWNLOAD,
-      color: "mediumseagreen",
-      onConfirm: async () => {
-        hideModal();
-        const res = await dataBackup.download();
-        if (res.result) {
-          setToast("File downloaded successfully", TOAST.SUCCESS);
-        } else {
-          setToast(res.message, TOAST.ERROR);
-        }
-      },
-      onCancel: () => {
-        hideModal();
-      },
-    });
   };
 
   const handleSyncAppProps = async () => {
@@ -201,21 +100,6 @@ const MainHeader = ({ breadcrumbs }: any) => {
       <RequestKey
         isVisible={requestKeyFormVisible}
         formConfig={requestKeyFormConfig}
-      />
-      <ChangePassword
-        isVisible={changePasswordFormVisible}
-        formConfig={changePasswordFormConfig}
-      />
-      <ChangePin
-        isVisible={changePinFormVisible}
-        formConfig={changePinFormConfig}
-      />
-      <input
-        type="file"
-        accept=".txt"
-        onChange={handleFileUpload}
-        ref={fileInputRef}
-        className="hidden"
       />
       <header className="flex items-center justify-between w-full text-white">
         <div className="flex-1 min-w-0">
@@ -254,24 +138,11 @@ const MainHeader = ({ breadcrumbs }: any) => {
                   onClick={handleRequestKey}
                 />
                 <OptionButton
-                  label={BUTTON_TEXT.CHANGE_PASSWORD}
-                  onClick={handleChangePassword}
-                />
-                <OptionButton
-                  label={BUTTON_TEXT.CHANGE_PIN}
-                  onClick={handleChangePin}
-                />
-                <OptionButton
-                  label={BUTTON_TEXT.DOWNLOAD_DATA_BACKUP}
-                  onClick={handleDownloadDataBackup}
-                />
-                <OptionButton
-                  label={BUTTON_TEXT.UPLOAD_DATA_BACKUP}
-                  onClick={handleUploadDataBackup}
-                />
-                <OptionButton
-                  label={BUTTON_TEXT.CLEAR_SYSTEM_KEY}
-                  onClick={handleClearSystemKey}
+                  label={PAGE_CONFIG.PROFILE.label}
+                  onClick={() => {
+                    setIsDropdownOpen(false);
+                    navigate(PAGE_CONFIG.PROFILE.path);
+                  }}
                 />
                 <OptionButton
                   label={BUTTON_TEXT.LOGOUT}
