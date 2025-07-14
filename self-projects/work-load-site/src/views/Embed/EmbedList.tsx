@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { InputBox } from "../../components/form/InputTextField";
 import { NoData } from "../../components/NoData";
 import { EMBED_LIST } from "../../components/config/EmbedConfig";
+import { normalizeVietnamese } from "../../types/utils";
 
 const EmbedList = ({
   pageConfig = EMBED_STUFF,
@@ -23,9 +24,11 @@ const EmbedList = ({
   }, []);
 
   useEffect(() => {
-    const lower = searchValue.toLowerCase();
+    const lower = normalizeVietnamese(searchValue);
     setFilteredData(
-      embedList.filter((item: any) => item.label.toLowerCase().includes(lower))
+      embedList.filter((item: any) =>
+        normalizeVietnamese(item.label).includes(lower)
+      )
     );
   }, [searchValue]);
 

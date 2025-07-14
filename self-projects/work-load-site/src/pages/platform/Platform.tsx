@@ -28,6 +28,7 @@ import { GridView } from "../../components/main/GridView";
 import CreatePlatform from "./CreatePlatform";
 import UpdatePlatform from "./UpdatePlatform";
 import { ENCRYPT_FIELDS } from "../../services/encryption/encryptFields";
+import { normalizeVietnamese } from "../../types/utils";
 
 const initQuery = { name: "" };
 
@@ -38,7 +39,9 @@ const Platform = () => {
       ?.filter((item) => {
         const nameFilter =
           !query?.name ||
-          item.name.toLowerCase().includes(query.name.toLowerCase());
+          normalizeVietnamese(item.name).includes(
+            normalizeVietnamese(query.name)
+          );
         return nameFilter;
       })
       .sort((a, b) => a.name.localeCompare(b.name));

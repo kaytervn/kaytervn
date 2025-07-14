@@ -21,6 +21,7 @@ import { CreateButton, ToolBar } from "../../../components/main/ToolBar";
 import { InputBox2 } from "../../../components/form/InputTextField";
 import { SelectBoxLazy } from "../../../components/form/SelectTextField";
 import { GridView } from "../../../components/main/GridView";
+import { normalizeVietnamese } from "../../../types/utils";
 
 const initQuery = {
   title: "",
@@ -34,7 +35,9 @@ const Lesson = () => {
     return allData?.filter((item) => {
       const titleFilter =
         !query?.title ||
-        item.title.toLowerCase().includes(query.title.toLowerCase());
+        normalizeVietnamese(item.title).includes(
+          normalizeVietnamese(query.title)
+        );
       const categoryIdFilter =
         !query?.categoryId || item?.category?._id == query.categoryId;
       return titleFilter && categoryIdFilter;

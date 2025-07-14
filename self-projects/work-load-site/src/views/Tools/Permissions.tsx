@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../components/main/Sidebar";
 import { PERMISSIONS_GENERATOR, TOOLS } from "../../types/pageConfig";
 import { useLoading } from "../../hooks/useLoading";
-import { isValidURL } from "../../types/utils";
+import { isValidURL, normalizeVietnamese } from "../../types/utils";
 import { convertJsonPermissions } from "../../types/permissions";
 import { LoadingDialog } from "../../components/form/Dialog";
 import { useGlobalContext } from "../../components/config/GlobalProvider";
@@ -98,10 +98,18 @@ const Permissions = () => {
   const filteredData = searchTerm
     ? data.filter(
         (item) =>
-          item.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.group.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.permissionCode.toLowerCase().includes(searchTerm.toLowerCase())
+          normalizeVietnamese(item.action).includes(
+            normalizeVietnamese(searchTerm)
+          ) ||
+          normalizeVietnamese(item.name).includes(
+            normalizeVietnamese(searchTerm)
+          ) ||
+          normalizeVietnamese(item.group).includes(
+            normalizeVietnamese(searchTerm)
+          ) ||
+          normalizeVietnamese(item.permissionCode).includes(
+            normalizeVietnamese(searchTerm)
+          )
       )
     : data;
 

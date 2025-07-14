@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/main/Sidebar";
 import {
@@ -23,6 +24,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { InputBox } from "../../components/form/InputTextField";
 import { NoData } from "../../components/NoData";
+import { normalizeVietnamese } from "../../types/utils";
 
 const Tools = () => {
   const navigate = useNavigate();
@@ -78,9 +80,9 @@ const Tools = () => {
   }, []);
 
   useEffect(() => {
-    const lowercasedValue = searchValue.toLowerCase();
+    const lowercasedValue = normalizeVietnamese(searchValue);
     const filtered = data.filter((item: any) =>
-      item.label.toLowerCase().includes(lowercasedValue)
+      normalizeVietnamese(item.label).includes(lowercasedValue)
     );
     setFilteredData(filtered);
   }, [searchValue]);

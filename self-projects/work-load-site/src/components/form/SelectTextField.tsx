@@ -7,7 +7,7 @@ import {
   ITEMS_PER_PAGE,
 } from "../../types/constant";
 import { ChevronDownIcon, RefreshCwIcon, XIcon } from "lucide-react";
-import { getNestedValue } from "../../types/utils";
+import { getNestedValue, normalizeVietnamese } from "../../types/utils";
 import { decryptDataByUserKey } from "../../services/encryption/sessionEncryption";
 import { useGlobalContext } from "../config/GlobalProvider";
 
@@ -591,7 +591,9 @@ const SelectFieldLazy = ({
     if (searchTerm) {
       const filtered = items
         .filter((item) =>
-          item[labelKey].toLowerCase().includes(searchTerm.toLowerCase())
+          normalizeVietnamese(item[labelKey]).includes(
+            normalizeVietnamese(searchTerm)
+          )
         )
         .slice(0, ITEMS_PER_PAGE);
       setFilteredItems(filtered);
@@ -805,7 +807,9 @@ const SelectBoxLazy = ({
     if (searchTerm) {
       const filtered = items
         .filter((item) =>
-          item[labelKey].toLowerCase().includes(searchTerm.toLowerCase())
+          normalizeVietnamese(item[labelKey]).includes(
+            normalizeVietnamese(searchTerm)
+          )
         )
         .slice(0, ITEMS_PER_PAGE);
       setFilteredItems(filtered);

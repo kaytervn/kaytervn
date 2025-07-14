@@ -18,6 +18,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { InputBox } from "../../components/form/InputTextField";
 import { NoData } from "../../components/NoData";
+import { normalizeVietnamese } from "../../types/utils";
 
 const Games = () => {
   const navigate = useNavigate();
@@ -49,9 +50,9 @@ const Games = () => {
   }, []);
 
   useEffect(() => {
-    const lowercasedValue = searchValue.toLowerCase();
+    const lowercasedValue = normalizeVietnamese(searchValue);
     const filtered = data.filter((item: any) =>
-      item.label.toLowerCase().includes(lowercasedValue)
+      normalizeVietnamese(item.label).includes(lowercasedValue)
     );
     setFilteredData(filtered);
   }, [searchValue]);

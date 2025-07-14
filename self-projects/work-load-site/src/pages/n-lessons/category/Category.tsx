@@ -27,6 +27,7 @@ import UpdateCategory from "./UpdateCategory";
 import { CreateButton, ToolBar } from "../../../components/main/ToolBar";
 import { InputBox2 } from "../../../components/form/InputTextField";
 import { GridView } from "../../../components/main/GridView";
+import { normalizeVietnamese } from "../../../types/utils";
 
 const initQuery = { name: "" };
 
@@ -36,7 +37,9 @@ const Category = () => {
     return allData?.filter((item) => {
       const nameFilter =
         !query?.name ||
-        item.name.toLowerCase().includes(query.name.toLowerCase());
+        normalizeVietnamese(item.name).includes(
+          normalizeVietnamese(query.name)
+        );
       return nameFilter;
     });
   }, []);

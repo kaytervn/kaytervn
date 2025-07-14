@@ -518,12 +518,12 @@ const ${upperModel} = () => {
           return `const ${field.name}Filter = !query.${getQueryFieldName(
             modelName,
             field.name
-          )} || item.${
+          )} || normalizeVietnamese(item.${
             field.name
-          }?.toLowerCase().includes(query.${getQueryFieldName(
+          }).includes(normalizeVietnamese(query.${getQueryFieldName(
             modelName,
             field.name
-          )}.toLowerCase());`;
+          )}));`;
         })
         .join("\n      ")}
       return ${filterableFields

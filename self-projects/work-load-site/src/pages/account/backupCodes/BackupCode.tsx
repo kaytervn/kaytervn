@@ -33,6 +33,7 @@ import { decryptDataByUserKey } from "../../../services/encryption/sessionEncryp
 import CreateBackupCode from "./CreateBackupCode";
 import UpdateBackupCode from "./UpdateBackupCode";
 import { InputBox2 } from "../../../components/form/InputTextField";
+import { normalizeVietnamese } from "../../../types/utils";
 
 const initQuery = { code: "" };
 
@@ -91,7 +92,9 @@ const BackupCode = () => {
       ?.filter((item) => {
         const codeFilter =
           !query?.code ||
-          item.code.toLowerCase().includes(query.code.toLowerCase());
+          normalizeVietnamese(item.code).includes(
+            normalizeVietnamese(query.code)
+          );
         return codeFilter;
       })
       .sort((a, b) => a.code.localeCompare(b.code));
