@@ -55,6 +55,16 @@ const createAccount = async (req, res) => {
       }
     }
     if (kind == ACCOUNT_KIND.LINKED) {
+      const linkExists = await Account.exists({
+        ref: refId,
+        platform: platformId,
+      });
+      if (linkExists) {
+        return makeErrorResponse({
+          res,
+          message: "Link account existed",
+        });
+      }
       await Account.create({
         kind,
         note: encryptCommonField(note),
@@ -118,6 +128,18 @@ const updateAccount = async (req, res) => {
       });
     }
     if (account.kind == ACCOUNT_KIND.LINKED) {
+      if (platformId != account.platform._id) {
+        const linkExists = await Account.exists({
+          ref: account.ref._id,
+          platform: platformId,
+        });
+        if (linkExists) {
+          return makeErrorResponse({
+            res,
+            message: "Platform existed",
+          });
+        }
+      }
       await account.updateOne({
         note: encryptCommonField(note),
         platform: platformId,
