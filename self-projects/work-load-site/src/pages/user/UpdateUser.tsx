@@ -143,6 +143,7 @@ const UpdateUser = () => {
                     queryParams={{
                       kind: fetchData?.kind,
                     }}
+                    initSearch={fetchData?.group?.name}
                   />
                   <StaticSelectField
                     title="Kind"

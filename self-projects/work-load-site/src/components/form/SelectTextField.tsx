@@ -403,6 +403,12 @@ const SelectField2 = ({
   }, []);
 
   useEffect(() => {
+    if (initSearch) {
+      setSearchTerm(initSearch);
+    }
+  }, [initSearch]);
+
+  useEffect(() => {
     if (searchTerm || isOpen) {
       fetchData();
     }
