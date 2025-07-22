@@ -12,7 +12,7 @@ public class AppConstant {
     public static final String USER_SERVICE = "userService";
 
     public static final Integer MAX_TIME_FORGET_PWD = 60 * 1000; // 60s
-    public static final Integer MAX_TIME_ACTIVE_ACCOUNT = 10 * 24 * 60 * 60; // 10 days
+    public static final Integer MAX_TIME_ACTIVE_ACCOUNT = 5 * 24 * 60 * 60; // 5 days
     public static final String DATE_FORMAT = "dd/MM/yyyy";
     public static final String DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
     public static final String USERNAME_PATTERN = "^[a-z0-9](?:[a-z0-9._-]{2,28}[a-z0-9])?$";
