@@ -124,7 +124,7 @@ const LinkAccount = () => {
         PAGE_CONFIG.DELETE_LINK_ACCOUNT.role,
       ],
       renderChildren: (item: any) => {
-        const showDelete = item.totalAccounts == 0;
+        const showDelete = item.totalChildren == 0;
         return (
           <>
             <ActionEditButton
