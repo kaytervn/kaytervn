@@ -111,9 +111,7 @@ const useFetch = () => {
       switch (options.authType) {
         case AUTH_TYPE.BEARER: {
           if (isValidJWT(token)) {
-            headers[API_HEADER.AUTHORIZATION] = encryptClientField(
-              `Bearer ${token}`
-            );
+            headers[API_HEADER.AUTHORIZATION] = `Bearer ${token}`;
           }
           break;
         }
