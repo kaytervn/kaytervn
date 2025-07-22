@@ -250,13 +250,21 @@ const Sidebar = ({ activeItem, renderContent, breadcrumbs }: any) => {
                   <button
                     title="MSA"
                     className="flex items-center space-x-2 rounded-full bg-gray-800 p-1 pr-3 hover:bg-gray-700 transition-all duration-200"
-                    onClick={() => navigate(PAGE_CONFIG.PLATFORM.path)}
+                    onClick={() => navigate(PAGE_CONFIG.MSA_HOME.path)}
                   >
                     <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-600">
-                      <UserIcon size={16} className="text-gray-200" />
+                      {profile?.avatarPath ? (
+                        <img
+                          src={profile.avatarPath}
+                          className="h-full w-full object-cover rounded-full"
+                          alt="User avatar"
+                        />
+                      ) : (
+                        <UserIcon size={16} className="text-gray-200" />
+                      )}
                     </div>
                     <span className="text-sm font-medium text-gray-200 hidden md:inline">
-                      {profile.username}
+                      {profile.fullName}
                     </span>
                   </button>
                 ) : (

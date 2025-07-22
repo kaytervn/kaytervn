@@ -6,10 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import { getStorageData, setStorageData } from "../../services/storages";
 import MainHeader from "./MainHeader";
 import UnauthorizedDialog from "../../pages/auth/UnauthorizedDialog";
-import {
-  NOT_REQUIRE_SESSION_KEY_PAGES,
-  SIDEBAR_MENUS,
-} from "../config/PageConfig";
+import { SESSION_KEY_PAGES } from "../config/PageConfig";
 import "../../styles/Sidebar.css";
 import { LOCAL_STORAGE } from "../../types/constant";
 import InputSessionKey from "../../pages/auth/InputSessionKey";
@@ -17,10 +14,15 @@ import useDocTitle from "../../hooks/useDocTitle";
 
 const Sidebar2 = ({ activeItem, breadcrumbs, renderContent }: any) => {
   useDocTitle();
-  const { sessionKey, msaCollapsedGroups, setMsaCollapsedGroups, imgSrc } =
-    useGlobalContext();
+  const {
+    sessionKey,
+    msaCollapsedGroups,
+    setMsaCollapsedGroups,
+    imgSrc,
+    getSidebarMenus,
+  } = useGlobalContext();
   const navigate = useNavigate();
-  const menuGroups = SIDEBAR_MENUS;
+  const menuGroups: any = getSidebarMenus();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const activeItemRef = useRef<HTMLDivElement>(null);
@@ -120,9 +122,9 @@ const Sidebar2 = ({ activeItem, breadcrumbs, renderContent }: any) => {
   }, [activeItem, setMsaCollapsedGroups]);
 
   const handleMenuItemClick = (itemName: string) => {
-    const selectedItem = menuGroups
-      .flatMap((group) => group.items)
-      .find((item) => item.name === itemName);
+    const selectedItem: any = menuGroups
+      .flatMap((group: any) => group.items)
+      .find((item: any) => item.name === itemName);
     if (selectedItem) {
       navigate(selectedItem.path);
       if (isMobile) setIsSidebarOpen(false);
@@ -138,7 +140,7 @@ const Sidebar2 = ({ activeItem, breadcrumbs, renderContent }: any) => {
   };
 
   const isSessionKeyTimeout = () => {
-    return !NOT_REQUIRE_SESSION_KEY_PAGES.has(activeItem) && !sessionKey;
+    return SESSION_KEY_PAGES.has(activeItem) && !sessionKey;
   };
 
   return (
@@ -175,7 +177,7 @@ const Sidebar2 = ({ activeItem, breadcrumbs, renderContent }: any) => {
               className="flex-grow overflow-y-auto space-y-1 px-2 sidebar-scrollbar"
               ref={navRef}
             >
-              {menuGroups.map((group) => (
+              {menuGroups.map((group: any) => (
                 <div key={group.name} className="mb-1">
                   <div
                     className={`

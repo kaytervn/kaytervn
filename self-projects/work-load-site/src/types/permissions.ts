@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { fetchJsonInput } from "./apidocs";
 
 const convertJsonPermissions = async (url: any) => {

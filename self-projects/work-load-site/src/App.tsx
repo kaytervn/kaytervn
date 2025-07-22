@@ -32,23 +32,16 @@ import MultiroomPlatformer from "./views/Other/MultiroomPlatformer";
 import ThreeDRacingGame from "./views/Other/ThreeDRacingGame";
 import RequestManager from "./views/swagger/RequestManager";
 import HeaderManager from "./views/swagger/HeaderManager";
-import {
-  N_LESSONS_PAGE_CONFIG,
-  PAGE_CONFIG,
-} from "./components/config/PageConfig";
+import { BASIC_PAGE_CONFIG, N_LESSONS_PAGE_CONFIG } from "./components/config/PageConfig";
 import { useGlobalContext } from "./components/config/GlobalProvider";
 import useApi from "./hooks/useApi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Loading from "./views/Loading";
 import {
+  AUTH_CONFIG,
   N_LESSONS_CONFIG,
-  USER_CONFIG,
 } from "./components/config/PageConfigDetails";
-import {
-  getStorageData,
-  isValidJWT,
-  removeSessionCache,
-} from "./services/storages";
+import { getStorageData } from "./services/storages";
 import { LOCAL_STORAGE } from "./types/constant";
 import { EMBED_LIST, STUDY_LIST } from "./components/config/EmbedConfig";
 import BasicEmbeded from "./views/Embed/BasicEmbeded";
@@ -56,6 +49,8 @@ import LessonClient from "./pages/n-lessons/client/LessonClient";
 import MainEmbed from "./views/Embed/MainEmbed";
 import StudyStuff from "./views/Embed/StudyStuff";
 import NodeCrudGenerator from "./views/Tools/NodeCrudGenerator";
+import { jwtDecode } from "jwt-decode";
+import { getRoles } from "./types/utils";
 
 const getEmbedRouters = ({
   pageConfig = EMBED_STUFF,
@@ -72,39 +67,54 @@ const getEmbedRouters = ({
   ));
 };
 
-const PAGE_CONFIG_FILTERED = Object.values(PAGE_CONFIG).filter(
+const AUTH_CONFIG_FILTERED = Object.values(AUTH_CONFIG).filter(
   (item: any) => item.path && item.element
 );
 
-const USER_CONFIG_FILTERED = Object.values(USER_CONFIG).filter(
+const BASIC_CONFIG_FILTERED = Object.values(BASIC_PAGE_CONFIG).filter(
   (item: any) => item.path && item.element
 );
 
 const App = () => {
-  const { profile, setProfile, apiKey } = useGlobalContext();
+  const [tokenData, setTokenData] = useState<any>(null);
+  const {
+    profile,
+    setProfile,
+    getRouters,
+    setAuthorities,
+    apiKey,
+    getSidebarMenus,
+  } = useGlobalContext();
   const { user, loading } = useApi();
 
   useEffect(() => {
+    const accessToken = getStorageData(LOCAL_STORAGE.ACCESS_TOKEN);
+    if (!accessToken) return;
+    try {
+      const decoded: any = jwtDecode(accessToken);
+      setTokenData(decoded);
+      setAuthorities(getRoles(decoded?.authorities || []));
+    } catch {
+      return;
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchAuthData = async () => {
-      if (profile) {
-        return;
-      }
-      const token = await getStorageData(LOCAL_STORAGE.ACCESS_TOKEN, null);
-      if (!token || !isValidJWT(token)) {
+      if (!tokenData) return;
+      try {
+        const res = await user.profile();
+        if (!res.result) {
+          setProfile(null);
+          return;
+        }
+        setProfile(res.data);
+      } catch {
         setProfile(null);
-        removeSessionCache();
-        return;
       }
-      const res = await user.verifyToken();
-      if (res.result) {
-        setProfile(res.data?.token);
-        return;
-      }
-      removeSessionCache();
-      setProfile(null);
     };
     fetchAuthData();
-  }, []);
+  }, [tokenData]);
 
   const N_LESSONS_PAGE_CONFIG_FILTERED = Object.values(
     N_LESSONS_PAGE_CONFIG
@@ -117,13 +127,20 @@ const App = () => {
       ) : (
         <BrowserRouter>
           <Routes>
-            {profile
-              ? PAGE_CONFIG_FILTERED.map(({ path, element }: any) => (
-                  <Route key={path} path={path} element={element} />
-                ))
-              : USER_CONFIG_FILTERED.map(({ path, element }: any) => (
+            {BASIC_CONFIG_FILTERED.map(({ path, element }: any) => (
+              <Route key={path} path={path} element={element} />
+            ))}
+            {profile && getSidebarMenus().length > 0 ? (
+              <>
+                {getRouters().map(({ path, element }) => (
                   <Route key={path} path={path} element={element} />
                 ))}
+              </>
+            ) : (
+              AUTH_CONFIG_FILTERED.map(({ path, element }: any) => (
+                <Route key={path} path={path} element={element} />
+              ))
+            )}
             {apiKey ? (
               <>
                 {N_LESSONS_PAGE_CONFIG_FILTERED.map(

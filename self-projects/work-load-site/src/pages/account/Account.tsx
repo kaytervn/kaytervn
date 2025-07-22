@@ -1,31 +1,4 @@
-import { useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  DECRYPT_FIELDS,
-  PAGE_CONFIG,
-} from "../../components/config/PageConfig";
-import Sidebar2 from "../../components/main/Sidebar2";
-import { useGlobalContext } from "../../components/config/GlobalProvider";
-import useModal from "../../hooks/useModal";
-import useApi from "../../hooks/useApi";
-import useGridViewLocal from "../../hooks/useGridViewLocal";
-import {
-  basicRender,
-  renderActionButton,
-  renderEnum,
-} from "../../components/config/ItemRender";
-import {
-  ActionDeleteButton,
-  ActionEditButton,
-  BasicActionButton,
-} from "../../components/form/Button";
-import {
-  configDeleteDialog,
-  ConfirmationDialog,
-  LoadingDialog,
-} from "../../components/form/Dialog";
-import { CreateButton, ToolBar } from "../../components/main/ToolBar";
-import { InputBox2 } from "../../components/form/InputTextField";
 import { GridView } from "../../components/main/GridView";
 import {
   ACCOUNT_KIND_MAP,
@@ -34,97 +7,58 @@ import {
   ITEMS_PER_PAGE,
   SORT_ACCOUNT_MAP,
 } from "../../types/constant";
+import { useGlobalContext } from "../../components/config/GlobalProvider";
+import useModal from "../../hooks/useModal";
+import useApi from "../../hooks/useApi";
+import { useGridView } from "../../hooks/useGridView";
 import {
-  SelectBoxLazy,
-  StaticSelectBox,
-} from "../../components/form/SelectTextField";
+  basicRender,
+  renderActionButton,
+  renderEnum,
+} from "../../components/config/ItemRender";
+import { PAGE_CONFIG } from "../../components/config/PageConfig";
+import {
+  ActionDeleteButton,
+  ActionEditButton,
+  BasicActionButton,
+} from "../../components/form/Button";
 import { HistoryIcon, LinkIcon } from "lucide-react";
-import { normalizeVietnamese } from "../../types/utils";
+import {
+  configDeleteDialog,
+  ConfirmationDialog,
+  LoadingDialog,
+} from "../../components/form/Dialog";
+import Sidebar2 from "../../components/main/Sidebar2";
+import { CreateButton, ToolBar } from "../../components/main/ToolBar";
+import { InputBox2 } from "../../components/form/InputTextField";
+import { StaticSelectBox } from "../../components/form/SelectTextField";
+import { convertUtcToVn } from "../../types/utils";
 
 const initQuery = {
   keyword: "",
   kind: "",
-  platformId: "",
-  username: "",
-  sort: "",
+  sortOption: "",
+  page: 0,
+  size: ITEMS_PER_PAGE,
 };
 
 const Account = () => {
+  const { isModalVisible, showModal, hideModal, formConfig } = useModal();
   const { state } = useLocation();
-  const navigate = useNavigate();
-  const customFilterData = useCallback((allData: any[], query: any) => {
-    const filtered = allData?.filter((item) => {
-      const usernameFilter =
-        !query?.username ||
-        (item?.username || item?.ref?.username || "")
-          .toLowerCase()
-          .includes(query.username.toLowerCase());
-      const keywordFilter =
-        !query?.keyword ||
-        [
-          item?.username,
-          item?.ref?.username,
-          item?.ref?.platform?.name,
-          `(${item.ref?.platform?.name}) ${item.ref?.username}`,
-          item?.note,
-          item?.platform?.name,
-        ]
-          .filter(Boolean)
-          .some((field) =>
-            normalizeVietnamese(field).includes(
-              normalizeVietnamese(query.keyword)
-            )
-          );
-      const kindFilter = !query?.kind || item.kind == query.kind;
-      const platformIdFilter =
-        !query?.platformId || item.platform?._id == query.platformId;
-      return keywordFilter && usernameFilter && kindFilter && platformIdFilter;
-    });
-    if (query?.sort == SORT_ACCOUNT_MAP.TOTAL_LINK_ACCOUNT_DESC.value) {
-      filtered.sort((a, b) => (b.totalRefs || 0) - (a.totalRefs || 0));
-    } else if (query?.sort == SORT_ACCOUNT_MAP.TOTAL_LINK_ACCOUNT_ASC.value) {
-      filtered.sort((a, b) => (a.totalRefs || 0) - (b.totalRefs || 0));
-    } else if (query?.sort == SORT_ACCOUNT_MAP.TOTAL_BACKUP_CODE_DESC.value) {
-      filtered.sort(
-        (a, b) => (b.totalBackupCodes || 0) - (a.totalBackupCodes || 0)
-      );
-    } else if (query?.sort == SORT_ACCOUNT_MAP.TOTAL_BACKUP_CODE_ASC.value) {
-      filtered.sort(
-        (a, b) => (a.totalBackupCodes || 0) - (b.totalBackupCodes || 0)
-      );
-    } else {
-      filtered.sort((a, b) => {
-        const platformCompare =
-          a.platform?.name?.localeCompare(b.platform?.name || "") || 0;
-        if (platformCompare !== 0) return platformCompare;
-        return a.username?.localeCompare(b.username || "");
-      });
-    }
-    return filtered;
-  }, []);
   const { setToast } = useGlobalContext();
-  const {
-    isModalVisible: deleteDialogVisible,
-    showModal: showDeleteDialog,
-    hideModal: hideDeleteDialog,
-    formConfig: deleteDialogConfig,
-  } = useModal();
-  const { account: apiList, loading: loadingList } = useApi();
+  const navigate = useNavigate();
   const { account, loading } = useApi();
-  const { platform } = useApi();
+  const { account: apiList, loading: loadingList } = useApi();
   const {
     data,
     query,
+    setQuery,
     totalPages,
     handlePageChange,
     handleSubmitQuery,
-    handleDeleteItem,
-    handleRefreshData,
-  } = useGridViewLocal({
-    initQuery: state?.query || initQuery,
-    filterData: customFilterData,
+  } = useGridView({
     fetchListApi: apiList.list,
-    decryptFields: DECRYPT_FIELDS.ACCOUNT,
+    initQuery: state?.query || initQuery,
   });
 
   const columns = [
@@ -139,9 +73,10 @@ const Account = () => {
       align: ALIGNMENT.LEFT,
       render: (item: any) => {
         return basicRender({
-          content: item.ref.username
-            ? `(${item.ref?.platform?.name}) ${item.ref?.username}`
-            : item.username,
+          content:
+            item.kind == ACCOUNT_KIND_MAP.LINKED.value
+              ? `(${item.parent?.platform?.name}) ${item.parent?.username}`
+              : item.username,
         });
       },
     },
@@ -152,33 +87,51 @@ const Account = () => {
     }),
     {
       label: "Link accounts",
-      accessor: "totalRefs",
-      align: ALIGNMENT.CENTER,
+      accessor: "totalChildren",
+      align: ALIGNMENT.RIGHT,
     },
     {
       label: "Backup codes",
       accessor: "totalBackupCodes",
+      align: ALIGNMENT.RIGHT,
+    },
+    {
+      label: "Created date",
+      accessor: "createdDate",
       align: ALIGNMENT.CENTER,
+      render: (item: any) => {
+        return basicRender({
+          align: ALIGNMENT.CENTER,
+          content: convertUtcToVn(item.createdDate),
+        });
+      },
     },
     renderActionButton({
+      role: [PAGE_CONFIG.UPDATE_ACCOUNT.role, PAGE_CONFIG.DELETE_ACCOUNT.role],
       renderChildren: (item: any) => {
-        const hideDelete = item.totalRefs > 0;
+        const showDelete = item.totalChildren == 0;
         return (
           <>
             <BasicActionButton
-              onClick={() => onLinkAccountButtonClick(item._id)}
+              onClick={() => onLinkAccountButtonClick(item.id)}
               Icon={LinkIcon}
+              role={PAGE_CONFIG.LINK_ACCOUNT.role}
               buttonText={BUTTON_TEXT.LINKED_ACCOUNTS}
             />
             <BasicActionButton
-              onClick={() => onBackupCodesButtonClick(item._id)}
+              onClick={() => onBackupCodesButtonClick(item.id)}
               Icon={HistoryIcon}
+              role={PAGE_CONFIG.BACKUP_CODE.role}
               buttonText={BUTTON_TEXT.BACKUP_CODE}
             />
-            <ActionEditButton onClick={() => onUpdateButtonClick(item._id)} />
-            {!hideDelete && (
+            <ActionEditButton
+              role={PAGE_CONFIG.UPDATE_ACCOUNT.role}
+              onClick={() => onUpdateButtonClick(item.id)}
+            />
+            {showDelete && (
               <ActionDeleteButton
-                onClick={() => onDeleteButtonClick(item._id)}
+                role={PAGE_CONFIG.DELETE_ACCOUNT.role}
+                onClick={() => onDeleteButtonClick(item.id)}
               />
             )}
           </>
@@ -188,12 +141,12 @@ const Account = () => {
   ];
 
   const onDeleteButtonClick = (id: any) => {
-    showDeleteDialog(
+    showModal(
       configDeleteDialog({
         label: PAGE_CONFIG.DELETE_ACCOUNT.label,
         deleteApi: () => account.del(id),
-        refreshData: () => handleDeleteItem(id),
-        hideModal: hideDeleteDialog,
+        refreshData: () => handleSubmitQuery(query),
+        hideModal,
         setToast,
       })
     );
@@ -225,62 +178,47 @@ const Account = () => {
       activeItem={PAGE_CONFIG.ACCOUNT.name}
       renderContent={
         <>
-          <ConfirmationDialog
-            isVisible={deleteDialogVisible}
-            formConfig={deleteDialogConfig}
-          />
           <LoadingDialog isVisible={loading} />
+          <ConfirmationDialog
+            isVisible={isModalVisible}
+            formConfig={formConfig}
+          />
           <ToolBar
             searchBoxes={
               <>
                 <InputBox2
                   value={query.keyword}
                   onChangeText={(value: any) =>
-                    handleSubmitQuery({ ...query, keyword: value })
+                    setQuery({ ...query, keyword: value })
                   }
-                  placeholder="Searching..."
-                />
-                <SelectBoxLazy
-                  value={query.platformId}
-                  onChange={(value: any) => {
-                    handleSubmitQuery({
-                      ...query,
-                      platformId: value,
-                    });
-                  }}
-                  fetchListApi={platform.list}
-                  placeholder="Platform..."
-                  valueKey="_id"
-                  decryptFields={DECRYPT_FIELDS.PLATFORM}
-                />
-                <InputBox2
-                  value={query.username}
-                  onChangeText={(value: any) =>
-                    handleSubmitQuery({ ...query, username: value })
-                  }
-                  placeholder="Username..."
+                  placeholder="Search..."
                 />
                 <StaticSelectBox
                   value={query.kind}
                   onChange={(value: any) => {
-                    handleSubmitQuery({ ...query, kind: value });
+                    setQuery({ ...query, kind: value });
                   }}
                   dataMap={ACCOUNT_KIND_MAP}
                   placeholder="Kind..."
                 />
                 <StaticSelectBox
-                  value={query.sort}
+                  value={query.sortOption}
                   onChange={(value: any) => {
-                    handleSubmitQuery({ ...query, sort: value });
+                    setQuery({ ...query, sortOption: value });
                   }}
                   dataMap={SORT_ACCOUNT_MAP}
                   placeholder="Sort..."
                 />
               </>
             }
-            onClear={() => handleSubmitQuery(initQuery)}
-            onRefresh={handleRefreshData}
-            actionButtons={<CreateButton onClick={onCreateButtonClick} />}
+            onSearch={async () => await handleSubmitQuery(query)}
+            onClear={async () => await handleSubmitQuery(initQuery)}
+            actionButtons={
+              <CreateButton
+                role={PAGE_CONFIG.CREATE_ACCOUNT.role}
+                onClick={onCreateButtonClick}
+              />
+            }
           />
           <GridView
             isLoading={loadingList}
@@ -293,7 +231,8 @@ const Account = () => {
           />
         </>
       }
-    ></Sidebar2>
+    />
   );
 };
+
 export default Account;

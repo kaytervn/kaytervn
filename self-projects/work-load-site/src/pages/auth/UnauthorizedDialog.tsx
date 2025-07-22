@@ -2,32 +2,35 @@
 import { useEffect } from "react";
 import { useGlobalContext } from "../../components/config/GlobalProvider";
 import useModal from "../../hooks/useModal";
-import { ConfirmationDialog } from "../../components/form/Dialog";
-import { USER_CONFIG } from "../../components/config/PageConfigDetails";
-import { SOCKET_CMD, Z_INDEXES } from "../../types/constant";
 import { removeSessionCache } from "../../services/storages";
+import { BUTTON_TEXT, SOCKET_CMD } from "../../types/constant";
+import { AUTH_CONFIG } from "../../components/config/PageConfigDetails";
+import { ConfirmationDialog } from "../../components/form/Dialog";
 
 const UnauthorizedDialog = () => {
-  const { isUnauthorized, on, setIsUnauthorized } = useGlobalContext();
+  const { isUnauthorized, setIsUnauthorized, message } = useGlobalContext();
   const { isModalVisible, showModal, hideModal, formConfig } = useModal();
 
   useEffect(() => {
-    on(SOCKET_CMD.CMD_LOCK_DEVICE, () => {
+    if (
+      message?.responseCode === 400 ||
+      message?.cmd === SOCKET_CMD.CMD_LOCK_DEVICE
+    ) {
       removeSessionCache();
       setIsUnauthorized(true);
-    });
-  }, []);
+    }
+  }, [message]);
 
   useEffect(() => {
     if (isUnauthorized) {
       showModal({
         title: "Session timed out",
         message: "Please login again",
-        confirmText: "OK",
+        confirmText: BUTTON_TEXT.ACCEPT,
         color: "goldenrod",
         onConfirm: () => {
           hideModal();
-          window.location.href = USER_CONFIG.LOGIN.path;
+          window.location.href = AUTH_CONFIG.LOGIN.path;
         },
       });
     }
@@ -35,7 +38,7 @@ const UnauthorizedDialog = () => {
 
   return (
     <ConfirmationDialog
-      zIndex={Z_INDEXES.UNAUTHORIZED_DIALOG}
+      zIndex={1100}
       isVisible={isModalVisible}
       formConfig={formConfig}
     />

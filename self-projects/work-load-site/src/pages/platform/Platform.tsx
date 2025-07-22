@@ -1,59 +1,46 @@
+import { useGlobalContext } from "../../components/config/GlobalProvider";
+import {
+  basicRender,
+  renderActionButton,
+  renderHrefLink,
+} from "../../components/config/ItemRender";
+import { PAGE_CONFIG } from "../../components/config/PageConfig";
 import {
   ActionDeleteButton,
   ActionEditButton,
 } from "../../components/form/Button";
-import { PAGE_CONFIG } from "../../components/config/PageConfig";
-import useApi from "../../hooks/useApi";
-import useModal from "../../hooks/useModal";
-import { useGlobalContext } from "../../components/config/GlobalProvider";
-import useGridViewLocal from "../../hooks/useGridViewLocal";
-import { useCallback } from "react";
-import { useLocation } from "react-router-dom";
-import { renderActionButton } from "../../components/config/ItemRender";
-import {
-  ALIGNMENT,
-  BASIC_MESSAGES,
-  ITEMS_PER_PAGE,
-  SORT_PLATFORM_MAP,
-} from "../../types/constant";
 import {
   configDeleteDialog,
   configModalForm,
   ConfirmationDialog,
   LoadingDialog,
 } from "../../components/form/Dialog";
+import { InputBox2 } from "../../components/form/InputTextField";
+import { StaticSelectBox } from "../../components/form/SelectTextField";
+import { GridView } from "../../components/main/GridView";
 import Sidebar2 from "../../components/main/Sidebar2";
 import { CreateButton, ToolBar } from "../../components/main/ToolBar";
-import { InputBox2 } from "../../components/form/InputTextField";
-import { GridView } from "../../components/main/GridView";
+import useApi from "../../hooks/useApi";
+import { useGridView } from "../../hooks/useGridView";
+import useModal from "../../hooks/useModal";
+import {
+  ALIGNMENT,
+  BASIC_MESSAGES,
+  ITEMS_PER_PAGE,
+  SORT_PLATFORM_MAP,
+} from "../../types/constant";
+import { convertUtcToVn } from "../../types/utils";
 import CreatePlatform from "./CreatePlatform";
 import UpdatePlatform from "./UpdatePlatform";
-import { ENCRYPT_FIELDS } from "../../services/encryption/encryptFields";
-import { normalizeVietnamese } from "../../types/utils";
-import { StaticSelectBox } from "../../components/form/SelectTextField";
 
-const initQuery = { name: "", sort: "" };
+const initQuery = {
+  keyword: "",
+  sortOption: "",
+  page: 0,
+  size: ITEMS_PER_PAGE,
+};
 
 const Platform = () => {
-  const { state } = useLocation();
-  const customFilterData = useCallback((allData: any[], query: any) => {
-    const filtered = allData?.filter((item) => {
-      const nameFilter =
-        !query?.name ||
-        normalizeVietnamese(item.name).includes(
-          normalizeVietnamese(query.name)
-        );
-      return nameFilter;
-    });
-    if (query?.sort == SORT_PLATFORM_MAP.TOTAL_ACCOUNT_DESC.value) {
-      filtered.sort((a, b) => (b.totalAccounts || 0) - (a.totalAccounts || 0));
-    } else if (query?.sort == SORT_PLATFORM_MAP.TOTAL_ACCOUNT_ASC.value) {
-      filtered.sort((a, b) => (a.totalAccounts || 0) - (b.totalAccounts || 0));
-    } else {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
-    }
-    return filtered;
-  }, []);
   const { setToast } = useGlobalContext();
   const {
     isModalVisible: createFormVisible,
@@ -78,16 +65,13 @@ const Platform = () => {
   const {
     data,
     query,
+    setQuery,
     totalPages,
     handlePageChange,
     handleSubmitQuery,
-    handleDeleteItem,
-    handleRefreshData,
-  } = useGridViewLocal({
-    initQuery: state?.query || initQuery,
-    filterData: customFilterData,
+  } = useGridView({
     fetchListApi: apiList.list,
-    decryptFields: ENCRYPT_FIELDS.PLATFORM,
+    initQuery,
   });
 
   const columns = [
@@ -96,20 +80,47 @@ const Platform = () => {
       accessor: "name",
       align: ALIGNMENT.LEFT,
     },
+    renderHrefLink({
+      label: "URL",
+      accessor: "url",
+      align: ALIGNMENT.LEFT,
+      onClick: (item: any) => {
+        window.open(item.url, "_blank");
+      },
+    }),
     {
       label: "Total accounts",
       accessor: "totalAccounts",
+      align: ALIGNMENT.RIGHT,
+    },
+    {
+      label: "Created date",
+      accessor: "createdDate",
       align: ALIGNMENT.CENTER,
+      render: (item: any) => {
+        return basicRender({
+          align: ALIGNMENT.CENTER,
+          content: convertUtcToVn(item.createdDate),
+        });
+      },
     },
     renderActionButton({
+      role: [
+        PAGE_CONFIG.UPDATE_PLATFORM.role,
+        PAGE_CONFIG.DELETE_PLATFORM.role,
+      ],
       renderChildren: (item: any) => {
-        const hideDelete = item.totalAccounts > 0;
+        const showDelete = item.totalAccounts == 0;
         return (
           <>
-            <ActionEditButton onClick={() => onUpdateButtonClick(item._id)} />
-            {!hideDelete && (
+            <ActionEditButton
+              role={PAGE_CONFIG.UPDATE_PLATFORM.role}
+              onClick={() => onUpdateButtonClick(item.id)}
+            />
+            {showDelete && (
               <ActionDeleteButton
-                onClick={() => onDeleteButtonClick(item._id)}
+                role={PAGE_CONFIG.DELETE_PLATFORM.role}
+                onClick={() => onDeleteButtonClick(item.id)}
               />
             )}
           </>
@@ -123,7 +134,7 @@ const Platform = () => {
       configDeleteDialog({
         label: PAGE_CONFIG.DELETE_PLATFORM.label,
         deleteApi: () => platform.del(id),
-        refreshData: () => handleDeleteItem(id),
+        refreshData: () => handleSubmitQuery(query),
         hideModal: hideDeleteDialog,
         setToast,
       })
@@ -135,12 +146,13 @@ const Platform = () => {
       configModalForm({
         label: PAGE_CONFIG.CREATE_PLATFORM.label,
         fetchApi: platform.create,
-        refreshData: handleRefreshData,
+        refreshData: () => handleSubmitQuery(query),
         hideModal: hideCreateForm,
         setToast,
         successMessage: BASIC_MESSAGES.CREATED,
         initForm: {
           name: "",
+          url: "",
         },
       })
     );
@@ -151,12 +163,14 @@ const Platform = () => {
       configModalForm({
         label: PAGE_CONFIG.UPDATE_PLATFORM.label,
         fetchApi: platform.update,
-        refreshData: handleRefreshData,
+        refreshData: () => handleSubmitQuery(query),
         hideModal: hideUpdateForm,
         setToast,
         successMessage: BASIC_MESSAGES.UPDATED,
         initForm: {
           id,
+          name: "",
+          url: "",
         },
       })
     );
@@ -173,6 +187,10 @@ const Platform = () => {
       renderContent={
         <>
           <LoadingDialog isVisible={loading} />
+          <ConfirmationDialog
+            isVisible={deleteDialogVisible}
+            formConfig={deleteDialogConfig}
+          />
           <CreatePlatform
             isVisible={createFormVisible}
             formConfig={createFormConfig}
@@ -181,33 +199,34 @@ const Platform = () => {
             isVisible={updateFormVisible}
             formConfig={updateFormConfig}
           />
-          <ConfirmationDialog
-            isVisible={deleteDialogVisible}
-            formConfig={deleteDialogConfig}
-          />
           <ToolBar
             searchBoxes={
               <>
                 <InputBox2
-                  value={query.name}
+                  value={query.keyword}
                   onChangeText={(value: any) =>
-                    handleSubmitQuery({ ...query, name: value })
+                    setQuery({ ...query, keyword: value })
                   }
-                  placeholder="Name..."
+                  placeholder="Search..."
                 />
                 <StaticSelectBox
-                  value={query.sort}
+                  value={query.sortOption}
                   onChange={(value: any) => {
-                    handleSubmitQuery({ ...query, sort: value });
+                    setQuery({ ...query, sortOption: value });
                   }}
                   dataMap={SORT_PLATFORM_MAP}
                   placeholder="Sort..."
                 />
               </>
             }
-            onClear={() => handleSubmitQuery(initQuery)}
-            onRefresh={handleRefreshData}
-            actionButtons={<CreateButton onClick={onCreateButtonClick} />}
+            onSearch={async () => await handleSubmitQuery(query)}
+            onClear={async () => await handleSubmitQuery(initQuery)}
+            actionButtons={
+              <CreateButton
+                role={PAGE_CONFIG.CREATE_PLATFORM.role}
+                onClick={onCreateButtonClick}
+              />
+            }
           />
           <GridView
             isLoading={loadingList}

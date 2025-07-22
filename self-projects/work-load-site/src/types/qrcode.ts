@@ -1,3 +1,9 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable prefer-rest-params */
+/* eslint-disable @typescript-eslint/no-this-alias */
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-var */
 /**
  * @fileoverview
  * - Using the 'QRCode for Javascript library'

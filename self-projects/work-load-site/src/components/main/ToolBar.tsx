@@ -1,7 +1,12 @@
 import { EraserIcon, PlusIcon, RefreshCcwIcon, SearchIcon } from "lucide-react";
 import { BUTTON_TEXT } from "../../types/constant";
+import { useGlobalContext } from "../config/GlobalProvider";
 
-const CreateButton = ({ onClick }: any) => {
+const CreateButton = ({ role, onClick }: any) => {
+  const { hasRoles } = useGlobalContext();
+  if (role && !hasRoles(role)) {
+    return null;
+  }
   return (
     <button
       onClick={onClick}

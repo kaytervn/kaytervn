@@ -18,8 +18,12 @@ import {
 } from "../../types/constant";
 import { toast } from "react-toastify";
 import useSocket from "../../hooks/useSocket";
+import useWebSocket from "../../hooks/useWebSocket";
+import { PAGE_CONFIG, SIDEBAR_MENUS } from "./PageConfig";
 
 const GlobalContext = createContext<{
+  authorities: any;
+  setAuthorities: Dispatch<SetStateAction<any>>;
   imgSrc: any;
   setImgSrc: Dispatch<SetStateAction<any>>;
   isCollapsed: boolean;
@@ -31,6 +35,10 @@ const GlobalContext = createContext<{
   setToast: (msg: string | null, type?: any) => void;
   profile: any;
   setProfile: Dispatch<SetStateAction<any>>;
+  getRouters: () => any[];
+  getSidebarMenus: () => any[];
+  hasRoles: (role: string | string[]) => boolean;
+  hasAnyRoles: (role: string | string[]) => boolean;
   isUnauthorized: boolean;
   setIsUnauthorized: Dispatch<SetStateAction<any>>;
   sessionKey: any;
@@ -45,7 +53,11 @@ const GlobalContext = createContext<{
   setNLessonsCollapsedGroups: Dispatch<
     SetStateAction<{ [key: string]: boolean }>
   >;
+  message: any;
+  sendMessage: (message: any) => void;
 }>({
+  authorities: [],
+  setAuthorities: () => {},
   imgSrc: null,
   setImgSrc: () => {},
   isCollapsed: false,
@@ -57,6 +69,10 @@ const GlobalContext = createContext<{
   setToast: () => {},
   profile: null,
   setProfile: () => {},
+  getRouters: () => [],
+  getSidebarMenus: () => [],
+  hasRoles: () => false,
+  hasAnyRoles: () => false,
   isUnauthorized: false,
   setIsUnauthorized: () => {},
   sessionKey: null,
@@ -69,9 +85,13 @@ const GlobalContext = createContext<{
   setApiKey: () => {},
   nLessonsCollapsedGroups: {},
   setNLessonsCollapsedGroups: () => {},
+  message: null,
+  sendMessage: () => {},
 });
 
 export const GlobalProvider = ({ children }: any) => {
+  const { message, sendMessage } = useWebSocket();
+  const [authorities, setAuthorities] = useState<any>([]);
   const [nLessonsCollapsedGroups, setNLessonsCollapsedGroups] = useState(
     getStorageData(LOCAL_STORAGE.N_LESSONS_COLLAPSED_GROUPS, {})
   );
@@ -174,6 +194,33 @@ export const GlobalProvider = ({ children }: any) => {
     setStorageData(LOCAL_STORAGE.COLLAPSED_GROUPS, collapsedGroups);
   }, [collapsedGroups]);
 
+  const getRouters = () => {
+    return Object.values(PAGE_CONFIG).filter(
+      (route: any) => route.path && hasRoles(route.role)
+    );
+  };
+
+  const getSidebarMenus = () => {
+    const allowedRoutes = new Set(getRouters().map((route: any) => route.name));
+    return SIDEBAR_MENUS.map((group: any) => ({
+      ...group,
+      items: group.items.filter((item: any) => allowedRoutes.has(item.name)),
+    })).filter((group: any) => group.items.length > 0);
+  };
+
+  const hasRoles = (roles?: string | string[]) => {
+    if (!roles) return true;
+    if (typeof roles === "string") return authorities.includes(roles);
+    return roles.some((r) => authorities.includes(r));
+  };
+
+  const hasAnyRoles = (roles: string | string[]) => {
+    if (typeof roles === "string") {
+      return authorities.includes(roles);
+    }
+    return roles.some((role) => authorities.includes(role));
+  };
+
   const setToast = (
     msg: string | null,
     type: "success" | "error" | "warn" = "success"
@@ -197,6 +244,14 @@ export const GlobalProvider = ({ children }: any) => {
   return (
     <GlobalContext.Provider
       value={{
+        authorities,
+        setAuthorities,
+        getRouters,
+        getSidebarMenus,
+        hasRoles,
+        hasAnyRoles,
+        message,
+        sendMessage,
         imgSrc,
         setImgSrc,
         isCollapsed,

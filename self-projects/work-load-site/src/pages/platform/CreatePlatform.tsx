@@ -1,20 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ActionSection, ModalForm } from "../../components/form/FormCard";
-import useForm from "../../hooks/useForm";
 import { useEffect } from "react";
-import { CancelButton, SubmitButton } from "../../components/form/Button";
 import { useGlobalContext } from "../../components/config/GlobalProvider";
+import useForm from "../../hooks/useForm";
+import { isValidURL } from "../../types/utils";
 import { BASIC_MESSAGES, BUTTON_TEXT, TOAST } from "../../types/constant";
+import { ActionSection, ModalForm } from "../../components/form/FormCard";
 import { InputField2 } from "../../components/form/InputTextField";
-import { encryptDataByUserKey } from "../../services/encryption/sessionEncryption";
-import { ENCRYPT_FIELDS } from "../../services/encryption/encryptFields";
+import { CancelButton, SubmitButton } from "../../components/form/Button";
 
 const CreatePlatform = ({ isVisible, formConfig }: any) => {
-  const { sessionKey, setToast } = useGlobalContext();
+  const { setToast } = useGlobalContext();
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.name.trim()) {
       newErrors.name = "Invalid name";
+    }
+    if (form.url && !isValidURL(form.url)) {
+      newErrors.url = "Invalid URL";
     }
     return newErrors;
   };
@@ -30,9 +32,7 @@ const CreatePlatform = ({ isVisible, formConfig }: any) => {
 
   const handleSubmit = async () => {
     if (isValidForm()) {
-      await formConfig.onButtonClick(
-        encryptDataByUserKey(sessionKey, form, ENCRYPT_FIELDS.CREATE_PLATFORM)
-      );
+      await formConfig.onButtonClick(form);
     } else {
       setToast(BASIC_MESSAGES.INVALID_FORM, TOAST.ERROR);
     }
@@ -54,6 +54,13 @@ const CreatePlatform = ({ isVisible, formConfig }: any) => {
               value={form?.name}
               onChangeText={(value: any) => handleChange("name", value)}
               error={errors?.name}
+            />
+            <InputField2
+              title="URL"
+              placeholder="Enter URL"
+              value={form?.url}
+              onChangeText={(value: any) => handleChange("url", value)}
+              error={errors?.url}
             />
             <ActionSection
               children={

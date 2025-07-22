@@ -16,32 +16,23 @@ const useSocket = () => {
         socketRef.current.disconnect();
       }
 
-      const socket = io(ENV.MSA_API_URL);
+      const socket = io(ENV.MSA_NODEJS_API_URL);
 
       socketRef.current = socket;
 
       socket.on("connect", () => {
-        // console.log("Socket connected:", socket.id);
+        socket.emit(SOCKET_CMD.CMD_CLIENT_PING, { token });
 
-        socket.emit(SOCKET_CMD.CLIENT_PING, { token });
-
-        socket.on(SOCKET_CMD.CLIENT_PING, (res) => {
-          // console.log(res.message);
-        });
+        socket.on(SOCKET_CMD.CMD_CLIENT_PING, (res) => {});
       });
 
-      socket.on("disconnect", () => {
-        // console.log("Socket disconnected");
-      });
+      socket.on("disconnect", () => {});
 
-      socket.on("connect_error", (err) => {
-        // console.error("Socket connect error:", err.message);
-      });
+      socket.on("connect_error", (err) => {});
     } else {
       if (socketRef.current) {
         socketRef.current.disconnect();
         socketRef.current = null;
-        // console.log("Socket disconnected due to missing token");
       }
     }
 

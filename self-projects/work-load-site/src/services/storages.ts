@@ -43,7 +43,7 @@ const isValidJWT = (token: string) => {
 
 const initializeStorage = (storageKey: string, defaultValue: any) => {
   const data = JSON.stringify(defaultValue);
-  localStorage.setItem(storageKey, encryptClientField(data));
+  localStorage.setItem(storageKey, encryptClientField(data) || "");
   return defaultValue;
 };
 
@@ -81,10 +81,10 @@ const getStorageData = (key: string, defaultValue: any = null) => {
 const setStorageData = (key: string, value: any) => {
   if (key === LOCAL_STORAGE.ACCESS_TOKEN) {
     localStorage.removeItem(LOCAL_STORAGE.SESSION_KEY);
-    const data = encryptClientField(value);
+    const data = encryptClientField(value) || "";
     localStorage.setItem(key, data);
   } else {
-    const data = encryptClientField(JSON.stringify(value));
+    const data = encryptClientField(JSON.stringify(value)) || "";
     localStorage.setItem(key, data);
   }
 };

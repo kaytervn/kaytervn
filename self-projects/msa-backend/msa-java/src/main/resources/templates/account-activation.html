@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Activate Your Account</title>
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
+    <style>
+        :root {
+            color-scheme: light dark;
+            supported-color-schemes: light dark;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #000000;
+            padding: 30px;
+        }
+
+        .email-container {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .footer {
+            font-size: 0.9em;
+            color: #888888;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1e1e1e;
+                color: #f1f1f1;
+            }
+
+            .email-container {
+                background-color: #2c2c2c;
+                color: #f1f1f1;
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+            }
+
+            .btn {
+                background-color: #0d6efd;
+                color: #ffffff !important;
+            }
+
+            .footer {
+                color: #aaaaaa;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <h2>Dear <span th:text="${name}"></span>, </h2>
+    <p>Due to our security policy, your account will be periodically set to <strong>pending</strong> status.</p>
+    <p>Please click the button below to activate your account:</p>
+    <a class="btn" th:href="${link}" target="_blank" rel="noopener noreferrer">Activate</a>
+    <p>If you have already activated your account, please disregard this email.</p>
+    <div class="footer"> © 2025 MSA. All rights reserved.
+    </div>
+</div>
+</body>
+</html>

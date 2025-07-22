@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import notFoundImage from "../assets/error_404.png";
 
 const NotFound = () => {
+  useEffect(() => {
+    document.title = "404 Not Found";
+  }, []);
+
   const handleGoHome = () => {
     window.location.href = "/";
   };

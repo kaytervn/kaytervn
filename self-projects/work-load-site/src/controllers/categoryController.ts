@@ -7,14 +7,14 @@ export const categoryController = (fetchApi: any) => {
 
   const list = () =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_NODEJS_API_URL,
       endpoint: "/v1/category/list",
       method: METHOD.GET,
     });
 
   const get = (id: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_NODEJS_API_URL,
       endpoint: `/v1/category/get/${id}`,
       method: METHOD.GET,
       headers: {
@@ -24,7 +24,7 @@ export const categoryController = (fetchApi: any) => {
 
   const create = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_NODEJS_API_URL,
       endpoint: `/v1/category/create`,
       method: METHOD.POST,
       payload,
@@ -35,7 +35,7 @@ export const categoryController = (fetchApi: any) => {
 
   const update = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_NODEJS_API_URL,
       endpoint: `/v1/category/update`,
       method: METHOD.PUT,
       payload,
@@ -46,7 +46,7 @@ export const categoryController = (fetchApi: any) => {
 
   const del = (id: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_NODEJS_API_URL,
       endpoint: `/v1/category/delete/${id}`,
       method: METHOD.DELETE,
       headers: {

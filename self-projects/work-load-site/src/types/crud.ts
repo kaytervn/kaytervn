@@ -1,3 +1,6 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const javaDatatypes = [
   "String",
   "Integer",

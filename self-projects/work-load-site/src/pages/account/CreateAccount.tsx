@@ -1,24 +1,25 @@
 import { useGlobalContext } from "../../components/config/GlobalProvider";
-import {
-  DECRYPT_FIELDS,
-  PAGE_CONFIG,
-} from "../../components/config/PageConfig";
+import { PAGE_CONFIG } from "../../components/config/PageConfig";
 import { CancelButton, SubmitButton } from "../../components/form/Button";
 import { LoadingDialog } from "../../components/form/Dialog";
 import { ActionSection, FormCard } from "../../components/form/FormCard";
 import { InputField2 } from "../../components/form/InputTextField";
-import { SelectFieldLazy } from "../../components/form/SelectTextField";
+import {
+  SelectField2,
+  StaticSelectField,
+} from "../../components/form/SelectTextField";
 import { TextAreaField2 } from "../../components/form/TextareaField";
 import Sidebar2 from "../../components/main/Sidebar2";
 import useApi from "../../hooks/useApi";
 import useForm from "../../hooks/useForm";
 import useQueryState from "../../hooks/useQueryState";
-import { encryptDataByUserKey } from "../../services/encryption/sessionEncryption";
+import { encryptFieldByUserKey } from "../../services/encryption/sessionEncryption";
 import {
   ACCOUNT_KIND_MAP,
   BASIC_MESSAGES,
   BUTTON_TEXT,
   TOAST,
+  VALID_PATTERN,
 } from "../../types/constant";
 
 const CreateAccount = () => {
@@ -29,16 +30,15 @@ const CreateAccount = () => {
   });
   const { account, loading } = useApi();
   const { platform } = useApi();
-
   const validate = (form: any) => {
     const newErrors: any = {};
-    if (!form.username.trim()) {
+    if (!VALID_PATTERN.USERNAME.test(form.username)) {
       newErrors.username = "Invalid username";
     }
     if (!form.password.trim()) {
       newErrors.password = "Invalid password";
     }
-    if (!form.platformId.trim()) {
+    if (!form.platformId) {
       newErrors.platformId = "Invalid platform";
     }
     return newErrors;
@@ -50,22 +50,15 @@ const CreateAccount = () => {
       password: "",
       note: "",
       platformId: "",
+      kind: ACCOUNT_KIND_MAP.ROOT.value,
     },
     validate
   );
 
   const handleSubmit = async () => {
     if (isValidForm()) {
-      const res = await account.create(
-        encryptDataByUserKey(
-          sessionKey,
-          {
-            ...form,
-            kind: ACCOUNT_KIND_MAP.ROOT.value,
-          },
-          DECRYPT_FIELDS.ACCOUNT
-        )
-      );
+      const password = encryptFieldByUserKey(sessionKey, form.password);
+      const res = await account.create({ ...form, password });
       if (res.result) {
         setToast(BASIC_MESSAGES.CREATED, TOAST.SUCCESS);
         handleNavigateBack();
@@ -84,7 +77,9 @@ const CreateAccount = () => {
           label: PAGE_CONFIG.ACCOUNT.label,
           onClick: handleNavigateBack,
         },
-        { label: PAGE_CONFIG.CREATE_ACCOUNT.label },
+        {
+          label: PAGE_CONFIG.CREATE_ACCOUNT.label,
+        },
       ]}
       activeItem={PAGE_CONFIG.ACCOUNT.name}
       renderContent={
@@ -94,17 +89,23 @@ const CreateAccount = () => {
             title={PAGE_CONFIG.CREATE_ACCOUNT.label}
             children={
               <div className="flex flex-col space-y-4">
-                <SelectFieldLazy
-                  title="Platform"
-                  isRequired={true}
-                  fetchListApi={platform.list}
-                  placeholder="Choose platform"
-                  value={form.platformId}
-                  onChange={(value: any) => handleChange("platformId", value)}
-                  error={errors.platformId}
-                  valueKey="_id"
-                  decryptFields={DECRYPT_FIELDS.PLATFORM}
-                />
+                <div className="flex flex-row space-x-2">
+                  <SelectField2
+                    title="Platform"
+                    isRequired={true}
+                    fetchListApi={platform.autoComplete}
+                    placeholder="Choose platform"
+                    value={form.platformId}
+                    onChange={(value: any) => handleChange("platformId", value)}
+                    error={errors.platformId}
+                  />
+                  <StaticSelectField
+                    title="Kind"
+                    disabled={true}
+                    dataMap={ACCOUNT_KIND_MAP}
+                    value={ACCOUNT_KIND_MAP.ROOT.value}
+                  />
+                </div>
                 <div className="flex flex-row space-x-2">
                   <InputField2
                     title="Username"

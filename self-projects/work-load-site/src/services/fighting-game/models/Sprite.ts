@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 class Sprite {
   position: any;
   image: any;

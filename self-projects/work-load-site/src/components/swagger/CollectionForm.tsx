@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { LaptopMinimalIcon, MapPinIcon, PackageIcon } from "lucide-react";
 import { toast } from "react-toastify";

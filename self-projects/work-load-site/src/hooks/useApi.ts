@@ -5,6 +5,7 @@ import { dataBackupController } from "../controllers/dataBackupController.ts";
 import { lessonController } from "../controllers/lessonController.ts";
 import { mediaController } from "../controllers/mediaController.ts";
 import { platformController } from "../controllers/platformController.ts";
+import { roleController } from "../controllers/roleController.ts";
 import { userController } from "../controllers/userController.ts";
 import useFetch from "./useFetch.ts";
 
@@ -20,6 +21,7 @@ const useApi = () => {
   const dataBackup = dataBackupController(fetchApi);
   const account = accountController(fetchApi);
   const backupCode = backupCodeController(fetchApi);
+  const role = roleController(fetchApi);
 
   return {
     user,
@@ -31,6 +33,7 @@ const useApi = () => {
     dataBackup,
     account,
     backupCode,
+    role,
   };
 };
 

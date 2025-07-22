@@ -1,26 +1,27 @@
-import useForm from "../../hooks/useForm";
-import { CancelButton, SubmitButton } from "../../components/form/Button";
-import useApi from "../../hooks/useApi";
-import { ActionSection, BasicCardForm } from "../../components/form/FormCard";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../components/config/GlobalProvider";
+import useApi from "../../hooks/useApi";
+import {
+  BASIC_MESSAGES,
+  BUTTON_TEXT,
+  TOAST,
+  VALID_PATTERN,
+} from "../../types/constant";
+import useForm from "../../hooks/useForm";
 import { LoadingDialog } from "../../components/form/Dialog";
+import { ActionSection, BasicCardForm } from "../../components/form/FormCard";
 import { InputField2 } from "../../components/form/InputTextField";
-import { BASIC_MESSAGES, BUTTON_TEXT, DOC_TITLE, TOAST } from "../../types/constant";
-import { encryptClientData } from "../../services/encryption/clientEncryption";
-import { ENCRYPT_FIELDS } from "../../services/encryption/encryptFields";
-import { USER_CONFIG } from "../../components/config/PageConfigDetails";
-import useDocTitle from "../../hooks/useDocTitle";
+import { CancelButton, SubmitButton } from "../../components/form/Button";
+import { AUTH_CONFIG } from "../../components/config/PageConfigDetails";
 
 const ForgotPassword = () => {
-  useDocTitle(DOC_TITLE.MSA);
   const { setToast } = useGlobalContext();
   const navigate = useNavigate();
   const { user, loading } = useApi();
 
   const validate = (form: any) => {
     const newErrors: any = {};
-    if (!form.email.trim()) {
+    if (!VALID_PATTERN.EMAIL.test(form.email)) {
       newErrors.email = "Invalid email";
     }
     return newErrors;
@@ -33,12 +34,10 @@ const ForgotPassword = () => {
 
   const handleSubmit = async () => {
     if (isValidForm()) {
-      const res = await user.requestForgetPassword(
-        encryptClientData(form, ENCRYPT_FIELDS.REQUEST_FORGOT_PASSWORD_FORM)
-      );
+      const res = await user.requestForgetPassword(form);
       if (res.result) {
         setToast(BASIC_MESSAGES.SUCCESS, TOAST.SUCCESS);
-        navigate(USER_CONFIG.RESET_PASSWORD.path, {
+        navigate(AUTH_CONFIG.RESET_PASSWORD.path, {
           state: {
             userId: res.data.userId,
           },
@@ -54,12 +53,12 @@ const ForgotPassword = () => {
   return (
     <>
       <LoadingDialog isVisible={loading} />
-      <BasicCardForm title={USER_CONFIG.FORGOT_PASSWORD.label}>
+      <BasicCardForm title="Forgot password">
         <div className="space-y-4">
           <InputField2
             title="Email address"
             isRequired={true}
-            placeholder="Enter email address"
+            placeholder="Enter your email"
             value={form.email}
             onChangeText={(value: any) => handleChange("email", value)}
             error={errors.email}
@@ -68,7 +67,7 @@ const ForgotPassword = () => {
             children={
               <>
                 <CancelButton
-                  onClick={() => navigate(USER_CONFIG.LOGIN.path)}
+                  onClick={() => navigate(AUTH_CONFIG.LOGIN.path)}
                 />
                 <SubmitButton
                   text={BUTTON_TEXT.CONTINUE}

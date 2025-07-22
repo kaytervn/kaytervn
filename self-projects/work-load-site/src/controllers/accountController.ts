@@ -3,7 +3,7 @@ import { AUTH_TYPE, ENV, METHOD } from "../types/constant";
 export const accountController = (fetchApi: any) => {
   const list = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: "/v1/account/list",
       method: METHOD.GET,
       authType: AUTH_TYPE.BEARER,
@@ -12,7 +12,7 @@ export const accountController = (fetchApi: any) => {
 
   const get = (id: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: `/v1/account/get/${id}`,
       method: METHOD.GET,
       authType: AUTH_TYPE.BEARER,
@@ -20,7 +20,7 @@ export const accountController = (fetchApi: any) => {
 
   const create = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: `/v1/account/create`,
       method: METHOD.POST,
       authType: AUTH_TYPE.BEARER,
@@ -29,7 +29,7 @@ export const accountController = (fetchApi: any) => {
 
   const update = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: `/v1/account/update`,
       method: METHOD.PUT,
       payload,
@@ -38,7 +38,7 @@ export const accountController = (fetchApi: any) => {
 
   const del = (id: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: `/v1/account/delete/${id}`,
       method: METHOD.DELETE,
       authType: AUTH_TYPE.BEARER,

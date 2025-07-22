@@ -2,9 +2,9 @@ import * as CryptoJS from "crypto-js";
 import { v4 as uuidv4 } from "uuid";
 import { colors, ENV, MIME_TYPES, myPublicSecretKey } from "./constant";
 import gifs from "./gifs";
-import SparkMD5 from "spark-md5";
 import forge from "node-forge";
 import Fuse from "fuse.js";
+import pako from "pako";
 
 const getCurrentDate = () => {
   const now = new Date();
@@ -106,6 +106,44 @@ const getPaginatedStorageData = (
   } catch {
     return initializeStorage(storageKey, []);
   }
+};
+
+const generateRandomString = (length: any) => {
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    const idx = Math.floor(Math.random() * chars.length);
+    result += chars[idx];
+  }
+  return result;
+};
+
+const formatJavaDate = (date = new Date()) => {
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const day = days[date.getUTCDay()];
+  const month = months[date.getUTCMonth()];
+  const dayOfMonth = String(date.getUTCDate()).padStart(2, "0");
+  const hours = String(date.getUTCHours()).padStart(2, "0");
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+  const seconds = String(date.getUTCSeconds()).padStart(2, "0");
+  const year = date.getUTCFullYear();
+
+  return `${day} ${month} ${dayOfMonth} ${hours}:${minutes}:${seconds} UTC ${year}`;
 };
 
 const getItemPage = (
@@ -310,7 +348,9 @@ const encryptRSA = (publicKeyRawBase64: any, data: any) => {
 };
 
 const generateMd5 = (text: string): string => {
-  return SparkMD5.hash(text);
+  return CryptoJS.MD5(CryptoJS.enc.Utf8.parse(text))
+    .toString(CryptoJS.enc.Hex)
+    .padStart(32, "0");
 };
 
 const generateTimestamp = () => {
@@ -319,15 +359,6 @@ const generateTimestamp = () => {
 
 const extractBase64FromPem = (pem: any) => {
   return pem.replace(/-----.*-----/g, "").replace(/\s+/g, "");
-};
-
-const getAuthHeader = () => {
-  const clientRequestId = generateUniqueId();
-  const timestamp = generateTimestamp();
-  const messageSignature = generateMd5(
-    ENV.CLIENT_ID + ENV.CLIENT_SECRET + timestamp + clientRequestId
-  );
-  return { timestamp, messageSignature, clientRequestId };
 };
 
 const getMimeType = (fileName: string) => {
@@ -344,7 +375,7 @@ const parseDocuments = (documentString: string) => {
 };
 
 const getMediaImage = (url: string) => {
-  return `${ENV.MSA_API_URL}/v1/media/download/${url}`;
+  return `${ENV.MSA_NODEJS_API_URL}/v1/media/download/${url}`;
 };
 
 const normalizeVietnamese = (str: any) => {
@@ -403,7 +434,186 @@ const isValidObjectId = (id: any): boolean => {
   }
 };
 
+const zipString = (input: any) => {
+  try {
+    const deflated = pako.deflate(input);
+    return btoa(String.fromCharCode(...deflated));
+  } catch {
+    return null;
+  }
+};
+
+const unzipString = (input: any) => {
+  try {
+    const binaryString = atob(input);
+    const bytes = new Uint8Array([...binaryString].map((c) => c.charCodeAt(0)));
+    const inflated = pako.inflate(bytes, { to: "string" });
+    return inflated;
+  } catch {
+    return null;
+  }
+};
+
+const convertUtcToVn = (date: string) => {
+  try {
+    const [datePart, timePart] = date.split(" ");
+    const [day, month, year] = datePart.split("/").map(Number);
+    const [hour, minute, second] = timePart.split(":").map(Number);
+
+    const utcDate = new Date(
+      Date.UTC(year, month - 1, day, hour, minute, second)
+    );
+    const vnDate = new Intl.DateTimeFormat("vi-VN", {
+      timeZone: "Asia/Ho_Chi_Minh",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    }).formatToParts(utcDate);
+
+    const getPart = (type: string) =>
+      vnDate.find((p) => p.type === type)?.value || "00";
+    return `${getPart("day")}/${getPart("month")}/${getPart("year")} ${getPart(
+      "hour"
+    )}:${getPart("minute")}:${getPart("second")}`;
+  } catch {
+    return null;
+  }
+};
+
+const getRoles = (authorities: string[]) => {
+  return authorities.map((role) => role.replace(/^ROLE_/, ""));
+};
+
+// yyyy-mm-dd to dd/mm/yyyy hh:mm:ss
+const formatToDDMMYYYY = (dateString: string): string => {
+  if (!dateString) return "";
+
+  try {
+    const [datePart, timePart] = dateString.split(" ");
+    const [year, month, day] = datePart.split("-").map(Number);
+
+    if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1000) {
+      return "";
+    }
+
+    const formattedDate = `${day.toString().padStart(2, "0")}/${month
+      .toString()
+      .padStart(2, "0")}/${year}`;
+
+    if (timePart) {
+      const [hours, minutes, seconds] = timePart.split(":").map(Number);
+      if (
+        hours >= 0 &&
+        hours <= 23 &&
+        minutes >= 0 &&
+        minutes <= 59 &&
+        seconds >= 0 &&
+        seconds <= 59
+      ) {
+        return `${formattedDate} ${hours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      }
+      return "";
+    }
+
+    return `${formattedDate} 00:00:00`;
+  } catch {
+    return "";
+  }
+};
+
+// dd/mm/yyyy hh:mm:ss to yyyy-mm-dd
+const parseToYYYYMMDD = (dateString: string): string => {
+  if (!dateString) return "";
+  try {
+    const [datePart, timePart] = dateString.split(" ");
+    const [day, month, year] = datePart.split("/").map(Number);
+
+    if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1000) {
+      return "";
+    }
+
+    const formattedDate = `${year}-${month.toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}`;
+
+    if (timePart) {
+      const [hours, minutes, seconds] = timePart.split(":").map(Number);
+      if (
+        hours >= 0 &&
+        hours <= 23 &&
+        minutes >= 0 &&
+        minutes <= 59 &&
+        seconds >= 0 &&
+        seconds <= 59
+      ) {
+        return `${formattedDate} ${hours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      }
+    }
+    return formattedDate;
+  } catch {
+    return "";
+  }
+};
+
+// Function to parse dd/mm/yyyy hh:mm:ss format to Date object
+const parseDate = (dateStr: any) => {
+  try {
+    const [datePart, timePart] = dateStr.split(" ");
+    const [day, month, year] = datePart.split("/").map(Number);
+    const [hours, minutes, seconds] = timePart.split(":").map(Number);
+
+    // Validate ranges
+    if (
+      day < 1 ||
+      day > 31 ||
+      month < 1 ||
+      month > 12 ||
+      hours < 0 ||
+      hours > 23 ||
+      minutes < 0 ||
+      minutes > 59 ||
+      seconds < 0 ||
+      seconds > 59
+    ) {
+      return null;
+    }
+
+    return new Date(year, month - 1, day, hours, minutes, seconds);
+  } catch {
+    return null;
+  }
+};
+
+const truncateToDDMMYYYY = (dateString: string): string => {
+  if (!dateString) return "";
+  try {
+    const [datePart] = dateString.split(" ");
+    const [day, month, year] = datePart.split("/").map(Number);
+    if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1000) {
+      return "";
+    }
+    return `${day.toString().padStart(2, "0")}/${month
+      .toString()
+      .padStart(2, "0")}/${year}`;
+  } catch {
+    return "";
+  }
+};
+
 export {
+  getRoles,
+  truncateToDDMMYYYY,
+  formatToDDMMYYYY,
+  zipString,
+  unzipString,
   getRandomGif,
   getRandomColor,
   encrypt,
@@ -434,7 +644,6 @@ export {
   generateMd5,
   generateTimestamp,
   extractBase64FromPem,
-  getAuthHeader,
   decryptRSA,
   encryptRSA,
   getMimeType,
@@ -443,4 +652,9 @@ export {
   normalizeVietnamese,
   createFuse,
   isValidObjectId,
+  generateRandomString,
+  formatJavaDate,
+  convertUtcToVn,
+  parseToYYYYMMDD,
+  parseDate,
 };

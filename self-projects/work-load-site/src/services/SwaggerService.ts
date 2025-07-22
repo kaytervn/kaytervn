@@ -61,7 +61,7 @@ const importCollectionData = (data: string) => {
       });
     }
     return decryptedData.length;
-  } catch (ignored) {
+  } catch {
     return 0;
   }
 };

@@ -48,7 +48,7 @@ const BasicCardForm = ({ title = "Login", children, imgSrc }: any) => (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 p-4">
     <div
       className={`w-full rounded-xl bg-gray-900/95 shadow-2xl backdrop-blur-sm flex overflow-hidden ${
-        imgSrc ? "max-w-4xl" : "max-w-md"
+        imgSrc ? "max-w-3xl" : "max-w-md"
       }`}
     >
       {imgSrc && (
@@ -78,7 +78,7 @@ const ImageBase64 = ({ imgString }: any) => (
 
 const HrefLink = ({ label = "SAMPLE", onClick }: any) => {
   return (
-    <div className="text-left">
+    <div className="text-right">
       <a
         onClick={onClick}
         className="text-sm font-semibold text-blue-500 hover:underline hover:cursor-pointer"

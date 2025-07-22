@@ -1,36 +1,35 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useParams } from "react-router-dom";
 import { useGlobalContext } from "../../components/config/GlobalProvider";
-import {
-  DECRYPT_FIELDS,
-  PAGE_CONFIG,
-} from "../../components/config/PageConfig";
-import { CancelButton, SubmitButton } from "../../components/form/Button";
-import { LoadingDialog } from "../../components/form/Dialog";
-import { ActionSection, FormCard } from "../../components/form/FormCard";
-import { InputField2 } from "../../components/form/InputTextField";
-import { SelectFieldLazy } from "../../components/form/SelectTextField";
-import { TextAreaField2 } from "../../components/form/TextareaField";
-import Sidebar2 from "../../components/main/Sidebar2";
-import useApi from "../../hooks/useApi";
-import useForm from "../../hooks/useForm";
 import useQueryState from "../../hooks/useQueryState";
-import {
-  decryptDataByUserKey,
-  encryptDataByUserKey,
-} from "../../services/encryption/sessionEncryption";
+import { PAGE_CONFIG } from "../../components/config/PageConfig";
+import useApi from "../../hooks/useApi";
 import {
   ACCOUNT_KIND_MAP,
   BASIC_MESSAGES,
   BUTTON_TEXT,
   TOAST,
+  VALID_PATTERN,
 } from "../../types/constant";
 import { useEffect, useState } from "react";
-import { isValidObjectId } from "../../types/utils";
+import useForm from "../../hooks/useForm";
+import Sidebar2 from "../../components/main/Sidebar2";
+import { LoadingDialog } from "../../components/form/Dialog";
+import { ActionSection, FormCard } from "../../components/form/FormCard";
+import { InputField2 } from "../../components/form/InputTextField";
+import { CancelButton, SubmitButton } from "../../components/form/Button";
+import {
+  SelectField2,
+  StaticSelectField,
+} from "../../components/form/SelectTextField";
+import {
+  decryptFieldByUserKey,
+  encryptFieldByUserKey,
+} from "../../services/encryption/sessionEncryption";
+import { TextAreaField2 } from "../../components/form/TextareaField";
 
 const UpdateAccount = () => {
   const { id } = useParams();
-  const [fetchData, setFetchData] = useState<any>(null);
   const { setToast, sessionKey } = useGlobalContext();
   const { handleNavigateBack } = useQueryState({
     path: PAGE_CONFIG.ACCOUNT.path,
@@ -44,53 +43,52 @@ const UpdateAccount = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (isRoot()) {
-      if (!form.username.trim()) {
+      if (!VALID_PATTERN.USERNAME.test(form.username)) {
         newErrors.username = "Invalid username";
       }
       if (!form.password.trim()) {
         newErrors.password = "Invalid password";
       }
     }
-    if (!form.platformId.trim()) {
+    if (!form.platformId) {
       newErrors.platformId = "Invalid platform";
     }
     return newErrors;
   };
+  const [fetchData, setFetchData] = useState<any>({});
 
-  const { form, setForm, errors, handleChange, isValidForm } = useForm(
-    {
-      username: "",
-      password: "",
-      note: "",
-      platformId: "",
-      refId: "",
-      kind: "",
-    },
-    validate
-  );
+  const { form, errors, setForm, resetForm, handleChange, isValidForm } =
+    useForm(
+      {
+        username: "",
+        password: "",
+        note: "",
+        platformId: "",
+        refId: "",
+        kind: "",
+      },
+      validate
+    );
 
   useEffect(() => {
-    if (!isValidObjectId(id) || !sessionKey) {
+    if (!id) {
       handleNavigateBack();
       return;
     }
 
     const fetchData = async () => {
+      resetForm();
       const res = await account.get(id);
       if (res.result) {
-        const data = decryptDataByUserKey(
-          sessionKey,
-          res.data,
-          DECRYPT_FIELDS.ACCOUNT
-        );
+        const data = res.data;
         setFetchData(data);
         setForm({
-          username: data.username || "",
-          password: data.password || "",
-          note: data.note || "",
-          platformId: data.platform?._id || "",
-          kind: data.kind || "",
-          refId: data.ref?._id || "",
+          username: data.username,
+          password: decryptFieldByUserKey(sessionKey, data.password),
+          note: data.note,
+          platformId: data.platform?.id,
+          kind: data.kind,
+          parentId: data.parent?.id,
         });
       } else {
         handleNavigateBack();
@@ -102,16 +100,22 @@ const UpdateAccount = () => {
 
   const handleSubmit = async () => {
     if (isValidForm()) {
-      const res = await account.update(
-        encryptDataByUserKey(
-          sessionKey,
-          {
-            id,
-            ...form,
-          },
-          DECRYPT_FIELDS.ACCOUNT
-        )
-      );
+      let res;
+      if (isRoot()) {
+        res = await account.update({
+          id,
+          username: form.username,
+          password: encryptFieldByUserKey(sessionKey, form.password),
+          note: form.note,
+          platformId: form.platformId,
+        });
+      } else {
+        res = await account.update({
+          id,
+          note: form.note,
+          platformId: form.platformId,
+        });
+      }
       if (res.result) {
         setToast(BASIC_MESSAGES.UPDATED, TOAST.SUCCESS);
         handleNavigateBack();
@@ -127,13 +131,13 @@ const UpdateAccount = () => {
     <Sidebar2
       breadcrumbs={[
         {
-          label: PAGE_CONFIG.ACCOUNT.label,
+          label: `(${
+            fetchData?.parent?.platform?.name || fetchData?.platform?.name
+          }) ${fetchData?.parent?.username || fetchData?.username}`,
           onClick: handleNavigateBack,
         },
         {
-          label: `(${
-            fetchData?.ref?.platform?.name || fetchData?.platform?.name
-          }) ${fetchData?.ref?.username || fetchData?.username}`,
+          label: PAGE_CONFIG.UPDATE_ACCOUNT.label,
         },
       ]}
       activeItem={PAGE_CONFIG.ACCOUNT.name}
@@ -144,17 +148,23 @@ const UpdateAccount = () => {
             title={PAGE_CONFIG.UPDATE_ACCOUNT.label}
             children={
               <div className="flex flex-col space-y-4">
-                <SelectFieldLazy
-                  title="Platform"
-                  isRequired={true}
-                  fetchListApi={platform.list}
-                  placeholder="Choose platform"
-                  value={form.platformId}
-                  onChange={(value: any) => handleChange("platformId", value)}
-                  error={errors.platformId}
-                  valueKey="_id"
-                  decryptFields={DECRYPT_FIELDS.PLATFORM}
-                />
+                <div className="flex flex-row space-x-2">
+                  <SelectField2
+                    title="Platform"
+                    isRequired={true}
+                    fetchListApi={platform.autoComplete}
+                    placeholder="Choose platform"
+                    value={form.platformId}
+                    onChange={(value: any) => handleChange("platformId", value)}
+                    error={errors.platformId}
+                  />
+                  <StaticSelectField
+                    title="Kind"
+                    disabled={true}
+                    dataMap={ACCOUNT_KIND_MAP}
+                    value={fetchData?.kind}
+                  />
+                </div>
                 {isRoot() && (
                   <div className="flex flex-row space-x-2">
                     <InputField2
@@ -193,7 +203,6 @@ const UpdateAccount = () => {
                       <CancelButton onClick={handleNavigateBack} />
                       <SubmitButton
                         text={BUTTON_TEXT.UPDATE}
-                        color="royalblue"
                         onClick={handleSubmit}
                       />
                     </>

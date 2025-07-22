@@ -15,18 +15,15 @@ import secretImg from "../../assets/secret.png";
 import {
   BASIC_MESSAGES,
   BUTTON_TEXT,
+  GRANT_TYPE_MAP,
   LOCAL_STORAGE,
   TOAST,
 } from "../../types/constant";
 import { InputField2 } from "../../components/form/InputTextField";
 import { LoadingDialog } from "../../components/form/Dialog";
-import { PAGE_CONFIG } from "../../components/config/PageConfig";
-import { encryptClientData } from "../../services/encryption/clientEncryption";
-import { ENCRYPT_FIELDS } from "../../services/encryption/encryptFields";
-import useModal from "../../hooks/useModal";
-import InputMasterKey from "./InputMasterKey";
-import { USER_CONFIG } from "../../components/config/PageConfigDetails";
+import { AUTH_CONFIG } from "../../components/config/PageConfigDetails";
 import useDocTitle from "../../hooks/useDocTitle";
+import { PAGE_CONFIG } from "../../components/config/PageConfig";
 
 const Login = () => {
   useDocTitle();
@@ -35,18 +32,6 @@ const Login = () => {
   const { user, loading } = useApi();
   const [isMfa, setIsMfa] = useState(false);
   const [qrUrl, setQrUrl] = useState<any>(null);
-  const {
-    isModalVisible: inputKeyFormVisible,
-    showModal: showInputKeyForm,
-    hideModal: hideInputKeyForm,
-    formConfig: inputKeyFormConfig,
-  } = useModal();
-
-  const handleInputSystemKey = () => {
-    showInputKeyForm({
-      hideModal: hideInputKeyForm,
-    });
-  };
 
   const validate = (form: any) => {
     const newErrors: any = {};
@@ -72,23 +57,18 @@ const Login = () => {
 
   const handleSubmitLogin = async () => {
     if (isValidForm()) {
-      const verify = await user.verifyCreditial(
-        encryptClientData(
-          {
-            username: form.username,
-            password: form.password,
-          },
-          ENCRYPT_FIELDS.LOGIN_FORM
-        )
-      );
+      const verify = await user.verifyCreditial({
+        username: form.username,
+        password: form.password,
+      });
       if (!verify?.result) {
         setToast(verify?.message || BASIC_MESSAGES.LOG_IN_FAILED, TOAST.ERROR);
         return;
       }
       const data = verify.data;
       setIsMfa(true);
-      if (data?.qrUrl) {
-        setQrUrl(data.qrUrl);
+      if (data?.qrCodeUrl) {
+        setQrUrl(data.qrCodeUrl);
       }
     } else {
       setToast(BASIC_MESSAGES.INVALID_FORM, TOAST.ERROR);
@@ -97,21 +77,17 @@ const Login = () => {
 
   const handleSubmitTOTP = async () => {
     if (isValidForm()) {
-      const res = await user.login(
-        encryptClientData(
-          {
-            username: form.username,
-            password: form.password,
-            totp: form.totp,
-          },
-          ENCRYPT_FIELDS.LOGIN_FORM
-        )
-      );
-      const accessToken = res?.data?.accessToken;
+      const res = await user.login({
+        username: form.username,
+        password: form.password,
+        totp: form.totp,
+        grant_type: GRANT_TYPE_MAP.PASSWORD.value,
+      });
+      const accessToken = res?.access_token;
       if (accessToken) {
         setToast(BASIC_MESSAGES.LOGGED_IN, TOAST.SUCCESS);
         setStorageData(LOCAL_STORAGE.ACCESS_TOKEN, accessToken);
-        window.location.href = PAGE_CONFIG.PLATFORM.path;
+        window.location.href = PAGE_CONFIG.MSA_HOME.path;
       } else {
         setToast(res?.message || BASIC_MESSAGES.LOG_IN_FAILED, TOAST.ERROR);
       }
@@ -129,10 +105,6 @@ const Login = () => {
   return (
     <>
       <LoadingDialog isVisible={loading} />
-      <InputMasterKey
-        isVisible={inputKeyFormVisible}
-        formConfig={inputKeyFormConfig}
-      />
       {!isMfa ? (
         <BasicCardForm title={"MSA Project"} imgSrc={secretImg}>
           <div className="flex items-center justify-center">
@@ -154,20 +126,10 @@ const Login = () => {
                 error={errors.password}
                 type="password"
               />
-              <div className="flex flex-col space-y-2 text-sm text-blue-600">
-                <HrefLink
-                  label={"Input system key"}
-                  onClick={handleInputSystemKey}
-                />
-                <HrefLink
-                  label={"Reset 2FA"}
-                  onClick={() => navigate(USER_CONFIG.REQUEST_RESET_MFA.path)}
-                />
-                <HrefLink
-                  label={"Forgot password?"}
-                  onClick={() => navigate(USER_CONFIG.FORGOT_PASSWORD.path)}
-                />
-              </div>
+              <HrefLink
+                label={"Forgot password?"}
+                onClick={() => navigate(AUTH_CONFIG.FORGOT_PASSWORD.path)}
+              />
               <div className="flex justify-between gap-2">
                 <button
                   type="button"

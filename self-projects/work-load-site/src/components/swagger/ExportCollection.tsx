@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from "react";
 import { toast } from "react-toastify";
 import CustomModal from "../form/CustomModal";

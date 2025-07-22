@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable no-prototype-builtins */
 const fetchJsonInput = async (url: any) => {
   try {
     const response = await fetch(url);

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useGlobalContext } from "../components/config/GlobalProvider.tsx";
-import { API_HEADER, ENV, METHOD } from "../types/constant.ts";
+import { API_HEADER, AUTH_TYPE, ENV, METHOD } from "../types/constant.ts";
 
 export const mediaController = (fetchApi: any) => {
   const { apiKey } = useGlobalContext();
@@ -10,7 +10,7 @@ export const mediaController = (fetchApi: any) => {
     formData.append("file", file, file.name);
 
     return fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_NODEJS_API_URL,
       endpoint: "/v1/media/upload",
       method: METHOD.POST,
       payload: formData,
@@ -25,7 +25,7 @@ export const mediaController = (fetchApi: any) => {
     formData.append("zipFile", file, file.name);
 
     return fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_NODEJS_API_URL,
       endpoint: "/v1/media/push-backup",
       method: METHOD.POST,
       payload: formData,
@@ -37,7 +37,7 @@ export const mediaController = (fetchApi: any) => {
 
   const downloadBackup = () => {
     return fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_NODEJS_API_URL,
       endpoint: "/v1/media/download-backup",
       method: METHOD.GET,
       headers: {
@@ -46,9 +46,23 @@ export const mediaController = (fetchApi: any) => {
     });
   };
 
+  const uploadFile = (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file, file.name);
+
+    return fetchApi({
+      apiUrl: ENV.MSA_JAVA_API_URL,
+      endpoint: "/v1/file/upload",
+      method: METHOD.POST,
+      payload: formData,
+      authType: AUTH_TYPE.BEARER,
+    });
+  };
+
   return {
     pushBackup,
     downloadBackup,
     upload,
+    uploadFile,
   };
 };

@@ -1,4 +1,4 @@
-import { PenLineIcon, TrashIcon } from "lucide-react";
+import { EditIcon, PenLineIcon, TrashIcon } from "lucide-react";
 import { BUTTON_TEXT } from "../../types/constant";
 import { ActionButton } from "../main/GridView";
 
@@ -41,36 +41,40 @@ const CancelButton = ({ text = BUTTON_TEXT.CANCEL, onClick }: any) => {
 
 const BasicActionButton = ({
   onClick,
-  Icon,
-  buttonText,
+  role,
+  Icon = EditIcon,
+  buttonText = "SAMPLE",
   color = "royalblue",
 }: any) => {
   return (
     <ActionButton
       onClick={onClick}
       Icon={Icon}
+      role={role}
       title={buttonText}
       color={color}
     />
   );
 };
 
-const ActionEditButton = ({ onClick }: any) => {
+const ActionEditButton = ({ onClick, role }: any) => {
   return (
     <ActionButton
       onClick={onClick}
       Icon={PenLineIcon}
+      role={role}
       title={BUTTON_TEXT.UPDATE}
       color="royalblue"
     />
   );
 };
 
-const ActionDeleteButton = ({ onClick }: any) => {
+const ActionDeleteButton = ({ onClick, role }: any) => {
   return (
     <ActionButton
       onClick={onClick}
       Icon={TrashIcon}
+      role={role}
       title={BUTTON_TEXT.DELETE}
       color="crimson"
     />

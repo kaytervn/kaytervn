@@ -167,6 +167,7 @@ const GRID_TRUNCATE = 125;
 const TRUNCATE_LENGTH = 150;
 const FETCH_INTERVAL = 300;
 const SESSION_KEY_TIMEOUT = 2 * 60 * 60 * 1000; // 2 hours
+const PING_INTERVAL = 50000; // 50s
 
 const LOCAL_STORAGE = {
   SESSION_KEY: "msa_session_key",
@@ -205,6 +206,7 @@ const API_HEADER = {
   AUTHORIZATION: "authorization",
   X_API_KEY: "x-api-key",
   CLIENT_REQUEST_ID: "client-request-id",
+  X_FINGERPRINT: "x-fingerprint",
 };
 
 const AUTH_TYPE = {
@@ -227,11 +229,12 @@ const BASIC_MESSAGES = {
 };
 
 const BUTTON_TEXT = {
+  ACCEPT: "Accept",
   CLEAR: "Clear",
   REQUEST_KEY: "Request key",
   HOME: "Home",
   SUBMIT: "Submit",
-  TWO_FACTOR: "Verify Code",
+  TWO_FACTOR: "Verify code",
   CONTINUE: "Continue",
   LOGIN: "Sign in",
   SEARCH: "Search",
@@ -246,7 +249,7 @@ const BUTTON_TEXT = {
   DOWNLOAD: "Download",
   CHANGE_PASSWORD: "Change password",
   CHANGE_PIN: "Change PIN",
-  LOGOUT: "Logout",
+  LOGOUT: "Log out",
   CLEAR_SYSTEM_KEY: "Clear system key",
   DOWNLOAD_DATA_BACKUP: "Download backup data",
   UPLOAD_DATA_BACKUP: "Upload backup data",
@@ -255,9 +258,13 @@ const BUTTON_TEXT = {
 };
 
 const ENV = {
-  CLIENT_ID: import.meta.env.VITE_CLIENT_ID,
-  CLIENT_SECRET: import.meta.env.VITE_CLIENT_SECRET,
-  MSA_API_URL: import.meta.env.VITE_MSA_API_URL,
+  MSA_CLIENT_ID: import.meta.env.VITE_MSA_CLIENT_ID,
+  MSA_CLIENT_SECRET: import.meta.env.VITE_MSA_CLIENT_SECRET,
+  MSA_NODEJS_API_URL: import.meta.env.VITE_MSA_NODEJS_API_URL,
+  MSA_JAVA_API_URL: import.meta.env.VITE_MSA_JAVA_API_URL,
+  MSA_X_API_KEY: import.meta.env.VITE_MSA_X_API_KEY,
+  MSA_CLIENT_KEY: import.meta.env.VITE_MSA_CLIENT_KEY,
+  MSA_SOCKET_URL: import.meta.env.VITE_MSA_SOCKET_URL,
 };
 
 const TOAST = {
@@ -267,7 +274,7 @@ const TOAST = {
 };
 
 const SOCKET_CMD = {
-  CLIENT_PING: "CLIENT_PING",
+  CMD_CLIENT_PING: "CMD_CLIENT_PING",
   CMD_LOCK_DEVICE: "CMD_LOCK_DEVICE",
 };
 
@@ -295,42 +302,82 @@ const ACCOUNT_KIND_MAP = {
 };
 
 const SORT_ACCOUNT_MAP = {
-  TOTAL_LINK_ACCOUNT_ASC: {
+  CREATED_DATE_DESC: {
     value: 1,
-    label: "Link accounts (ASC)",
-    className: "bg-green-800 text-green-200",
+    label: "Created date [desc]",
   },
-  TOTAL_LINK_ACCOUNT_DESC: {
+  TOTAL_CHILDREN_DESC: {
     value: 2,
-    label: "Link accounts (DESC)",
-    className: "bg-green-800 text-green-200",
-  },
-  TOTAL_BACKUP_CODE_ASC: {
-    value: 3,
-    label: "Backup codes (ASC)",
-    className: "bg-indigo-800 text-indigo-200",
-  },
-  TOTAL_BACKUP_CODE_DESC: {
-    value: 4,
-    label: "Backup codes (DESC)",
-    className: "bg-indigo-800 text-indigo-200",
+    label: "Link accounts [desc]",
   },
 };
 
 const SORT_PLATFORM_MAP = {
-  TOTAL_ACCOUNT_ASC: {
+  CREATED_DATE_DESC: {
     value: 1,
-    label: "Total accounts (ASC)",
-    className: "bg-blue-800 text-blue-200",
+    label: "Created date [desc]",
   },
   TOTAL_ACCOUNT_DESC: {
     value: 2,
-    label: "Total accounts (DESC)",
-    className: "bg-blue-800 text-blue-200",
+    label: "Total accounts [desc]",
   },
 };
 
+const STATUS_MAP = {
+  ACTIVE: {
+    value: 1,
+    label: "Active",
+    className: "bg-green-900 text-green-300",
+  },
+  PENDING: {
+    value: 0,
+    label: "Pending",
+    className: "bg-yellow-900 text-yellow-300",
+  },
+  LOCKED: {
+    value: -1,
+    label: "Locked",
+    className: "bg-gray-900 text-gray-300",
+  },
+};
+
+const USER_KIND_MAP = {
+  ADMIN: {
+    value: 1,
+    label: "Admin",
+    className: "bg-blue-900 text-blue-300",
+  },
+  USER: {
+    value: 2,
+    label: "User",
+    className: "bg-red-900 text-red-300",
+  },
+};
+
+const GRANT_TYPE_MAP = {
+  PASSWORD: {
+    value: "password",
+    label: "Admin",
+    className: "bg-blue-900 text-blue-300",
+  },
+  USER: {
+    value: "user",
+    label: "User",
+    className: "bg-red-900 text-red-300",
+  },
+};
+
+const VALID_PATTERN = {
+  EMAIL: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/,
+  PHONE: /^0[35789][0-9]{8}$/,
+  PASSWORD: /^.{6,}$/,
+  USERNAME: /^[a-z0-9](?:[a-z0-9._-]{2,28}[a-z0-9])?$/,
+  HOST: /^(localhost|(([a-z0-9-]+\.)*[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}|\[([0-9a-f:]+)\])$/,
+  PORT: /^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/,
+};
+
 export {
+  GRANT_TYPE_MAP,
   defaultInteger,
   defaultLong,
   defaultPageSize,
@@ -365,4 +412,8 @@ export {
   GRID_TRUNCATE,
   SORT_ACCOUNT_MAP,
   SORT_PLATFORM_MAP,
+  STATUS_MAP,
+  PING_INTERVAL,
+  VALID_PATTERN,
+  USER_KIND_MAP,
 };

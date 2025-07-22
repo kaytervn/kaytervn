@@ -1,0 +1,94 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="MSA" id="1752844018613-1">
+        <createTable tableName="db_account">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_accountPK"/>
+            </column>
+            <column name="kind" type="INT"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="note" type="TEXT"/>
+            <column name="total_backup_codes" type="INT"/>
+            <column name="total_children" type="INT"/>
+            <column name="parent_id" type="BIGINT"/>
+            <column name="platform_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="MSA" id="1752844018613-2">
+        <createTable tableName="db_backup_code">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_backup_codePK"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="account_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="MSA" id="1752844018613-3">
+        <createTable tableName="db_platform">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_platformPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="url" type="VARCHAR(255)"/>
+            <column name="total_accounts" type="INT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="MSA" id="1752844018613-4">
+        <addUniqueConstraint columnNames="name" constraintName="UC_DB_PLATFORMNAME_COL" tableName="db_platform"/>
+    </changeSet>
+    <changeSet author="MSA" id="1752844018613-5">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_backup_code" constraintName="FK14lo0q70ron0vrmsth10jesjt" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_account" validate="true"/>
+    </changeSet>
+    <changeSet author="MSA" id="1752844018613-6">
+        <addForeignKeyConstraint baseColumnNames="platform_id" baseTableName="db_account" constraintName="FKmp65ehbthac1tyi9upcg7b80h" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_platform" validate="true"/>
+    </changeSet>
+    <changeSet author="MSA" id="1752844018613-7">
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="db_account" constraintName="FKr0r07e1lpflpictf8u1yr395f" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_account" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

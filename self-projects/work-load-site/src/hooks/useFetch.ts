@@ -2,7 +2,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-case-declarations */
 import { useState, useCallback } from "react";
-import { getStorageData, removeSessionCache } from "../services/storages";
+import {
+  getStorageData,
+  isValidJWT,
+  removeSessionCache,
+} from "../services/storages";
 import {
   API_HEADER,
   AUTH_TYPE,
@@ -12,12 +16,20 @@ import {
   METHOD,
 } from "../types/constant";
 import { useGlobalContext } from "../components/config/GlobalProvider";
-import { encrypt, getAuthHeader } from "../types/utils";
+import {
+  encryptAES,
+  formatJavaDate,
+  generateMd5,
+  generateRandomString,
+  unzipString,
+  zipString,
+} from "../types/utils";
 import {
   decryptClientField,
   encryptClientField,
 } from "../services/encryption/clientEncryption";
 import { minimatch } from "minimatch";
+import { jwtDecode } from "jwt-decode";
 
 interface FetchOptions {
   apiUrl: string;
@@ -42,113 +54,129 @@ const useFetch = () => {
   const handleFetch = useCallback(async (options: FetchOptions) => {
     setLoading(true);
 
+    const fingerSecret = generateRandomString(9);
+    const clientRequestId = generateRandomString(16);
+    const timestamp = formatJavaDate(new Date());
+    const apiKey = generateMd5(timestamp + ENV.MSA_X_API_KEY + fingerSecret);
+    let messageSignature: string | undefined;
+    let fingerprint: any;
+
+    const token = getStorageData(LOCAL_STORAGE.ACCESS_TOKEN);
+    if (isValidJWT(token)) {
+      const decoded: any = jwtDecode(token);
+      fingerprint = zipString(
+        [decoded.user_id, fingerSecret, decoded.username].join("|")
+      );
+    } else {
+      fingerprint = zipString(fingerSecret);
+    }
     try {
-      const { timestamp, messageSignature, clientRequestId } = getAuthHeader();
       const url = `${options.apiUrl}${options.endpoint}`;
-      const headers: Record<string, string> = {
-        ...options.headers,
-        [`${API_HEADER.MESSAGE_SIGNATURE}`]:
-          encryptClientField(messageSignature),
-        [`${API_HEADER.TIMESTAMP}`]: encryptClientField(timestamp),
-        [`${API_HEADER.CLIENT_REQUEST_ID}`]:
-          encryptClientField(clientRequestId),
-      };
+      const isFormData = options.payload instanceof FormData;
+      const isEncryptedEndpoint = !NOT_ENCRYPT_ENPOINTS.some((pattern) =>
+        minimatch(options.endpoint, pattern)
+      );
 
-      switch (options.authType) {
-        case AUTH_TYPE.BEARER:
-          const token = getStorageData(LOCAL_STORAGE.ACCESS_TOKEN);
-          if (token) {
-            headers[API_HEADER.AUTHORIZATION] = `Bearer ${encryptClientField(
-              token
-            )}`;
-          }
-          break;
-        case AUTH_TYPE.BASIC:
-          const encodedCredentials = btoa(
-            `${ENV.CLIENT_ID}:${ENV.CLIENT_SECRET}`
+      let finalPayload = options.payload;
+      if (isEncryptedEndpoint) {
+        if (isFormData) {
+          messageSignature = generateMd5(
+            timestamp + clientRequestId + ENV.MSA_CLIENT_KEY
           );
-          headers[API_HEADER.AUTHORIZATION] = `Basic ${encryptClientField(
-            encodedCredentials
-          )}`;
-          break;
-        case AUTH_TYPE.NONE:
-        default:
-          break;
-      }
-
-      const payload = options.payload;
-      if (!(payload instanceof FormData)) {
-        headers["Content-Type"] = "application/json";
-        const isEncryptedEndpoint = !NOT_ENCRYPT_ENPOINTS.some((pattern) =>
-          minimatch(options.endpoint, pattern)
-        );
-        if (payload && isEncryptedEndpoint) {
-          const encryptedPayload = encrypt(
-            JSON.stringify(payload),
-            clientRequestId
+        } else {
+          const rawBody = finalPayload ? JSON.stringify(options.payload) : "";
+          const encryptedPayload = encryptAES(clientRequestId, rawBody);
+          finalPayload = { request: encryptedPayload };
+          messageSignature = generateMd5(
+            timestamp + rawBody + clientRequestId + ENV.MSA_CLIENT_KEY
           );
-          options.payload = { request: encryptedPayload };
         }
       }
 
+      const headers: Record<string, any> = {
+        ...options.headers,
+        ...(isEncryptedEndpoint && {
+          [API_HEADER.MESSAGE_SIGNATURE]: encryptClientField(messageSignature),
+          [API_HEADER.TIMESTAMP]: encryptClientField(timestamp),
+          [API_HEADER.CLIENT_REQUEST_ID]: encryptClientField(clientRequestId),
+          [API_HEADER.X_API_KEY]: encryptClientField(apiKey),
+          [API_HEADER.X_FINGERPRINT]: encryptClientField(fingerprint),
+        }),
+        ...(!isFormData && {
+          "Content-Type": "application/json",
+        }),
+      };
+
+      // Auth header
+      switch (options.authType) {
+        case AUTH_TYPE.BEARER: {
+          if (isValidJWT(token)) {
+            headers[API_HEADER.AUTHORIZATION] = `Bearer ${token}`;
+          }
+          break;
+        }
+        case AUTH_TYPE.BASIC: {
+          const credentials = btoa(
+            `${ENV.MSA_CLIENT_ID}:${ENV.MSA_CLIENT_SECRET}`
+          );
+          headers[API_HEADER.AUTHORIZATION] = `Basic ${credentials}`;
+          break;
+        }
+      }
+
+      // Fetch API
       const response = await fetch(url, {
         method: options.method,
         headers,
         body:
-          options.method !== METHOD.GET && options.payload
-            ? options.payload instanceof FormData
-              ? options.payload
-              : JSON.stringify(options.payload)
+          options.method !== METHOD.GET && finalPayload
+            ? isFormData
+              ? finalPayload
+              : JSON.stringify(finalPayload)
             : undefined,
       });
 
-      const contentDisposition = response.headers.get("content-disposition");
-      const isFileDownload = contentDisposition
-        ?.toLowerCase()
-        .includes("attachment");
-
+      const disposition = response.headers
+        .get("content-disposition")
+        ?.toLowerCase();
+      const isFileDownload = disposition?.includes("attachment");
       if (isFileDownload) {
         const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
+        const urlBlob = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
-        link.href = url;
+        const filename = disposition?.split("filename=")[1]?.replace(/"/g, "");
 
-        const filename = contentDisposition
-          ?.split("filename=")[1]
-          ?.replace(/"/g, "");
+        if (!filename)
+          return { result: false, message: "File download failed" };
 
-        if (!filename) {
-          return {
-            result: false,
-            message: "File downloaded failed",
-          };
-        }
-
+        link.href = urlBlob;
         link.setAttribute("download", filename);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
+        window.URL.revokeObjectURL(urlBlob);
 
         return { result: true, message: "File downloaded successfully" };
+      }
+
+      // Handle JSON or text
+      const contentType = response.headers.get("content-type")?.toLowerCase();
+      const responseData = contentType?.includes("application/json")
+        ? await response.json()
+        : await response.text();
+
+      if (response.status === 401) {
+        removeSessionCache();
+        setIsUnauthorized(true);
       } else {
-        const contentType = response.headers.get("content-type")?.toLowerCase();
-        const data = contentType?.includes("application/json")
-          ? await response.json()
-          : await response.text();
+        refreshSessionTimeout();
+      }
 
-        if (response.status === 401) {
-          removeSessionCache();
-          setIsUnauthorized(true);
-        } else {
-          refreshSessionTimeout();
-        }
-
-        try {
-          return JSON.parse(decryptClientField(data?.response));
-        } catch {
-          return data;
-        }
+      // Decrypt response
+      try {
+        return JSON.parse(decryptClientField(responseData?.response) || "");
+      } catch {
+        return responseData;
       }
     } catch (err: any) {
       return { result: false, message: err.message || BASIC_MESSAGES.FAILED };

@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { RefreshCcwIcon, UserIcon } from "lucide-react";
+import { UserIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../config/GlobalProvider";
 import useModal from "../../hooks/useModal";
 import { removeSessionCache } from "../../services/storages";
 import { OptionButton } from "../form/Button";
 import { Breadcrumb2 } from "./Breadcrumb";
-import { BUTTON_TEXT, TOAST } from "../../types/constant";
+import { BUTTON_TEXT, USER_KIND_MAP } from "../../types/constant";
 import {
   configModalForm,
   ConfirmationDialog,
@@ -14,8 +14,9 @@ import {
 } from "../form/Dialog";
 import useApi from "../../hooks/useApi";
 import RequestKey from "../../pages/auth/RequestKey";
-import { USER_CONFIG } from "../config/PageConfigDetails";
+import { AUTH_CONFIG } from "../config/PageConfigDetails";
 import { PAGE_CONFIG } from "../config/PageConfig";
+import ChangePassword from "../../pages/user/ChangePassword";
 
 const MainHeader = ({ breadcrumbs }: any) => {
   const { user, loading } = useApi();
@@ -30,6 +31,19 @@ const MainHeader = ({ breadcrumbs }: any) => {
     hideModal: hideRequestKeyForm,
     formConfig: requestKeyFormConfig,
   } = useModal();
+  const {
+    isModalVisible: changePasswordFormVisible,
+    showModal: showChangePasswordForm,
+    hideModal: hideChangePasswordForm,
+    formConfig: changePasswordFormConfig,
+  } = useModal();
+
+  const handleChangePassword = () => {
+    showChangePasswordForm({
+      title: BUTTON_TEXT.CHANGE_PASSWORD,
+      hideModal: hideChangePasswordForm,
+    });
+  };
 
   const handleRequestKey = () => {
     setIsDropdownOpen(false);
@@ -72,7 +86,7 @@ const MainHeader = ({ breadcrumbs }: any) => {
       onConfirm: () => {
         hideModal();
         removeSessionCache();
-        window.location.href = USER_CONFIG.LOGIN.path;
+        window.location.href = AUTH_CONFIG.LOGIN.path;
       },
       onCancel: () => {
         hideModal();
@@ -84,13 +98,8 @@ const MainHeader = ({ breadcrumbs }: any) => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  const handleSyncAppProps = async () => {
-    const res = await user.syncSystemProps();
-    if (res.result) {
-      setToast("Synchronized successfully", TOAST.SUCCESS);
-    } else {
-      setToast(res.message, TOAST.ERROR);
-    }
+  const isUser = () => {
+    return profile?.kind == USER_KIND_MAP.USER.value;
   };
 
   return (
@@ -101,29 +110,34 @@ const MainHeader = ({ breadcrumbs }: any) => {
         isVisible={requestKeyFormVisible}
         formConfig={requestKeyFormConfig}
       />
+      <ChangePassword
+        isVisible={changePasswordFormVisible}
+        formConfig={changePasswordFormConfig}
+      />
       <header className="flex items-center justify-between w-full text-white">
         <div className="flex-1 min-w-0">
           <Breadcrumb2 items={breadcrumbs} />
         </div>
 
         <div className="relative flex items-center space-x-4 flex-shrink-0">
-          <button
-            className="relative focus:outline-none"
-            onClick={handleSyncAppProps}
-            title="Synchronize properties"
-          >
-            <RefreshCcwIcon size={24} className="text-white" />
-          </button>
           <div className="relative" ref={dropdownRef}>
             <button
               className="flex items-center space-x-2 focus:outline-none"
               onClick={toggleDropdown}
             >
               <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-700">
-                <UserIcon size={20} className="text-white" />
+                {profile?.avatarPath ? (
+                  <img
+                    src={profile.avatarPath}
+                    className="h-full w-full object-cover"
+                    alt="User avatar"
+                  />
+                ) : (
+                  <UserIcon size={20} className="text-white" />
+                )}
               </div>
               <span className="text-sm hidden md:inline">
-                {profile?.username}
+                {profile?.fullName}
               </span>
             </button>
 
@@ -133,16 +147,22 @@ const MainHeader = ({ breadcrumbs }: any) => {
                   label={BUTTON_TEXT.HOME}
                   onClick={() => navigate("/")}
                 />
-                <OptionButton
-                  label={BUTTON_TEXT.REQUEST_KEY}
-                  onClick={handleRequestKey}
-                />
+                {isUser() && (
+                  <OptionButton
+                    label={BUTTON_TEXT.REQUEST_KEY}
+                    onClick={handleRequestKey}
+                  />
+                )}
                 <OptionButton
                   label={PAGE_CONFIG.PROFILE.label}
                   onClick={() => {
                     setIsDropdownOpen(false);
                     navigate(PAGE_CONFIG.PROFILE.path);
                   }}
+                />
+                <OptionButton
+                  label={BUTTON_TEXT.CHANGE_PASSWORD}
+                  onClick={handleChangePassword}
                 />
                 <OptionButton
                   label={BUTTON_TEXT.LOGOUT}

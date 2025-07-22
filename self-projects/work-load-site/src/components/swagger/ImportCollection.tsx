@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import useForm from "../../hooks/useForm";
 import CustomModal from "../form/CustomModal";
 import { toast } from "react-toastify";

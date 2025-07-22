@@ -182,6 +182,32 @@ const configModalForm = ({
   };
 };
 
+const configBasicDialog = ({
+  label,
+  fetchApi,
+  refreshData,
+  hideModal,
+  setToast,
+}: any) => {
+  return {
+    title: label,
+    message: "You want to execute this action?",
+    color: "royalblue",
+    onConfirm: async () => {
+      hideModal();
+      const res = await fetchApi();
+      if (res.result) {
+        setToast(BASIC_MESSAGES.SUCCESS, TOAST.SUCCESS);
+        await refreshData();
+      } else {
+        setToast(res.message, TOAST.ERROR);
+      }
+    },
+    confirmText: BUTTON_TEXT.SUBMIT,
+    onCancel: hideModal,
+  };
+};
+
 export {
   ConfirmationDialog,
   AlertDialog,
@@ -189,4 +215,5 @@ export {
   configDeleteDialog,
   configModalForm,
   configDeleteFileDialog,
+  configBasicDialog,
 };

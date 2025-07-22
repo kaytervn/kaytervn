@@ -4,6 +4,7 @@ import {
   KeyIcon,
   LinkIcon,
   LockKeyholeIcon,
+  UsersIcon,
 } from "lucide-react";
 import {
   ACCOUNT_CONFIG,
@@ -13,8 +14,12 @@ import {
   LINK_ACCOUNT_CONFIG,
   N_LESSONS_CONFIG,
   PLATFORM_CONFIG,
+  ROLE_CONFIG,
+  USER_CONFIG,
 } from "./PageConfigDetails";
-import Profile from "../../pages/auth/Profile";
+import RedirectHome from "./RedirectHome";
+import Profile from "../../pages/user/Profile";
+import ActivateAccount from "../../pages/user/ActivateAccount";
 
 const N_LESSONS_PAGE_CONFIG = {
   ...CATEGORY_CONFIG,
@@ -31,36 +36,39 @@ const N_LESSONS_SIDEBAR_MENUS = [
 ];
 
 const PAGE_CONFIG = {
+  MSA_HOME: {
+    path: "/msa-home",
+    element: <RedirectHome />,
+  },
   PROFILE: {
-    name: "profile",
     label: "Profile",
     path: "/profile",
     element: <Profile />,
   },
-  ...ACCOUNT_CONFIG,
+  ...USER_CONFIG,
+  ...ROLE_CONFIG,
   ...PLATFORM_CONFIG,
+  ...ACCOUNT_CONFIG,
   ...LINK_ACCOUNT_CONFIG,
   ...BACKUP_CODE_CONFIG,
 };
 
-const NOT_REQUIRE_SESSION_KEY_PAGES: Set<string> = new Set([
-  PAGE_CONFIG.PROFILE.name,
-]);
+const SESSION_KEY_PAGES: Set<string> = new Set([PAGE_CONFIG.ACCOUNT.name]);
 
-const DECRYPT_FIELDS = {
-  ACCOUNT: [
-    "username",
-    "password",
-    "note",
-    "ref.username",
-    "platform.name",
-    "ref.platform.name",
-  ],
-  PLATFORM: ["name"],
-  BACKUP_CODE: ["code"],
+const BASIC_PAGE_CONFIG = {
+  ACTIVATE_ACCOUNT: {
+    label: "Activate account",
+    path: "/activate-account/:token",
+    element: <ActivateAccount />,
+  },
 };
 
 const SIDEBAR_MENUS = [
+  {
+    name: "User management",
+    icon: <UsersIcon size={20} />,
+    items: [PAGE_CONFIG.USER, PAGE_CONFIG.ROLE],
+  },
   {
     name: "Account management",
     icon: <KeyIcon size={20} />,
@@ -86,8 +94,8 @@ const SIDEBAR_MENUS = [
 export {
   PAGE_CONFIG,
   SIDEBAR_MENUS,
-  DECRYPT_FIELDS,
   N_LESSONS_SIDEBAR_MENUS,
   N_LESSONS_PAGE_CONFIG,
-  NOT_REQUIRE_SESSION_KEY_PAGES,
+  SESSION_KEY_PAGES,
+  BASIC_PAGE_CONFIG,
 };

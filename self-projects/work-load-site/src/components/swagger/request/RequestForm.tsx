@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import useForm from "../../../hooks/useForm";
 import { HostPattern, PathPattern } from "../../../types/constant";

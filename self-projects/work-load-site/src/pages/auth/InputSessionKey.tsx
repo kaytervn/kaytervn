@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useGlobalContext } from "../../components/config/GlobalProvider";
-import useForm from "../../hooks/useForm";
 import { useEffect, useState } from "react";
-import { ActionSection, ModalForm } from "../../components/form/FormCard";
-import { CancelButton, SubmitButton } from "../../components/form/Button";
-import useModal from "../../hooks/useModal";
+import { useGlobalContext } from "../../components/config/GlobalProvider";
 import useApi from "../../hooks/useApi";
 import { TimerResetIcon } from "lucide-react";
-import { decryptRSA, extractBase64FromPem } from "../../types/utils";
+import { CancelButton, SubmitButton } from "../../components/form/Button";
+import useModal from "../../hooks/useModal";
+import { TextAreaField2 } from "../../components/form/TextareaField";
+import { ActionSection, ModalForm } from "../../components/form/FormCard";
 import { BASIC_MESSAGES, BUTTON_TEXT, TOAST } from "../../types/constant";
 import { LoadingDialog } from "../../components/form/Dialog";
-import { TextAreaField2 } from "../../components/form/TextareaField";
+import useForm from "../../hooks/useForm";
+import { decryptRSA } from "../../types/utils";
 import { decryptClientField } from "../../services/encryption/clientEncryption";
 
 const InputKeyForm = ({ isVisible, formConfig }: any) => {
@@ -19,16 +19,14 @@ const InputKeyForm = ({ isVisible, formConfig }: any) => {
   const [mySecretKey, setMySecretKey] = useState<any>(null);
   const validate = (form: any) => {
     const newErrors: any = {};
-    try {
-      const key = extractBase64FromPem(decryptClientField(form.sessionKey));
-      const decryptedKey = decryptRSA(key, mySecretKey);
-      if (!decryptedKey) {
-        newErrors.sessionKey = "Invalid session key";
-      } else {
-        setSessionKey(decryptedKey);
-      }
-    } catch {
-      newErrors.sessionKey = "Invalid session key";
+    const decryptedKey = decryptRSA(
+      decryptClientField(form.sessionKey),
+      mySecretKey
+    );
+    if (!decryptedKey) {
+      newErrors.sessionKey = "Invalid key";
+    } else {
+      setSessionKey(decryptedKey);
     }
     return newErrors;
   };
@@ -71,18 +69,18 @@ const InputKeyForm = ({ isVisible, formConfig }: any) => {
       <ModalForm
         isVisible={isVisible}
         onClose={formConfig?.hideModal}
-        title={"Input Session Key"}
+        title={"Input session key"}
         children={
           <>
             <div className="flex flex-col space-y-4">
               <TextAreaField2
-                title="Session key"
+                title="Secret key"
                 isRequired={true}
-                placeholder="Enter session key"
+                placeholder="Enter your secret key"
                 value={form?.sessionKey}
                 onChangeText={(value: any) => handleChange("sessionKey", value)}
                 error={errors?.sessionKey}
-                maxLength={5000}
+                maxLength={2000}
               />
               <ActionSection
                 children={
@@ -119,7 +117,7 @@ const InputSessionKey = () => {
         <div className="flex flex-col items-center justify-center space-y-4">
           <TimerResetIcon className="text-gray-600" size={100} />
           <h2 className="text-lg font-semibold text-white">
-            SESSION KEY TIMEOUT
+            SESSION KEY TIMED OUT
           </h2>
           <SubmitButton text={"Input key"} onClick={handleOpenModal} />
         </div>

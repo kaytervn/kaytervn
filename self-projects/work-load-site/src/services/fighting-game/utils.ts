@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 function isColliding({ attackBox, hitBox }: any) {
   return !(
     attackBox.position.x + attackBox.width < hitBox.position.x ||

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import CopyToClipboard from "react-copy-to-clipboard";
 import CustomModal from "../form/CustomModal";
 import { toast } from "react-toastify";

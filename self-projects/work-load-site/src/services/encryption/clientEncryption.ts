@@ -1,20 +1,16 @@
 import { ENV } from "../../types/constant";
-import { generateMd5 } from "../../types/utils";
 import * as CryptoJS from "crypto-js";
+import { decryptAES, encryptAES } from "../../types/utils";
 
 const getClientSecretKey = () => {
-  try {
-    return generateMd5(`${ENV.CLIENT_ID}:${ENV.CLIENT_SECRET}`);
-  } catch {
-    return null;
-  }
+  return ENV.MSA_CLIENT_KEY;
 };
 
-const encryptClient = (key: any, value: any) => {
+const encryptBasic = (key: any, value: any) => {
   return CryptoJS.AES.encrypt(value, key).toString();
 };
 
-const decryptClient = (key: any, encryptedValue: any) => {
+const decryptBasic = (key: any, encryptedValue: any) => {
   const decrypted = CryptoJS.AES.decrypt(encryptedValue, key);
   return decrypted.toString(CryptoJS.enc.Utf8);
 };
@@ -36,10 +32,7 @@ const decryptClientData = (item: any, fields: any) => {
 
     const finalKey = keys[keys.length - 1];
     if (current[finalKey]) {
-      current[finalKey] = decryptClient(
-        getClientSecretKey(),
-        current[finalKey]
-      );
+      current[finalKey] = decryptAES(getClientSecretKey(), current[finalKey]);
     }
   });
 
@@ -63,10 +56,7 @@ const encryptClientData = (item: any, fields: any) => {
 
     const finalKey = keys[keys.length - 1];
     if (current[finalKey]) {
-      current[finalKey] = encryptClient(
-        getClientSecretKey(),
-        current[finalKey]
-      );
+      current[finalKey] = encryptAES(getClientSecretKey(), current[finalKey]);
     }
   });
 
@@ -74,11 +64,11 @@ const encryptClientData = (item: any, fields: any) => {
 };
 
 const encryptClientField = (value: any) => {
-  return encryptClient(getClientSecretKey(), value);
+  return encryptAES(getClientSecretKey(), value);
 };
 
 const decryptClientField = (value: any) => {
-  return decryptClient(getClientSecretKey(), value);
+  return decryptAES(getClientSecretKey(), value);
 };
 
 const encryptClientList = (list: any, fields: any) => {
@@ -97,4 +87,6 @@ export {
   decryptClientList,
   encryptClientList,
   getClientSecretKey,
+  encryptBasic,
+  decryptBasic,
 };

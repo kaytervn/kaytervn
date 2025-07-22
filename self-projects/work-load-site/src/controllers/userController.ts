@@ -3,25 +3,16 @@ import { AUTH_TYPE, ENV, LOCAL_STORAGE, METHOD } from "../types/constant";
 export const userController = (fetchApi: any) => {
   const login = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
-      endpoint: "/v1/user/login",
+      apiUrl: ENV.MSA_JAVA_API_URL,
+      endpoint: "/api/token",
       method: METHOD.POST,
       payload,
       authType: AUTH_TYPE.BASIC,
     });
 
-  const inputKey = (payload: any) =>
-    fetchApi({
-      apiUrl: ENV.MSA_API_URL,
-      endpoint: "/v1/key/input-key",
-      method: METHOD.POST,
-      payload,
-      authType: AUTH_TYPE.NONE,
-    });
-
   const verifyCreditial = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: "/v1/user/verify-credential",
       method: METHOD.POST,
       payload,
@@ -30,18 +21,8 @@ export const userController = (fetchApi: any) => {
 
   const changePassword = (payload: any) => {
     return fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: "/v1/user/change-password",
-      method: METHOD.PUT,
-      payload,
-      authType: AUTH_TYPE.BEARER,
-    });
-  };
-
-  const changePin = (payload: any) => {
-    return fetchApi({
-      apiUrl: ENV.MSA_API_URL,
-      endpoint: "/v1/user/change-pin",
       method: METHOD.PUT,
       payload,
       authType: AUTH_TYPE.BEARER,
@@ -50,7 +31,7 @@ export const userController = (fetchApi: any) => {
 
   const requestKey = (payload: any) => {
     return fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: "/v1/user/request-key",
       method: METHOD.POST,
       payload,
@@ -58,11 +39,41 @@ export const userController = (fetchApi: any) => {
     });
   };
 
-  const verifyToken = () => {
+  const profile = () => {
     return fetchApi({
-      apiUrl: ENV.MSA_API_URL,
-      endpoint: "/v1/user/verify-token",
+      apiUrl: ENV.MSA_JAVA_API_URL,
+      endpoint: "/v1/user/profile",
       method: METHOD.GET,
+      authType: AUTH_TYPE.BEARER,
+    });
+  };
+
+  const create = (payload: any) => {
+    return fetchApi({
+      apiUrl: ENV.MSA_JAVA_API_URL,
+      endpoint: "/v1/user/create",
+      method: METHOD.POST,
+      payload,
+      authType: AUTH_TYPE.BEARER,
+    });
+  };
+
+  const update = (payload: any) => {
+    return fetchApi({
+      apiUrl: ENV.MSA_JAVA_API_URL,
+      endpoint: "/v1/user/update",
+      method: METHOD.PUT,
+      payload,
+      authType: AUTH_TYPE.BEARER,
+    });
+  };
+
+  const updateProfile = (payload: any) => {
+    return fetchApi({
+      apiUrl: ENV.MSA_JAVA_API_URL,
+      endpoint: "/v1/user/update-profile",
+      method: METHOD.PUT,
+      payload,
       authType: AUTH_TYPE.BEARER,
     });
   };
@@ -70,7 +81,7 @@ export const userController = (fetchApi: any) => {
   const getMyKey = () => {
     localStorage.removeItem(LOCAL_STORAGE.SESSION_KEY);
     return fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: "/v1/user/my-key",
       method: METHOD.GET,
       authType: AUTH_TYPE.BEARER,
@@ -79,7 +90,7 @@ export const userController = (fetchApi: any) => {
 
   const requestForgetPassword = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: "/v1/user/request-forgot-password",
       method: METHOD.POST,
       payload: payload,
@@ -88,61 +99,74 @@ export const userController = (fetchApi: any) => {
 
   const resetPassword = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: "/v1/user/reset-password",
       method: METHOD.POST,
       payload,
       authType: AUTH_TYPE.NONE,
     });
 
-  const requestResetMfa = (payload: any) =>
+  const list = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
-      endpoint: "/v1/user/request-reset-mfa",
-      method: METHOD.POST,
-      payload: payload,
-      authType: AUTH_TYPE.NONE,
+      apiUrl: ENV.MSA_JAVA_API_URL,
+      endpoint: "/v1/user/list",
+      method: METHOD.GET,
+      payload,
+      authType: AUTH_TYPE.BEARER,
     });
 
-  const resetMfa = (payload: any) =>
+  const autoComplete = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
+      endpoint: "/v1/user/auto-complete",
+      method: METHOD.GET,
+      payload,
+      authType: AUTH_TYPE.BEARER,
+    });
+
+  const resetMfa = (id: any) =>
+    fetchApi({
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: "/v1/user/reset-mfa",
+      method: METHOD.PUT,
+      payload: { id },
+      authType: AUTH_TYPE.BEARER,
+    });
+
+  const get = (id: any) =>
+    fetchApi({
+      apiUrl: ENV.MSA_JAVA_API_URL,
+      endpoint: `/v1/user/get/${id}`,
+      method: METHOD.GET,
+      authType: AUTH_TYPE.BEARER,
+    });
+
+  const activateAccount = (payload: any) => {
+    return fetchApi({
+      apiUrl: ENV.MSA_JAVA_API_URL,
+      endpoint: "/v1/user/activate-account",
       method: METHOD.POST,
       payload,
       authType: AUTH_TYPE.NONE,
     });
-
-  const clearSystemKey = () =>
-    fetchApi({
-      apiUrl: ENV.MSA_API_URL,
-      endpoint: "/v1/user/clear-key",
-      method: METHOD.GET,
-      authType: AUTH_TYPE.BEARER,
-    });
-
-  const syncSystemProps = () =>
-    fetchApi({
-      apiUrl: ENV.MSA_API_URL,
-      endpoint: "/v1/user/sync-config",
-      method: METHOD.GET,
-      authType: AUTH_TYPE.BEARER,
-    });
+  };
 
   return {
     login,
+    update,
+    updateProfile,
+    list,
+    autoComplete,
     verifyCreditial,
     changePassword,
     requestKey,
-    verifyToken,
     getMyKey,
     requestForgetPassword,
     resetPassword,
-    inputKey,
-    requestResetMfa,
+    profile,
+    create,
     resetMfa,
-    clearSystemKey,
-    changePin,
-    syncSystemProps,
+    get,
+    activateAccount,
   };
 };

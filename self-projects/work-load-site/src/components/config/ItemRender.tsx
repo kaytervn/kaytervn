@@ -1,10 +1,20 @@
-import { ALIGNMENT, GRID_TRUNCATE } from "../../types/constant";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { UserIcon } from "lucide-react";
+import {
+  ALIGNMENT,
+  BASIC_MESSAGES,
+  GRID_TRUNCATE,
+  STATUS_MAP,
+} from "../../types/constant";
 import {
   convertAlignment,
+  convertUtcToVn,
   getEnumItem,
   getNestedValue,
   truncateString,
 } from "../../types/utils";
+import { parse } from "date-fns";
+import { useGlobalContext } from "./GlobalProvider";
 
 const basicRender = ({ content, align = ALIGNMENT.LEFT }: any) => {
   return (
@@ -34,10 +44,10 @@ const renderTextAreaField = ({
 };
 
 const renderEnum = ({
-  label = "Trạng thái",
+  label = "Status",
   accessor = "status",
   align = ALIGNMENT.CENTER,
-  dataMap,
+  dataMap = STATUS_MAP,
 }: any) => {
   return {
     label,
@@ -59,7 +69,7 @@ const renderEnum = ({
 };
 
 const renderHrefLink = ({
-  label = "Họ và tên",
+  label = "Full name",
   accessor = "fullName",
   align = ALIGNMENT.LEFT,
   onClick,
@@ -86,7 +96,14 @@ const renderActionButton = ({
   accessor = "actions",
   align = ALIGNMENT.CENTER,
   renderChildren,
+  role,
 }: any) => {
+  const { hasAnyRoles } = useGlobalContext();
+
+  if (role && !hasAnyRoles(role.flat(Infinity))) {
+    return null;
+  }
+
   return {
     label,
     accessor,
@@ -106,7 +123,7 @@ const renderActionButton = ({
 };
 
 const renderIconField = ({
-  label = "Tên",
+  label = "Name",
   accessor = "name",
   iconMapField = "kind",
   align = ALIGNMENT.LEFT,
@@ -150,7 +167,7 @@ const renderIconField = ({
 };
 
 const renderMoneyField = ({
-  label = "Số tiền",
+  label = "Money",
   accessor = "amount",
   align = ALIGNMENT.RIGHT,
   currencySymbol = "đ",
@@ -186,6 +203,81 @@ const renderMoneyField = ({
   };
 };
 
+const renderImage = ({
+  label = "Avatar",
+  accessor = "avatarPath",
+  Icon = UserIcon,
+  align = ALIGNMENT.LEFT,
+}) => {
+  return {
+    label,
+    accessor,
+    align,
+    render: (item: any) => (
+      <div
+        className={`flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-700`}
+      >
+        {getNestedValue(item, accessor) ? (
+          <img src={getNestedValue(item, accessor)} className="object-cover" />
+        ) : (
+          <Icon size={20} className={`text-white text-sm`} />
+        )}
+      </div>
+    ),
+  };
+};
+
+const renderLastLogin = ({
+  label = "Last login",
+  accessor = "lastLogin",
+  align = ALIGNMENT.CENTER,
+}: any) => {
+  return {
+    label,
+    accessor,
+    align,
+    render: (item: any) => {
+      const dateString = convertUtcToVn(getNestedValue(item, accessor));
+      const lastLogin = dateString
+        ? parse(dateString, "dd/MM/yyyy HH:mm:ss", new Date())
+        : null;
+
+      if (!lastLogin) {
+        return basicRender({
+          align,
+          content: BASIC_MESSAGES.NO_DATA,
+        });
+      }
+
+      const daysAgo = Math.ceil(
+        (new Date().getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      const isRecent = daysAgo <= 1;
+      const isWarning = daysAgo > 1 && daysAgo <= 7;
+      const isOld = daysAgo > 7 && daysAgo <= 30;
+
+      return (
+        <div className={`flex items-center justify-${align} space-x-2 py-2`}>
+          <span
+            className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
+              isRecent
+                ? "bg-green-900/20 text-green-300"
+                : isWarning
+                ? "bg-yellow-900/20 text-yellow-300"
+                : isOld
+                ? "bg-orange-900/20 text-orange-300"
+                : "bg-red-900/20 text-red-300"
+            }`}
+          >
+            {dateString}
+          </span>
+        </div>
+      );
+    },
+  };
+};
+
 export {
   basicRender,
   renderEnum,
@@ -194,4 +286,6 @@ export {
   renderIconField,
   renderMoneyField,
   renderTextAreaField,
+  renderImage,
+  renderLastLogin,
 };

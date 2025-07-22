@@ -1,21 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGlobalContext } from "../../../components/config/GlobalProvider";
-import useApi from "../../../hooks/useApi";
-import useModal from "../../../hooks/useModal";
-import { useCallback, useEffect, useState } from "react";
-import useGridViewLocal from "../../../hooks/useGridViewLocal";
 import {
-  DECRYPT_FIELDS,
-  PAGE_CONFIG,
-} from "../../../components/config/PageConfig";
-import { renderActionButton } from "../../../components/config/ItemRender";
-import {
-  ACCOUNT_KIND_MAP,
-  ALIGNMENT,
-  BASIC_MESSAGES,
-  ITEMS_PER_PAGE,
-} from "../../../types/constant";
+  basicRender,
+  renderActionButton,
+} from "../../../components/config/ItemRender";
+import { PAGE_CONFIG } from "../../../components/config/PageConfig";
 import {
   ActionDeleteButton,
   ActionEditButton,
@@ -26,35 +16,34 @@ import {
   ConfirmationDialog,
   LoadingDialog,
 } from "../../../components/form/Dialog";
-import Sidebar2 from "../../../components/main/Sidebar2";
-import { CreateButton, ToolBar } from "../../../components/main/ToolBar";
-import { SelectBoxLazy } from "../../../components/form/SelectTextField";
 import { GridView } from "../../../components/main/GridView";
+import { CreateButton, ToolBar } from "../../../components/main/ToolBar";
+import useApi from "../../../hooks/useApi";
+import { useGridView } from "../../../hooks/useGridView";
+import useModal from "../../../hooks/useModal";
+import {
+  ACCOUNT_KIND_MAP,
+  ALIGNMENT,
+  BASIC_MESSAGES,
+  ITEMS_PER_PAGE,
+} from "../../../types/constant";
+import { convertUtcToVn } from "../../../types/utils";
+import { useEffect, useState } from "react";
 import useQueryState from "../../../hooks/useQueryState";
-import { decryptDataByUserKey } from "../../../services/encryption/sessionEncryption";
+import Sidebar2 from "../../../components/main/Sidebar2";
+import { InputBox2 } from "../../../components/form/InputTextField";
 import CreateLinkAccount from "./CreateLinkAccount";
 import UpdateLinkAccount from "./UpdateLinkAccount";
 
-const initQuery = { linkAccountPlatformId: "" };
+const initQuery = {
+  keyword: "",
+  page: 0,
+  size: ITEMS_PER_PAGE,
+};
 
 const LinkAccount = () => {
-  const { refId } = useParams();
-  const { state } = useLocation();
-  const { setToast, sessionKey } = useGlobalContext();
-  const {
-    isModalVisible: deleteDialogVisible,
-    showModal: showDeleteDialog,
-    hideModal: hideDeleteDialog,
-    formConfig: deleteDialogConfig,
-  } = useModal();
-  const { account: apiList, loading: loadingList } = useApi();
-  const { account, loading } = useApi();
-  const { platform } = useApi();
-  const { handleNavigateBack } = useQueryState({
-    path: PAGE_CONFIG.ACCOUNT.path,
-    requireSessionKey: true,
-  });
-  const [fetchData, setFetchData] = useState<any>(null);
+  const { parentId } = useParams();
+  const { setToast } = useGlobalContext();
   const {
     isModalVisible: createFormVisible,
     showModal: showCreateForm,
@@ -67,58 +56,50 @@ const LinkAccount = () => {
     hideModal: hideUpdateForm,
     formConfig: updateFormConfig,
   } = useModal();
+  const {
+    isModalVisible: deleteDialogVisible,
+    showModal: showDeleteDialog,
+    hideModal: hideDeleteDialog,
+    formConfig: deleteDialogConfig,
+  } = useModal();
+  const { account: apiList, loading: loadingList } = useApi();
+  const [fetchData, setFetchData] = useState<any>(null);
+  const { account, loading } = useApi();
+  const {
+    data,
+    query,
+    setQuery,
+    totalPages,
+    handlePageChange,
+    handleSubmitQuery,
+  } = useGridView({
+    fetchListApi: apiList.list,
+    initQuery,
+    queryParams: { parentId },
+  });
+
+  const { handleNavigateBack } = useQueryState({
+    path: PAGE_CONFIG.ACCOUNT.path,
+    requireSessionKey: true,
+  });
 
   useEffect(() => {
-    if (!refId) {
+    if (!parentId) {
       handleNavigateBack();
       return;
     }
     const fetchData = async () => {
-      const res = await account.get(refId);
+      const res = await account.get(parentId);
       if (res.result) {
         const data = res.data;
-        setFetchData(
-          decryptDataByUserKey(sessionKey, data, DECRYPT_FIELDS.ACCOUNT)
-        );
+        setFetchData(data);
       } else {
         handleNavigateBack();
       }
     };
 
     fetchData();
-  }, [refId]);
-
-  const customFilterData = useCallback((allData: any[], query: any) => {
-    return allData
-      .filter((item) => {
-        const platformIdFilter =
-          !query?.linkAccountPlatformId ||
-          item.platform?._id == query.linkAccountPlatformId;
-        return platformIdFilter;
-      })
-      .sort((a, b) => {
-        const platformCompare =
-          a.platform?.name?.localeCompare(b.platform?.name || "") || 0;
-        if (platformCompare !== 0) return platformCompare;
-        return a.username?.localeCompare(b.username || "");
-      });
-  }, []);
-
-  const {
-    data,
-    query,
-    totalPages,
-    handlePageChange,
-    handleSubmitQuery,
-    handleDeleteItem,
-    handleRefreshData,
-  } = useGridViewLocal({
-    initQuery: state?.query || initQuery,
-    filterData: customFilterData,
-    fetchListApi: apiList.list,
-    queryParams: { ref: refId },
-    decryptFields: DECRYPT_FIELDS.ACCOUNT,
-  });
+  }, [parentId]);
 
   const columns = [
     {
@@ -126,13 +107,39 @@ const LinkAccount = () => {
       accessor: "platform.name",
       align: ALIGNMENT.LEFT,
     },
+    {
+      label: "Created date",
+      accessor: "createdDate",
+      align: ALIGNMENT.CENTER,
+      render: (item: any) => {
+        return basicRender({
+          align: ALIGNMENT.CENTER,
+          content: convertUtcToVn(item.createdDate),
+        });
+      },
+    },
     renderActionButton({
-      renderChildren: (item: any) => (
-        <>
-          <ActionEditButton onClick={() => onUpdateButtonClick(item._id)} />
-          <ActionDeleteButton onClick={() => onDeleteButtonClick(item._id)} />
-        </>
-      ),
+      role: [
+        PAGE_CONFIG.UPDATE_LINK_ACCOUNT.role,
+        PAGE_CONFIG.DELETE_LINK_ACCOUNT.role,
+      ],
+      renderChildren: (item: any) => {
+        const showDelete = item.totalAccounts == 0;
+        return (
+          <>
+            <ActionEditButton
+              role={PAGE_CONFIG.UPDATE_LINK_ACCOUNT.role}
+              onClick={() => onUpdateButtonClick(item.id)}
+            />
+            {showDelete && (
+              <ActionDeleteButton
+                role={PAGE_CONFIG.DELETE_LINK_ACCOUNT.role}
+                onClick={() => onDeleteButtonClick(item.id)}
+              />
+            )}
+          </>
+        );
+      },
     }),
   ];
 
@@ -141,7 +148,7 @@ const LinkAccount = () => {
       configDeleteDialog({
         label: PAGE_CONFIG.DELETE_LINK_ACCOUNT.label,
         deleteApi: () => account.del(id),
-        refreshData: () => handleDeleteItem(id),
+        refreshData: () => handleSubmitQuery(query),
         hideModal: hideDeleteDialog,
         setToast,
       })
@@ -153,12 +160,12 @@ const LinkAccount = () => {
       configModalForm({
         label: PAGE_CONFIG.CREATE_LINK_ACCOUNT.label,
         fetchApi: account.create,
-        refreshData: handleRefreshData,
+        refreshData: () => handleSubmitQuery(query),
         hideModal: hideCreateForm,
         setToast,
         successMessage: BASIC_MESSAGES.CREATED,
         initForm: {
-          refId,
+          parentId,
           platformId: "",
           note: "",
           kind: ACCOUNT_KIND_MAP.LINKED.value,
@@ -172,7 +179,7 @@ const LinkAccount = () => {
       configModalForm({
         label: PAGE_CONFIG.UPDATE_LINK_ACCOUNT.label,
         fetchApi: account.update,
-        refreshData: handleRefreshData,
+        refreshData: () => handleSubmitQuery(query),
         hideModal: hideUpdateForm,
         setToast,
         successMessage: BASIC_MESSAGES.UPDATED,
@@ -190,7 +197,7 @@ const LinkAccount = () => {
       breadcrumbs={[
         {
           label: `(${fetchData?.platform?.name}) ${
-            fetchData?.ref?.username || fetchData?.username
+            fetchData?.parent?.username || fetchData?.username
           }`,
           onClick: handleNavigateBack,
         },
@@ -217,24 +224,23 @@ const LinkAccount = () => {
           <ToolBar
             searchBoxes={
               <>
-                <SelectBoxLazy
-                  value={query.linkAccountPlatformId}
-                  onChange={(value: any) => {
-                    handleSubmitQuery({
-                      ...query,
-                      linkAccountPlatformId: value,
-                    });
-                  }}
-                  fetchListApi={platform.list}
-                  placeholder="Platform..."
-                  valueKey="_id"
-                  decryptFields={DECRYPT_FIELDS.PLATFORM}
+                <InputBox2
+                  value={query.keyword}
+                  onChangeText={(value: any) =>
+                    setQuery({ ...query, keyword: value })
+                  }
+                  placeholder="Search..."
                 />
               </>
             }
-            onClear={() => handleSubmitQuery(initQuery)}
-            onRefresh={handleRefreshData}
-            actionButtons={<CreateButton onClick={onCreateButtonClick} />}
+            onSearch={async () => await handleSubmitQuery(query)}
+            onClear={async () => await handleSubmitQuery(initQuery)}
+            actionButtons={
+              <CreateButton
+                role={PAGE_CONFIG.CREATE_PLATFORM.role}
+                onClick={onCreateButtonClick}
+              />
+            }
           />
           <GridView
             isLoading={loadingList}
@@ -250,5 +256,4 @@ const LinkAccount = () => {
     />
   );
 };
-
 export default LinkAccount;

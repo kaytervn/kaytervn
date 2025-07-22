@@ -46,7 +46,7 @@ const InputBox2 = ({ value, placeholder, onChangeText }: any) => {
           onClick={handleClear}
           className="p-1 text-gray-300 hover:text-gray-100 rounded-full hover:bg-gray-700 transition-colors duration-200"
         >
-          <XIcon size={14} />
+          <XIcon size={12} />
         </button>
       )}
     </div>

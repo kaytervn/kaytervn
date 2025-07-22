@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GORGEOUS_SWAGGER, HEADER_MANAGER } from "../../types/pageConfig";

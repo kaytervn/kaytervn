@@ -1,11 +1,24 @@
 import { getNestedValue } from "../../types/utils";
+import { useGlobalContext } from "../config/GlobalProvider";
 import { NoData2 } from "../NoData";
 import Pagination from "../Pagination";
 
-const ActionButton = ({ onClick, Icon, color, title = "Sample" }: any) => {
+const ActionButton = ({
+  onClick,
+  Icon,
+  color,
+  role,
+  title = "Sample",
+}: any) => {
+  const { hasRoles } = useGlobalContext();
+
+  if (role && !hasRoles(role)) {
+    return null;
+  }
+
   return (
     <button
-      className={`px-1 py-2 hover:opacity-90`}
+      className={`p-1 hover:opacity-90`}
       onClick={onClick}
       title={title}
       style={{ color }}

@@ -1,17 +1,27 @@
 import { AUTH_TYPE, ENV, METHOD } from "../types/constant";
 
 export const platformController = (fetchApi: any) => {
-  const list = () =>
+  const list = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: "/v1/platform/list",
       method: METHOD.GET,
+      payload,
+      authType: AUTH_TYPE.BEARER,
+    });
+
+  const autoComplete = (payload: any) =>
+    fetchApi({
+      apiUrl: ENV.MSA_JAVA_API_URL,
+      endpoint: "/v1/platform/auto-complete",
+      method: METHOD.GET,
+      payload,
       authType: AUTH_TYPE.BEARER,
     });
 
   const get = (id: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: `/v1/platform/get/${id}`,
       method: METHOD.GET,
       authType: AUTH_TYPE.BEARER,
@@ -19,7 +29,7 @@ export const platformController = (fetchApi: any) => {
 
   const create = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: `/v1/platform/create`,
       method: METHOD.POST,
       authType: AUTH_TYPE.BEARER,
@@ -28,7 +38,7 @@ export const platformController = (fetchApi: any) => {
 
   const update = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: `/v1/platform/update`,
       method: METHOD.PUT,
       payload,
@@ -37,7 +47,7 @@ export const platformController = (fetchApi: any) => {
 
   const del = (id: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_API_URL,
+      apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: `/v1/platform/delete/${id}`,
       method: METHOD.DELETE,
       authType: AUTH_TYPE.BEARER,
@@ -49,5 +59,6 @@ export const platformController = (fetchApi: any) => {
     create,
     update,
     del,
+    autoComplete,
   };
 };
