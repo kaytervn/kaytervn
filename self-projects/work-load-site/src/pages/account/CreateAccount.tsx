@@ -32,7 +32,10 @@ const CreateAccount = () => {
   const { platform } = useApi();
   const validate = (form: any) => {
     const newErrors: any = {};
-    if (!VALID_PATTERN.USERNAME.test(form.username)) {
+    if (
+      !VALID_PATTERN.USERNAME.test(form.username) &&
+      !VALID_PATTERN.EMAIL.test(form.username)
+    ) {
       newErrors.username = "Invalid username";
     }
     if (!form.password.trim()) {
