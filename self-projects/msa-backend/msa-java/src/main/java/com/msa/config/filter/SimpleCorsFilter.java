@@ -54,7 +54,7 @@ public class SimpleCorsFilter extends OncePerRequestFilter {
         HttpServletRequest defaultRequest = new CustomBodyRequestWrapper(request, "");
         try {
             String clientRequestId = encryptionService.clientDecrypt(request.getHeader(SecurityConstant.HEADER_CLIENT_REQUEST_ID));
-            CachedBodyHttpServletRequest wrappedRequest = new CachedBodyHttpServletRequest(request);
+            CachedBodyHttpServletRequest wrappedRequest = new CachedBodyHttpServletRequest(request, encryptionService);
             String rawBody = new String(wrappedRequest.getCachedBody(), StandardCharsets.UTF_8);
             RequestDto requestDto = objectMapper.readValue(rawBody, RequestDto.class);
             String decryptedJson = AESUtils.decrypt(clientRequestId, requestDto.getRequest());

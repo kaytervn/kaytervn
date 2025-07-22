@@ -119,7 +119,9 @@ const useFetch = () => {
           const credentials = btoa(
             `${ENV.MSA_CLIENT_ID}:${ENV.MSA_CLIENT_SECRET}`
           );
-          headers[API_HEADER.AUTHORIZATION] = `Basic ${credentials}`;
+          headers[API_HEADER.AUTHORIZATION] = encryptClientField(
+            `Basic ${credentials}`
+          );
           break;
         }
       }
