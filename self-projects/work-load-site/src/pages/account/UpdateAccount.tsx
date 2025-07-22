@@ -157,6 +157,7 @@ const UpdateAccount = () => {
                     value={form.platformId}
                     onChange={(value: any) => handleChange("platformId", value)}
                     error={errors.platformId}
+                    initSearch={fetchData?.platform?.name}
                   />
                   <StaticSelectField
                     title="Kind"

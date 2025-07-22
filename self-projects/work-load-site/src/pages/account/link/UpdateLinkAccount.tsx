@@ -35,6 +35,7 @@ const UpdateLinkAccount = ({ isVisible, formConfig }: any) => {
           id: data.id,
           platformId: data.platform?.id,
           note: data.note,
+          platformName: data.platform?.name,
         });
       } else {
         formConfig?.hideModal();
@@ -77,6 +78,7 @@ const UpdateLinkAccount = ({ isVisible, formConfig }: any) => {
                 value={form.platformId}
                 onChange={(value: any) => handleChange("platformId", value)}
                 error={errors.platformId}
+                initSearch={form?.platformName}
               />
               <TextAreaField2
                 title="Note"
