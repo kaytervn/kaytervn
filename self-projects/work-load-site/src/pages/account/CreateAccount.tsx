@@ -19,7 +19,6 @@ import {
   BASIC_MESSAGES,
   BUTTON_TEXT,
   TOAST,
-  VALID_PATTERN,
 } from "../../types/constant";
 
 const CreateAccount = () => {
@@ -32,10 +31,7 @@ const CreateAccount = () => {
   const { platform } = useApi();
   const validate = (form: any) => {
     const newErrors: any = {};
-    if (
-      !VALID_PATTERN.USERNAME.test(form.username) &&
-      !VALID_PATTERN.EMAIL.test(form.username)
-    ) {
+    if (!form.username.trim()) {
       newErrors.username = "Invalid username";
     }
     if (!form.password.trim()) {

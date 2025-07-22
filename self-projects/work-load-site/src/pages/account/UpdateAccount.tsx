@@ -9,7 +9,6 @@ import {
   BASIC_MESSAGES,
   BUTTON_TEXT,
   TOAST,
-  VALID_PATTERN,
 } from "../../types/constant";
 import { useEffect, useState } from "react";
 import useForm from "../../hooks/useForm";
@@ -43,7 +42,7 @@ const UpdateAccount = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (isRoot()) {
-      if (!VALID_PATTERN.USERNAME.test(form.username)) {
+      if (!form.username.trim()) {
         newErrors.username = "Invalid username";
       }
       if (!form.password.trim()) {
