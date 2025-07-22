@@ -31,13 +31,17 @@ import {
 import Sidebar2 from "../../components/main/Sidebar2";
 import { CreateButton, ToolBar } from "../../components/main/ToolBar";
 import { InputBox2 } from "../../components/form/InputTextField";
-import { StaticSelectBox } from "../../components/form/SelectTextField";
+import {
+  SelectBox2,
+  StaticSelectBox,
+} from "../../components/form/SelectTextField";
 import { convertUtcToVn } from "../../types/utils";
 
 const initQuery = {
   keyword: "",
   kind: "",
   sortOption: "",
+  platformId: "",
   page: 0,
   size: ITEMS_PER_PAGE,
 };
@@ -49,6 +53,7 @@ const Account = () => {
   const navigate = useNavigate();
   const { account, loading } = useApi();
   const { account: apiList, loading: loadingList } = useApi();
+  const { platform } = useApi();
   const {
     data,
     query,
@@ -192,6 +197,14 @@ const Account = () => {
                     setQuery({ ...query, keyword: value })
                   }
                   placeholder="Search..."
+                />
+                <SelectBox2
+                  value={query.platformId}
+                  onChange={(value: any) => {
+                    setQuery({ ...query, platformId: value });
+                  }}
+                  fetchListApi={platform.autoComplete}
+                  placeholder="Platform..."
                 />
                 <StaticSelectBox
                   value={query.kind}
