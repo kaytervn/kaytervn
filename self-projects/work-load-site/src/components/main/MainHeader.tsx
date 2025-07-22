@@ -39,6 +39,7 @@ const MainHeader = ({ breadcrumbs }: any) => {
   } = useModal();
 
   const handleChangePassword = () => {
+    setIsDropdownOpen(false);
     showChangePasswordForm({
       title: BUTTON_TEXT.CHANGE_PASSWORD,
       hideModal: hideChangePasswordForm,
