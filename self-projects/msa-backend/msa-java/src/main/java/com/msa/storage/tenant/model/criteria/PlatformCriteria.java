@@ -29,7 +29,10 @@ public class PlatformCriteria {
                 predicates.add(cb.equal(root.get("id"), getId()));
             }
             if (StringUtils.isNotBlank(getName())) {
-                predicates.add(cb.like(cb.lower(root.get("name")), "%" + getName().toLowerCase() + "%"));
+                String keywordLower = "%" + getName().toLowerCase() + "%";
+                Predicate p1 = cb.like(cb.lower(root.get("name")), keywordLower);
+                Predicate p2 = cb.like(cb.lower(root.get("url")), keywordLower);
+                predicates.add(cb.or(p1, p2));
             }
             if (StringUtils.isNotBlank(getUrl())) {
                 predicates.add(cb.like(cb.lower(root.get("url")), "%" + getUrl().toLowerCase() + "%"));
