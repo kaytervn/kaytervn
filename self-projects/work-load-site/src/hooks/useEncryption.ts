@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useGlobalContext } from "../components/config/GlobalProvider";
+import { encryptClientField } from "../services/encryption/clientEncryption";
 import {
   decryptFieldByUserKey,
   encryptFieldByUserKey,
@@ -16,9 +17,14 @@ const useEncryption = () => {
     return decryptFieldByUserKey(sessionKey, value);
   };
 
+  const getAuthHeader = (secret: any, value: any) => {
+    return encryptClientField([secret, value].join("|"));
+  };
+
   return {
     userEncrypt,
     userDecrypt,
+    getAuthHeader,
   };
 };
 

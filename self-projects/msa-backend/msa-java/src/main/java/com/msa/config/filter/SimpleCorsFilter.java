@@ -7,6 +7,7 @@ import com.msa.service.encryption.EncryptionService;
 import com.msa.utils.AESUtils;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -16,9 +17,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -43,7 +48,25 @@ public class SimpleCorsFilter extends OncePerRequestFilter {
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
-            filterChain.doFilter(decryptRequest(request), response);
+            HttpServletRequest wrapper = new HttpServletRequestWrapper(request) {
+                @Override
+                public String getHeader(String name) {
+                    String authHeader = super.getHeader(name);
+                    if (SecurityConstant.HEADER_AUTHORIZATION.equalsIgnoreCase(name)) {
+                        return encryptionService.getAuthHeader(authHeader);
+                    }
+                    return super.getHeader(name);
+                }
+                @Override
+                public Enumeration<String> getHeaders(String name) {
+                    String authHeader = super.getHeader(name);
+                    if (StringUtils.isNotBlank(authHeader) && SecurityConstant.HEADER_AUTHORIZATION.equalsIgnoreCase(name)) {
+                        return Collections.enumeration(List.of(encryptionService.getAuthHeader(authHeader)));
+                    }
+                    return super.getHeaders(name);
+                }
+            };
+            filterChain.doFilter(decryptRequest(wrapper), response);
         }
     }
 
@@ -54,7 +77,7 @@ public class SimpleCorsFilter extends OncePerRequestFilter {
         HttpServletRequest defaultRequest = new CustomBodyRequestWrapper(request, "");
         try {
             String clientRequestId = encryptionService.clientDecrypt(request.getHeader(SecurityConstant.HEADER_CLIENT_REQUEST_ID));
-            CachedBodyHttpServletRequest wrappedRequest = new CachedBodyHttpServletRequest(request, encryptionService);
+            CachedBodyHttpServletRequest wrappedRequest = new CachedBodyHttpServletRequest(request);
             String rawBody = new String(wrappedRequest.getCachedBody(), StandardCharsets.UTF_8);
             RequestDto requestDto = objectMapper.readValue(rawBody, RequestDto.class);
             String decryptedJson = AESUtils.decrypt(clientRequestId, requestDto.getRequest());

@@ -30,6 +30,7 @@ import {
 } from "../services/encryption/clientEncryption";
 import { minimatch } from "minimatch";
 import { jwtDecode } from "jwt-decode";
+import useEncryption from "./useEncryption";
 
 interface FetchOptions {
   apiUrl: string;
@@ -49,6 +50,7 @@ const useFetch = () => {
     "/v1/lesson/**",
   ];
   const { refreshSessionTimeout, setIsUnauthorized } = useGlobalContext();
+  const { getAuthHeader } = useEncryption();
   const [loading, setLoading] = useState(false);
 
   const handleFetch = useCallback(async (options: FetchOptions) => {
@@ -111,7 +113,10 @@ const useFetch = () => {
       switch (options.authType) {
         case AUTH_TYPE.BEARER: {
           if (isValidJWT(token)) {
-            headers[API_HEADER.AUTHORIZATION] = `Bearer ${token}`;
+            headers[API_HEADER.AUTHORIZATION] = getAuthHeader(
+              fingerSecret,
+              `Bearer ${token}`
+            );
           }
           break;
         }
@@ -119,7 +124,8 @@ const useFetch = () => {
           const credentials = btoa(
             `${ENV.MSA_CLIENT_ID}:${ENV.MSA_CLIENT_SECRET}`
           );
-          headers[API_HEADER.AUTHORIZATION] = encryptClientField(
+          headers[API_HEADER.AUTHORIZATION] = getAuthHeader(
+            fingerSecret,
             `Basic ${credentials}`
           );
           break;

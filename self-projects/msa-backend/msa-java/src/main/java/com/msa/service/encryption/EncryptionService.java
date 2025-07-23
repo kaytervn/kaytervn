@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class EncryptionService {
@@ -71,5 +73,14 @@ public class EncryptionService {
 
     public KeyWrapperDto getServerKeyWrapper() {
         return new KeyWrapperDto(serverKey, getUserSecretKey());
+    }
+
+    public String getAuthHeader(String value) {
+        try {
+            List<String> parts = List.of(clientDecrypt(value).split("\\|"));
+            return parts.get(1);
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 }

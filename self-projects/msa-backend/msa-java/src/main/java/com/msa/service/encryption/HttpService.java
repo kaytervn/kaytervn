@@ -39,7 +39,7 @@ public class HttpService {
             if (!MediaType.APPLICATION_JSON.includes(MediaType.valueOf(request.getContentType()))) {
                 return "";
             }
-            CachedBodyHttpServletRequest wrappedRequest = new CachedBodyHttpServletRequest(request, encryptionService);
+            CachedBodyHttpServletRequest wrappedRequest = new CachedBodyHttpServletRequest(request);
             return new String(wrappedRequest.getCachedBody(), StandardCharsets.UTF_8);
         } catch (Exception e) {
             return "";

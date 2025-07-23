@@ -2,7 +2,6 @@ package com.msa.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msa.cache.SessionService;
-import com.msa.constant.AppConstant;
 import com.msa.constant.ErrorCode;
 import com.msa.constant.SecurityConstant;
 import com.msa.dto.ApiMessageDto;
