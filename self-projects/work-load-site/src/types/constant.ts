@@ -162,7 +162,7 @@ const defaultTenantHeader = [
 
 const myPublicSecretKey = "D@y1aK3yDu0cC0n9";
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 15;
 const GRID_TRUNCATE = 125;
 const TRUNCATE_LENGTH = 150;
 const FETCH_INTERVAL = 300;

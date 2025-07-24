@@ -12,10 +12,12 @@ import com.msa.mapper.AccountMapper;
 import com.msa.service.encryption.EncryptionService;
 import com.msa.storage.tenant.model.Account;
 import com.msa.storage.tenant.model.Platform;
+import com.msa.storage.tenant.model.Tag;
 import com.msa.storage.tenant.model.criteria.AccountCriteria;
 import com.msa.storage.tenant.repository.AccountRepository;
 import com.msa.storage.tenant.repository.BackupCodeRepository;
 import com.msa.storage.tenant.repository.PlatformRepository;
+import com.msa.storage.tenant.repository.TagRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,8 @@ public class AccountController extends ABasicController {
     private EncryptionService encryptionService;
     @Autowired
     private BackupCodeRepository backupCodeRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     private void updatePlatformTotalAccounts(Long platformId) {
         Integer count = accountRepository.countByPlatformId(platformId);
@@ -105,6 +109,15 @@ public class AccountController extends ABasicController {
             throw new BadRequestException(ErrorCode.PLATFORM_ERROR_NOT_FOUND, "Not found platform");
         }
         account.setPlatform(platform);
+        if (form.getTagId() != null) {
+            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_ACCOUNT).orElse(null);
+            if (tag == null) {
+                throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
+            }
+            account.setTag(tag);
+        } else {
+            account.setTag(null);
+        }
         if (AppConstant.ACCOUNT_KIND_ROOT.equals(form.getKind())) {
             if (accountRepository.existsByUsernameAndPlatformId(account.getUsername(), platform.getId())) {
                 throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_RECORD_EXISTED, "Username existed with this platform");
@@ -144,6 +157,15 @@ public class AccountController extends ABasicController {
         Platform platform = platformRepository.findById(form.getPlatformId()).orElse(null);
         if (platform == null) {
             throw new BadRequestException(ErrorCode.PLATFORM_ERROR_NOT_FOUND, "Not found platform");
+        }
+        if (form.getTagId() != null) {
+            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_ACCOUNT).orElse(null);
+            if (tag == null) {
+                throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
+            }
+            account.setTag(tag);
+        } else {
+            account.setTag(null);
         }
         Long oldPlatformId = account.getPlatform().getId();
         Long newPlatformId = platform.getId();

@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 @Data
 public class CreateUserForm {
-    @UsernameConstraint
+    @PatternConstraint
     @ApiModelProperty(required = true)
     private String username;
     @NotBlank(message = "password cannot be blank")

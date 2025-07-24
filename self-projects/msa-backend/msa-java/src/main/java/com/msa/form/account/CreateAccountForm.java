@@ -18,4 +18,5 @@ public class CreateAccountForm {
     @ApiModelProperty(required = true)
     private Long platformId;
     private Long parentId;
+    private Long tagId;
 }

@@ -1,10 +1,13 @@
 package com.msa.utils;
 
 import com.msa.constant.AppConstant;
+import com.msa.constant.SecurityConstant;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -113,5 +116,30 @@ public final class DateUtils {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static String formatDate(LocalDate date, String format) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        return date.format(formatter);
+    }
+
+    public static LocalDate parseDate(String dateStr, String format) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+            return LocalDate.parse(dateStr, formatter);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
+    }
+
+    public static LocalDate addMonthsSafe(LocalDate date, int months) {
+        YearMonth ym = YearMonth.from(date.plusMonths(months));
+        int day = Math.min(date.getDayOfMonth(), ym.lengthOfMonth());
+        return LocalDate.of(ym.getYear(), ym.getMonth(), day);
+    }
+
+    public static LocalDateTime getCurrentDateTime(String zoneId) {
+        ZoneId zone = ZoneId.of(zoneId);
+        return LocalDateTime.now(zone);
     }
 }

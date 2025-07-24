@@ -7,6 +7,7 @@ import com.msa.storage.master.repository.FileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +31,7 @@ public class CloudinaryService {
         return (dotIndex != -1) ? fileName.substring(0, dotIndex) : fileName;
     }
 
+    @Async
     public UploadFileDto uploadFile(MultipartFile file) throws Exception {
         Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
         UploadFileDto dto = new UploadFileDto();
@@ -37,6 +39,7 @@ public class CloudinaryService {
         return dto;
     }
 
+    @Async
     public void deleteFile(String filePath) {
         if (StringUtils.isBlank(filePath)) {
             return;

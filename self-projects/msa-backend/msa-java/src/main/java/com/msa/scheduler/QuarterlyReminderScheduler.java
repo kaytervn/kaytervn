@@ -2,6 +2,7 @@ package com.msa.scheduler;
 
 import com.msa.cache.SessionService;
 import com.msa.constant.AppConstant;
+import com.msa.constant.SecurityConstant;
 import com.msa.service.encryption.EncryptionService;
 import com.msa.service.mail.MailServiceImpl;
 import com.msa.storage.master.model.User;
@@ -36,7 +37,7 @@ public class QuarterlyReminderScheduler {
     @Value("${app.client-domain}")
     private String clientDomain;
 
-    @Scheduled(cron = "0 0 0 1 1,4,7,10 *")
+    @Scheduled(cron = "0 0 0 1 1,4,7,10 *", zone = SecurityConstant.TIMEZONE_VIETNAM)
     public void sendMessageReminder() {
         userRepository.updateAllActiveUserStatus(AppConstant.STATUS_PENDING);
         List<User> users = userRepository.findAllByStatus(AppConstant.STATUS_PENDING);

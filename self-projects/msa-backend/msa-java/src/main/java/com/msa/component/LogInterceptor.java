@@ -14,6 +14,7 @@ import com.msa.service.encryption.HttpService;
 import com.msa.service.impl.UserServiceImpl;
 import com.msa.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -56,8 +57,11 @@ public class LogInterceptor implements HandlerInterceptor {
         if (!isValidSession(jwt)) {
             return handleUnauthorized(response, ErrorCode.GENERAL_ERROR_INVALID_SESSION, "Invalid session");
         }
+        String tenantName = encryptionService.clientDecrypt(request.getHeader(SecurityConstant.HEADER_X_TENANT));
         if (jwt != null) {
             TenantDBContext.setCurrentTenant(SecurityConstant.DB_USER_PREFIX + jwt.getUsername());
+        } else if (StringUtils.isNotBlank(tenantName)) {
+            TenantDBContext.setCurrentTenant(tenantName);
         }
         return true;
     }

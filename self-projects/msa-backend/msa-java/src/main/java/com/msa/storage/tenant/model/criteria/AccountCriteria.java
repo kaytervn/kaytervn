@@ -3,6 +3,7 @@ package com.msa.storage.tenant.model.criteria;
 import com.msa.constant.AppConstant;
 import com.msa.storage.tenant.model.Account;
 import com.msa.storage.tenant.model.Platform;
+import com.msa.storage.tenant.model.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -26,13 +27,16 @@ public class AccountCriteria {
     private Long parentId;
     private Integer status;
     private Integer sortOption;
+    private Long tagId;
 
     public Specification<Account> getCriteria() {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             Join<Account, Platform> platformJoin = root.join("platform", JoinType.LEFT);
+            Join<Account, Tag> tagJoin = root.join("tag", JoinType.LEFT);
             Join<Account, Account> parentJoin = root.join("parent", JoinType.LEFT);
             Join<Account, Platform> parentPlatformJoin = parentJoin.join("platform", JoinType.LEFT);
+            Join<Account, Tag> parentTagJoin = parentJoin.join("tag", JoinType.LEFT);
             if (getId() != null) {
                 predicates.add(cb.equal(root.get("id"), getId()));
             }
@@ -49,13 +53,19 @@ public class AccountCriteria {
                 Predicate p2 = cb.like(cb.lower(root.get("note")), keywordLower);
                 Predicate p3 = cb.like(cb.lower(platformJoin.get("name")), keywordLower);
                 Predicate p4 = cb.like(cb.lower(platformJoin.get("url")), keywordLower);
+                Predicate p5 = cb.like(cb.lower(tagJoin.get("name")), keywordLower);
 
-                Predicate p5 = cb.like(cb.lower(parentJoin.get("username")), keywordLower);
-                Predicate p6 = cb.like(cb.lower(parentJoin.get("note")), keywordLower);
-                Predicate p7 = cb.like(cb.lower(parentPlatformJoin.get("name")), keywordLower);
-                Predicate p8 = cb.like(cb.lower(parentPlatformJoin.get("url")), keywordLower);
+                Predicate p6 = cb.like(cb.lower(parentJoin.get("username")), keywordLower);
+                Predicate p7 = cb.like(cb.lower(parentJoin.get("note")), keywordLower);
+                Predicate p8 = cb.like(cb.lower(parentPlatformJoin.get("name")), keywordLower);
+                Predicate p9 = cb.like(cb.lower(parentPlatformJoin.get("url")), keywordLower);
+                Predicate p10 = cb.like(cb.lower(parentTagJoin.get("name")), keywordLower);
 
-                predicates.add(cb.or(p1, p2, p3, p4, p5, p6, p7, p8));
+                predicates.add(cb.or(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10));
+            }
+            if (getTagId() != null) {
+                Join<Account, Tag> join = root.join("tag", JoinType.INNER);
+                predicates.add(cb.equal(join.get("id"), getTagId()));
             }
             if (getPlatformId() != null) {
                 Join<Account, Platform> join = root.join("platform", JoinType.INNER);

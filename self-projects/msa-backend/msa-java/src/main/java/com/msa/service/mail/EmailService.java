@@ -23,15 +23,15 @@ public class EmailService {
     private String email;
 
     @Async
-    public void sendEmail(String toEmail, String subject, String templates, Map<String, Object> variables) {
+    public void sendEmail(String sender, String toEmail, String subject, String templates, Map<String, Object> variables) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
-            helper.setFrom("MSA <" + email + ">");
+            helper.setFrom(sender + " <" + email + ">");
             String content = thymeleafService.createContent(templates, variables);
             helper.setText(content, true);
             helper.setTo(toEmail);
-            helper.setSubject("[No-Reply] " + subject);
+            helper.setSubject(subject);
             javaMailSender.send(message);
         } catch (Exception e) {
             log.error(e.getMessage(), e);

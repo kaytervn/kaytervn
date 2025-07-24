@@ -16,4 +16,5 @@ public class UpdateAccountForm {
     @NotNull(message = "platformId cannot be null")
     @ApiModelProperty(required = true)
     private Long platformId;
+    private Long tagId;
 }

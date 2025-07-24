@@ -11,72 +11,361 @@
             supported-color-schemes: light dark;
         }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            color: #000000;
-            padding: 30px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333333;
+            padding: 40px 20px;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .email-wrapper {
+            max-width: 650px;
+            margin: 0 auto;
         }
 
         .email-container {
-            background-color: #ffffff;
-            color: #000000;
-            padding: 30px;
-            max-width: 600px;
-            margin: auto;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 50px 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="0.8" fill="white" opacity="0.05"/><circle cx="50" cy="10" r="0.6" fill="white" opacity="0.08"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo::after {
+            content: '🔐';
+            font-size: 36px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .greeting {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 30px;
+        }
+
+        .greeting span {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .message {
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin: 40px 0;
         }
 
         .btn {
             display: inline-block;
-            padding: 12px 24px;
-            background-color: #007bff;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #ffffff !important;
             text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            margin-top: 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+            margin: 40px 0;
+        }
+
+        .disclaimer {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #718096;
+            text-align: center;
+            border: 1px solid #e2e8f0;
         }
 
         .footer {
-            font-size: 0.9em;
-            color: #888888;
-            margin-top: 30px;
+            background: #f8fafc;
+            padding: 30px 40px;
             text-align: center;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer p {
+            font-size: 14px;
+            color: #a0aec0;
+            margin: 0;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50%;
+            margin: 0 5px;
+            line-height: 40px;
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .header,
+            .content,
+            .footer {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .greeting {
+                font-size: 20px;
+            }
+
+            .btn {
+                padding: 16px 32px;
+                font-size: 15px;
+            }
         }
 
         @media (prefers-color-scheme: dark) {
             body {
-                background-color: #1e1e1e;
-                color: #f1f1f1;
+                background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
             }
 
             .email-container {
-                background-color: #2c2c2c;
-                color: #f1f1f1;
-                box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+                background: #2d3748;
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            }
+
+            .header {
+                background: linear-gradient(135deg, #4c51bf 0%, #553c9a 100%);
+            }
+
+            .content {
+                background: #2d3748;
+            }
+
+            .greeting {
+                color: #f7fafc;
+            }
+
+            .greeting span {
+                background: linear-gradient(135deg, #9f7aea, #ed64a6);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .message {
+                color: #cbd5e0;
+            }
+
+            .highlight-box {
+                background: linear-gradient(135deg, #1a202c, #2d3748);
+                border-left-color: #9f7aea;
+            }
+
+            .highlight-box p {
+                color: #e2e8f0;
             }
 
             .btn {
-                background-color: #0d6efd;
-                color: #ffffff !important;
+                background: linear-gradient(135deg, #9f7aea 0%, #ed64a6 100%);
+                box-shadow: 0 10px 25px rgba(159, 122, 234, 0.3);
+            }
+
+            .btn:hover {
+                box-shadow: 0 15px 35px rgba(159, 122, 234, 0.4);
+            }
+
+            .divider {
+                background: linear-gradient(90deg, transparent, #4a5568, transparent);
+            }
+
+            .disclaimer {
+                background: #1a202c;
+                color: #a0aec0;
+                border-color: #4a5568;
             }
 
             .footer {
-                color: #aaaaaa;
+                background: #1a202c;
+                border-top-color: #4a5568;
+            }
+
+            .footer p {
+                color: #718096;
+            }
+
+            .social-links a {
+                background: linear-gradient(135deg, #9f7aea, #ed64a6);
             }
         }
     </style>
 </head>
 <body>
-<div class="email-container">
-    <h2>Dear <span th:text="${name}"></span>, </h2>
-    <p>Due to our security policy, your account will be periodically set to <strong>pending</strong> status.</p>
-    <p>Please click the button below to activate your account:</p>
-    <a class="btn" th:href="${link}" target="_blank" rel="noopener noreferrer">Activate</a>
-    <p>If you have already activated your account, please disregard this email.</p>
-    <div class="footer"> © 2025 MSA. All rights reserved.
+<div class="email-wrapper">
+    <div class="email-container">
+        <div class="header">
+            <div class="logo"></div>
+            <h1>Account Security</h1>
+            <p>Activate your account to continue</p>
+        </div>
+
+        <div class="content">
+            <div class="greeting">
+                Hello <span th:text="${name}">User</span>! 👋
+            </div>
+
+            <p class="message">
+                We hope this message finds you well. As part of our ongoing commitment to keeping your account secure, we periodically review account statuses.
+            </p>
+
+            <div class="highlight-box">
+                <p>🔒 Your account status has been set to <strong>pending</strong> for security purposes. This is a routine security measure to protect your data.</p>
+            </div>
+
+            <p class="message">
+                To restore full access to your account, please click the activation button below. This process is quick and ensures your account remains protected.
+            </p>
+
+            <div class="btn-container">
+                <a class="btn" th:href="${link}" target="_blank" rel="noopener noreferrer">
+                    ✨ Activate Account
+                </a>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="disclaimer">
+                <p>🛡️ <strong>Already activated?</strong> You can safely ignore this email. If you didn't request this activation, please contact our support team immediately.</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 MSA. All rights reserved.</p>
+        </div>
     </div>
 </div>
 </body>

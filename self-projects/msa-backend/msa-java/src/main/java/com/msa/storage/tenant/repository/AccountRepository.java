@@ -30,4 +30,9 @@ public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpec
     @Transactional
     @Query("UPDATE Account tb SET tb.totalBackupCodes = :count WHERE tb.id = :id")
     void updateTotalBackupCodes(@Param("id") Long id, @Param("count") Integer count);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Account tb SET tb.tag = NULL WHERE tb.tag.id = :id")
+    void updateTagIdNull(@Param("id") Long id);
 }

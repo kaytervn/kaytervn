@@ -383,6 +383,5 @@ public class UserController extends ABasicController {
         user.setStatus(AppConstant.STATUS_ACTIVE);
         userRepository.save(user);
         return makeSuccessResponse(null, "Activate account success");
-
     }
 }

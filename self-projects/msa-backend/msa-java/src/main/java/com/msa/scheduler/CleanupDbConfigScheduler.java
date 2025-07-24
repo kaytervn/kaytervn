@@ -1,6 +1,7 @@
 package com.msa.scheduler;
 
 import com.msa.cloudinary.CloudinaryService;
+import com.msa.constant.SecurityConstant;
 import com.msa.storage.master.model.DbConfig;
 import com.msa.storage.master.model.User;
 import com.msa.storage.master.repository.DbConfigRepository;
@@ -29,7 +30,7 @@ public class CleanupDbConfigScheduler {
     @Autowired
     private UserRepository userRepository;
 
-    @Scheduled(cron = "0 0 0 * * *", zone = "UTC")
+    @Scheduled(cron = "0 0 0 * * *", zone = SecurityConstant.TIMEZONE_UTC)
     public void cleanupExpiredLockedConfigs() {
         Date expiredDate = Date.from(Instant.now().minus(DAYS_TO_EXPIRED, ChronoUnit.DAYS));
         List<DbConfig> dbConfigs = dbConfigRepository.findAllByLockedTimeBefore(expiredDate);

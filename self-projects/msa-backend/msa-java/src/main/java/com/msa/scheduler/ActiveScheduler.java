@@ -21,7 +21,7 @@ public class ActiveScheduler {
     @Autowired
     private SocketHandler socketHandler;
 
-    @Scheduled(fixedRate = INTERVAL, zone = "UTC")
+    @Scheduled(fixedRate = INTERVAL)
     public void handleActive() {
         pingServer();
         cleanupClientChannel();
@@ -31,7 +31,8 @@ public class ActiveScheduler {
         for (String url : ACTIVE_URLS) {
             try {
                 feignActiveService.ping(url);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
             log.error("GET request sent to {}", url);
         }
     }

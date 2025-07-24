@@ -30,6 +30,9 @@ public class Account extends Auditable<String> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Account parent;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
     private Integer totalChildren = 0;
     private Integer totalBackupCodes = 0;
 }

@@ -1,5 +1,6 @@
 package com.msa;
 
+import com.msa.constant.SecurityConstant;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -19,7 +20,7 @@ import java.util.TimeZone;
 public class Application {
     @PostConstruct
     public void init() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone(SecurityConstant.TIMEZONE_UTC));
         System.out.println("Spring boot application running in UTC timezone: " + new Date());
     }
 

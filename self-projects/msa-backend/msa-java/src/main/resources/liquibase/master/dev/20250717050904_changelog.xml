@@ -655,4 +655,426 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet author="MSA" id="1752728957490-20">
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="26"/>
+            <column name="name" value="Create tag"/>
+            <column name="permission_code" value="TA_C"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Tag"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="27"/>
+            <column name="name" value="Update tag"/>
+            <column name="permission_code" value="TA_U"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Tag"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="28"/>
+            <column name="name" value="Delete tag"/>
+            <column name="permission_code" value="TA_D"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Tag"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="29"/>
+            <column name="name" value="Get tag"/>
+            <column name="permission_code" value="TA_V"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Tag"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="30"/>
+            <column name="name" value="Get list tag"/>
+            <column name="permission_code" value="TA_L"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Tag"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="31"/>
+            <column name="name" value="Create contact"/>
+            <column name="permission_code" value="CO_C"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Contact"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="32"/>
+            <column name="name" value="Update contact"/>
+            <column name="permission_code" value="CO_U"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Contact"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="33"/>
+            <column name="name" value="Delete contact"/>
+            <column name="permission_code" value="CO_D"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Contact"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="34"/>
+            <column name="name" value="Get contact"/>
+            <column name="permission_code" value="CO_V"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Contact"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="35"/>
+            <column name="name" value="Get list contact"/>
+            <column name="permission_code" value="CO_L"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Contact"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="36"/>
+            <column name="name" value="Create id number"/>
+            <column name="permission_code" value="ID_N_C"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Id Number"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="37"/>
+            <column name="name" value="Update id number"/>
+            <column name="permission_code" value="ID_N_U"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Id Number"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="38"/>
+            <column name="name" value="Delete id number"/>
+            <column name="permission_code" value="ID_N_D"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Id Number"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="39"/>
+            <column name="name" value="Get id number"/>
+            <column name="permission_code" value="ID_N_V"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Id Number"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="40"/>
+            <column name="name" value="Get list id number"/>
+            <column name="permission_code" value="ID_N_L"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Id Number"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="41"/>
+            <column name="name" value="Create link"/>
+            <column name="permission_code" value="LI_C"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Link"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="42"/>
+            <column name="name" value="Update link"/>
+            <column name="permission_code" value="LI_U"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Link"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="43"/>
+            <column name="name" value="Delete link"/>
+            <column name="permission_code" value="LI_D"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Link"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="44"/>
+            <column name="name" value="Get link"/>
+            <column name="permission_code" value="LI_V"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Link"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="45"/>
+            <column name="name" value="Get list link"/>
+            <column name="permission_code" value="LI_L"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Link"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="46"/>
+            <column name="name" value="Create note"/>
+            <column name="permission_code" value="NO_C"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Note"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="47"/>
+            <column name="name" value="Update note"/>
+            <column name="permission_code" value="NO_U"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Note"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="48"/>
+            <column name="name" value="Delete note"/>
+            <column name="permission_code" value="NO_D"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Note"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="49"/>
+            <column name="name" value="Get note"/>
+            <column name="permission_code" value="NO_V"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Note"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="50"/>
+            <column name="name" value="Get list note"/>
+            <column name="permission_code" value="NO_L"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Note"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="51"/>
+            <column name="name" value="Create schedule"/>
+            <column name="permission_code" value="SC_C"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Schedule"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="52"/>
+            <column name="name" value="Update schedule"/>
+            <column name="permission_code" value="SC_U"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Schedule"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="53"/>
+            <column name="name" value="Delete schedule"/>
+            <column name="permission_code" value="SC_D"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Schedule"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="54"/>
+            <column name="name" value="Get schedule"/>
+            <column name="permission_code" value="SC_V"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Schedule"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="55"/>
+            <column name="name" value="Get list schedule"/>
+            <column name="permission_code" value="SC_L"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Schedule"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="56"/>
+            <column name="name" value="Create software"/>
+            <column name="permission_code" value="SO_C"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Software"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="57"/>
+            <column name="name" value="Update software"/>
+            <column name="permission_code" value="SO_U"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Software"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="58"/>
+            <column name="name" value="Delete software"/>
+            <column name="permission_code" value="SO_D"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Software"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="59"/>
+            <column name="name" value="Get software"/>
+            <column name="permission_code" value="SO_V"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Software"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="60"/>
+            <column name="name" value="Get list software"/>
+            <column name="permission_code" value="SO_L"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Software"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

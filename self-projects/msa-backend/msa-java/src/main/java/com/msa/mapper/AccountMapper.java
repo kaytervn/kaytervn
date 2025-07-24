@@ -9,7 +9,7 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {PlatformMapper.class},
+@Mapper(componentModel = "spring", uses = {PlatformMapper.class, TagMapper.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface AccountMapper extends ABasicMapper {
@@ -29,6 +29,7 @@ public interface AccountMapper extends ABasicMapper {
     @Mapping(source = "note", target = "note")
     @Mapping(source = "platform", target = "platform", qualifiedByName = "fromEntityToPlatformDto")
     @Mapping(source = "parent", target = "parent", qualifiedByName = "fromEntityToAccountDtoAutoComplete")
+    @Mapping(source = "tag", target = "tag", qualifiedByName = "fromEntityToTagDtoAutoComplete")
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "totalBackupCodes", target = "totalBackupCodes")
     @Mapping(source = "totalChildren", target = "totalChildren")

@@ -1,0 +1,256 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="MSA" id="1753333929415-1">
+        <createTable tableName="db_bank">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_bankPK"/>
+            </column>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="numbers" type="TEXT"/>
+            <column name="pins" type="TEXT"/>
+            <column name="tag_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-2">
+        <createTable tableName="db_contact">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_contactPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="phones" type="TEXT"/>
+            <column name="note" type="TEXT"/>
+            <column name="tag_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-3">
+        <createTable tableName="db_id_number">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_id_numberPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="note" type="TEXT"/>
+            <column name="tag_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-4">
+        <createTable tableName="db_link">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_linkPK"/>
+            </column>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="link" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="note" type="TEXT"/>
+            <column name="tag_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-5">
+        <createTable tableName="db_note">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_notePK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="note" type="TEXT"/>
+            <column name="tag_id" type="BIGINT"/>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-6">
+        <createTable tableName="db_schedule">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_schedulePK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="emails" type="TEXT"/>
+            <column name="sender" type="VARCHAR(255)"/>
+            <column name="image_path" type="VARCHAR(255)"/>
+            <column name="content" type="TEXT"/>
+            <column name="time" type="VARCHAR(255)"/>
+            <column name="checked_date" type="VARCHAR(255)"/>
+            <column name="due_date" type="datetime"/>
+            <column name="amount" type="INT"/>
+            <column name="tag_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-7">
+        <createTable tableName="db_software">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_softwarePK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="link" type="VARCHAR(255)"/>
+            <column name="note" type="TEXT"/>
+            <column name="tag_id" type="BIGINT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-8">
+        <createTable tableName="db_tag">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_tagPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="kind" type="INT"/>
+            <column name="color" type="VARCHAR(255)"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-9">
+        <addColumn tableName="db_account">
+            <column name="tag_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-10">
+        <addUniqueConstraint columnNames="code" constraintName="UC_DB_ID_NUMBERCODE_COL" tableName="db_id_number"/>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-11">
+        <addUniqueConstraint columnNames="name" constraintName="UC_DB_ID_NUMBERNAME_COL" tableName="db_id_number"/>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-12">
+        <addUniqueConstraint columnNames="name" constraintName="UC_DB_TAGNAME_COL" tableName="db_tag"/>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-13">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_contact" constraintName="FK251n29vpp9v5ym98xeetw5a1q" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-14">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_id_number" constraintName="FK6urrs3ynq8xailslmisfb5icy" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-15">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_note" constraintName="FK7e1hywpf6o4rvk316bkt43rbj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-16">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_account" constraintName="FK7yiwpob5kcf733s9xj74y6fy" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-17">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_bank" constraintName="FKfp5ume33uck9g6bvqsp8t0dl3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-18">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_schedule" constraintName="FKg6y6bop53qj7kcheocxwb1k1j" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-19">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_link" constraintName="FKphckupkbqhe9n274yqjucklqg" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-20">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_software" constraintName="FKqrmiyd432durp7si7gbuaeead" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_tag" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
