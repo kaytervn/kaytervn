@@ -52,7 +52,7 @@ public class AppConstant {
     public static final Integer SCHEDULE_KIND_DAYS = 1;
     public static final Integer SCHEDULE_KIND_MONTHS = 2;
     public static final Integer SCHEDULE_KIND_DAY_MONTH = 3;
-    public static final Integer SCHEDULE_KIND_DATE = 4;
+    public static final Integer SCHEDULE_KIND_EXACT_DATE = 4;
 
     public static final Integer TAG_KIND_ACCOUNT = 1;
     public static final Integer TAG_KIND_BANK = 2;
@@ -62,6 +62,10 @@ public class AppConstant {
     public static final Integer TAG_KIND_NOTE = 6;
     public static final Integer TAG_KIND_SCHEDULE = 7;
     public static final Integer TAG_KIND_SOFTWARE = 8;
+
+    public static final Integer SCHEDULE_TYPE_AUTO_RENEW = 1;
+    public static final Integer SCHEDULE_TYPE_MANUAL_RENEW = 2;
+    public static final Integer SCHEDULE_TYPE_SUSPENDED = 3;
 
     private AppConstant() {
         throw new IllegalStateException("Utility class");

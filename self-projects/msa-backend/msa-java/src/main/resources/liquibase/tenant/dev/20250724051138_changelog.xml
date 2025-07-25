@@ -253,4 +253,14 @@
     <changeSet author="MSA" id="1753333929415-20">
         <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_software" constraintName="FKqrmiyd432durp7si7gbuaeead" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_tag" validate="true"/>
     </changeSet>
+    <changeSet author="MSA" id="1753333929415-21">
+        <addColumn tableName="db_schedule">
+            <column name="is_sent" type="bit" afterColumn="due_date"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-22">
+        <addColumn tableName="db_schedule">
+            <column name="type" type="integer" afterColumn="kind"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

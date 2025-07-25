@@ -33,7 +33,10 @@ public class TagCriteria {
             if (getStatus() != null) {
                 predicates.add(cb.equal(root.get("status"), getStatus()));
             }
-            query.orderBy(cb.asc(root.get("name")));
+            query.orderBy(
+                    cb.asc(root.get("kind")),
+                    cb.asc(root.get("name"))
+            );
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }

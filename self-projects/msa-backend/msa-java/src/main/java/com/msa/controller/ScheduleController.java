@@ -57,24 +57,14 @@ public class ScheduleController extends ABasicController {
     private EncryptionService encryptionService;
 
     private void validateCheckedDate(String checkedDateStr, Integer kind) {
-        try {
-            if (List.of(AppConstant.SCHEDULE_KIND_DAYS, AppConstant.SCHEDULE_KIND_MONTHS, AppConstant.SCHEDULE_KIND_DATE).contains(kind)) {
-                LocalDate date = DateUtils.parseDate(checkedDateStr, AppConstant.DATE_FORMAT);
-                if (AppConstant.SCHEDULE_KIND_DATE.equals(kind)) {
-                    if (date.isBefore(LocalDate.now(ZoneId.of(SecurityConstant.TIMEZONE_VIETNAM)))) {
-                        throw new BadRequestException("checkedDate must be in the future");
-                    }
-                }
-            } else if (AppConstant.SCHEDULE_KIND_DAY_MONTH.equals(kind)) {
-                LocalDate date = DateUtils.parseDate(checkedDateStr, AppConstant.DAY_MONTH_FORMAT);
-                int day = date.getDayOfMonth();
-                int month = date.getMonthValue();
-                if (day == 29 && month == 2) {
-                    log.warn("checkedDate is 29/02, only valid in leap years");
-                }
-            }
-        } catch (Exception e) {
-            throw new BadRequestException("checkedDate has invalid format");
+        LocalDate date = null;
+        if (List.of(AppConstant.SCHEDULE_KIND_DAYS, AppConstant.SCHEDULE_KIND_MONTHS, AppConstant.SCHEDULE_KIND_EXACT_DATE).contains(kind)) {
+            date = DateUtils.parseDate(checkedDateStr, AppConstant.DATE_FORMAT);
+        } else if (AppConstant.SCHEDULE_KIND_DAY_MONTH.equals(kind)) {
+            date = DateUtils.parseDate(checkedDateStr, AppConstant.DAY_MONTH_FORMAT);
+        }
+        if (date == null) {
+            throw new BadRequestException("checkedDate is invalid");
         }
     }
 
@@ -129,6 +119,14 @@ public class ScheduleController extends ABasicController {
             }
             schedule.setAmount(form.getAmount());
         }
+        if (AppConstant.SCHEDULE_KIND_EXACT_DATE.equals(form.getKind())) {
+            schedule.setType(null);
+        } else {
+            if (form.getType() == null) {
+                throw new BadRequestException("Type is required");
+            }
+            schedule.setType(form.getType());
+        }
         validateCheckedDate(form.getCheckedDate(), form.getKind());
         schedule.setCheckedDate(form.getCheckedDate());
         schedule.setCheckedDate(form.getCheckedDate());
@@ -154,6 +152,10 @@ public class ScheduleController extends ABasicController {
         if (schedule == null) {
             throw new BadRequestException(ErrorCode.SCHEDULE_ERROR_NOT_FOUND, "Not found schedule");
         }
+        Integer oldKind = schedule.getKind();
+        String oldCheckedDate = schedule.getCheckedDate();
+        boolean isKindChanged = !Objects.equals(oldKind, form.getKind());
+        boolean isCheckedDateChanged = !Objects.equals(oldCheckedDate, form.getCheckedDate());
         List<BasicObject> emails = basicApiService.extractListBasicJson(form.getEmails());
         for (BasicObject obj : emails) {
             String email = obj.getName();
@@ -169,6 +171,14 @@ public class ScheduleController extends ABasicController {
             }
             schedule.setAmount(form.getAmount());
         }
+        if (AppConstant.SCHEDULE_KIND_EXACT_DATE.equals(form.getKind())) {
+            schedule.setType(null);
+        } else {
+            if (form.getType() == null) {
+                throw new BadRequestException("Type is required");
+            }
+            schedule.setType(form.getType());
+        }
         validateCheckedDate(form.getCheckedDate(), form.getKind());
         schedule.setCheckedDate(form.getCheckedDate());
         if (scheduleRepository.existsByNameAndIdNot(form.getName(), schedule.getId())) {
@@ -183,6 +193,9 @@ public class ScheduleController extends ABasicController {
             schedule.setTag(tag);
         }
         schedule.setDueDate(basicApiService.calculateDueDate(schedule));
+        if (isKindChanged || isCheckedDateChanged) {
+            schedule.setIsSent(false);
+        }
         scheduleRepository.save(schedule);
         return makeSuccessResponse(null, "Update schedule success");
     }
@@ -211,6 +224,9 @@ public class ScheduleController extends ABasicController {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElse(null);
         if (schedule == null) {
             throw new BadRequestException(ErrorCode.SCHEDULE_ERROR_NOT_FOUND, "Not found schedule");
+        }
+        if (!AppConstant.SCHEDULE_TYPE_MANUAL_RENEW.equals(schedule.getType()) || AppConstant.SCHEDULE_KIND_EXACT_DATE.equals(schedule.getKind()) || !schedule.getIsSent()) {
+            throw new BadRequestException("Not allowed to renew this schedule");
         }
         ZoneId zoneVN = ZoneId.of(SecurityConstant.TIMEZONE_VIETNAM);
         LocalDateTime now = LocalDateTime.now(zoneVN);

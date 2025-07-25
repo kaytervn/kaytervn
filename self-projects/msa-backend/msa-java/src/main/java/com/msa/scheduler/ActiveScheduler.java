@@ -20,9 +20,12 @@ public class ActiveScheduler {
     private List<String> ACTIVE_URLS;
     @Autowired
     private SocketHandler socketHandler;
+    @Autowired
+    private NotificationScheduler notificationScheduler;
 
     @Scheduled(fixedRate = INTERVAL)
     public void handleActive() {
+        notificationScheduler.sendScheduleNotification();
         pingServer();
         cleanupClientChannel();
     }

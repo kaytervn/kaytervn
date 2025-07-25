@@ -27,11 +27,13 @@ public class Schedule extends Auditable<String> {
     private String imagePath;
     @Column(columnDefinition = "TEXT")
     private String content;
-    private Integer kind; // 1: days, 2: months, 3: day_month, 4: date
+    private Integer kind; // 1: days, 2: months, 3: day_month, 4: exact_date
     private Integer amount;
     private String time;
     private String checkedDate;
     private Date dueDate;
+    private Integer type; // 1: auto_renew, 2: manual_renew, 3: suspended
+    private Boolean isSent = false;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id")
     private Tag tag;

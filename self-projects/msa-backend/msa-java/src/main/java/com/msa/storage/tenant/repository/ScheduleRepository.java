@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.List;
+
 public interface ScheduleRepository extends JpaRepository<Schedule, Long>, JpaSpecificationExecutor<Schedule> {
     Boolean existsByName(String name);
 
@@ -17,4 +20,10 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long>, JpaSp
     @Transactional
     @Query("UPDATE Schedule tb SET tb.tag = NULL WHERE tb.tag.id = :id")
     void updateTagIdNull(@Param("id") Long id);
+
+    @Query("SELECT s FROM Schedule s WHERE s.isSent = :isSent AND s.type <> :type AND s.dueDate >= :startDate AND s.dueDate <= :endDate")
+    List<Schedule> findAllDueToday(@Param("isSent") Boolean isSent,
+                                   @Param("type") Integer type,
+                                   @Param("startDate") Date startDate,
+                                   @Param("endDate") Date endDate);
 }

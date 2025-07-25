@@ -15,23 +15,20 @@ import com.msa.utils.ZipUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Service
 @Slf4j
 public class NotificationScheduler {
+    private static final Integer ALLOWED_MINUTES = 1;
     @Autowired
     private ScheduleRepository scheduleRepository;
     @Autowired
@@ -55,38 +52,25 @@ public class NotificationScheduler {
             dto.setTitle(schedule.getName());
             dto.setImagePath(schedule.getImagePath());
             dto.setContent(schedule.getContent());
-            if (List.of(AppConstant.SCHEDULE_KIND_DAYS, AppConstant.SCHEDULE_KIND_MONTHS).contains(schedule.getKind())) {
+            if (AppConstant.SCHEDULE_TYPE_AUTO_RENEW.equals(schedule.getType())) {
+                basicApiService.updateCheckedDate(schedule);
+            } else if (AppConstant.SCHEDULE_TYPE_MANUAL_RENEW.equals(schedule.getType()) && List.of(AppConstant.SCHEDULE_KIND_DAYS, AppConstant.SCHEDULE_KIND_MONTHS, AppConstant.SCHEDULE_KIND_DAY_MONTH).contains(schedule.getKind())) {
                 String token = encryptionService.serverEncrypt(ZipUtils.zipString(String.join(";", List.of(schedule.getId().toString(), new Date().toString()))));
                 String clientToken = encryptionService.clientEncrypt(ZipUtils.zipString(String.join(";", List.of(tenantName, token))));
                 String link = clientDomain + "/check-schedule/" + URLEncoder.encode(clientToken, StandardCharsets.UTF_8);
                 dto.setLink(link);
+                schedule.setIsSent(true);
+                scheduleRepository.save(schedule);
             }
             mailService.sendScheduleNotification(dto);
         }
     }
 
-    @Scheduled(cron = "0 * * * * *")
-    public void processNotifications() {
-        LocalDateTime now = DateUtils.getCurrentDateTime(SecurityConstant.TIMEZONE_VIETNAM);
-        LocalDate today = now.toLocalDate();
-        LocalTime currentTime = now.toLocalTime().withSecond(0).withNano(0);
-        List<String> tenants = dbConfigRepository.findAllUsername();
-        String currentDateStr = DateUtils.formatDate(today, AppConstant.DATE_FORMAT);
-        for (String tenant : tenants) {
-            TenantDBContext.setCurrentTenant(tenant);
-            List<Schedule> schedules = scheduleRepository.findAll();
-            for (Schedule schedule : schedules) {
-                if (shouldSend(schedule, today, currentTime)) {
-                    handleSendEmail(tenant, schedule, currentDateStr);
-                }
-            }
-        }
-    }
-
-    public boolean shouldSend(Schedule schedule, LocalDate today, LocalTime currentTime) {
+    private boolean shouldSend(Schedule schedule, LocalDate today, LocalTime currentTime) {
         try {
             LocalTime scheduleTime = LocalTime.parse(schedule.getTime());
-            if (!currentTime.equals(scheduleTime)) {
+            long diffMinutes = ChronoUnit.MINUTES.between(scheduleTime, currentTime);
+            if (diffMinutes < 0 || diffMinutes > ALLOWED_MINUTES) {
                 return false;
             }
             String checkedDateStr = schedule.getCheckedDate();
@@ -115,6 +99,28 @@ public class NotificationScheduler {
         } catch (Exception e) {
             log.error("shouldSend error (schedule id={}): {}", schedule.getId(), e.getMessage());
             return false;
+        }
+    }
+
+    public void sendScheduleNotification() {
+        ZoneId zoneVN = ZoneId.of(SecurityConstant.TIMEZONE_VIETNAM);
+        LocalDateTime now = LocalDateTime.now(zoneVN);
+        LocalDate today = now.toLocalDate();
+        LocalTime currentTime = now.toLocalTime().withSecond(0).withNano(0);
+        List<String> tenants = dbConfigRepository.findAllUsername();
+        String currentDateStr = DateUtils.formatDate(today, AppConstant.DATE_FORMAT);
+        Date fromDate = Date.from(now.atZone(zoneVN).toInstant());
+        Date toDate = Date.from((now.plusMinutes(ALLOWED_MINUTES).atZone(zoneVN).toInstant()));
+        for (String tenant : tenants) {
+            TenantDBContext.setCurrentTenant(tenant);
+            List<Schedule> schedules = scheduleRepository.findAllDueToday(
+                    false, AppConstant.SCHEDULE_TYPE_SUSPENDED, fromDate, toDate
+            );
+            for (Schedule schedule : schedules) {
+                if (shouldSend(schedule, today, currentTime)) {
+                    handleSendEmail(tenant, schedule, currentDateStr);
+                }
+            }
         }
     }
 }

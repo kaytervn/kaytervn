@@ -5,6 +5,7 @@ import com.msa.form.schedule.CreateScheduleForm;
 import com.msa.form.schedule.UpdateScheduleForm;
 import com.msa.storage.tenant.model.Schedule;
 import org.mapstruct.*;
+
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {TagMapper.class},
@@ -40,6 +41,8 @@ public interface ScheduleMapper {
     @Mapping(source = "time", target = "time")
     @Mapping(source = "checkedDate", target = "checkedDate")
     @Mapping(source = "dueDate", target = "dueDate")
+    @Mapping(source = "type", target = "type")
+    @Mapping(source = "isSent", target = "isSent")
     @Mapping(source = "tag", target = "tag", qualifiedByName = "fromEntityToTagDtoAutoComplete")
     @Mapping(source = "createdDate", target = "createdDate")
     @BeanMapping(ignoreByDefault = true)

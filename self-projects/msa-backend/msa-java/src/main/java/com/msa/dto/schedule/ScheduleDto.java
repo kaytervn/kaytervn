@@ -17,6 +17,8 @@ public class ScheduleDto extends ABasicAdminDto {
     private Integer amount;
     private String time;
     private String checkedDate;
-    private TagDto tag;
     private Date dueDate;
+    private Integer type;
+    private Boolean isSent;
+    private TagDto tag;
 }

@@ -1,10 +1,7 @@
 package com.msa.form.schedule;
 
 import com.msa.constant.AppConstant;
-import com.msa.validation.PatternConstraint;
-import com.msa.validation.ScheduleKind;
-import com.msa.validation.UrlConstraint;
-import com.msa.validation.ValidJsonField;
+import com.msa.validation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -40,4 +37,6 @@ public class CreateScheduleForm {
     @ApiModelProperty(required = true)
     private String checkedDate;
     private Long tagId;
+    @ScheduleType(allowNull = true)
+    private Integer type;
 }

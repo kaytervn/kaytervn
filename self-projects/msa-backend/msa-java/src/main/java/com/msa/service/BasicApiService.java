@@ -69,6 +69,7 @@ public class BasicApiService {
             schedule.setCheckedDate(DateUtils.formatDate(today, AppConstant.DAY_MONTH_FORMAT));
             schedule.setDueDate(calculateDueDate(schedule));
         }
+        schedule.setIsSent(false);
         scheduleRepository.save(schedule);
     }
 
