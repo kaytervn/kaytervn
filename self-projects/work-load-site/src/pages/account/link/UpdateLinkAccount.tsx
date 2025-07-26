@@ -3,7 +3,12 @@ import { useEffect } from "react";
 import { useGlobalContext } from "../../../components/config/GlobalProvider";
 import useApi from "../../../hooks/useApi";
 import useForm from "../../../hooks/useForm";
-import { BASIC_MESSAGES, BUTTON_TEXT, TOAST } from "../../../types/constant";
+import {
+  BASIC_MESSAGES,
+  BUTTON_TEXT,
+  TAG_KIND_MAP,
+  TOAST,
+} from "../../../types/constant";
 import { LoadingDialog } from "../../../components/form/Dialog";
 import { ActionSection, ModalForm } from "../../../components/form/FormCard";
 import { SelectField2 } from "../../../components/form/SelectTextField";
@@ -13,7 +18,7 @@ import { CancelButton, SubmitButton } from "../../../components/form/Button";
 const UpdateLinkAccount = ({ isVisible, formConfig }: any) => {
   const { setToast } = useGlobalContext();
   const { account, loading } = useApi();
-  const { platform } = useApi();
+  const { platform, tag } = useApi();
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.platformId) {
@@ -34,8 +39,10 @@ const UpdateLinkAccount = ({ isVisible, formConfig }: any) => {
         setForm({
           id: data.id,
           platformId: data.platform?.id,
+          tagId: data.tag?.id,
           note: data.note,
           platformName: data.platform?.name,
+          tagName: data.tag?.name,
         });
       } else {
         formConfig?.hideModal();
@@ -79,6 +86,17 @@ const UpdateLinkAccount = ({ isVisible, formConfig }: any) => {
                 onChange={(value: any) => handleChange("platformId", value)}
                 error={errors.platformId}
                 initSearch={form?.platformName}
+              />
+              <SelectField2
+                title="Tag"
+                fetchListApi={tag.autoComplete}
+                placeholder="Choose tag"
+                value={form?.tagId}
+                onChange={(value: any) => handleChange("tagId", value)}
+                error={errors?.tagId}
+                colorCodeField="color"
+                queryParams={{ kind: TAG_KIND_MAP.ACCOUNT.value }}
+                initSearch={form?.tagName}
               />
               <TextAreaField2
                 title="Note"

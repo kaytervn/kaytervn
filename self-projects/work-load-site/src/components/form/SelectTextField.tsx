@@ -141,12 +141,25 @@ const SelectBox2 = ({
   valueKey = "id",
   labelKey = "name",
   queryParams,
+  colorCodeField = "",
 }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [items, setItems] = useState<any[]>([]);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const renderColorTag = (item: any) => {
+    if (getNestedValue(item, colorCodeField)) {
+      return (
+        <span
+          className="inline-block w-4 h-4 mr-2 rounded"
+          style={{ backgroundColor: getNestedValue(item, colorCodeField) }}
+        />
+      );
+    }
+    return null;
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -222,11 +235,18 @@ const SelectBox2 = ({
           />
         ) : (
           <div
-            className={`flex-1 text-sm truncate ${
+            className={`flex-1 text-sm truncate flex items-center ${
               selectedItem ? "text-gray-100" : "text-gray-300"
             }`}
           >
-            {selectedItem ? selectedItem[labelKey] : placeholder}
+            {selectedItem ? (
+              <>
+                {renderColorTag(selectedItem)}
+                {selectedItem[labelKey]}
+              </>
+            ) : (
+              placeholder
+            )}
           </div>
         )}
         {selectedItem && !isOpen ? (
@@ -250,9 +270,10 @@ const SelectBox2 = ({
             items.map((item, index) => (
               <div
                 key={index}
-                className="p-2 hover:bg-gray-500 text-gray-100 cursor-pointer whitespace-nowrap"
+                className="p-2 hover:bg-gray-500 text-gray-100 cursor-pointer whitespace-nowrap flex items-center"
                 onClick={() => handleSelect(item)}
               >
+                {renderColorTag(item)}
                 {item[labelKey]}
               </div>
             ))
@@ -368,12 +389,25 @@ const SelectField2 = ({
   error = "",
   disabled = false,
   initSearch = "",
+  colorCodeField = "",
 }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(initSearch);
   const [items, setItems] = useState<any[]>([]);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const renderColorTag = (item: any) => {
+    if (getNestedValue(item, colorCodeField)) {
+      return (
+        <span
+          className="inline-block w-4 h-4 mr-2 rounded"
+          style={{ backgroundColor: getNestedValue(item, colorCodeField) }}
+        />
+      );
+    }
+    return null;
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -473,7 +507,7 @@ const SelectField2 = ({
             />
           ) : (
             <div
-              className={`flex-1 text-base truncate ${
+              className={`flex-1 text-base truncate flex items-center ${
                 selectedItem
                   ? "text-gray-200"
                   : disabled
@@ -481,7 +515,14 @@ const SelectField2 = ({
                   : "text-gray-500"
               }`}
             >
-              {selectedItem ? selectedItem[labelKey] : placeholder}
+              {selectedItem ? (
+                <>
+                  {renderColorTag(selectedItem)}
+                  {selectedItem[labelKey]}
+                </>
+              ) : (
+                placeholder
+              )}
             </div>
           )}
           {selectedItem && !isOpen && !disabled ? (
@@ -507,9 +548,10 @@ const SelectField2 = ({
               items.map((item, index) => (
                 <div
                   key={index}
-                  className="p-2 hover:bg-gray-700 text-gray-200 cursor-pointer whitespace-nowrap"
+                  className="p-2 hover:bg-gray-700 text-gray-200 cursor-pointer whitespace-nowrap flex items-center"
                   onClick={() => handleSelect(item)}
                 >
+                  {renderColorTag(item)}
                   {item[labelKey]}
                 </div>
               ))

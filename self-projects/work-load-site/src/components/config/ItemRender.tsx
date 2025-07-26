@@ -5,6 +5,7 @@ import {
   BASIC_MESSAGES,
   GRID_TRUNCATE,
   STATUS_MAP,
+  VALID_PATTERN,
 } from "../../types/constant";
 import {
   convertAlignment,
@@ -85,6 +86,37 @@ const renderHrefLink = ({
           onClick={() => onClick(item)}
         >
           {getNestedValue(item, accessor)}
+        </a>
+      );
+    },
+  };
+};
+
+export const renderUrlField = ({
+  label = "Full name",
+  accessor = "platform.name",
+  urlAccessor = "platform.url",
+  align = ALIGNMENT.LEFT,
+}: any) => {
+  return {
+    label,
+    accessor,
+    align,
+    render: (item: any) => {
+      const url = getNestedValue(item, urlAccessor);
+      const content = getNestedValue(item, accessor);
+      if (!url) {
+        return basicRender({
+          content,
+        });
+      }
+      return (
+        <a
+          className={`text-blue-600 hover:underline text-sm text-left whitespace-nowrap hover:cursor-pointer`}
+          title={url}
+          onClick={() => window.open(url, "_blank")}
+        >
+          {content}
         </a>
       );
     },
@@ -278,6 +310,85 @@ const renderLastLogin = ({
   };
 };
 
+const renderColorCode = ({
+  label = "Color",
+  accessor = "color",
+  align = ALIGNMENT.CENTER,
+}: any) => {
+  return {
+    label,
+    accessor,
+    align,
+    render: (item: any) => {
+      const colorCode =
+        getNestedValue(item, accessor)?.toLowerCase() || "#000000";
+      const isValidColor = VALID_PATTERN.COLOR_CODE.test(colorCode);
+
+      const hexToRgb = (hex: string) => {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return { r, g, b };
+      };
+      const { r, g, b } = hexToRgb(colorCode);
+      const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+      const textColor = brightness > 128 ? "#1f2937" : "#ffffff";
+
+      return (
+        <div className={`text-${align}`}>
+          {isValidColor ? (
+            <span
+              className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap shadow-sm"
+              style={{
+                backgroundColor: colorCode,
+                color: textColor,
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+              }}
+            >
+              {colorCode.toUpperCase()}
+            </span>
+          ) : (
+            <span className="px-2 py-1 rounded-full text-xs font-medium text-gray-400 bg-gray-800/50 whitespace-nowrap">
+              Không hợp lệ
+            </span>
+          )}
+        </div>
+      );
+    },
+  };
+};
+
+export const renderTagField = ({
+  label = "Name",
+  accessor = "name",
+  align = ALIGNMENT.LEFT,
+  colorCodeField = "",
+}: any) => {
+  return {
+    label,
+    accessor,
+    align,
+    render: (item: any) => {
+      const value = getNestedValue(item, accessor);
+      const colorCode = getNestedValue(item, colorCodeField);
+
+      return (
+        <div
+          className={`text-${align} flex items-center space-x-2 whitespace-nowrap`}
+        >
+          {colorCode && (
+            <span
+              className="inline-block w-4 h-4 rounded"
+              style={{ backgroundColor: colorCode }}
+            />
+          )}
+          <span className="text-gray-300 text-sm">{value}</span>
+        </div>
+      );
+    },
+  };
+};
+
 export {
   basicRender,
   renderEnum,
@@ -288,4 +399,5 @@ export {
   renderTextAreaField,
   renderImage,
   renderLastLogin,
+  renderColorCode,
 };

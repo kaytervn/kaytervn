@@ -11,12 +11,11 @@ import LessonClient from "../../pages/n-lessons/client/LessonClient";
 import CreateLesson from "../../pages/n-lessons/lesson/CreateLesson";
 import Lesson from "../../pages/n-lessons/lesson/Lesson";
 import UpdateLesson from "../../pages/n-lessons/lesson/UpdateLesson";
-import CreatePlatform from "../../pages/platform/CreatePlatform";
 import Platform from "../../pages/platform/Platform";
-import UpdatePlatform from "../../pages/platform/UpdatePlatform";
 import CreateRole from "../../pages/role/CreateRole";
 import Role from "../../pages/role/Role";
 import UpdateRole from "../../pages/role/UpdateRole";
+import Tag from "../../pages/tag/Tag";
 import CreateUser from "../../pages/user/CreateUser";
 import UpdateUser from "../../pages/user/UpdateUser";
 import User from "../../pages/user/User";
@@ -150,16 +149,36 @@ const PLATFORM_CONFIG = {
   CREATE_PLATFORM: {
     label: "Create platform",
     role: "PL_C",
-    element: <CreatePlatform />,
   },
   UPDATE_PLATFORM: {
     label: "Update platform",
     role: ["PL_U", "PL_V"],
-    element: <UpdatePlatform />,
   },
   DELETE_PLATFORM: {
     label: "Delete platform",
     role: "PL_D",
+  },
+};
+
+const TAG_CONFIG = {
+  TAG: {
+    name: "tag",
+    label: "Tag",
+    path: "/tag",
+    role: "TA_L",
+    element: <Tag />,
+  },
+  CREATE_TAG: {
+    label: "Create tag",
+    role: "TA_C",
+  },
+  UPDATE_TAG: {
+    label: "Update tag",
+    role: ["TA_V", "TA_U"],
+  },
+  DELETE_TAG: {
+    label: "Delete tag",
+    role: "TA_D",
   },
 };
 
@@ -240,4 +259,5 @@ export {
   ACCOUNT_CONFIG,
   LINK_ACCOUNT_CONFIG,
   BACKUP_CODE_CONFIG,
+  TAG_CONFIG,
 };

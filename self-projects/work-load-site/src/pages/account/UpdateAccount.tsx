@@ -8,6 +8,7 @@ import {
   ACCOUNT_KIND_MAP,
   BASIC_MESSAGES,
   BUTTON_TEXT,
+  TAG_KIND_MAP,
   TOAST,
 } from "../../types/constant";
 import { useEffect, useState } from "react";
@@ -35,7 +36,7 @@ const UpdateAccount = () => {
     requireSessionKey: true,
   });
   const { account, loading } = useApi();
-  const { platform } = useApi();
+  const { platform, tag } = useApi();
 
   const isRoot = () => form?.kind == ACCOUNT_KIND_MAP.ROOT.value;
 
@@ -88,6 +89,7 @@ const UpdateAccount = () => {
           platformId: data.platform?.id,
           kind: data.kind,
           parentId: data.parent?.id,
+          tagId: data.tag?.id || "",
         });
       } else {
         handleNavigateBack();
@@ -107,12 +109,14 @@ const UpdateAccount = () => {
           password: encryptFieldByUserKey(sessionKey, form.password),
           note: form.note,
           platformId: form.platformId,
+          tagId: form.tagId,
         });
       } else {
         res = await account.update({
           id,
           note: form.note,
           platformId: form.platformId,
+          tagId: form.tagId,
         });
       }
       if (res.result) {
@@ -190,13 +194,26 @@ const UpdateAccount = () => {
                     />
                   </div>
                 )}
-                <TextAreaField2
-                  title="Note"
-                  placeholder="Enter note"
-                  value={form?.note}
-                  onChangeText={(value: any) => handleChange("note", value)}
-                  error={errors?.note}
-                />
+                <div className="flex flex-row space-x-2">
+                  <TextAreaField2
+                    title="Note"
+                    placeholder="Enter note"
+                    value={form?.note}
+                    onChangeText={(value: any) => handleChange("note", value)}
+                    error={errors?.note}
+                  />
+                  <SelectField2
+                    title="Tag"
+                    fetchListApi={tag.autoComplete}
+                    placeholder="Choose tag"
+                    value={form.tagId}
+                    onChange={(value: any) => handleChange("tagId", value)}
+                    error={errors.tagId}
+                    colorCodeField="color"
+                    queryParams={{ kind: TAG_KIND_MAP.ACCOUNT.value }}
+                    initSearch={fetchData?.tag?.name}
+                  />
+                </div>
                 <ActionSection
                   children={
                     <>

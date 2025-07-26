@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpecificationExecutor<Account> {
     Boolean existsByPlatformId(Long id);
 
@@ -35,4 +37,6 @@ public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpec
     @Transactional
     @Query("UPDATE Account tb SET tb.tag = NULL WHERE tb.tag.id = :id")
     void updateTagIdNull(@Param("id") Long id);
+
+    Optional<Account> findFirstByIdAndKind(Long id, Integer kind);
 }

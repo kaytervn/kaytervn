@@ -126,7 +126,7 @@ public class AccountController extends ABasicController {
             account.setPassword(encryptionService.serverEncrypt(password));
             accountRepository.save(account);
         } else {
-            Account parent = accountRepository.findById(form.getParentId()).orElse(null);
+            Account parent = accountRepository.findFirstByIdAndKind(form.getParentId(), AppConstant.ACCOUNT_KIND_ROOT).orElse(null);
             if (parent == null) {
                 throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_NOT_FOUND, "Not found parent");
             }

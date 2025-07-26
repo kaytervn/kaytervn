@@ -15,6 +15,7 @@ import {
   N_LESSONS_CONFIG,
   PLATFORM_CONFIG,
   ROLE_CONFIG,
+  TAG_CONFIG,
   USER_CONFIG,
 } from "./PageConfigDetails";
 import RedirectHome from "./RedirectHome";
@@ -51,6 +52,7 @@ const PAGE_CONFIG = {
   ...ACCOUNT_CONFIG,
   ...LINK_ACCOUNT_CONFIG,
   ...BACKUP_CODE_CONFIG,
+  ...TAG_CONFIG,
 };
 
 const SESSION_KEY_PAGES: Set<string> = new Set([PAGE_CONFIG.ACCOUNT.name]);
@@ -82,7 +84,7 @@ const SIDEBAR_MENUS = [
   {
     name: "Key information",
     icon: <LockKeyholeIcon size={20} />,
-    items: [],
+    items: [PAGE_CONFIG.TAG],
   },
   {
     name: "Others",

@@ -18,6 +18,7 @@ import {
   ACCOUNT_KIND_MAP,
   BASIC_MESSAGES,
   BUTTON_TEXT,
+  TAG_KIND_MAP,
   TOAST,
 } from "../../types/constant";
 
@@ -28,7 +29,7 @@ const CreateAccount = () => {
     requireSessionKey: true,
   });
   const { account, loading } = useApi();
-  const { platform } = useApi();
+  const { platform, tag } = useApi();
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.username.trim()) {
@@ -49,6 +50,7 @@ const CreateAccount = () => {
       password: "",
       note: "",
       platformId: "",
+      tagId: "",
       kind: ACCOUNT_KIND_MAP.ROOT.value,
     },
     validate
@@ -128,13 +130,25 @@ const CreateAccount = () => {
                     type="password"
                   />
                 </div>
-                <TextAreaField2
-                  title="Note"
-                  placeholder="Enter note"
-                  value={form?.note}
-                  onChangeText={(value: any) => handleChange("note", value)}
-                  error={errors?.note}
-                />
+                <div className="flex flex-row space-x-2">
+                  <TextAreaField2
+                    title="Note"
+                    placeholder="Enter note"
+                    value={form?.note}
+                    onChangeText={(value: any) => handleChange("note", value)}
+                    error={errors?.note}
+                  />
+                  <SelectField2
+                    title="Tag"
+                    fetchListApi={tag.autoComplete}
+                    placeholder="Choose tag"
+                    value={form.tagId}
+                    onChange={(value: any) => handleChange("tagId", value)}
+                    error={errors.tagId}
+                    colorCodeField="color"
+                    queryParams={{ kind: TAG_KIND_MAP.ACCOUNT.value }}
+                  />
+                </div>
                 <ActionSection
                   children={
                     <>

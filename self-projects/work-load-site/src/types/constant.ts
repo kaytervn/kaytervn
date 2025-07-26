@@ -162,7 +162,7 @@ const defaultTenantHeader = [
 
 const myPublicSecretKey = "D@y1aK3yDu0cC0n9";
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 17;
 const GRID_TRUNCATE = 125;
 const TRUNCATE_LENGTH = 150;
 const FETCH_INTERVAL = 300;
@@ -367,6 +367,49 @@ const GRANT_TYPE_MAP = {
   },
 };
 
+export const TAG_KIND_MAP = {
+  ACCOUNT: {
+    value: 1,
+    label: "Account",
+    className: "bg-blue-900 text-blue-300",
+  },
+  BANK: {
+    value: 2,
+    label: "Bank",
+    className: "bg-green-900 text-green-300",
+  },
+  CONTACT: {
+    value: 3,
+    label: "Contact",
+    className: "bg-yellow-900 text-yellow-300",
+  },
+  ID_NUMBER: {
+    value: 4,
+    label: "ID Number",
+    className: "bg-purple-900 text-purple-300",
+  },
+  LINK: {
+    value: 5,
+    label: "Link",
+    className: "bg-indigo-900 text-indigo-300",
+  },
+  NOTE: {
+    value: 6,
+    label: "Note",
+    className: "bg-gray-800 text-gray-300",
+  },
+  SCHEDULE: {
+    value: 7,
+    label: "Schedule",
+    className: "bg-pink-900 text-pink-300",
+  },
+  SOFTWARE: {
+    value: 8,
+    label: "Software",
+    className: "bg-teal-900 text-teal-300",
+  },
+};
+
 const VALID_PATTERN = {
   EMAIL: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/,
   PHONE: /^0[35789][0-9]{8}$/,
@@ -374,6 +417,7 @@ const VALID_PATTERN = {
   USERNAME: /^[a-z0-9](?:[a-z0-9._-]{2,28}[a-z0-9])?$/,
   HOST: /^(localhost|(([a-z0-9-]+\.)*[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}|\[([0-9a-f:]+)\])$/,
   PORT: /^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/,
+  COLOR_CODE: /^#[0-9A-F]{6}$/i,
 };
 
 export {

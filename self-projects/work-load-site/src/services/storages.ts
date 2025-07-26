@@ -1,6 +1,7 @@
 /* eslint-disable no-empty */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { LOCAL_STORAGE } from "../types/constant";
+import { generateTimestamp } from "../types/utils";
 import {
   decryptClientField,
   encryptClientField,
@@ -41,16 +42,36 @@ const isValidJWT = (token: string) => {
   }
 };
 
+const encryptStorage = (value: any) => {
+  if (!value) {
+    return "";
+  }
+  const data = encryptClientField([generateTimestamp(), value].join("|"));
+  if (!data) {
+    return "";
+  }
+  return data;
+};
+
+const decryptStorage = (key: any) => {
+  try {
+    const data = decryptClientField(localStorage.getItem(key));
+    return data?.split("|")[1];
+  } catch {
+    return null;
+  }
+};
+
 const initializeStorage = (storageKey: string, defaultValue: any) => {
   const data = JSON.stringify(defaultValue);
-  localStorage.setItem(storageKey, encryptClientField(data) || "");
+  localStorage.setItem(storageKey, encryptStorage(data));
   return defaultValue;
 };
 
 const getStorageData = (key: string, defaultValue: any = null) => {
   let data = null;
   try {
-    data = decryptClientField(localStorage.getItem(key));
+    data = decryptStorage(key);
   } catch (ignored) {}
 
   if (key === LOCAL_STORAGE.ACCESS_TOKEN) {
@@ -81,10 +102,10 @@ const getStorageData = (key: string, defaultValue: any = null) => {
 const setStorageData = (key: string, value: any) => {
   if (key === LOCAL_STORAGE.ACCESS_TOKEN) {
     localStorage.removeItem(LOCAL_STORAGE.SESSION_KEY);
-    const data = encryptClientField(value) || "";
+    const data = encryptStorage(value);
     localStorage.setItem(key, data);
   } else {
-    const data = encryptClientField(JSON.stringify(value)) || "";
+    const data = encryptStorage(JSON.stringify(value));
     localStorage.setItem(key, data);
   }
 };

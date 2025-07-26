@@ -34,9 +34,11 @@ import Sidebar2 from "../../../components/main/Sidebar2";
 import { InputBox2 } from "../../../components/form/InputTextField";
 import CreateLinkAccount from "./CreateLinkAccount";
 import UpdateLinkAccount from "./UpdateLinkAccount";
+import { SelectBox2 } from "../../../components/form/SelectTextField";
 
 const initQuery = {
   keyword: "",
+  tagId: "",
   page: 0,
   size: ITEMS_PER_PAGE,
 };
@@ -65,6 +67,7 @@ const LinkAccount = () => {
   const { account: apiList, loading: loadingList } = useApi();
   const [fetchData, setFetchData] = useState<any>(null);
   const { account, loading } = useApi();
+  const { tag } = useApi();
   const {
     data,
     query,
@@ -106,6 +109,45 @@ const LinkAccount = () => {
       label: "Platform",
       accessor: "platform.name",
       align: ALIGNMENT.LEFT,
+      render: (item: any) => {
+        const content = item.platform.name;
+        const colorCode = item.tag?.color;
+        const url = item.platform.url;
+        if (!url) {
+          return (
+            <span
+              className={`text-gray-300 text-sm text-left whitespace-nowrap flex flex-row space-x-2`}
+            >
+              {content}
+              {colorCode && (
+                <span
+                  title={item.tag.name}
+                  className="inline-block w-4 h-4 rounded"
+                  style={{ backgroundColor: colorCode }}
+                />
+              )}
+            </span>
+          );
+        }
+        return (
+          <div className="flex flex-row space-x-2 items-center">
+            <a
+              className={`text-blue-600 hover:underline text-sm text-left whitespace-nowrap hover:cursor-pointer`}
+              title={url}
+              onClick={() => window.open(url, "_blank")}
+            >
+              {content}
+            </a>
+            {colorCode && (
+              <span
+                title={item.tag.name}
+                className="inline-block w-4 h-4 rounded"
+                style={{ backgroundColor: colorCode }}
+              />
+            )}
+          </div>
+        );
+      },
     },
     {
       label: "Created date",
@@ -230,6 +272,15 @@ const LinkAccount = () => {
                     setQuery({ ...query, keyword: value })
                   }
                   placeholder="Search..."
+                />
+                <SelectBox2
+                  value={query.tagId}
+                  onChange={(value: any) => {
+                    setQuery({ ...query, tagId: value });
+                  }}
+                  fetchListApi={tag.autoComplete}
+                  placeholder="Tag..."
+                  colorCodeField="color"
                 />
               </>
             }

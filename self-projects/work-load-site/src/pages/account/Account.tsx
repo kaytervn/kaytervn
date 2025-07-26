@@ -14,7 +14,7 @@ import { useGridView } from "../../hooks/useGridView";
 import {
   basicRender,
   renderActionButton,
-  renderEnum,
+  renderUrlField,
 } from "../../components/config/ItemRender";
 import { PAGE_CONFIG } from "../../components/config/PageConfig";
 import {
@@ -35,13 +35,14 @@ import {
   SelectBox2,
   StaticSelectBox,
 } from "../../components/form/SelectTextField";
-import { convertUtcToVn } from "../../types/utils";
+import { convertUtcToVn, getEnumItem } from "../../types/utils";
 
 const initQuery = {
   keyword: "",
   kind: "",
   sortOption: "",
   platformId: "",
+  tagId: "",
   page: 0,
   size: ITEMS_PER_PAGE,
 };
@@ -53,7 +54,7 @@ const Account = () => {
   const navigate = useNavigate();
   const { account, loading } = useApi();
   const { account: apiList, loading: loadingList } = useApi();
-  const { platform } = useApi();
+  const { platform, tag } = useApi();
   const {
     data,
     query,
@@ -67,29 +68,45 @@ const Account = () => {
   });
 
   const columns = [
-    {
+    renderUrlField({
       label: "Platform",
       accessor: "platform.name",
-      align: ALIGNMENT.LEFT,
-    },
+      urlAccessor: "platform.url",
+    }),
     {
       label: "Username",
       accessor: "username",
       align: ALIGNMENT.LEFT,
       render: (item: any) => {
-        return basicRender({
-          content:
-            item.kind == ACCOUNT_KIND_MAP.LINKED.value
-              ? `(${item.parent?.platform?.name}) ${item.parent?.username}`
-              : item.username,
-        });
+        const value: any = getEnumItem(ACCOUNT_KIND_MAP, item.kind);
+        const colorCode = item.tag?.color;
+        const content =
+          item.kind == ACCOUNT_KIND_MAP.LINKED.value
+            ? `(${item.parent?.platform?.name}) ${item.parent?.username}`
+            : item.username;
+        return (
+          <div className="flex flex-row space-x-2 items-center">
+            <span
+              className={`px-2 py-1 rounded-md font-semibold whitespace-nowrap text-xs ${value.className}`}
+            >
+              {value.label}
+            </span>
+            <span
+              className={`text-gray-300 text-sm text-left whitespace-nowrap`}
+            >
+              {content}
+            </span>
+            {colorCode && (
+              <span
+                title={item.tag.name}
+                className="inline-block w-4 h-4 rounded"
+                style={{ backgroundColor: colorCode }}
+              />
+            )}
+          </div>
+        );
       },
     },
-    renderEnum({
-      label: "Kind",
-      accessor: "kind",
-      dataMap: ACCOUNT_KIND_MAP,
-    }),
     {
       label: "Link accounts",
       accessor: "totalChildren",
@@ -205,6 +222,15 @@ const Account = () => {
                   }}
                   fetchListApi={platform.autoComplete}
                   placeholder="Platform..."
+                />
+                <SelectBox2
+                  value={query.tagId}
+                  onChange={(value: any) => {
+                    setQuery({ ...query, tagId: value });
+                  }}
+                  fetchListApi={tag.autoComplete}
+                  placeholder="Tag..."
+                  colorCodeField="color"
                 />
                 <StaticSelectBox
                   value={query.kind}

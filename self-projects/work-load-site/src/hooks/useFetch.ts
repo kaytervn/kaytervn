@@ -21,6 +21,7 @@ import {
   formatJavaDate,
   generateMd5,
   generateRandomString,
+  generateTimestamp,
   zipString,
 } from "../types/utils";
 import {
@@ -55,6 +56,7 @@ const useFetch = () => {
   const handleFetch = useCallback(async (options: FetchOptions) => {
     setLoading(true);
 
+    const nonce = generateTimestamp();
     const fingerSecret = generateRandomString(9);
     const clientRequestId = generateRandomString(16);
     const timestamp = formatJavaDate(new Date());
@@ -113,7 +115,7 @@ const useFetch = () => {
         case AUTH_TYPE.BEARER: {
           if (isValidJWT(token)) {
             headers[API_HEADER.AUTHORIZATION] = getAuthHeader(
-              fingerSecret,
+              nonce,
               `Bearer ${token}`
             );
           }
@@ -124,7 +126,7 @@ const useFetch = () => {
             `${ENV.MSA_CLIENT_ID}:${ENV.MSA_CLIENT_SECRET}`
           );
           headers[API_HEADER.AUTHORIZATION] = getAuthHeader(
-            fingerSecret,
+            nonce,
             `Basic ${credentials}`
           );
           break;
