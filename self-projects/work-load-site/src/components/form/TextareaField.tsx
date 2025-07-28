@@ -205,12 +205,12 @@ const TextAreaField2 = ({
           disabled={disabled}
         />
       </div>
+      {error && <p className="text-red-400 text-sm mt-1 text-left">{error}</p>}
       {value && (
         <div className="mt-2 text-sm text-gray-300 whitespace-pre-wrap">
           {renderWithLinks(value)}
         </div>
       )}
-      {error && <p className="text-red-400 text-sm mt-1 text-left">{error}</p>}
     </div>
   );
 };
