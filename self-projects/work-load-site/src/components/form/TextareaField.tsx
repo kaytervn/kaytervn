@@ -148,6 +148,36 @@ const TextAreaField2 = ({
   disabled = false,
   height = "100",
 }: any) => {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  const renderWithLinks = (text: string) => {
+    const lines = text.split(/\r?\n/);
+    const linkedLines = lines.filter((line) => urlRegex.test(line));
+
+    return linkedLines.map((line, idx) => {
+      const parts = line.split(urlRegex);
+      return (
+        <div key={idx}>
+          {parts.map((part, i) =>
+            urlRegex.test(part) ? (
+              <a
+                key={i}
+                href={part}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 underline"
+              >
+                {part}
+              </a>
+            ) : (
+              <span key={i}>{part}</span>
+            )
+          )}
+        </div>
+      );
+    });
+  };
+
   return (
     <div className="flex-1 items-center">
       {title && (
@@ -175,6 +205,11 @@ const TextAreaField2 = ({
           disabled={disabled}
         />
       </div>
+      {value && (
+        <div className="mt-2 text-sm text-gray-300 whitespace-pre-wrap">
+          {renderWithLinks(value)}
+        </div>
+      )}
       {error && <p className="text-red-400 text-sm mt-1 text-left">{error}</p>}
     </div>
   );
