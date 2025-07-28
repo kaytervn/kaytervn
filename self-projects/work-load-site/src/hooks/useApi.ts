@@ -8,6 +8,7 @@ import { idNumberController } from "../controllers/idNumberController.ts";
 import { lessonController } from "../controllers/lessonController.ts";
 import { linkController } from "../controllers/linkController.ts";
 import { mediaController } from "../controllers/mediaController.ts";
+import { noteController } from "../controllers/noteController.ts";
 import { platformController } from "../controllers/platformController.ts";
 import { roleController } from "../controllers/roleController.ts";
 import { softwareController } from "../controllers/softwareController.ts";
@@ -34,10 +35,12 @@ const useApi = () => {
   const contact = contactController(fetchApi);
   const link = linkController(fetchApi);
   const software = softwareController(fetchApi);
+  const note = noteController(fetchApi);
 
   return {
     user,
     link,
+    note,
     software,
     contact,
     idNumber,

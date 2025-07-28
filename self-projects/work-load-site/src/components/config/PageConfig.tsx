@@ -17,6 +17,7 @@ import {
   LINK_ACCOUNT_CONFIG,
   LINK_CONFIG,
   N_LESSONS_CONFIG,
+  NOTE_CONFIG,
   PLATFORM_CONFIG,
   ROLE_CONFIG,
   SOFTWARE_CONFIG,
@@ -63,6 +64,7 @@ const PAGE_CONFIG = {
   ...CONTACT_CONFIG,
   ...LINK_CONFIG,
   ...SOFTWARE_CONFIG,
+  ...NOTE_CONFIG,
 };
 
 const SESSION_KEY_PAGES: Set<string> = new Set([
@@ -102,7 +104,7 @@ const SIDEBAR_MENUS = [
   {
     name: "Others",
     icon: <FolderIcon size={20} />,
-    items: [PAGE_CONFIG.CONTACT],
+    items: [PAGE_CONFIG.NOTE, PAGE_CONFIG.CONTACT],
   },
 ];
 

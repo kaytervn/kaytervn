@@ -25,6 +25,9 @@ import LessonClient from "../../pages/n-lessons/client/LessonClient";
 import CreateLesson from "../../pages/n-lessons/lesson/CreateLesson";
 import Lesson from "../../pages/n-lessons/lesson/Lesson";
 import UpdateLesson from "../../pages/n-lessons/lesson/UpdateLesson";
+import CreateNote from "../../pages/note/CreateNote";
+import Note from "../../pages/note/Note";
+import UpdateNote from "../../pages/note/UpdateNote";
 import Platform from "../../pages/platform/Platform";
 import CreateRole from "../../pages/role/CreateRole";
 import Role from "../../pages/role/Role";
@@ -404,6 +407,32 @@ export const SOFTWARE_CONFIG = {
   DELETE_SOFTWARE: {
     label: "Delete software",
     role: "SO_D",
+  },
+};
+
+export const NOTE_CONFIG = {
+  NOTE: {
+    name: "note",
+    label: "Note",
+    path: "/note",
+    role: "NO_L",
+    element: <Note />,
+  },
+  CREATE_NOTE: {
+    label: "Create note",
+    path: "/note/create",
+    role: "NO_C",
+    element: <CreateNote />,
+  },
+  UPDATE_NOTE: {
+    label: "Update note",
+    path: "/note/update/:id",
+    role: ["NO_V", "NO_U"],
+    element: <UpdateNote />,
+  },
+  DELETE_NOTE: {
+    label: "Delete note",
+    role: "NO_D",
   },
 };
 
