@@ -10,6 +10,7 @@ import { linkController } from "../controllers/linkController.ts";
 import { mediaController } from "../controllers/mediaController.ts";
 import { platformController } from "../controllers/platformController.ts";
 import { roleController } from "../controllers/roleController.ts";
+import { softwareController } from "../controllers/softwareController.ts";
 import { tagController } from "../controllers/tagController.ts";
 import { userController } from "../controllers/userController.ts";
 import useFetch from "./useFetch.ts";
@@ -32,10 +33,12 @@ const useApi = () => {
   const idNumber = idNumberController(fetchApi);
   const contact = contactController(fetchApi);
   const link = linkController(fetchApi);
+  const software = softwareController(fetchApi);
 
   return {
     user,
     link,
+    software,
     contact,
     idNumber,
     platform,

@@ -19,6 +19,7 @@ import {
   N_LESSONS_CONFIG,
   PLATFORM_CONFIG,
   ROLE_CONFIG,
+  SOFTWARE_CONFIG,
   TAG_CONFIG,
   USER_CONFIG,
 } from "./PageConfigDetails";
@@ -61,6 +62,7 @@ const PAGE_CONFIG = {
   ...ID_NUMBER_CONFIG,
   ...CONTACT_CONFIG,
   ...LINK_CONFIG,
+  ...SOFTWARE_CONFIG,
 };
 
 const SESSION_KEY_PAGES: Set<string> = new Set([
@@ -90,7 +92,7 @@ const SIDEBAR_MENUS = [
   {
     name: "Useful links",
     icon: <LinkIcon size={20} />,
-    items: [PAGE_CONFIG.LINK],
+    items: [PAGE_CONFIG.LINK, PAGE_CONFIG.SOFTWARE],
   },
   {
     name: "Key information",

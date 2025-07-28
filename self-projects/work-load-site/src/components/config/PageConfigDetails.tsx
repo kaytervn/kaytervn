@@ -29,6 +29,9 @@ import Platform from "../../pages/platform/Platform";
 import CreateRole from "../../pages/role/CreateRole";
 import Role from "../../pages/role/Role";
 import UpdateRole from "../../pages/role/UpdateRole";
+import CreateSoftware from "../../pages/software/CreateSoftware";
+import Software from "../../pages/software/Software";
+import UpdateSoftware from "../../pages/software/UpdateSoftware";
 import Tag from "../../pages/tag/Tag";
 import CreateUser from "../../pages/user/CreateUser";
 import UpdateUser from "../../pages/user/UpdateUser";
@@ -375,6 +378,32 @@ export const LINK_CONFIG = {
   DELETE_LINK: {
     label: "Delete link",
     role: "LI_D",
+  },
+};
+
+export const SOFTWARE_CONFIG = {
+  SOFTWARE: {
+    name: "software",
+    label: "Software",
+    path: "/software",
+    role: "SO_L",
+    element: <Software />,
+  },
+  CREATE_SOFTWARE: {
+    label: "Create software",
+    path: "/software/create",
+    role: "SO_C",
+    element: <CreateSoftware />,
+  },
+  UPDATE_SOFTWARE: {
+    label: "Update software",
+    path: "/software/update/:id",
+    role: ["SO_V", "SO_U"],
+    element: <UpdateSoftware />,
+  },
+  DELETE_SOFTWARE: {
+    label: "Delete software",
+    role: "SO_D",
   },
 };
 
