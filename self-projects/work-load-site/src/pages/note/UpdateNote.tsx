@@ -139,6 +139,7 @@ const UpdateNote = () => {
                   onChangeText={(value: any) => handleChange("note", value)}
                   error={errors?.note}
                   height={"500"}
+                  maxLength={5000}
                 />
                 <ActionSection
                   children={
