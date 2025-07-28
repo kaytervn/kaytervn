@@ -371,7 +371,21 @@ export const renderTagField = ({
   accessor = "name",
   align = ALIGNMENT.LEFT,
   colorCodeField = "",
+  colorCodePosition = ALIGNMENT.LEFT,
+  tagNameField = "",
 }: any) => {
+  const renderColor = (colorCode: any, label: any) => {
+    if (!colorCode) {
+      return null;
+    }
+    return (
+      <span
+        title={label}
+        className="inline-block w-4 h-4 rounded"
+        style={{ backgroundColor: colorCode }}
+      />
+    );
+  };
   return {
     label,
     accessor,
@@ -379,18 +393,16 @@ export const renderTagField = ({
     render: (item: any) => {
       const value = getNestedValue(item, accessor);
       const colorCode = getNestedValue(item, colorCodeField);
+      const label = getNestedValue(item, tagNameField);
 
       return (
         <div
           className={`text-${align} flex items-center space-x-2 whitespace-nowrap`}
         >
-          {colorCode && (
-            <span
-              className="inline-block w-4 h-4 rounded"
-              style={{ backgroundColor: colorCode }}
-            />
-          )}
+          {ALIGNMENT.LEFT == colorCodePosition && renderColor(colorCode, label)}
           <span className="text-gray-300 text-sm">{value}</span>
+          {ALIGNMENT.RIGHT == colorCodePosition &&
+            renderColor(colorCode, label)}
         </div>
       );
     },

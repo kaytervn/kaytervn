@@ -97,6 +97,7 @@ const CreateBank = () => {
                     error={errors.tagId}
                     colorCodeField="color"
                     queryParams={{ kind: TAG_KIND_MAP.BANK.value }}
+                    isRequired={true}
                   />
                   <InputField2
                     title="Username"

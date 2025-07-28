@@ -23,12 +23,12 @@ public class ContactCriteria {
 
     public Specification<Contact> getCriteria() {
         return (root, query, cb) -> {
+            Join<Contact, Tag> tagJoin = root.join("tag", JoinType.LEFT);
             List<Predicate> predicates = new ArrayList<>();
             if (getId() != null) {
                 predicates.add(cb.equal(root.get("id"), getId()));
             }
             if (StringUtils.isNotBlank(getKeyword())) {
-                Join<Contact, Tag> tagJoin = root.join("tag", JoinType.LEFT);
                 String keywordLower = "%" + getKeyword().toLowerCase() + "%";
                 Predicate p1 = cb.like(cb.lower(root.get("name")), keywordLower);
                 Predicate p2 = cb.like(cb.lower(root.get("phone")), keywordLower);
@@ -44,7 +44,10 @@ public class ContactCriteria {
             if (getStatus() != null) {
                 predicates.add(cb.equal(root.get("status"), getStatus()));
             }
-            query.orderBy(cb.asc(root.get("name")));
+            query.orderBy(
+                    cb.asc(tagJoin.get("name")),
+                    cb.asc(root.get("name"))
+            );
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }

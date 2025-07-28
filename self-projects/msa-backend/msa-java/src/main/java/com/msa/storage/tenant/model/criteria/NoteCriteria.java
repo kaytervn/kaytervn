@@ -23,12 +23,12 @@ public class NoteCriteria {
 
     public Specification<Note> getCriteria() {
         return (root, query, cb) -> {
+            Join<Note, Tag> tagJoin = root.join("tag", JoinType.LEFT);
             List<Predicate> predicates = new ArrayList<>();
             if (getId() != null) {
                 predicates.add(cb.equal(root.get("id"), getId()));
             }
             if (StringUtils.isNotBlank(getKeyword())) {
-                Join<Note, Tag> tagJoin = root.join("tag", JoinType.LEFT);
                 String keywordLower = "%" + getKeyword().toLowerCase() + "%";
                 Predicate p1 = cb.like(cb.lower(root.get("name")), keywordLower);
                 Predicate p2 = cb.like(cb.lower(root.get("note")), keywordLower);
@@ -42,7 +42,10 @@ public class NoteCriteria {
             if (getStatus() != null) {
                 predicates.add(cb.equal(root.get("status"), getStatus()));
             }
-            query.orderBy(cb.asc(root.get("name")));
+            query.orderBy(
+                    cb.asc(tagJoin.get("name")),
+                    cb.asc(root.get("name"))
+            );
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }

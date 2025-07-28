@@ -98,6 +98,7 @@ const ViewAccount = () => {
                     title="Note"
                     value={fetchData?.note}
                     disabled={true}
+                    height={"200"}
                   />
                   <InputField2
                     title="Tag"

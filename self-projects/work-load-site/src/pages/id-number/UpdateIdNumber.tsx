@@ -5,7 +5,6 @@ import useQueryState from "../../hooks/useQueryState";
 import { PAGE_CONFIG } from "../../components/config/PageConfig";
 import useApi from "../../hooks/useApi";
 import {
-  ACCOUNT_KIND_MAP,
   BASIC_MESSAGES,
   BUTTON_TEXT,
   TAG_KIND_MAP,
@@ -18,54 +17,36 @@ import { LoadingDialog } from "../../components/form/Dialog";
 import { ActionSection, FormCard } from "../../components/form/FormCard";
 import { InputField2 } from "../../components/form/InputTextField";
 import { CancelButton, SubmitButton } from "../../components/form/Button";
-import {
-  SelectField2,
-  StaticSelectField,
-} from "../../components/form/SelectTextField";
-import {
-  decryptFieldByUserKey,
-  encryptFieldByUserKey,
-} from "../../services/encryption/sessionEncryption";
+import { SelectField2 } from "../../components/form/SelectTextField";
 import { TextAreaField2 } from "../../components/form/TextareaField";
 
-const UpdateAccount = () => {
+const UpdateIdNumber = () => {
   const { id } = useParams();
-  const { setToast, sessionKey } = useGlobalContext();
+  const { setToast } = useGlobalContext();
   const { handleNavigateBack } = useQueryState({
-    path: PAGE_CONFIG.ACCOUNT.path,
-    requireSessionKey: true,
+    path: PAGE_CONFIG.ID_NUMBER.path,
   });
-  const { account, loading } = useApi();
-  const { platform, tag } = useApi();
-
-  const isRoot = () => form?.kind == ACCOUNT_KIND_MAP.ROOT.value;
+  const { idNumber, loading } = useApi();
+  const { tag } = useApi();
 
   const validate = (form: any) => {
     const newErrors: any = {};
-    if (isRoot()) {
-      if (!form.username.trim()) {
-        newErrors.username = "Invalid username";
-      }
-      if (!form.password.trim()) {
-        newErrors.password = "Invalid password";
-      }
+    if (!form.name.trim()) {
+      newErrors.name = "Invalid name";
     }
-    if (!form.platformId) {
-      newErrors.platformId = "Invalid platform";
+    if (!form.code.trim()) {
+      newErrors.code = "Invalid code";
     }
     return newErrors;
   };
   const [fetchData, setFetchData] = useState<any>({});
-
   const { form, errors, setForm, resetForm, handleChange, isValidForm } =
     useForm(
       {
-        username: "",
-        password: "",
+        name: "",
+        code: "",
         note: "",
-        platformId: "",
-        refId: "",
-        kind: "",
+        tagId: "",
       },
       validate
     );
@@ -78,17 +59,12 @@ const UpdateAccount = () => {
 
     const fetchData = async () => {
       resetForm();
-      const res = await account.get(id);
+      const res = await idNumber.get(id);
       if (res.result) {
         const data = res.data;
         setFetchData(data);
         setForm({
-          username: data.username,
-          password: decryptFieldByUserKey(sessionKey, data.password),
-          note: data.note,
-          platformId: data.platform?.id,
-          kind: data.kind,
-          parentId: data.parent?.id,
+          ...data,
           tagId: data.tag?.id || "",
         });
       } else {
@@ -101,24 +77,10 @@ const UpdateAccount = () => {
 
   const handleSubmit = async () => {
     if (isValidForm()) {
-      let res;
-      if (isRoot()) {
-        res = await account.update({
-          id,
-          username: form.username,
-          password: encryptFieldByUserKey(sessionKey, form.password),
-          note: form.note,
-          platformId: form.platformId,
-          tagId: form.tagId,
-        });
-      } else {
-        res = await account.update({
-          id,
-          note: form.note,
-          platformId: form.platformId,
-          tagId: form.tagId,
-        });
-      }
+      const res = await idNumber.update({
+        id,
+        ...form,
+      });
       if (res.result) {
         setToast(BASIC_MESSAGES.UPDATED, TOAST.SUCCESS);
         handleNavigateBack();
@@ -134,66 +96,39 @@ const UpdateAccount = () => {
     <Sidebar2
       breadcrumbs={[
         {
-          label: `(${
-            fetchData?.parent?.platform?.name || fetchData?.platform?.name
-          }) ${fetchData?.parent?.username || fetchData?.username}`,
+          label: `${fetchData?.name}`,
           onClick: handleNavigateBack,
         },
         {
-          label: PAGE_CONFIG.UPDATE_ACCOUNT.label,
+          label: PAGE_CONFIG.UPDATE_ID_NUMBER.label,
         },
       ]}
-      activeItem={PAGE_CONFIG.ACCOUNT.name}
+      activeItem={PAGE_CONFIG.ID_NUMBER.name}
       renderContent={
         <>
           <LoadingDialog isVisible={loading} />
           <FormCard
-            title={PAGE_CONFIG.UPDATE_ACCOUNT.label}
+            title={PAGE_CONFIG.UPDATE_ID_NUMBER.label}
             children={
               <div className="flex flex-col space-y-4">
                 <div className="flex flex-row space-x-2">
-                  <SelectField2
-                    title="Platform"
+                  <InputField2
+                    title="Name"
                     isRequired={true}
-                    fetchListApi={platform.autoComplete}
-                    placeholder="Choose platform"
-                    value={form.platformId}
-                    onChange={(value: any) => handleChange("platformId", value)}
-                    error={errors.platformId}
-                    initSearch={fetchData?.platform?.name}
+                    placeholder="Enter name"
+                    value={form.name}
+                    onChangeText={(value: any) => handleChange("name", value)}
+                    error={errors.name}
                   />
-                  <StaticSelectField
-                    title="Kind"
-                    disabled={true}
-                    dataMap={ACCOUNT_KIND_MAP}
-                    value={fetchData?.kind}
+                  <InputField2
+                    title="Code"
+                    isRequired={true}
+                    placeholder="Enter code"
+                    value={form.code}
+                    onChangeText={(value: any) => handleChange("code", value)}
+                    error={errors.code}
                   />
                 </div>
-                {isRoot() && (
-                  <div className="flex flex-row space-x-2">
-                    <InputField2
-                      title="Username"
-                      isRequired={true}
-                      placeholder="Enter username"
-                      value={form.username}
-                      onChangeText={(value: any) =>
-                        handleChange("username", value)
-                      }
-                      error={errors.username}
-                    />
-                    <InputField2
-                      title="Password"
-                      isRequired={true}
-                      placeholder="Enter password"
-                      value={form.password}
-                      onChangeText={(value: any) =>
-                        handleChange("password", value)
-                      }
-                      error={errors.password}
-                      type="password"
-                    />
-                  </div>
-                )}
                 <div className="flex flex-row space-x-2">
                   <TextAreaField2
                     title="Note"
@@ -211,7 +146,7 @@ const UpdateAccount = () => {
                     onChange={(value: any) => handleChange("tagId", value)}
                     error={errors.tagId}
                     colorCodeField="color"
-                    queryParams={{ kind: TAG_KIND_MAP.ACCOUNT.value }}
+                    queryParams={{ kind: TAG_KIND_MAP.ID_NUMBER.value }}
                     initSearch={fetchData?.tag?.name}
                   />
                 </div>
@@ -235,4 +170,4 @@ const UpdateAccount = () => {
   );
 };
 
-export default UpdateAccount;
+export default UpdateIdNumber;

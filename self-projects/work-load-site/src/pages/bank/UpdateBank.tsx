@@ -138,6 +138,7 @@ const UpdateBank = () => {
                     colorCodeField="color"
                     queryParams={{ kind: TAG_KIND_MAP.BANK.value }}
                     initSearch={fetchData?.tag?.name}
+                    isRequired={true}
                   />
                   <InputField2
                     title="Username"

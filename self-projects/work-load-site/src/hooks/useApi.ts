@@ -3,6 +3,7 @@ import { backupCodeController } from "../controllers/backupCodeController.ts";
 import { bankController } from "../controllers/bankController.ts";
 import { categoryController } from "../controllers/categoryController.ts";
 import { dataBackupController } from "../controllers/dataBackupController.ts";
+import { idNumberController } from "../controllers/idNumberController.ts";
 import { lessonController } from "../controllers/lessonController.ts";
 import { mediaController } from "../controllers/mediaController.ts";
 import { platformController } from "../controllers/platformController.ts";
@@ -26,9 +27,11 @@ const useApi = () => {
   const role = roleController(fetchApi);
   const tag = tagController(fetchApi);
   const bank = bankController(fetchApi);
+  const idNumber = idNumberController(fetchApi);
 
   return {
     user,
+    idNumber,
     platform,
     media,
     lesson,

@@ -11,6 +11,9 @@ import Bank from "../../pages/bank/Bank";
 import CreateBank from "../../pages/bank/CreateBank";
 import UpdateBank from "../../pages/bank/UpdateBank";
 import ViewBank from "../../pages/bank/ViewBank";
+import CreateIdNumber from "../../pages/id-number/CreateIdNumber";
+import IdNumber from "../../pages/id-number/IdNumber";
+import UpdateIdNumber from "../../pages/id-number/UpdateIdNumber";
 import Category from "../../pages/n-lessons/category/Category";
 import LessonClient from "../../pages/n-lessons/client/LessonClient";
 import CreateLesson from "../../pages/n-lessons/lesson/CreateLesson";
@@ -288,6 +291,32 @@ const BACKUP_CODE_CONFIG = {
   DELETE_BACKUP_CODE: {
     label: "Delete backup code",
     role: "BA_C_D",
+  },
+};
+
+export const ID_NUMBER_CONFIG = {
+  ID_NUMBER: {
+    name: "id_number",
+    label: "ID Number",
+    path: "/id-number",
+    role: "ID_N_L",
+    element: <IdNumber />,
+  },
+  CREATE_ID_NUMBER: {
+    label: "Create ID number",
+    path: "/id-number/create",
+    role: "ID_N_C",
+    element: <CreateIdNumber />,
+  },
+  UPDATE_ID_NUMBER: {
+    label: "Update ID number",
+    path: "/id-number/update/:id",
+    role: ["ID_N_U", "ID_N_V"],
+    element: <UpdateIdNumber />,
+  },
+  DELETE_ID_NUMBER: {
+    role: "ID_N_D",
+    label: "Delete ID number",
   },
 };
 

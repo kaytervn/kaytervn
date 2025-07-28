@@ -11,6 +11,7 @@ import {
   BACKUP_CODE_CONFIG,
   BANK_CONFIG,
   CATEGORY_CONFIG,
+  ID_NUMBER_CONFIG,
   LESSON_CONFIG,
   LINK_ACCOUNT_CONFIG,
   N_LESSONS_CONFIG,
@@ -55,6 +56,7 @@ const PAGE_CONFIG = {
   ...BACKUP_CODE_CONFIG,
   ...TAG_CONFIG,
   ...BANK_CONFIG,
+  ...ID_NUMBER_CONFIG,
 };
 
 const SESSION_KEY_PAGES: Set<string> = new Set([
@@ -89,7 +91,7 @@ const SIDEBAR_MENUS = [
   {
     name: "Key information",
     icon: <LockKeyholeIcon size={20} />,
-    items: [PAGE_CONFIG.TAG, PAGE_CONFIG.BANK],
+    items: [PAGE_CONFIG.TAG, PAGE_CONFIG.ID_NUMBER, PAGE_CONFIG.BANK],
   },
   {
     name: "Others",

@@ -4,62 +4,50 @@ import { CancelButton, SubmitButton } from "../../components/form/Button";
 import { LoadingDialog } from "../../components/form/Dialog";
 import { ActionSection, FormCard } from "../../components/form/FormCard";
 import { InputField2 } from "../../components/form/InputTextField";
-import {
-  SelectField2,
-  StaticSelectField,
-} from "../../components/form/SelectTextField";
+import { SelectField2 } from "../../components/form/SelectTextField";
 import { TextAreaField2 } from "../../components/form/TextareaField";
 import Sidebar2 from "../../components/main/Sidebar2";
 import useApi from "../../hooks/useApi";
 import useForm from "../../hooks/useForm";
 import useQueryState from "../../hooks/useQueryState";
-import { encryptFieldByUserKey } from "../../services/encryption/sessionEncryption";
 import {
-  ACCOUNT_KIND_MAP,
   BASIC_MESSAGES,
   BUTTON_TEXT,
   TAG_KIND_MAP,
   TOAST,
 } from "../../types/constant";
 
-const CreateAccount = () => {
-  const { setToast, sessionKey } = useGlobalContext();
+const CreateIdNumber = () => {
+  const { setToast } = useGlobalContext();
   const { handleNavigateBack } = useQueryState({
-    path: PAGE_CONFIG.ACCOUNT.path,
-    requireSessionKey: true,
+    path: PAGE_CONFIG.ID_NUMBER.path,
   });
-  const { account, loading } = useApi();
-  const { platform, tag } = useApi();
+  const { idNumber, loading } = useApi();
+  const { tag } = useApi();
   const validate = (form: any) => {
     const newErrors: any = {};
-    if (!form.username.trim()) {
-      newErrors.username = "Invalid username";
+    if (!form.name.trim()) {
+      newErrors.name = "Invalid name";
     }
-    if (!form.password.trim()) {
-      newErrors.password = "Invalid password";
-    }
-    if (!form.platformId) {
-      newErrors.platformId = "Invalid platform";
+    if (!form.code.trim()) {
+      newErrors.code = "Invalid code";
     }
     return newErrors;
   };
 
   const { form, errors, handleChange, isValidForm } = useForm(
     {
-      username: "",
-      password: "",
+      name: "",
+      code: "",
       note: "",
-      platformId: "",
       tagId: "",
-      kind: ACCOUNT_KIND_MAP.ROOT.value,
     },
     validate
   );
 
   const handleSubmit = async () => {
     if (isValidForm()) {
-      const password = encryptFieldByUserKey(sessionKey, form.password);
-      const res = await account.create({ ...form, password });
+      const res = await idNumber.create(form);
       if (res.result) {
         setToast(BASIC_MESSAGES.CREATED, TOAST.SUCCESS);
         handleNavigateBack();
@@ -75,59 +63,37 @@ const CreateAccount = () => {
     <Sidebar2
       breadcrumbs={[
         {
-          label: PAGE_CONFIG.ACCOUNT.label,
+          label: PAGE_CONFIG.ID_NUMBER.label,
           onClick: handleNavigateBack,
         },
         {
-          label: PAGE_CONFIG.CREATE_ACCOUNT.label,
+          label: PAGE_CONFIG.CREATE_ID_NUMBER.label,
         },
       ]}
-      activeItem={PAGE_CONFIG.ACCOUNT.name}
+      activeItem={PAGE_CONFIG.ID_NUMBER.name}
       renderContent={
         <>
           <LoadingDialog isVisible={loading} />
           <FormCard
-            title={PAGE_CONFIG.CREATE_ACCOUNT.label}
+            title={PAGE_CONFIG.CREATE_ID_NUMBER.label}
             children={
               <div className="flex flex-col space-y-4">
                 <div className="flex flex-row space-x-2">
-                  <SelectField2
-                    title="Platform"
-                    isRequired={true}
-                    fetchListApi={platform.autoComplete}
-                    placeholder="Choose platform"
-                    value={form.platformId}
-                    onChange={(value: any) => handleChange("platformId", value)}
-                    error={errors.platformId}
-                  />
-                  <StaticSelectField
-                    title="Kind"
-                    disabled={true}
-                    dataMap={ACCOUNT_KIND_MAP}
-                    value={ACCOUNT_KIND_MAP.ROOT.value}
-                  />
-                </div>
-                <div className="flex flex-row space-x-2">
                   <InputField2
-                    title="Username"
+                    title="Name"
                     isRequired={true}
-                    placeholder="Enter username"
-                    value={form.username}
-                    onChangeText={(value: any) =>
-                      handleChange("username", value)
-                    }
-                    error={errors.username}
+                    placeholder="Enter name"
+                    value={form.name}
+                    onChangeText={(value: any) => handleChange("name", value)}
+                    error={errors.name}
                   />
                   <InputField2
-                    title="Password"
+                    title="Code"
                     isRequired={true}
-                    placeholder="Enter password"
-                    value={form.password}
-                    onChangeText={(value: any) =>
-                      handleChange("password", value)
-                    }
-                    error={errors.password}
-                    type="password"
+                    placeholder="Enter code"
+                    value={form.code}
+                    onChangeText={(value: any) => handleChange("code", value)}
+                    error={errors.code}
                   />
                 </div>
                 <div className="flex flex-row space-x-2">
@@ -147,7 +113,7 @@ const CreateAccount = () => {
                     onChange={(value: any) => handleChange("tagId", value)}
                     error={errors.tagId}
                     colorCodeField="color"
-                    queryParams={{ kind: TAG_KIND_MAP.ACCOUNT.value }}
+                    queryParams={{ kind: TAG_KIND_MAP.ID_NUMBER.value }}
                   />
                 </div>
                 <ActionSection
@@ -171,4 +137,4 @@ const CreateAccount = () => {
   );
 };
 
-export default CreateAccount;
+export default CreateIdNumber;

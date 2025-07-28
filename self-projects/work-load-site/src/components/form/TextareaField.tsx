@@ -146,6 +146,7 @@ const TextAreaField2 = ({
   error = "",
   maxLength = 1000,
   disabled = false,
+  height = "100",
 }: any) => {
   return (
     <div className="flex-1 items-center">
@@ -161,7 +162,8 @@ const TextAreaField2 = ({
         } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <textarea
-          className={`flex-1 text-base outline-none bg-transparent resize-y min-h-[100px] ${
+          style={{ minHeight: `${height}px` }}
+          className={`flex-1 text-base outline-none bg-transparent resize-y ${
             error
               ? "text-red-400 placeholder-red-400/50"
               : "text-gray-200 placeholder-gray-500"
