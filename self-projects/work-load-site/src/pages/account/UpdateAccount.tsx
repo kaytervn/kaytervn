@@ -195,14 +195,6 @@ const UpdateAccount = () => {
                   </div>
                 )}
                 <div className="flex flex-row space-x-2">
-                  <TextAreaField2
-                    title="Note"
-                    placeholder="Enter note"
-                    value={form?.note}
-                    onChangeText={(value: any) => handleChange("note", value)}
-                    error={errors?.note}
-                    height={"200"}
-                  />
                   <SelectField2
                     title="Tag"
                     fetchListApi={tag.autoComplete}
@@ -214,7 +206,15 @@ const UpdateAccount = () => {
                     queryParams={{ kind: TAG_KIND_MAP.ACCOUNT.value }}
                     initSearch={fetchData?.tag?.name}
                   />
+                  <div className="flex-1" />
                 </div>
+                <TextAreaField2
+                  title="Note"
+                  placeholder="Enter note"
+                  value={form?.note}
+                  onChangeText={(value: any) => handleChange("note", value)}
+                  error={errors?.note}
+                />
                 <ActionSection
                   children={
                     <>

@@ -94,18 +94,18 @@ const ViewAccount = () => {
                   </div>
                 )}
                 <div className="flex flex-row space-x-2">
-                  <TextAreaField2
-                    title="Note"
-                    value={fetchData?.note}
-                    disabled={true}
-                    height={"200"}
-                  />
                   <InputField2
                     title="Tag"
                     value={fetchData?.tag?.name}
                     disabled={true}
                   />
+                  <div className="flex-1" />
                 </div>
+                <TextAreaField2
+                  title="Note"
+                  value={fetchData?.note}
+                  disabled={true}
+                />
                 <ActionSection
                   children={
                     <CancelButton
