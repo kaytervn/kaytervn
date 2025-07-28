@@ -11,6 +11,7 @@ import { mediaController } from "../controllers/mediaController.ts";
 import { noteController } from "../controllers/noteController.ts";
 import { platformController } from "../controllers/platformController.ts";
 import { roleController } from "../controllers/roleController.ts";
+import { scheduleController } from "../controllers/scheduleController.ts";
 import { softwareController } from "../controllers/softwareController.ts";
 import { tagController } from "../controllers/tagController.ts";
 import { userController } from "../controllers/userController.ts";
@@ -36,9 +37,11 @@ const useApi = () => {
   const link = linkController(fetchApi);
   const software = softwareController(fetchApi);
   const note = noteController(fetchApi);
+  const schedule = scheduleController(fetchApi);
 
   return {
     user,
+    schedule,
     link,
     note,
     software,
