@@ -60,13 +60,6 @@ const CreateLinkAccount = ({ isVisible, formConfig }: any) => {
               onChange={(value: any) => handleChange("platformId", value)}
               error={errors.platformId}
             />
-            <TextAreaField2
-              title="Note"
-              placeholder="Enter note"
-              value={form?.note}
-              onChangeText={(value: any) => handleChange("note", value)}
-              error={errors?.note}
-            />
             <SelectField2
               title="Tag"
               fetchListApi={tag.autoComplete}
@@ -76,6 +69,13 @@ const CreateLinkAccount = ({ isVisible, formConfig }: any) => {
               error={errors?.tagId}
               colorCodeField="color"
               queryParams={{ kind: TAG_KIND_MAP.ACCOUNT.value }}
+            />
+            <TextAreaField2
+              title="Note"
+              placeholder="Enter note"
+              value={form?.note}
+              onChangeText={(value: any) => handleChange("note", value)}
+              error={errors?.note}
             />
             <ActionSection
               children={

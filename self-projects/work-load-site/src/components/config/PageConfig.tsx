@@ -9,6 +9,7 @@ import {
 import {
   ACCOUNT_CONFIG,
   BACKUP_CODE_CONFIG,
+  BANK_CONFIG,
   CATEGORY_CONFIG,
   LESSON_CONFIG,
   LINK_ACCOUNT_CONFIG,
@@ -53,9 +54,13 @@ const PAGE_CONFIG = {
   ...LINK_ACCOUNT_CONFIG,
   ...BACKUP_CODE_CONFIG,
   ...TAG_CONFIG,
+  ...BANK_CONFIG,
 };
 
-const SESSION_KEY_PAGES: Set<string> = new Set([PAGE_CONFIG.ACCOUNT.name]);
+const SESSION_KEY_PAGES: Set<string> = new Set([
+  PAGE_CONFIG.ACCOUNT.name,
+  PAGE_CONFIG.BANK.name,
+]);
 
 const BASIC_PAGE_CONFIG = {
   ACTIVATE_ACCOUNT: {
@@ -84,7 +89,7 @@ const SIDEBAR_MENUS = [
   {
     name: "Key information",
     icon: <LockKeyholeIcon size={20} />,
-    items: [PAGE_CONFIG.TAG],
+    items: [PAGE_CONFIG.TAG, PAGE_CONFIG.BANK],
   },
   {
     name: "Others",

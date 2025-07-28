@@ -1077,4 +1077,66 @@
             <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
         </insert>
     </changeSet>
+    <changeSet author="MSA" id="1752728957490-21">
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="61"/>
+            <column name="name" value="Create bank"/>
+            <column name="permission_code" value="BA_C"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Bank"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="62"/>
+            <column name="name" value="Update bank"/>
+            <column name="permission_code" value="BA_U"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Bank"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="63"/>
+            <column name="name" value="Delete bank"/>
+            <column name="permission_code" value="BA_D"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Bank"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="64"/>
+            <column name="name" value="Get bank"/>
+            <column name="permission_code" value="BA_V"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Bank"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="65"/>
+            <column name="name" value="Get list bank"/>
+            <column name="permission_code" value="BA_L"/>
+            <column name="kind" valueNumeric="2"/>
+            <column name="name_group" value="Bank"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-18T02:27:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

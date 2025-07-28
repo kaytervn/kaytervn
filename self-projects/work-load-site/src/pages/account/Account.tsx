@@ -6,6 +6,7 @@ import {
   BUTTON_TEXT,
   ITEMS_PER_PAGE,
   SORT_ACCOUNT_MAP,
+  TAG_KIND_MAP,
 } from "../../types/constant";
 import { useGlobalContext } from "../../components/config/GlobalProvider";
 import useModal from "../../hooks/useModal";
@@ -22,7 +23,7 @@ import {
   ActionEditButton,
   BasicActionButton,
 } from "../../components/form/Button";
-import { HistoryIcon, LinkIcon } from "lucide-react";
+import { EyeIcon, HistoryIcon, LinkIcon } from "lucide-react";
 import {
   configDeleteDialog,
   ConfirmationDialog,
@@ -50,7 +51,7 @@ const initQuery = {
 const Account = () => {
   const { isModalVisible, showModal, hideModal, formConfig } = useModal();
   const { state } = useLocation();
-  const { setToast } = useGlobalContext();
+  const { setToast, hasRoles } = useGlobalContext();
   const navigate = useNavigate();
   const { account, loading } = useApi();
   const { account: apiList, loading: loadingList } = useApi();
@@ -78,6 +79,7 @@ const Account = () => {
       accessor: "username",
       align: ALIGNMENT.LEFT,
       render: (item: any) => {
+        const showLink = hasRoles(PAGE_CONFIG.VIEW_ACCOUNT.role);
         const value: any = getEnumItem(ACCOUNT_KIND_MAP, item.kind);
         const colorCode = item.tag?.color;
         const content =
@@ -91,11 +93,19 @@ const Account = () => {
             >
               {value.label}
             </span>
-            <span
-              className={`text-gray-300 text-sm text-left whitespace-nowrap`}
-            >
-              {content}
-            </span>
+            {showLink ? (
+              <a
+                title={PAGE_CONFIG.VIEW_ACCOUNT.label}
+                onClick={() => onViewButtonClick(item.id)}
+                className="text-gray-300 text-sm hover:underline whitespace-nowrap hover:cursor-pointer"
+              >
+                {content}
+              </a>
+            ) : (
+              <span className="text-gray-300 text-sm text-left whitespace-nowrap">
+                {content}
+              </span>
+            )}
             {colorCode && (
               <span
                 title={item.tag.name}
@@ -131,15 +141,25 @@ const Account = () => {
     renderActionButton({
       role: [PAGE_CONFIG.UPDATE_ACCOUNT.role, PAGE_CONFIG.DELETE_ACCOUNT.role],
       renderChildren: (item: any) => {
+        const isRoot = ACCOUNT_KIND_MAP.ROOT.value == item.kind;
         const showDelete = item.totalChildren == 0;
         return (
           <>
-            <BasicActionButton
-              onClick={() => onLinkAccountButtonClick(item.id)}
-              Icon={LinkIcon}
-              role={PAGE_CONFIG.LINK_ACCOUNT.role}
-              buttonText={BUTTON_TEXT.LINKED_ACCOUNTS}
-            />
+            {isRoot ? (
+              <BasicActionButton
+                onClick={() => onLinkAccountButtonClick(item.id)}
+                Icon={LinkIcon}
+                role={PAGE_CONFIG.LINK_ACCOUNT.role}
+                buttonText={BUTTON_TEXT.LINKED_ACCOUNTS}
+              />
+            ) : (
+              <BasicActionButton
+                onClick={() => onViewButtonClick(item.parent.id)}
+                Icon={EyeIcon}
+                role={PAGE_CONFIG.VIEW_ACCOUNT.role}
+                buttonText={BUTTON_TEXT.VIEW_ROOT_ACCOUNT}
+              />
+            )}
             <BasicActionButton
               onClick={() => onBackupCodesButtonClick(item.id)}
               Icon={HistoryIcon}
@@ -180,6 +200,10 @@ const Account = () => {
 
   const onUpdateButtonClick = (id: any) => {
     navigate(`/account/update/${id}`, { state: { query } });
+  };
+
+  const onViewButtonClick = (id: any) => {
+    navigate(`/account/view/${id}`, { state: { query } });
   };
 
   const onLinkAccountButtonClick = (id: any) => {
@@ -231,6 +255,7 @@ const Account = () => {
                   fetchListApi={tag.autoComplete}
                   placeholder="Tag..."
                   colorCodeField="color"
+                  queryParams={{ kind: TAG_KIND_MAP.ACCOUNT.value }}
                 />
                 <StaticSelectBox
                   value={query.kind}

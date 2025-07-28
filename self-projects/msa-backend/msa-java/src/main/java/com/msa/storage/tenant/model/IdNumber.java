@@ -19,9 +19,7 @@ public class IdNumber extends Auditable<String> {
     @GenericGenerator(name = AppConstant.ID_GENERATOR_NAME, strategy = AppConstant.ID_GENERATOR_STRATEGY)
     @GeneratedValue(generator = AppConstant.ID_GENERATOR_NAME)
     private Long id;
-    @Column(unique = true)
     private String name;
-    @Column(unique = true)
     private String code;
     @Column(columnDefinition = "TEXT")
     private String note;

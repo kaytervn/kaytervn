@@ -3,7 +3,6 @@ import {
   basicRender,
   renderActionButton,
   renderColorCode,
-  renderEnum,
 } from "../../components/config/ItemRender";
 import { PAGE_CONFIG } from "../../components/config/PageConfig";
 import {
@@ -30,9 +29,9 @@ import {
   ITEMS_PER_PAGE,
   TAG_KIND_MAP,
 } from "../../types/constant";
-import { convertUtcToVn } from "../../types/utils";
+import { convertUtcToVn, getEnumItem } from "../../types/utils";
 import CreateTag from "./CreateTag";
-import UpdateTag from "./UpdatePlatform";
+import UpdateTag from "./UpdateTag";
 
 const initQuery = {
   name: "",
@@ -77,11 +76,26 @@ const Tag = () => {
 
   const columns = [
     {
-      label: "Name",
+      label: "Tag name",
       accessor: "name",
       align: ALIGNMENT.LEFT,
+      render: (item: any) => {
+        const value: any = getEnumItem(TAG_KIND_MAP, item.kind);
+        const content = item.name;
+        return (
+          <div className="flex flex-row space-x-2 items-center">
+            <span
+              className={`px-2 py-1 rounded-md font-semibold whitespace-nowrap text-xs ${value.className}`}
+            >
+              {value.label}
+            </span>
+            <span className="text-gray-300 text-sm text-left whitespace-nowrap">
+              {content}
+            </span>
+          </div>
+        );
+      },
     },
-    renderEnum({ label: "Kind", accessor: "kind", dataMap: TAG_KIND_MAP }),
     renderColorCode({}),
     {
       label: "Created date",

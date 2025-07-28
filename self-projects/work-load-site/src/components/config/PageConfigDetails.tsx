@@ -3,9 +3,14 @@ import BackupCode from "../../pages/account/backup/BackupCode";
 import CreateAccount from "../../pages/account/CreateAccount";
 import LinkAccount from "../../pages/account/link/LinkAccount";
 import UpdateAccount from "../../pages/account/UpdateAccount";
+import ViewAccount from "../../pages/account/ViewAccount";
 import ForgotPassword from "../../pages/auth/ForgotPassword";
 import Login from "../../pages/auth/Login";
 import ResetPassword from "../../pages/auth/ResetPassword";
+import Bank from "../../pages/bank/Bank";
+import CreateBank from "../../pages/bank/CreateBank";
+import UpdateBank from "../../pages/bank/UpdateBank";
+import ViewBank from "../../pages/bank/ViewBank";
 import Category from "../../pages/n-lessons/category/Category";
 import LessonClient from "../../pages/n-lessons/client/LessonClient";
 import CreateLesson from "../../pages/n-lessons/lesson/CreateLesson";
@@ -196,6 +201,12 @@ const ACCOUNT_CONFIG = {
     role: "ACC_C",
     element: <CreateAccount />,
   },
+  VIEW_ACCOUNT: {
+    label: "View account",
+    path: "/account/view/:id",
+    role: "ACC_V",
+    element: <ViewAccount />,
+  },
   UPDATE_ACCOUNT: {
     label: "Update account",
     path: "/account/update/:id",
@@ -205,6 +216,38 @@ const ACCOUNT_CONFIG = {
   DELETE_ACCOUNT: {
     role: "ACC_D",
     label: "Delete account",
+  },
+};
+
+export const BANK_CONFIG = {
+  BANK: {
+    name: "bank",
+    label: "Bank",
+    path: "/bank",
+    role: "BA_L",
+    element: <Bank />,
+  },
+  CREATE_BANK: {
+    label: "Create bank",
+    path: "/bank/create",
+    role: "BA_C",
+    element: <CreateBank />,
+  },
+  VIEW_BANK: {
+    label: "View bank",
+    path: "/bank/view/:id",
+    role: "BA_V",
+    element: <ViewBank />,
+  },
+  UPDATE_BANK: {
+    label: "Update bank",
+    path: "/bank/update/:id",
+    role: ["BA_U", "BA_V"],
+    element: <UpdateBank />,
+  },
+  DELETE_BANK: {
+    role: "BA_D",
+    label: "Delete bank",
   },
 };
 

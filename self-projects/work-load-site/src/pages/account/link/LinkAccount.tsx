@@ -26,6 +26,7 @@ import {
   ALIGNMENT,
   BASIC_MESSAGES,
   ITEMS_PER_PAGE,
+  TAG_KIND_MAP,
 } from "../../../types/constant";
 import { convertUtcToVn } from "../../../types/utils";
 import { useEffect, useState } from "react";
@@ -281,6 +282,7 @@ const LinkAccount = () => {
                   fetchListApi={tag.autoComplete}
                   placeholder="Tag..."
                   colorCodeField="color"
+                  queryParams={{ kind: TAG_KIND_MAP.ACCOUNT.value }}
                 />
               </>
             }

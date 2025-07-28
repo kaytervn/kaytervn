@@ -57,14 +57,6 @@ const CreateTag = ({ isVisible, formConfig }: any) => {
       children={
         <>
           <div className="flex flex-col space-y-4">
-            <InputField2
-              title="Name"
-              isRequired={true}
-              placeholder="Enter name"
-              value={form?.name}
-              onChangeText={(value: any) => handleChange("name", value)}
-              error={errors?.name}
-            />
             <StaticSelectField
               title="Kind"
               isRequired={true}
@@ -73,6 +65,14 @@ const CreateTag = ({ isVisible, formConfig }: any) => {
               value={form?.kind}
               onChange={(value: any) => handleChange("kind", value)}
               error={errors?.kind}
+            />
+            <InputField2
+              title="Name"
+              isRequired={true}
+              placeholder="Enter name"
+              value={form?.name}
+              onChangeText={(value: any) => handleChange("name", value)}
+              error={errors?.name}
             />
             <ColorPickerField
               title="Color"

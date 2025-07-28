@@ -67,11 +67,11 @@ const GridView = ({
               <table className="w-full bg-gray-800 shadow-lg rounded-lg">
                 <thead className="bg-gray-700 text-gray-200">
                   <tr className="text-sm leading-normal">
-                    <th className="py-3 px-2 text-left rounded-tl-lg">#</th>
+                    <th className="px-2 py-3 text-left rounded-tl-lg">#</th>
                     {filteredColumns.map((col: any, index: number) => (
                       <th
                         key={col.accessor}
-                        className={`py-3 px-2 text-${
+                        className={`p-2 text-${
                           col.align
                         } whitespace-nowrap font-semibold ${
                           index === filteredColumns.length - 1
@@ -79,7 +79,7 @@ const GridView = ({
                             : ""
                         }`}
                       >
-                        {col.label}
+                        {col.label.toUpperCase()}
                       </th>
                     ))}
                   </tr>
@@ -110,13 +110,11 @@ const GridView = ({
             </div>
           </div>
           {totalPages > 1 && (
-            <div className="mt-2">
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={onPageChange}
-              />
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={onPageChange}
+            />
           )}
         </>
       )}

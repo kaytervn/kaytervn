@@ -255,6 +255,7 @@ const BUTTON_TEXT = {
   UPLOAD_DATA_BACKUP: "Upload backup data",
   BACKUP_CODE: "Backup codes",
   LINKED_ACCOUNTS: "Link accounts",
+  VIEW_ROOT_ACCOUNT: "View root account",
 };
 
 const ENV = {
@@ -418,6 +419,28 @@ const VALID_PATTERN = {
   HOST: /^(localhost|(([a-z0-9-]+\.)*[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}|\[([0-9a-f:]+)\])$/,
   PORT: /^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/,
   COLOR_CODE: /^#[0-9A-F]{6}$/i,
+};
+
+export const BANK_NUMBER_FIELD_CONFIG = {
+  key: {
+    label: "Number",
+    required: true,
+  },
+  value: {
+    label: "Note",
+    required: false,
+  },
+};
+
+export const BANK_PIN_FIELD_CONFIG = {
+  key: {
+    label: "Pin",
+    required: true,
+  },
+  value: {
+    label: "Note",
+    required: false,
+  },
 };
 
 export {

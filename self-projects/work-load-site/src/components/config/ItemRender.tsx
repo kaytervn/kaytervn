@@ -74,18 +74,30 @@ const renderHrefLink = ({
   accessor = "fullName",
   align = ALIGNMENT.LEFT,
   onClick,
+  color = "text-blue-600",
+  role,
 }: any) => {
   return {
     label,
     accessor,
     align,
     render: (item: any) => {
+      const { hasAnyRoles } = useGlobalContext();
+      const content = getNestedValue(item, accessor);
+
+      if (role && !hasAnyRoles(role)) {
+        return basicRender({
+          content,
+          align,
+        });
+      }
+
       return (
         <a
-          className={`text-blue-600 hover:underline text-sm text-${align} whitespace-nowrap hover:cursor-pointer`}
+          className={`${color} hover:underline text-sm text-${align} whitespace-nowrap hover:cursor-pointer`}
           onClick={() => onClick(item)}
         >
-          {getNestedValue(item, accessor)}
+          {content}
         </a>
       );
     },
@@ -336,9 +348,9 @@ const renderColorCode = ({
 
       return (
         <div className={`text-${align}`}>
-          {isValidColor ? (
+          {isValidColor && (
             <span
-              className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap shadow-sm"
+              className="items-center px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap shadow-sm"
               style={{
                 backgroundColor: colorCode,
                 color: textColor,
@@ -346,10 +358,6 @@ const renderColorCode = ({
               }}
             >
               {colorCode.toUpperCase()}
-            </span>
-          ) : (
-            <span className="px-2 py-1 rounded-full text-xs font-medium text-gray-400 bg-gray-800/50 whitespace-nowrap">
-              Không hợp lệ
             </span>
           )}
         </div>

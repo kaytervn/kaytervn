@@ -263,4 +263,13 @@
             <column name="type" type="integer" afterColumn="kind"/>
         </addColumn>
     </changeSet>
+    <changeSet author="MSA" id="1753333929415-23">
+        <dropUniqueConstraint constraintName="UC_DB_ID_NUMBERCODE_COL" tableName="db_id_number"/>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-24">
+        <dropUniqueConstraint constraintName="UC_DB_ID_NUMBERNAME_COL" tableName="db_id_number"/>
+    </changeSet>
+    <changeSet author="MSA" id="1753333929415-25">
+        <dropUniqueConstraint constraintName="UC_DB_TAGNAME_COL" tableName="db_tag"/>
+    </changeSet>
 </databaseChangeLog>

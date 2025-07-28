@@ -260,7 +260,7 @@ const Sidebar2 = ({ activeItem, breadcrumbs, renderContent }: any) => {
           }`}
         >
           <header className="bg-gray-800 border-b border-gray-700 shadow-md">
-            <div className="p-4 flex items-center">
+            <div className="px-4 py-3 flex items-center">
               {isMobile && (
                 <button
                   onClick={() => setIsSidebarOpen(!isSidebarOpen)}

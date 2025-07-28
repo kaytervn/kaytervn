@@ -20,7 +20,7 @@ public class UpdateBankForm {
     @NotBlank(message = "password cannot be blank")
     @ApiModelProperty(required = true)
     private String password;
-    @ValidJsonField(classType = List.class, type = AppConstant.JSON_TYPE_LIST_OBJECT)
+    @ValidJsonField(classType = List.class, type = AppConstant.JSON_TYPE_LIST_OBJECT, allowNull = true)
     @ApiModelProperty(required = true)
     private String numbers;
     @NotBlank(message = "pins cannot be blank")

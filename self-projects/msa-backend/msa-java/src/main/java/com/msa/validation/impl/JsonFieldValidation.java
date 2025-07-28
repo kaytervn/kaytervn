@@ -56,7 +56,7 @@ public class JsonFieldValidation implements ConstraintValidator<ValidJsonField, 
                     JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, BasicObject.class);
                     List<BasicObject> list = mapper.readValue(json, listType);
                     if (list.isEmpty()) {
-                        return false;
+                        return allowNull;
                     }
                     Set<ConstraintViolation<List<BasicObject>>> violations = validator.validate(list);
                     if (!violations.isEmpty()) {

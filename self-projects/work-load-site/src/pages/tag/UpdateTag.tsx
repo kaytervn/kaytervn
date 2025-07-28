@@ -79,6 +79,12 @@ const UpdateTag = ({ isVisible, formConfig }: any) => {
         children={
           <>
             <div className="flex flex-col space-y-4">
+              <StaticSelectField
+                title="Kind"
+                disabled={true}
+                dataMap={TAG_KIND_MAP}
+                value={form?.kind}
+              />
               <InputField2
                 title="Name"
                 isRequired={true}
@@ -86,12 +92,6 @@ const UpdateTag = ({ isVisible, formConfig }: any) => {
                 value={form?.name}
                 onChangeText={(value: any) => handleChange("name", value)}
                 error={errors?.name}
-              />
-              <StaticSelectField
-                title="Kind"
-                disabled={true}
-                dataMap={TAG_KIND_MAP}
-                value={form?.kind}
               />
               <ColorPickerField
                 title="Color"

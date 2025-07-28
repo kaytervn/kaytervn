@@ -19,7 +19,6 @@ public class Tag extends Auditable<String> {
     @GenericGenerator(name = AppConstant.ID_GENERATOR_NAME, strategy = AppConstant.ID_GENERATOR_STRATEGY)
     @GeneratedValue(generator = AppConstant.ID_GENERATOR_NAME)
     private Long id;
-    @Column(unique = true)
     private String name;
     private String color;
     private Integer kind; // 1: account, 2: bank, 3: contact, 4: id_number, 5: link, 6: note, 7: schedule, 8: software
