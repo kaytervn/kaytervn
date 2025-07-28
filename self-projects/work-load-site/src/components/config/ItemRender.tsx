@@ -94,10 +94,11 @@ const renderHrefLink = ({
 
       return (
         <a
+          title={content}
           className={`${color} hover:underline text-sm text-${align} whitespace-nowrap hover:cursor-pointer`}
           onClick={() => onClick(item)}
         >
-          {content}
+          {truncateString(content, GRID_TRUNCATE)}
         </a>
       );
     },

@@ -1,0 +1,31 @@
+10
+Nguyen Van A
+123
+5.2
+Tran Thanh B
+456
+7.9
+Tran Van C
+789
+2.3
+Nguyen Duc Loi
+124
+9.5
+Dao Hong Anh
+234
+8.25
+Mai Quoc Khanh
+210
+1.2
+Huynh Van Nghe
+298
+3.5
+Tran Thi Le
+903
+7.5
+Ha Anh Truc
+263
+4.25
+Nguyen Minh Khoi
+369
+6.75

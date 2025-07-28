@@ -1,0 +1,58 @@
+//
+// Created by admin on 10/31/2022.
+//
+#ifndef INC_21110847_TRANQUOCPHUONG_QLSV_H
+#define INC_21110847_TRANQUOCPHUONG_QLSV_H
+#include <bits/stdc++.h>
+using namespace std;
+
+struct MultiDNode{
+    long mssv;
+    int gioitinh;
+    string ten;
+    float diemtb;
+    MultiDNode *MSSVnext;   // tro mssv
+    MultiDNode *MSSVprev;
+    MultiDNode *HTnext;     // tro ho ten
+    MultiDNode *HTprev;
+    MultiDNode *DIEMnext;   // tro diem
+    MultiDNode *DIEMprev;
+};
+
+struct MultiDLinkedList{
+    MultiDNode *MSSVhead;   // head tail mssv
+    MultiDNode *MSSVtail;
+    MultiDNode *HThead;     // head tail hoten
+    MultiDNode *HTtail;
+    MultiDNode *DIEMhead;   // head tail diem
+    MultiDNode *DIEMtail;
+};
+void In_Menu();
+MultiDLinkedList *MultiDLinkedList_init();
+MultiDNode* createMultiNode(int mssv, int gioitinh, string hoten, float diem);
+void PhatSinhSV(MultiDLinkedList* list,const char filetencontrai[], const char filetencongai[]);
+void MultiDLinkedList_addNodeMSSV(MultiDLinkedList* list,MultiDNode* node);
+void MultiDLinkedList_addNodeHTen(MultiDLinkedList* list,MultiDNode* node);
+void MultiDLinkedList_addNodeDiem(MultiDLinkedList* list,MultiDNode* node);
+
+
+
+
+
+
+//void MultiDLinkedList_addHead(MultiDNode* list, int value);
+//void MultiDLinkedList_addTail(MultiDNode* list, int value);
+//void MultiDLinkedList_printMSSVTang(MultiDNode* list);
+//void MultiDLinkedList_printMSSVGiam(MultiDNode* list);
+//void MultiDLinkedList_printTenTang(MultiDNode* list);
+//void MultiDLinkedList_printTenGiam(MultiDNode* list);
+//void MultiDLinkedList_printDiemTang(MultiDNode* list);
+//void MultiDLinkedList_printDiemGiam(MultiDNode* list);
+//
+//MultiDNode* MultiDLinkedList_findbyValue(MultiDNode *list, int value);
+//bool MultiDLinkedList_delHead(MultiDNode *list);
+//bool MultiDLinkedList_delTail(MultiDNode *list);
+//bool MultiDLinkedList_delMid(MultiDNode *list,MultiDNode* marker);
+//void MultiDLinkedList_insertAlter(MultiDNode *list,MultiDNode* marker, int value);
+//void MultiDLinkedList_insertBefore(MultiDNode *list,MultiDNode* marker, int value);
+#endif //INC_21110847_TRANQUOCPHUONG_QLSV_H

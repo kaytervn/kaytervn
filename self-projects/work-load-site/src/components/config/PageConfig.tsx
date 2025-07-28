@@ -15,6 +15,7 @@ import {
   ID_NUMBER_CONFIG,
   LESSON_CONFIG,
   LINK_ACCOUNT_CONFIG,
+  LINK_CONFIG,
   N_LESSONS_CONFIG,
   PLATFORM_CONFIG,
   ROLE_CONFIG,
@@ -59,6 +60,7 @@ const PAGE_CONFIG = {
   ...BANK_CONFIG,
   ...ID_NUMBER_CONFIG,
   ...CONTACT_CONFIG,
+  ...LINK_CONFIG,
 };
 
 const SESSION_KEY_PAGES: Set<string> = new Set([
@@ -88,7 +90,7 @@ const SIDEBAR_MENUS = [
   {
     name: "Useful links",
     icon: <LinkIcon size={20} />,
-    items: [],
+    items: [PAGE_CONFIG.LINK],
   },
   {
     name: "Key information",

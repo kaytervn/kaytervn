@@ -1,0 +1,116 @@
+#include "QLSV.h"
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    MultiDLinkedList* DSSV = MultiDLinkedList_init();
+
+    PhatSinhSV(DSSV,"C://Users//admin//OneDrive//Desktop//tencontrai.txt","C://Users//admin//OneDrive//Desktop//tencongai.txt");
+    //cout<<DSSV->MSSVhead->mssv<<" "<<DSSV->MSSVtail->mssv;
+
+    In_Menu();
+
+    while (true)
+    {
+        cout<<"Moi ban chon menu:";
+        int menu;
+        cin>>menu;
+        if ( menu == 1 )
+        {
+            int dem1=1;
+            printf("\n");
+            printf("~~~~~~~~~~~~~~~~~~~~~>Top 20 SV co MSSV Tang dan<~~~~~~~~~~~~~~~~~~~~~\n");
+            cout<<"STT"<<"\t"<<left<<setw(10)<<"Ho va ten"<<"\t\t"<<"MSSV"<<"\t\t"<<"Gioitinh"<<"\t"<<"DiemTB"<<"\n";
+            for(MultiDNode *p = DSSV->MSSVhead; p != nullptr; p = p->MSSVnext)
+            {
+
+                cout<<dem1<<"\t"<<left<<setw(10)<<p->ten<<"\t\t"<<p->mssv<<"\t"<<p->gioitinh<<"\t\t"<<p->diemtb<<"\n";
+                dem1 ++;
+                if(dem1 >20)
+                    break;
+            }
+            printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        }
+        else if ( menu == 2 )
+        {
+            int dem1=1;
+            printf("\n");
+            printf("~~~~~~~~~~~~~~~~~~~~~>Top 20 SV co MSSV Giam dan<~~~~~~~~~~~~~~~~~~~~~\n");
+            cout<<"STT"<<"\t"<<left<<setw(10)<<"Ho va ten"<<"\t\t"<<"MSSV"<<"\t\t"<<"Gioitinh"<<"\t"<<"DiemTB"<<"\n";
+            for(MultiDNode *p = DSSV->MSSVtail; p != nullptr; p = p->MSSVprev)
+            {
+
+                cout<<dem1<<"\t"<<left<<setw(10)<<p->ten<<"\t\t"<<p->mssv<<"\t"<<p->gioitinh<<"\t\t"<<p->diemtb<<"\n";
+                dem1 ++;
+                if(dem1 >20)
+                    break;
+            }
+            printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        }
+        else if ( menu == 3 )
+        {
+            int dem1=1;
+            printf("\n");
+            printf("~~~~~~~~~~~~~~~~~~~~~>Top 20 SV co HOTEN Tang dan<~~~~~~~~~~~~~~~~~~~~~\n");
+            cout<<"STT"<<"\t"<<left<<setw(10)<<"Ho va ten"<<"\t\t"<<"MSSV"<<"\t\t"<<"Gioitinh"<<"\t"<<"DiemTB"<<"\n";
+            for(MultiDNode *p = DSSV->HThead; p != nullptr; p = p->HTnext)
+            {
+                cout<<dem1<<"\t"<<left<<setw(10)<<p->ten<<"\t\t"<<p->mssv<<"\t"<<p->gioitinh<<"\t\t"<<p->diemtb<<"\n";
+                dem1 ++;
+                if(dem1 >20)
+                    break;
+            }
+            printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        }
+        else if ( menu == 4 )
+        {
+            int dem1=1;
+            printf("\n");
+            printf("~~~~~~~~~~~~~~~~~~~~~>Top 20 SV co HOTEN Giam dan<~~~~~~~~~~~~~~~~~~~~~\n");
+            cout<<"STT"<<"\t"<<left<<setw(10)<<"Ho va ten"<<"\t\t"<<"MSSV"<<"\t\t"<<"Gioitinh"<<"\t"<<"DiemTB"<<"\n";
+            for(MultiDNode *p = DSSV->HTtail; p != nullptr; p = p->HTprev)
+            {
+                cout<<dem1<<"\t"<<left<<setw(10)<<p->ten<<"\t\t"<<p->mssv<<"\t"<<p->gioitinh<<"\t\t"<<p->diemtb<<"\n";
+                dem1 ++;
+                if(dem1 >20)
+                    break;
+            }
+            printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        }
+        else if ( menu == 5 )
+        {
+            int dem1=1;
+            printf("\n");
+            printf("~~~~~~~~~~~~~~~~~~~~~>Top 20 SV co DIEM Tang dan<~~~~~~~~~~~~~~~~~~~~~\n");
+            cout<<"STT"<<"\t"<<left<<setw(10)<<"Ho va ten"<<"\t\t"<<"MSSV"<<"\t\t"<<"Gioitinh"<<"\t"<<"DiemTB"<<"\n";
+            for(MultiDNode *p = DSSV->DIEMhead; p != nullptr; p = p->DIEMnext)
+            {
+                cout<<dem1<<"\t"<<left<<setw(10)<<p->ten<<"\t\t"<<p->mssv<<"\t"<<p->gioitinh<<"\t\t"<<p->diemtb<<"\n";
+                dem1 ++;
+                if(dem1 >20)
+                    break;
+            }
+            printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        }
+        else if ( menu == 6 )
+        {
+            int dem1=1;
+            printf("\n");
+            printf("~~~~~~~~~~~~~~~~~~~~~>Top 20 SV co DIEM Giam dan<~~~~~~~~~~~~~~~~~~~~~\n");
+            cout<<"STT"<<"\t"<<left<<setw(10)<<"Ho va ten"<<"\t\t"<<"MSSV"<<"\t\t"<<"Gioitinh"<<"\t"<<"DiemTB"<<"\n";
+            for(MultiDNode *p = DSSV->DIEMtail; p != nullptr; p = p->DIEMprev)
+            {
+                cout<<dem1<<"\t"<<left<<setw(10)<<p->ten<<"\t\t"<<p->mssv<<"\t"<<p->gioitinh<<"\t\t"<<p->diemtb<<"\n";
+                dem1 ++;
+                if(dem1 >20)
+                    break;
+            }
+            printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        }
+        else
+        {
+            cout<<"!LOI: BAN NHAP SAI OPTION VUI LONG NHAP LAI\n";
+        }
+    }
+
+    return 0;
+}

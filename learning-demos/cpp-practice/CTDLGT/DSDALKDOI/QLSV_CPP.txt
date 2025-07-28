@@ -1,0 +1,250 @@
+//
+// Created by admin on 10/31/2022.
+//
+
+#include "QLSV.h"
+#include <bits/stdc++.h>
+using namespace std;
+
+void In_Menu()
+{
+    printf("=================================> MENU <=================================\n");
+    printf("------1. Xuat ra top 20 sv co MSSV tang dan ( tu MSSV nho nhat)-----------\n");
+    printf("------2. Xuat ra top 20 sv co MSSV giam dan ( tu MSSV lon nhat)-----------\n");
+    printf("------3. Xuat ra top 20 sv co Ho ten tang dan ( theo Alphabet)------------\n");
+    printf("------4. Xuat ra top 20 sv co Ho ten giam dan ( theo Alphabet)------------\n");
+    printf("------5. Xuat ra top 20 sv co Diem TB tang dan ( tu Diem TB cao nhat)-----\n");
+    printf("------6. Xuat ra top 20 sv co Diem TB giam dan ( tu Diem TB thap nhat)----\n");
+    printf("==========================================================================\n");
+}
+
+// ham tao list
+MultiDLinkedList *MultiDLinkedList_init()
+{
+    auto *list=new MultiDLinkedList;
+    list->MSSVhead = nullptr;
+    list->MSSVtail = nullptr;
+    list->HThead = nullptr;
+    list->HTtail = nullptr;
+    list->DIEMhead = nullptr;
+    list->DIEMtail = nullptr;
+    return list;
+}
+
+// ham tao node
+MultiDNode* createMultiNode(int mssv, int gioitinh, string hoten, float diem)
+{
+    MultiDNode* node = new MultiDNode();
+    node->mssv = 211100000 + mssv;
+    node->gioitinh = gioitinh;
+    node->ten = hoten;
+    node->diemtb = diem;
+    return node;
+}
+
+// Phat sinh so nguyen
+int random_so(int MIN, int MAX)
+{
+    //srand(time(NULL));
+    return MIN + rand()%(MAX-MIN+1);
+}
+
+// Phat sinh diem so thuc tu 5.0 - 9.9
+float random_diem()
+{
+    float scale = rand() / (float) (RAND_MAX );
+    return (float)(5 + rand() % 5) + scale;
+
+}
+
+void docfile(const char fname[], vector<string> &a)
+{
+    //Mở file bằng ifstream
+    ifstream ifs1(fname);
+
+    //Kiểm tra file đã mở thành công hay chưa
+    if(!ifs1)
+    {
+        cout << "Error: file not opened." << endl;
+    }
+
+    //Khai báo biến kiểu string để lưu từng từ đọc được và mảng chứa ds tên con trai
+    string str1;
+
+    //Đọc và in lần lượt các từ trong file
+    while(ifs1  >> str1)
+    {
+        a.push_back(str1);
+    }
+
+    //Đóng file
+    ifs1.close();
+}
+void PhatSinhSV(MultiDLinkedList* list,const char filetencontrai[], const char filetencongai[])
+{
+//TAO VECTOR CHUA 1000 CON TRAI
+    vector<string> ds_tencontrai;
+    docfile(filetencontrai,ds_tencontrai);
+
+//TAO VECTOR CHUA 1000 CON TRAI
+    vector<string> ds_tencongai;
+    docfile(filetencongai,ds_tencongai);
+
+//PHAT SINH DANH SACH SINH VIEN
+    // Vong lap lay so luong 1000 sinh vien
+    srand(time(0));
+    for (int i = 0; i < 1000; i++)
+    {
+        int mssv= random_so(1,9999);
+        int gioitinh=rand()%2;
+        int nhanten = random_so(0,999);
+        float diem=random_diem();
+        if (gioitinh==0)
+        {
+            MultiDNode* node = createMultiNode(mssv,gioitinh,ds_tencontrai[nhanten],diem);
+            MultiDLinkedList_addNodeMSSV(list,node);
+            MultiDLinkedList_addNodeHTen(list,node);
+            MultiDLinkedList_addNodeDiem(list,node);
+        }
+        else
+        {
+            MultiDNode* node = createMultiNode(mssv,gioitinh,ds_tencongai[nhanten],diem);
+            MultiDLinkedList_addNodeMSSV(list,node);
+            MultiDLinkedList_addNodeHTen(list,node);
+            MultiDLinkedList_addNodeDiem(list,node);
+        }
+    }
+}
+
+void MultiDLinkedList_addNodeMSSV(MultiDLinkedList* list,MultiDNode* node)
+{
+    if (list->MSSVhead == nullptr || list->MSSVtail == nullptr)
+    {
+        list->MSSVhead = node;
+        list->MSSVtail = node;
+    }
+    else
+    {
+        // neu gia tri mssv nho hon node head
+        if (node->mssv <= list->MSSVhead->mssv)
+        {
+            node->MSSVnext = list->MSSVhead;
+            list->MSSVhead->MSSVprev=node;
+            list->MSSVhead=node;
+        }
+        // neu gia tri mssv lon hon node tail
+        else if (node->mssv >= list->MSSVtail->mssv)
+        {
+            node->MSSVprev = list->MSSVtail;
+            list->MSSVtail->MSSVnext=node;
+            list->MSSVtail=node;
+        }
+        // neu gia tri mssv nam giua cac node
+        else
+        {
+            MultiDNode* p = list->MSSVhead;
+            while(p->MSSVnext != nullptr)
+            {
+                if (p->MSSVnext->mssv >= node->mssv)
+                {
+                    p=p->MSSVnext;
+                    p->MSSVprev->MSSVnext=node;
+                    node->MSSVprev=p->MSSVprev;
+                    p->MSSVprev=node;
+                    node->MSSVnext=p;
+                    return;
+                }
+                p=p->MSSVnext;
+            }
+        }
+    }
+}
+void MultiDLinkedList_addNodeHTen(MultiDLinkedList* list,MultiDNode* node)
+{
+    if (list->HThead == nullptr ||  list->HTtail == nullptr)
+    {
+        list->HThead = node;
+        list->HTtail = node;
+    }
+    else
+    {
+        // neu gia tri mssv nho hon node head
+        if (node->ten <= list->HThead->ten)
+        {
+            node->HTnext = list->HThead;
+            list->HThead->HTprev=node;
+            list->HThead=node;
+        }
+
+            // neu gia tri mssv lon hon node tail
+        else if (node->ten >= list->HTtail->ten)
+        {
+            node->HTprev = list->HTtail;
+            list->HTtail->HTnext=node;
+            list->HTtail=node;
+        }
+
+            // neu gia tri mssv nam giua cac node
+        else
+        {
+            MultiDNode* p = list->HThead;
+            while(p->HTnext != nullptr)
+            {
+                if (p->HTnext->ten >= node->ten)
+                {
+                    p=p->HTnext;
+                    p->HTprev->HTnext=node;
+                    node->HTprev=p->HTprev;
+                    p->HTprev=node;
+                    node->HTnext=p;
+                    return;
+                }
+                p=p->HTnext;
+            }
+        }
+    }
+}
+void MultiDLinkedList_addNodeDiem(MultiDLinkedList* list,MultiDNode* node)
+{
+    if (list->DIEMhead == nullptr ||  list->DIEMtail == nullptr)
+    {
+        list->DIEMhead = list->DIEMtail = node;
+    }
+    else
+    {
+        // neu gia tri mssv nho hon node head
+        if (node->diemtb <= list->DIEMhead->diemtb)
+        {
+            node->DIEMnext = list->DIEMhead;
+            list->DIEMhead->DIEMprev=node;
+            list->DIEMhead=node;
+        }
+
+            // neu gia tri mssv lon hon node tail
+        else if (node->diemtb >= list->DIEMtail->diemtb)
+        {
+            node->DIEMprev = list->DIEMtail;
+            list->DIEMtail->DIEMnext=node;
+            list->DIEMtail=node;
+        }
+
+            // neu gia tri mssv nam giua cac node
+        else
+        {
+            MultiDNode* p = list->DIEMhead;
+            while(p->DIEMnext != nullptr)
+            {
+                if (p->DIEMnext->diemtb >= node->diemtb)
+                {
+                    p=p->DIEMnext;
+                    p->DIEMprev->DIEMnext=node;
+                    node->DIEMprev=p->DIEMprev;
+                    p->DIEMprev=node;
+                    node->DIEMnext=p;
+                    return;
+                }
+                p=p->DIEMnext;
+            }
+        }
+    }
+}

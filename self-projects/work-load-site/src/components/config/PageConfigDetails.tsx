@@ -17,6 +17,9 @@ import UpdateContact from "../../pages/contact/UpdateContact";
 import CreateIdNumber from "../../pages/id-number/CreateIdNumber";
 import IdNumber from "../../pages/id-number/IdNumber";
 import UpdateIdNumber from "../../pages/id-number/UpdateIdNumber";
+import CreateLink from "../../pages/link/CreateLink";
+import Link from "../../pages/link/Link";
+import UpdateLink from "../../pages/link/UpdateLink";
 import Category from "../../pages/n-lessons/category/Category";
 import LessonClient from "../../pages/n-lessons/client/LessonClient";
 import CreateLesson from "../../pages/n-lessons/lesson/CreateLesson";
@@ -346,6 +349,32 @@ export const CONTACT_CONFIG = {
   DELETE_CONTACT: {
     label: "Delete contact",
     role: "CO_D",
+  },
+};
+
+export const LINK_CONFIG = {
+  LINK: {
+    name: "link",
+    label: "Link",
+    path: "/link",
+    role: "LI_L",
+    element: <Link />,
+  },
+  CREATE_LINK: {
+    label: "Create link",
+    path: "/link/create",
+    role: "LI_C",
+    element: <CreateLink />,
+  },
+  UPDATE_LINK: {
+    label: "Update link",
+    path: "/link/update/:id",
+    role: ["LI_V", "LI_U"],
+    element: <UpdateLink />,
+  },
+  DELETE_LINK: {
+    label: "Delete link",
+    role: "LI_D",
   },
 };
 
