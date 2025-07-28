@@ -17,7 +17,7 @@ public class CreateContactForm {
     @PatternConstraint(pattern = AppConstant.PHONE_PATTERN)
     @ApiModelProperty(required = true)
     private String phone;
-    @ValidJsonField(classType = List.class, type = AppConstant.JSON_TYPE_LIST_OBJECT)
+    @ValidJsonField(classType = List.class, type = AppConstant.JSON_TYPE_LIST_OBJECT, allowNull = true)
     @ApiModelProperty(required = true)
     private String phones;
     private String note;

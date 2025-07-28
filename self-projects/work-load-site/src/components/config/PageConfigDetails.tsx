@@ -11,6 +11,9 @@ import Bank from "../../pages/bank/Bank";
 import CreateBank from "../../pages/bank/CreateBank";
 import UpdateBank from "../../pages/bank/UpdateBank";
 import ViewBank from "../../pages/bank/ViewBank";
+import Contact from "../../pages/contact/Contact";
+import CreateContact from "../../pages/contact/CreateContact";
+import UpdateContact from "../../pages/contact/UpdateContact";
 import CreateIdNumber from "../../pages/id-number/CreateIdNumber";
 import IdNumber from "../../pages/id-number/IdNumber";
 import UpdateIdNumber from "../../pages/id-number/UpdateIdNumber";
@@ -317,6 +320,32 @@ export const ID_NUMBER_CONFIG = {
   DELETE_ID_NUMBER: {
     role: "ID_N_D",
     label: "Delete ID number",
+  },
+};
+
+export const CONTACT_CONFIG = {
+  CONTACT: {
+    name: "contact",
+    label: "Contact",
+    path: "/contact",
+    role: "CO_L",
+    element: <Contact />,
+  },
+  CREATE_CONTACT: {
+    label: "Create contact",
+    path: "/contact/create",
+    role: "CO_C",
+    element: <CreateContact />,
+  },
+  UPDATE_CONTACT: {
+    label: "Update contact",
+    path: "/contact/update/:id",
+    role: ["CO_V", "CO_U"],
+    element: <UpdateContact />,
+  },
+  DELETE_CONTACT: {
+    label: "Delete contact",
+    role: "CO_D",
   },
 };
 

@@ -11,6 +11,7 @@ import {
   BACKUP_CODE_CONFIG,
   BANK_CONFIG,
   CATEGORY_CONFIG,
+  CONTACT_CONFIG,
   ID_NUMBER_CONFIG,
   LESSON_CONFIG,
   LINK_ACCOUNT_CONFIG,
@@ -57,6 +58,7 @@ const PAGE_CONFIG = {
   ...TAG_CONFIG,
   ...BANK_CONFIG,
   ...ID_NUMBER_CONFIG,
+  ...CONTACT_CONFIG,
 };
 
 const SESSION_KEY_PAGES: Set<string> = new Set([
@@ -96,7 +98,7 @@ const SIDEBAR_MENUS = [
   {
     name: "Others",
     icon: <FolderIcon size={20} />,
-    items: [],
+    items: [PAGE_CONFIG.CONTACT],
   },
 ];
 

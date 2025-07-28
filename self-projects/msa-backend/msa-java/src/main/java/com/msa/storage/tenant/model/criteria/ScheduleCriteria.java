@@ -1,6 +1,5 @@
 package com.msa.storage.tenant.model.criteria;
 
-import com.msa.storage.tenant.model.Note;
 import com.msa.storage.tenant.model.Schedule;
 import com.msa.storage.tenant.model.Tag;
 import lombok.Getter;

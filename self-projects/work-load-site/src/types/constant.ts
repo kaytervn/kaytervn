@@ -443,6 +443,17 @@ export const BANK_PIN_FIELD_CONFIG = {
   },
 };
 
+export const CONTACT_PHONE_FIELD_CONFIG = {
+  key: {
+    label: "Phone",
+    required: true,
+  },
+  value: {
+    label: "Note",
+    required: false,
+  },
+};
+
 export {
   GRANT_TYPE_MAP,
   defaultInteger,
