@@ -68,7 +68,7 @@ const Software = () => {
       accessor: "link",
       align: ALIGNMENT.LEFT,
       onClick: (item: any) => {
-        window.open(item.url, "_blank");
+        window.open(item.link, "_blank");
       },
     }),
     {
