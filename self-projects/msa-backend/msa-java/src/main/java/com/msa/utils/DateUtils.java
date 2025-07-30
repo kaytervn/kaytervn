@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -125,7 +127,15 @@ public final class DateUtils {
 
     public static LocalDate parseDate(String dateStr, String format) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+            DateTimeFormatter formatter;
+            if (format.equals(AppConstant.DAY_MONTH_FORMAT)) {
+                formatter = new DateTimeFormatterBuilder()
+                        .appendPattern(format)
+                        .parseDefaulting(ChronoField.YEAR, LocalDate.now().getYear())
+                        .toFormatter();
+            } else {
+                formatter = DateTimeFormatter.ofPattern(format);
+            }
             return LocalDate.parse(dateStr, formatter);
         } catch (DateTimeParseException e) {
             return null;

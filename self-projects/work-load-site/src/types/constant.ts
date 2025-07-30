@@ -402,7 +402,7 @@ export const TAG_KIND_MAP = {
   NOTE: {
     value: 6,
     label: "Note",
-    className: "bg-gray-900 text-gray-300",
+    className: "bg-gray-700 text-gray-300",
   },
   SCHEDULE: {
     value: 7,

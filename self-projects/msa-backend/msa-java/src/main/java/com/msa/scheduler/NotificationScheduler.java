@@ -28,7 +28,7 @@ import java.util.Map;
 @Service
 @Slf4j
 public class NotificationScheduler {
-    private static final Integer ALLOWED_MINUTES = 1;
+    private static final Integer ALLOWED_MINUTES = 2;
     @Autowired
     private ScheduleRepository scheduleRepository;
     @Autowired
@@ -109,13 +109,18 @@ public class NotificationScheduler {
         LocalTime currentTime = now.toLocalTime().withSecond(0).withNano(0);
         List<String> tenants = dbConfigRepository.findAllUsername();
         String currentDateStr = DateUtils.formatDate(today, AppConstant.DATE_FORMAT);
-        Date fromDate = Date.from(now.atZone(zoneVN).toInstant());
-        Date toDate = Date.from((now.plusMinutes(ALLOWED_MINUTES).atZone(zoneVN).toInstant()));
+        Date fromDate = Date.from(today.atStartOfDay(zoneVN).toInstant());
+        Date toDate = Date.from(today.atTime(23, 59, 59).atZone(zoneVN).toInstant());
+        log.warn("currentDateStr: {}", currentDateStr);
+        log.warn("fromDate: {}", fromDate);
+        log.warn("toDate: {}", toDate);
         for (String tenant : tenants) {
             TenantDBContext.setCurrentTenant(tenant);
             List<Schedule> schedules = scheduleRepository.findAllDueToday(
                     false, AppConstant.SCHEDULE_TYPE_SUSPENDED, fromDate, toDate
             );
+            log.warn("currentTenant: {}", tenant);
+            log.warn("schedulesSize: {}", schedules.size());
             for (Schedule schedule : schedules) {
                 if (shouldSend(schedule, today, currentTime)) {
                     handleSendEmail(tenant, schedule, currentDateStr);

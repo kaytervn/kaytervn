@@ -76,7 +76,7 @@ const ResetPassword = () => {
         <BasicCardForm title="Reset Password">
           <div className="space-y-4">
             <InputField2
-              title="OTP"
+              title="OTP Code"
               isRequired={true}
               placeholder="Enter OTP"
               value={form.otp}
@@ -85,7 +85,7 @@ const ResetPassword = () => {
             />
             <InputField2
               isRequired={true}
-              title="New password"
+              title="New Password"
               placeholder="Enter new password"
               value={form.newPassword}
               onChangeText={(value: any) => handleChange("newPassword", value)}
@@ -94,7 +94,7 @@ const ResetPassword = () => {
             />
             <InputField2
               isRequired={true}
-              title="Confirm password"
+              title="Confirm Password"
               placeholder="Enter confirm password"
               value={form.confirmPassword}
               onChangeText={(value: any) =>
@@ -104,7 +104,7 @@ const ResetPassword = () => {
               error={errors.confirmPassword}
             />
             <HrefLink
-              label={"Back To Log In Page"}
+              label={"Back to Log In Page"}
               onClick={() => navigate(AUTH_CONFIG.LOGIN.path)}
             />
             <ActionSection
