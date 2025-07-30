@@ -12,6 +12,7 @@ import { ActionSection, MessageForm } from "../../components/form/FormCard";
 import { SubmitButton } from "../../components/form/Button";
 import badRequest from "../../assets/bad_request.png";
 import checkedSchedule from "../../assets/checked_schedule.png";
+import { unzipString } from "../../types/utils";
 
 const CheckSchedule = () => {
   const { token } = useParams();
@@ -33,7 +34,7 @@ const CheckSchedule = () => {
         if (!token) {
           handleNavigateBack();
         }
-        const decryptedToken = decryptClientField(token);
+        const decryptedToken = unzipString(decryptClientField(token));
         if (!decryptedToken) {
           handleNavigateBack();
           return;

@@ -15,6 +15,7 @@ import com.msa.utils.ZipUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
@@ -28,7 +29,8 @@ import java.util.Map;
 @Service
 @Slf4j
 public class NotificationScheduler {
-    private static final Integer ALLOWED_MINUTES = 2;
+    private static final long INTERVAL = 30 * 1000; // 30s
+    private static final Integer ALLOWED_MINUTES = 1;
     @Autowired
     private ScheduleRepository scheduleRepository;
     @Autowired
@@ -41,6 +43,11 @@ public class NotificationScheduler {
     private String clientDomain;
     @Autowired
     private MailServiceImpl mailService;
+
+    @Scheduled(fixedRate = INTERVAL)
+    public void runSchedule() {
+        sendScheduleNotification();
+    }
 
     private void handleSendEmail(String tenantName, Schedule schedule, String currentDate) {
         Map<String, String> emailsMap = basicApiService.extractMapNameNote(schedule.getEmails());

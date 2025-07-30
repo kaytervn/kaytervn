@@ -156,6 +156,7 @@ public class ScheduleController extends ABasicController {
         String oldCheckedDate = schedule.getCheckedDate();
         boolean isKindChanged = !Objects.equals(oldKind, form.getKind());
         boolean isCheckedDateChanged = !Objects.equals(oldCheckedDate, form.getCheckedDate());
+        boolean isTimeChanged = !Objects.equals(schedule.getTime(), form.getTime());
         List<BasicObject> emails = basicApiService.extractListBasicJson(form.getEmails());
         for (BasicObject obj : emails) {
             String email = obj.getName();
@@ -193,7 +194,7 @@ public class ScheduleController extends ABasicController {
             schedule.setTag(tag);
         }
         schedule.setDueDate(basicApiService.calculateDueDate(schedule));
-        if (isKindChanged || isCheckedDateChanged) {
+        if (isKindChanged || isCheckedDateChanged || isTimeChanged) {
             schedule.setIsSent(false);
         }
         scheduleRepository.save(schedule);

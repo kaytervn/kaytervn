@@ -85,12 +85,8 @@ export const MessageForm = ({
           {title}
         </h2>
         {imgSrc && (
-          <div className="w-full hidden md:block">
-            <img
-              src={imgSrc}
-              className="h-full w-full object-contain"
-              alt="Message illustration"
-            />
+          <div className="w-full">
+            <img src={imgSrc} className="h-full w-full object-contain" />
           </div>
         )}
         <p className="mb-6 text-center text-gray-300">{message}</p>
