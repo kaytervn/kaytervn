@@ -24,7 +24,7 @@ const InputKeyForm = ({ isVisible, formConfig }: any) => {
       mySecretKey
     );
     if (!decryptedKey) {
-      newErrors.sessionKey = "Invalid key";
+      newErrors.sessionKey = "Invalid Key";
     } else {
       setSessionKey(decryptedKey);
     }
@@ -38,7 +38,7 @@ const InputKeyForm = ({ isVisible, formConfig }: any) => {
 
   useEffect(() => {
     const getKey = async () => {
-      if (!isVisible || mySecretKey) {
+      if (!isVisible) {
         return;
       }
       const res = await user.getMyKey();
@@ -74,7 +74,7 @@ const InputKeyForm = ({ isVisible, formConfig }: any) => {
           <>
             <div className="flex flex-col space-y-4">
               <TextAreaField2
-                title="Secret key"
+                title="Secret Key"
                 isRequired={true}
                 placeholder="Enter your secret key"
                 value={form?.sessionKey}
@@ -119,7 +119,7 @@ const InputSessionKey = () => {
           <h2 className="text-lg font-semibold text-white">
             SESSION KEY TIMED OUT
           </h2>
-          <SubmitButton text={"Input key"} onClick={handleOpenModal} />
+          <SubmitButton text={"Input Key"} onClick={handleOpenModal} />
         </div>
       </div>
     </>

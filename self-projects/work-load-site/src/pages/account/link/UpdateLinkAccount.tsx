@@ -22,7 +22,7 @@ const UpdateLinkAccount = ({ isVisible, formConfig }: any) => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.platformId) {
-      newErrors.platformId = "Invalid platform";
+      newErrors.platformId = "Invalid Platform";
     }
     return newErrors;
   };

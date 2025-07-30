@@ -37,13 +37,13 @@ const UpdateUser = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!VALID_PATTERN.EMAIL.test(form.email)) {
-      newErrors.email = "Invalid email";
+      newErrors.email = "Invalid Email";
     }
     if (!form.groupId) {
-      newErrors.groupId = "Invalid role";
+      newErrors.groupId = "Invalid Role";
     }
     if (form.status != 0 && !form.status) {
-      newErrors.status = "Invalid status";
+      newErrors.status = "Invalid Status";
     }
     return newErrors;
   };
@@ -154,7 +154,7 @@ const UpdateUser = () => {
                 </div>
                 <div className="flex flex-row space-x-2">
                   <InputField2
-                    title="Full name"
+                    title="Full Name"
                     value={form.fullName}
                     disabled={true}
                   />

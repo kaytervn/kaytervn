@@ -1,4 +1,5 @@
-import { AUTH_TYPE, ENV, METHOD } from "../types/constant";
+import { encryptClientField } from "../services/encryption/clientEncryption";
+import { API_HEADER, AUTH_TYPE, ENV, METHOD } from "../types/constant";
 
 export const scheduleController = (fetchApi: any) => {
   const list = (payload: any) =>
@@ -53,8 +54,22 @@ export const scheduleController = (fetchApi: any) => {
       authType: AUTH_TYPE.BEARER,
     });
 
+  const checkSchedule = (tenant: any, token: any) => {
+    return fetchApi({
+      apiUrl: ENV.MSA_JAVA_API_URL,
+      endpoint: "/v1/schedule/check-schedule",
+      method: METHOD.POST,
+      payload: { token },
+      authType: AUTH_TYPE.NONE,
+      headers: {
+        [API_HEADER.X_TENANT]: encryptClientField(tenant),
+      },
+    });
+  };
+
   return {
     list,
+    checkSchedule,
     get,
     create,
     update,

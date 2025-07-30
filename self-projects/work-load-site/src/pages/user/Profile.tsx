@@ -27,10 +27,10 @@ const Profile = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.fullName.trim()) {
-      newErrors.fullName = "Invalid name";
+      newErrors.fullName = "Invalid Name";
     }
     if (!form.oldPassword.trim()) {
-      newErrors.oldPassword = "Invalid password";
+      newErrors.oldPassword = "Invalid Password";
     }
     return newErrors;
   };
@@ -103,7 +103,7 @@ const Profile = () => {
                 />
                 <div className="flex flex-row space-x-2">
                   <InputField2
-                    title="Full name"
+                    title="Full Name"
                     isRequired={true}
                     placeholder="Enter full name"
                     value={form.fullName}
@@ -139,7 +139,7 @@ const Profile = () => {
                   />
                   <InputField2
                     isRequired={true}
-                    title="Current password"
+                    title="Current Password"
                     placeholder="Enter current password"
                     value={form.oldPassword}
                     onChangeText={(value: any) =>

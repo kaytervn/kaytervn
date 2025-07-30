@@ -44,14 +44,14 @@ const UpdateAccount = () => {
     const newErrors: any = {};
     if (isRoot()) {
       if (!form.username.trim()) {
-        newErrors.username = "Invalid username";
+        newErrors.username = "Invalid Username";
       }
       if (!form.password.trim()) {
-        newErrors.password = "Invalid password";
+        newErrors.password = "Invalid Password";
       }
     }
     if (!form.platformId) {
-      newErrors.platformId = "Invalid platform";
+      newErrors.platformId = "Invalid Platform";
     }
     return newErrors;
   };

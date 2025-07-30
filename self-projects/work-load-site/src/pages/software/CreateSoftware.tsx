@@ -28,10 +28,10 @@ const CreateSoftware = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.name.trim()) {
-      newErrors.name = "Invalid name";
+      newErrors.name = "Invalid Name";
     }
     if (form.link && !isValidURL(form.link)) {
-      newErrors.link = "Invalid link";
+      newErrors.link = "Invalid Link";
     }
     return newErrors;
   };

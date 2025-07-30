@@ -31,7 +31,6 @@ public class CloudinaryService {
         return (dotIndex != -1) ? fileName.substring(0, dotIndex) : fileName;
     }
 
-    @Async
     public UploadFileDto uploadFile(MultipartFile file) throws Exception {
         Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
         UploadFileDto dto = new UploadFileDto();

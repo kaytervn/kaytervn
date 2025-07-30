@@ -20,6 +20,7 @@
     "codemirror": "^5.65.18",
     "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
+    "date-fns-tz": "^3.2.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^12.0.5",
     "fuse.js": "^7.1.0",

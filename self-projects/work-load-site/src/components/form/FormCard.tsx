@@ -70,6 +70,36 @@ const BasicCardForm = ({ title = "Login", children, imgSrc }: any) => (
   </div>
 );
 
+export const MessageForm = ({
+  title = "Send a Message",
+  message,
+  imgSrc,
+  children,
+}: any) => (
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 p-4">
+    <div
+      className={`w-full rounded-xl bg-gray-900/95 shadow-2xl backdrop-blur-sm flex overflow-hidden max-w-md`}
+    >
+      <div className={"w-full p-8"}>
+        <h2 className="mb-4 text-center text-2xl font-semibold text-blue-500">
+          {title}
+        </h2>
+        {imgSrc && (
+          <div className="w-full hidden md:block">
+            <img
+              src={imgSrc}
+              className="h-full w-full object-contain"
+              alt="Message illustration"
+            />
+          </div>
+        )}
+        <p className="mb-6 text-center text-gray-300">{message}</p>
+        {children}
+      </div>
+    </div>
+  </div>
+);
+
 const ImageBase64 = ({ imgString }: any) => (
   <div className="flex mx-auto items-center justify-center w-[200px] h-[200px] border border-gray-600 bg-gray-800 rounded-md overflow-hidden">
     <img src={imgString} className="w-full h-full object-cover" />

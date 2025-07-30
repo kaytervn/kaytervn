@@ -168,6 +168,9 @@ const TRUNCATE_LENGTH = 150;
 const FETCH_INTERVAL = 300;
 const SESSION_KEY_TIMEOUT = 2 * 60 * 60 * 1000; // 2 hours
 const PING_INTERVAL = 50000; // 50s
+export const DATE_FORMAT = "dd/MM/yyyy";
+export const DAY_MONTH_FORMAT = "dd/MM";
+export const TIMEZONE_VIETNAM = "Asia/Ho_Chi_Minh";
 
 const LOCAL_STORAGE = {
   SESSION_KEY: "msa_session_key",
@@ -207,6 +210,7 @@ const API_HEADER = {
   X_API_KEY: "x-api-key",
   CLIENT_REQUEST_ID: "client-request-id",
   X_FINGERPRINT: "x-fingerprint",
+  X_TENANT: "x-tenant",
 };
 
 const AUTH_TYPE = {
@@ -224,19 +228,20 @@ const BASIC_MESSAGES = {
   CREATED: "Created successfully",
   UPDATED: "Updated successfully",
   DELETED: "Deleted successfully",
-  NO_DATA: "No data",
+  NO_DATA: "No Data",
   VERIFY_FAILED: "Verify failed",
 };
 
 const BUTTON_TEXT = {
+  VERIFY: "Verify",
   ACCEPT: "Accept",
   CLEAR: "Clear",
-  REQUEST_KEY: "Request key",
+  REQUEST_KEY: "Request Key",
   HOME: "Home",
   SUBMIT: "Submit",
-  TWO_FACTOR: "Verify code",
+  TWO_FACTOR: "Verify Code",
   CONTINUE: "Continue",
-  LOGIN: "Sign in",
+  LOGIN: "Sign In",
   SEARCH: "Search",
   REFRESH: "Refresh",
   CREATE: "Create",
@@ -247,15 +252,15 @@ const BUTTON_TEXT = {
   BACK: "Back",
   UPLOAD: "Upload",
   DOWNLOAD: "Download",
-  CHANGE_PASSWORD: "Change password",
+  CHANGE_PASSWORD: "Change Password",
   CHANGE_PIN: "Change PIN",
-  LOGOUT: "Log out",
-  CLEAR_SYSTEM_KEY: "Clear system key",
-  DOWNLOAD_DATA_BACKUP: "Download backup data",
-  UPLOAD_DATA_BACKUP: "Upload backup data",
-  BACKUP_CODE: "Backup codes",
-  LINKED_ACCOUNTS: "Link accounts",
-  VIEW_ROOT_ACCOUNT: "View root account",
+  LOGOUT: "Log Out",
+  CLEAR_SYSTEM_KEY: "Clear System Key",
+  DOWNLOAD_DATA_BACKUP: "Download Backup Data",
+  UPLOAD_DATA_BACKUP: "Upload Backup Data",
+  BACKUP_CODE: "Backup Codes",
+  LINKED_ACCOUNTS: "Link Accounts",
+  VIEW_ROOT_ACCOUNT: "View Root Account",
 };
 
 const ENV = {
@@ -305,22 +310,22 @@ const ACCOUNT_KIND_MAP = {
 const SORT_ACCOUNT_MAP = {
   CREATED_DATE_DESC: {
     value: 1,
-    label: "Created date [desc]",
+    label: "Created Date [Desc]",
   },
   TOTAL_CHILDREN_DESC: {
     value: 2,
-    label: "Link accounts [desc]",
+    label: "Link Accounts [Desc]",
   },
 };
 
 const SORT_PLATFORM_MAP = {
   CREATED_DATE_DESC: {
     value: 1,
-    label: "Created date [desc]",
+    label: "Created Date [Desc]",
   },
   TOTAL_ACCOUNT_DESC: {
     value: 2,
-    label: "Total accounts [desc]",
+    label: "Total Accounts [Desc]",
   },
 };
 
@@ -419,6 +424,7 @@ const VALID_PATTERN = {
   HOST: /^(localhost|(([a-z0-9-]+\.)*[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}|\[([0-9a-f:]+)\])$/,
   PORT: /^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/,
   COLOR_CODE: /^#[0-9A-F]{6}$/i,
+  TIME: /^(?:[01]\d|2[0-3]):[0-5]\d$/,
 };
 
 export const BANK_NUMBER_FIELD_CONFIG = {
@@ -451,6 +457,58 @@ export const CONTACT_PHONE_FIELD_CONFIG = {
   value: {
     label: "Note",
     required: false,
+  },
+};
+
+export const SCHEDULE_EMAIL_FIELD_CONFIG = {
+  key: {
+    label: "Email",
+    required: true,
+  },
+  value: {
+    label: "Name",
+    required: true,
+  },
+};
+
+export const SCHEDULE_KIND_MAP = {
+  DAYS: {
+    value: 1,
+    label: "Repeat every X days",
+    className: "bg-blue-700 text-blue-100",
+  },
+  MONTHS: {
+    value: 2,
+    label: "Repeat every X months",
+    className: "bg-green-700 text-green-100",
+  },
+  DAY_MONTH: {
+    value: 3,
+    label: "Repeat on specific day/month",
+    className: "bg-yellow-700 text-yellow-100",
+  },
+  EXACT_DATE: {
+    value: 4,
+    label: "One-time on exact date",
+    className: "bg-gray-700 text-gray-100",
+  },
+};
+
+export const SCHEDULE_TYPE_MAP = {
+  AUTO_RENEW: {
+    value: 1,
+    label: "Auto-renew enabled",
+    className: "bg-indigo-700 text-indigo-100",
+  },
+  MANUAL_RENEW: {
+    value: 2,
+    label: "Manual renewal required",
+    className: "bg-orange-700 text-orange-100",
+  },
+  SUSPENDED: {
+    value: 3,
+    label: "Temporarily suspended",
+    className: "bg-red-700 text-red-100",
   },
 };
 

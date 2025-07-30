@@ -16,10 +16,10 @@ const ChangePassword = ({ isVisible, formConfig }: any) => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.oldPassword.trim()) {
-      newErrors.oldPassword = "Invalid password";
+      newErrors.oldPassword = "Invalid Password";
     }
     if (!form.newPassword.trim()) {
-      newErrors.newPassword = "Invalid password";
+      newErrors.newPassword = "Invalid Password";
     }
     if (form.newPassword !== form.confirmPassword) {
       newErrors.confirmPassword = "Password does not match";
@@ -62,7 +62,7 @@ const ChangePassword = ({ isVisible, formConfig }: any) => {
           <div className="flex flex-col space-y-4">
             <InputField2
               isRequired={true}
-              title="Current password"
+              title="Current Password"
               placeholder="Enter current password"
               value={form.oldPassword}
               onChangeText={(value: any) => handleChange("oldPassword", value)}
@@ -71,7 +71,7 @@ const ChangePassword = ({ isVisible, formConfig }: any) => {
             />
             <InputField2
               isRequired={true}
-              title="New password"
+              title="New Password"
               placeholder="Enter new password"
               value={form.newPassword}
               onChangeText={(value: any) => handleChange("newPassword", value)}
@@ -80,7 +80,7 @@ const ChangePassword = ({ isVisible, formConfig }: any) => {
             />
             <InputField2
               isRequired={true}
-              title="Confirm password"
+              title="Confirm Password"
               placeholder="Enter confirm password"
               value={form.confirmPassword}
               onChangeText={(value: any) =>

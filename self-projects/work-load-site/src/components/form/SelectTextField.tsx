@@ -52,7 +52,7 @@ const StaticSelectBox = ({ placeholder, onChange, dataMap, value }: any) => {
   };
 
   return (
-    <div ref={wrapperRef} className="w-full md:w-[11rem] relative">
+    <div ref={wrapperRef} className="w-full md:w-[12rem] relative">
       <div
         className="w-full flex items-center p-2 rounded-md bg-gray-600 cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}

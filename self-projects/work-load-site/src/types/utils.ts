@@ -1,10 +1,26 @@
 import * as CryptoJS from "crypto-js";
 import { v4 as uuidv4 } from "uuid";
-import { colors, ENV, MIME_TYPES, myPublicSecretKey } from "./constant";
+import {
+  colors,
+  DATE_FORMAT,
+  ENV,
+  MIME_TYPES,
+  myPublicSecretKey,
+  SCHEDULE_KIND_MAP,
+  TIMEZONE_VIETNAM,
+} from "./constant";
 import gifs from "./gifs";
 import forge from "node-forge";
 import Fuse from "fuse.js";
 import pako from "pako";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(customParseFormat);
 
 const getCurrentDate = () => {
   const now = new Date();
@@ -256,7 +272,7 @@ const isValidURL = (url: string) => {
 
 const getEnumItem = (map: any, value: number) =>
   Object.values(map).find((item: any) => item.value === value) ?? {
-    label: "Unknown",
+    label: "None",
     className: "bg-gray-700 text-gray-300",
   };
 
@@ -605,6 +621,54 @@ const truncateToDDMMYYYY = (dateString: string): string => {
       .padStart(2, "0")}/${year}`;
   } catch {
     return "";
+  }
+};
+
+export const calculateDueDate = (
+  checkedDateStr: string,
+  kind: number,
+  amount: number
+): string | null => {
+  try {
+    const now = dayjs().tz?.(TIMEZONE_VIETNAM) ?? dayjs();
+    const today = now.startOf("day");
+    if (
+      [
+        SCHEDULE_KIND_MAP.DAYS.value,
+        SCHEDULE_KIND_MAP.MONTHS.value,
+        SCHEDULE_KIND_MAP.EXACT_DATE.value,
+      ].includes(kind)
+    ) {
+      const startDate = dayjs(checkedDateStr, DATE_FORMAT, true);
+      if (!startDate.isValid()) return null;
+
+      let nextDate = startDate;
+      if (kind === SCHEDULE_KIND_MAP.DAYS.value) {
+        while (!nextDate.isAfter(today)) {
+          nextDate = nextDate.add(amount, "day");
+        }
+      } else if (kind === SCHEDULE_KIND_MAP.MONTHS.value) {
+        while (!nextDate.isAfter(today)) {
+          nextDate = nextDate.add(amount, "month");
+        }
+      } else {
+        return startDate.isValid() ? startDate.format(DATE_FORMAT) : null;
+      }
+      return nextDate.format(DATE_FORMAT);
+    }
+    if (kind === SCHEDULE_KIND_MAP.DAY_MONTH.value) {
+      const [day, month] = checkedDateStr.split("/").map(Number);
+      let nextDate = today;
+      for (let i = 0; i <= 365; i++) {
+        if (nextDate.date() === day && nextDate.month() + 1 === month) {
+          return nextDate.format(DATE_FORMAT);
+        }
+        nextDate = nextDate.add(1, "day");
+      }
+    }
+    return null;
+  } catch {
+    return null;
   }
 };
 

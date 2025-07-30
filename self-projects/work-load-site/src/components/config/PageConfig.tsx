@@ -20,6 +20,7 @@ import {
   NOTE_CONFIG,
   PLATFORM_CONFIG,
   ROLE_CONFIG,
+  SCHEDULE_CONFIG,
   SOFTWARE_CONFIG,
   TAG_CONFIG,
   USER_CONFIG,
@@ -27,6 +28,7 @@ import {
 import RedirectHome from "./RedirectHome";
 import Profile from "../../pages/user/Profile";
 import ActivateAccount from "../../pages/user/ActivateAccount";
+import CheckSchedule from "../../pages/schedule/CheckSchedule";
 
 const N_LESSONS_PAGE_CONFIG = {
   ...CATEGORY_CONFIG,
@@ -65,6 +67,7 @@ const PAGE_CONFIG = {
   ...LINK_CONFIG,
   ...SOFTWARE_CONFIG,
   ...NOTE_CONFIG,
+  ...SCHEDULE_CONFIG,
 };
 
 const SESSION_KEY_PAGES: Set<string> = new Set([
@@ -74,37 +77,42 @@ const SESSION_KEY_PAGES: Set<string> = new Set([
 
 const BASIC_PAGE_CONFIG = {
   ACTIVATE_ACCOUNT: {
-    label: "Activate account",
+    label: "Activate Account",
     path: "/activate-account/:token",
     element: <ActivateAccount />,
+  },
+  CHECK_SCHEDULE: {
+    label: "Check Schedule",
+    path: "/check-schedule/:token",
+    element: <CheckSchedule />,
   },
 };
 
 const SIDEBAR_MENUS = [
   {
-    name: "User management",
+    name: "User Management",
     icon: <UsersIcon size={20} />,
     items: [PAGE_CONFIG.USER, PAGE_CONFIG.ROLE],
   },
   {
-    name: "Account management",
+    name: "Account Management",
     icon: <KeyIcon size={20} />,
     items: [PAGE_CONFIG.PLATFORM, PAGE_CONFIG.ACCOUNT],
   },
   {
-    name: "Useful links",
+    name: "Useful Links",
     icon: <LinkIcon size={20} />,
     items: [PAGE_CONFIG.LINK, PAGE_CONFIG.SOFTWARE],
   },
   {
-    name: "Key information",
+    name: "Key Information",
     icon: <LockKeyholeIcon size={20} />,
     items: [PAGE_CONFIG.TAG, PAGE_CONFIG.ID_NUMBER, PAGE_CONFIG.BANK],
   },
   {
     name: "Others",
     icon: <FolderIcon size={20} />,
-    items: [PAGE_CONFIG.NOTE, PAGE_CONFIG.CONTACT],
+    items: [PAGE_CONFIG.NOTE, PAGE_CONFIG.SCHEDULE, PAGE_CONFIG.CONTACT],
   },
 ];
 

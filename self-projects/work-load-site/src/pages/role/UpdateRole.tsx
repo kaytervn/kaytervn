@@ -32,7 +32,7 @@ const UpdateRole = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.name.trim()) {
-      newErrors.name = "Invalid name";
+      newErrors.name = "Invalid Name";
     }
     if (form.permissionIds.length <= 0) {
       newErrors.permissionIds = "At least one permission is required";

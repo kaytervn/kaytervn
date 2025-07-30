@@ -2,8 +2,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../components/config/GlobalProvider";
 import useApi from "../../hooks/useApi";
-import useModal from "../../hooks/useModal";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   BASIC_MESSAGES,
   BUTTON_TEXT,
@@ -12,22 +11,24 @@ import {
 } from "../../types/constant";
 import useForm from "../../hooks/useForm";
 import { AUTH_CONFIG } from "../../components/config/PageConfigDetails";
+import { LoadingDialog } from "../../components/form/Dialog";
 import {
-  ConfirmationDialog,
-  LoadingDialog,
-} from "../../components/form/Dialog";
-import { ActionSection, BasicCardForm } from "../../components/form/FormCard";
+  ActionSection,
+  BasicCardForm,
+  MessageForm,
+} from "../../components/form/FormCard";
 import { InputField2 } from "../../components/form/InputTextField";
 import { CancelButton, SubmitButton } from "../../components/form/Button";
 import { PAGE_CONFIG } from "../../components/config/PageConfig";
 import { decryptClientField } from "../../services/encryption/clientEncryption";
+import skateboarding from "../../assets/skateboarding.png";
 
 const ActivateAccount = () => {
   const { token } = useParams();
   const { profile, setToast } = useGlobalContext();
   const navigate = useNavigate();
   const { user, loading } = useApi();
-  const { isModalVisible, showModal, formConfig } = useModal();
+  const [isSubmitted, setIsSubmitted] = useState<any>(false);
 
   const handleNavigateBack = () => {
     if (profile) {
@@ -40,7 +41,7 @@ const ActivateAccount = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!VALID_PATTERN.PASSWORD.test(form.password)) {
-      newErrors.password = "Invalid password";
+      newErrors.password = "Invalid Password";
     }
     return newErrors;
   };
@@ -74,13 +75,8 @@ const ActivateAccount = () => {
       const res = await user.activateAccount(form);
       if (res.result) {
         setToast(BASIC_MESSAGES.SUCCESS, TOAST.SUCCESS);
-        showModal({
-          title: "Success",
-          message: "Account activated successfully",
-          color: "mediumseagreen",
-          confirmText: BUTTON_TEXT.CONTINUE,
-          onConfirm: () => handleNavigateBack(),
-        });
+        setIsSubmitted(true);
+        return;
       } else {
         setToast(res.message || BASIC_MESSAGES.FAILED, TOAST.ERROR);
       }
@@ -92,31 +88,46 @@ const ActivateAccount = () => {
   return (
     <>
       <LoadingDialog isVisible={loading} />
-      <ConfirmationDialog isVisible={isModalVisible} formConfig={formConfig} />
-      <BasicCardForm title="Reset password">
-        <div className="space-y-4">
-          <InputField2
-            isRequired={true}
-            title="Password"
-            placeholder="Enter password"
-            value={form.password}
-            onChangeText={(value: any) => handleChange("password", value)}
-            type="password"
-            error={errors.password}
-          />
-          <ActionSection
-            children={
-              <>
-                <CancelButton onClick={handleNavigateBack} />
-                <SubmitButton
-                  text={BUTTON_TEXT.SUBMIT}
-                  onClick={handleSubmit}
-                />
-              </>
-            }
-          />
-        </div>
-      </BasicCardForm>
+      {!isSubmitted ? (
+        <BasicCardForm title="Activate Account">
+          <div className="space-y-4">
+            <InputField2
+              isRequired={true}
+              title="Password"
+              placeholder="Enter password"
+              value={form.password}
+              onChangeText={(value: any) => handleChange("password", value)}
+              type="password"
+              error={errors.password}
+            />
+            <ActionSection
+              children={
+                <>
+                  <CancelButton onClick={handleNavigateBack} />
+                  <SubmitButton
+                    text={BUTTON_TEXT.SUBMIT}
+                    onClick={handleSubmit}
+                  />
+                </>
+              }
+            />
+          </div>
+        </BasicCardForm>
+      ) : (
+        <MessageForm
+          title="Account Activated"
+          message="Your account has been successfully activated!"
+          imgSrc={skateboarding}
+          children={
+            <ActionSection>
+              <SubmitButton
+                text={BUTTON_TEXT.CONTINUE}
+                onClick={handleNavigateBack}
+              />
+            </ActionSection>
+          }
+        />
+      )}
     </>
   );
 };

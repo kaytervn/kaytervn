@@ -17,7 +17,7 @@ const RequestKey = ({ isVisible, formConfig }: any) => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!VALID_PATTERN.PASSWORD.test(form.password)) {
-      newErrors.password = "Invalid password";
+      newErrors.password = "Invalid Password";
     }
     return newErrors;
   };

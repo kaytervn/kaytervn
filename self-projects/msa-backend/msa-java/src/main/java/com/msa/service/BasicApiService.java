@@ -83,7 +83,7 @@ public class BasicApiService {
             LocalTime time = LocalTime.parse(timeStr);
             String checkedDateStr = schedule.getCheckedDate();
             Integer kind = schedule.getKind();
-            int amount = schedule.getAmount();
+            Integer amount = schedule.getAmount();
 
             if (AppConstant.SCHEDULE_KIND_DAYS.equals(kind)) {
                 LocalDate startDate = DateUtils.parseDate(checkedDateStr, AppConstant.DATE_FORMAT);

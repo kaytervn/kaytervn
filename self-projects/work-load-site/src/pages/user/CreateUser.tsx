@@ -30,19 +30,19 @@ const CreateUser = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.fullName.trim()) {
-      newErrors.fullName = "Invalid name";
+      newErrors.fullName = "Invalid Name";
     }
     if (!VALID_PATTERN.USERNAME.test(form.username)) {
-      newErrors.username = "Invalid username";
+      newErrors.username = "Invalid Username";
     }
     if (!VALID_PATTERN.EMAIL.test(form.email)) {
-      newErrors.email = "Invalid email";
+      newErrors.email = "Invalid Email";
     }
     if (!VALID_PATTERN.PASSWORD.test(form.password)) {
-      newErrors.password = "Invalid password";
+      newErrors.password = "Invalid Password";
     }
     if (!form.groupId) {
-      newErrors.groupId = "Invalid role";
+      newErrors.groupId = "Invalid Role";
     }
     if (form.password !== form.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
@@ -125,7 +125,7 @@ const CreateUser = () => {
                 </div>
                 <div className="flex flex-row space-x-2">
                   <InputField2
-                    title="Full name"
+                    title="Full Name"
                     isRequired={true}
                     placeholder="Enter full name"
                     value={form.fullName}
@@ -158,7 +158,7 @@ const CreateUser = () => {
                     error={errors.password}
                   />
                   <InputField2
-                    title="Confirm password"
+                    title="Confirm Password"
                     isRequired={true}
                     placeholder="Enter confirm password"
                     value={form.confirmPassword}

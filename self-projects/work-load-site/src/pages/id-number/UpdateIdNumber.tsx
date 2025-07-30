@@ -32,10 +32,10 @@ const UpdateIdNumber = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.name.trim()) {
-      newErrors.name = "Invalid name";
+      newErrors.name = "Invalid Name";
     }
     if (!form.code.trim()) {
-      newErrors.code = "Invalid code";
+      newErrors.code = "Invalid Code";
     }
     return newErrors;
   };

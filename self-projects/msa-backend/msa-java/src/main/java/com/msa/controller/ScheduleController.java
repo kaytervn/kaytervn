@@ -109,7 +109,7 @@ public class ScheduleController extends ABasicController {
             String email = obj.getName();
             String receiver = obj.getNote();
             if (!email.matches(AppConstant.EMAIL_PATTERN) || StringUtils.isBlank(receiver)) {
-                throw new BadRequestException("Emails is invalid");
+                throw new BadRequestException("Emails are invalid");
             }
         }
         schedule.setEmails(form.getEmails());

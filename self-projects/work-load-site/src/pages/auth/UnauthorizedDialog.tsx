@@ -24,8 +24,9 @@ const UnauthorizedDialog = () => {
   useEffect(() => {
     if (isUnauthorized) {
       showModal({
-        title: "Session timed out",
-        message: "Please login again",
+        title: "Session Timed Out",
+        message:
+          "Your session has expired due to our security policy. Please log in again to continue.",
         confirmText: BUTTON_TEXT.ACCEPT,
         color: "goldenrod",
         onConfirm: () => {

@@ -30,13 +30,13 @@ const CreateBank = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.username.trim()) {
-      newErrors.username = "Invalid username";
+      newErrors.username = "Invalid Username";
     }
     if (!form.password.trim()) {
-      newErrors.password = "Invalid password";
+      newErrors.password = "Invalid Password";
     }
     if (!form.tagId) {
-      newErrors.tagId = "Invalid tag";
+      newErrors.tagId = "Invalid Tag";
     }
     return newErrors;
   };

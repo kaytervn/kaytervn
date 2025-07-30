@@ -32,6 +32,9 @@ import Platform from "../../pages/platform/Platform";
 import CreateRole from "../../pages/role/CreateRole";
 import Role from "../../pages/role/Role";
 import UpdateRole from "../../pages/role/UpdateRole";
+import CreateSchedule from "../../pages/schedule/CreateSchedule";
+import Schedule from "../../pages/schedule/Schedule";
+import UpdateSchedule from "../../pages/schedule/UpdateSchedule";
 import CreateSoftware from "../../pages/software/CreateSoftware";
 import Software from "../../pages/software/Software";
 import UpdateSoftware from "../../pages/software/UpdateSoftware";
@@ -95,12 +98,12 @@ const AUTH_CONFIG = {
     element: <Login />,
   },
   FORGOT_PASSWORD: {
-    label: "Forgot password",
+    label: "Forgot Password",
     path: "/forgot-password",
     element: <ForgotPassword />,
   },
   RESET_PASSWORD: {
-    label: "Reset password",
+    label: "Reset Password",
     path: "/reset-password",
     element: <ResetPassword />,
   },
@@ -115,13 +118,13 @@ const USER_CONFIG = {
     element: <User />,
   },
   CREATE_USER: {
-    label: "Create user",
+    label: "Create User",
     path: "/user/create",
     role: "US_C",
     element: <CreateUser />,
   },
   UPDATE_USER: {
-    label: "Update user",
+    label: "Update User",
     path: "/user/update/:id",
     role: ["US_U", "US_V"],
     element: <UpdateUser />,
@@ -141,19 +144,19 @@ const ROLE_CONFIG = {
     element: <Role />,
   },
   UPDATE_ROLE: {
-    label: "Update role",
+    label: "Update Role",
     path: "/role/update/:id",
     role: ["GR_U", "GR_V", "PER_L"],
     element: <UpdateRole />,
   },
   CREATE_ROLE: {
-    label: "Create role",
+    label: "Create Role",
     path: "/role/create",
     role: ["GR_C", "PER_L"],
     element: <CreateRole />,
   },
   DELETE_ROLE: {
-    label: "Delete role",
+    label: "Delete Role",
     role: "GR_D",
   },
 };
@@ -167,15 +170,15 @@ const PLATFORM_CONFIG = {
     element: <Platform />,
   },
   CREATE_PLATFORM: {
-    label: "Create platform",
+    label: "Create Platform",
     role: "PL_C",
   },
   UPDATE_PLATFORM: {
-    label: "Update platform",
+    label: "Update Platform",
     role: ["PL_U", "PL_V"],
   },
   DELETE_PLATFORM: {
-    label: "Delete platform",
+    label: "Delete Platform",
     role: "PL_D",
   },
 };
@@ -189,15 +192,15 @@ const TAG_CONFIG = {
     element: <Tag />,
   },
   CREATE_TAG: {
-    label: "Create tag",
+    label: "Create Tag",
     role: "TA_C",
   },
   UPDATE_TAG: {
-    label: "Update tag",
+    label: "Update Tag",
     role: ["TA_V", "TA_U"],
   },
   DELETE_TAG: {
-    label: "Delete tag",
+    label: "Delete Tag",
     role: "TA_D",
   },
 };
@@ -211,26 +214,26 @@ const ACCOUNT_CONFIG = {
     element: <Account />,
   },
   CREATE_ACCOUNT: {
-    label: "Create account",
+    label: "Create Account",
     path: "/account/create",
     role: "ACC_C",
     element: <CreateAccount />,
   },
   VIEW_ACCOUNT: {
-    label: "View account",
+    label: "View Account",
     path: "/account/view/:id",
     role: "ACC_V",
     element: <ViewAccount />,
   },
   UPDATE_ACCOUNT: {
-    label: "Update account",
+    label: "Update Account",
     path: "/account/update/:id",
     role: ["ACC_U", "ACC_V"],
     element: <UpdateAccount />,
   },
   DELETE_ACCOUNT: {
     role: "ACC_D",
-    label: "Delete account",
+    label: "Delete Account",
   },
 };
 
@@ -243,47 +246,47 @@ export const BANK_CONFIG = {
     element: <Bank />,
   },
   CREATE_BANK: {
-    label: "Create bank",
+    label: "Create Bank",
     path: "/bank/create",
     role: "BA_C",
     element: <CreateBank />,
   },
   VIEW_BANK: {
-    label: "View bank",
+    label: "View Bank",
     path: "/bank/view/:id",
     role: "BA_V",
     element: <ViewBank />,
   },
   UPDATE_BANK: {
-    label: "Update bank",
+    label: "Update Bank",
     path: "/bank/update/:id",
     role: ["BA_U", "BA_V"],
     element: <UpdateBank />,
   },
   DELETE_BANK: {
     role: "BA_D",
-    label: "Delete bank",
+    label: "Delete Bank",
   },
 };
 
 const LINK_ACCOUNT_CONFIG = {
   LINK_ACCOUNT: {
     name: "link_account",
-    label: "Link accounts",
+    label: "Link Accounts",
     path: "/account/link-account/:parentId",
     role: ["ACC_V", "ACC_L"],
     element: <LinkAccount />,
   },
   CREATE_LINK_ACCOUNT: {
-    label: "Create link account",
+    label: "Create Link Account",
     role: "ACC_C",
   },
   UPDATE_LINK_ACCOUNT: {
-    label: "Update link account",
+    label: "Update Link Account",
     role: ["ACC_V", "ACC_U"],
   },
   DELETE_LINK_ACCOUNT: {
-    label: "Delete link account",
+    label: "Delete Link Account",
     role: "ACC_D",
   },
 };
@@ -291,17 +294,17 @@ const LINK_ACCOUNT_CONFIG = {
 const BACKUP_CODE_CONFIG = {
   BACKUP_CODE: {
     name: "backup_code",
-    label: "Backup codes",
+    label: "Backup Codes",
     path: "/account/backup-code/:accountId",
     role: "BA_C_L",
     element: <BackupCode />,
   },
   CREATE_BACKUP_CODE: {
-    label: "Create backup code",
+    label: "Create Backup Code",
     role: "BA_C_C",
   },
   DELETE_BACKUP_CODE: {
-    label: "Delete backup code",
+    label: "Delete Backup Code",
     role: "BA_C_D",
   },
 };
@@ -315,20 +318,20 @@ export const ID_NUMBER_CONFIG = {
     element: <IdNumber />,
   },
   CREATE_ID_NUMBER: {
-    label: "Create ID number",
+    label: "Create ID Number",
     path: "/id-number/create",
     role: "ID_N_C",
     element: <CreateIdNumber />,
   },
   UPDATE_ID_NUMBER: {
-    label: "Update ID number",
+    label: "Update ID Number",
     path: "/id-number/update/:id",
     role: ["ID_N_U", "ID_N_V"],
     element: <UpdateIdNumber />,
   },
   DELETE_ID_NUMBER: {
     role: "ID_N_D",
-    label: "Delete ID number",
+    label: "Delete ID Number",
   },
 };
 
@@ -341,19 +344,19 @@ export const CONTACT_CONFIG = {
     element: <Contact />,
   },
   CREATE_CONTACT: {
-    label: "Create contact",
+    label: "Create Contact",
     path: "/contact/create",
     role: "CO_C",
     element: <CreateContact />,
   },
   UPDATE_CONTACT: {
-    label: "Update contact",
+    label: "Update Contact",
     path: "/contact/update/:id",
     role: ["CO_V", "CO_U"],
     element: <UpdateContact />,
   },
   DELETE_CONTACT: {
-    label: "Delete contact",
+    label: "Delete Contact",
     role: "CO_D",
   },
 };
@@ -367,19 +370,19 @@ export const LINK_CONFIG = {
     element: <Link />,
   },
   CREATE_LINK: {
-    label: "Create link",
+    label: "Create Link",
     path: "/link/create",
     role: "LI_C",
     element: <CreateLink />,
   },
   UPDATE_LINK: {
-    label: "Update link",
+    label: "Update Link",
     path: "/link/update/:id",
     role: ["LI_V", "LI_U"],
     element: <UpdateLink />,
   },
   DELETE_LINK: {
-    label: "Delete link",
+    label: "Delete Link",
     role: "LI_D",
   },
 };
@@ -393,19 +396,19 @@ export const SOFTWARE_CONFIG = {
     element: <Software />,
   },
   CREATE_SOFTWARE: {
-    label: "Create software",
+    label: "Create Software",
     path: "/software/create",
     role: "SO_C",
     element: <CreateSoftware />,
   },
   UPDATE_SOFTWARE: {
-    label: "Update software",
+    label: "Update Software",
     path: "/software/update/:id",
     role: ["SO_V", "SO_U"],
     element: <UpdateSoftware />,
   },
   DELETE_SOFTWARE: {
-    label: "Delete software",
+    label: "Delete Software",
     role: "SO_D",
   },
 };
@@ -419,20 +422,46 @@ export const NOTE_CONFIG = {
     element: <Note />,
   },
   CREATE_NOTE: {
-    label: "Create note",
+    label: "Create Note",
     path: "/note/create",
     role: "NO_C",
     element: <CreateNote />,
   },
   UPDATE_NOTE: {
-    label: "Update note",
+    label: "Update Note",
     path: "/note/update/:id",
     role: ["NO_V", "NO_U"],
     element: <UpdateNote />,
   },
   DELETE_NOTE: {
-    label: "Delete note",
+    label: "Delete Note",
     role: "NO_D",
+  },
+};
+
+export const SCHEDULE_CONFIG = {
+  SCHEDULE: {
+    name: "schedule",
+    label: "Schedule",
+    path: "/schedule",
+    role: "SC_L",
+    element: <Schedule />,
+  },
+  CREATE_SCHEDULE: {
+    label: "Create Schedule",
+    path: "/schedule/create",
+    role: "SC_C",
+    element: <CreateSchedule />,
+  },
+  UPDATE_SCHEDULE: {
+    label: "Update Schedule",
+    path: "/schedule/update/:id",
+    role: ["SC_V", "SC_U"],
+    element: <UpdateSchedule />,
+  },
+  DELETE_SCHEDULE: {
+    label: "Delete Schedule",
+    role: "SC_D",
   },
 };
 

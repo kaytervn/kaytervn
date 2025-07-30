@@ -20,13 +20,13 @@ const CreateTag = ({ isVisible, formConfig }: any) => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.name.trim()) {
-      newErrors.name = "Invalid name";
+      newErrors.name = "Invalid Name";
     }
     if (!form.kind) {
-      newErrors.kind = "Invalid kind";
+      newErrors.kind = "Invalid Kind";
     }
     if (!VALID_PATTERN.COLOR_CODE.test(form.color)) {
-      newErrors.color = "Invalid color";
+      newErrors.color = "Invalid Color";
     }
     return newErrors;
   };

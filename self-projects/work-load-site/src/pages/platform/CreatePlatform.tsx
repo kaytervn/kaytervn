@@ -13,7 +13,7 @@ const CreatePlatform = ({ isVisible, formConfig }: any) => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.name.trim()) {
-      newErrors.name = "Invalid name";
+      newErrors.name = "Invalid Name";
     }
     if (form.url && !isValidURL(form.url)) {
       newErrors.url = "Invalid URL";

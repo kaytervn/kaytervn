@@ -37,10 +37,10 @@ const Login = () => {
     const newErrors: any = {};
     if (!isMfa) {
       if (!form.username.trim()) {
-        newErrors.username = "Invalid username";
+        newErrors.username = "Invalid Username";
       }
       if (!form.password) {
-        newErrors.password = "Invalid password";
+        newErrors.password = "Invalid Password";
       }
     } else {
       if (!form.totp) {
@@ -127,7 +127,7 @@ const Login = () => {
                 type="password"
               />
               <HrefLink
-                label={"Forgot password?"}
+                label={"Forgot Password?"}
                 onClick={() => navigate(AUTH_CONFIG.FORGOT_PASSWORD.path)}
               />
               <div className="flex justify-between gap-2">
@@ -143,7 +143,7 @@ const Login = () => {
                   className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   onClick={handleSubmitLogin}
                 >
-                  Sign in
+                  {BUTTON_TEXT.LOGIN}
                 </button>
               </div>
             </div>
@@ -154,7 +154,7 @@ const Login = () => {
           <div className="space-y-4">
             {qrUrl && <ImageBase64 imgString={qrUrl} />}
             <InputField2
-              title="OTP code"
+              title="OTP Code"
               isRequired
               placeholder="Enter OTP code"
               value={form.totp}

@@ -14,10 +14,10 @@ const CreateObject = ({ isVisible, formConfig }: any) => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (fieldConfig.key.required && !form.name.trim()) {
-      newErrors.name = "Invalid value";
+      newErrors.name = "Invalid Value";
     }
     if (fieldConfig.value.required && !form.note.trim()) {
-      newErrors.note = "Invalid value";
+      newErrors.note = "Invalid Value";
     }
     return newErrors;
   };

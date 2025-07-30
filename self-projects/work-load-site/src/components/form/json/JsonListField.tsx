@@ -81,7 +81,7 @@ const JsonListField = ({
     const updatedItems = sortItemsByName([...items, newItem]);
     setItems(updatedItems);
     onChange(JSON.stringify(updatedItems));
-    setToast("Item created successfully", TOAST.SUCCESS);
+    setToast(BASIC_MESSAGES.CREATED, TOAST.SUCCESS);
   };
 
   const handleUpdate = (newItem: any) => {
@@ -91,7 +91,7 @@ const JsonListField = ({
     );
     setItems(updatedItems);
     onChange(JSON.stringify(updatedItems));
-    setToast("Item updated successfully", TOAST.SUCCESS);
+    setToast(BASIC_MESSAGES.UPDATED, TOAST.SUCCESS);
   };
 
   const handleDelete = (index: number) => {

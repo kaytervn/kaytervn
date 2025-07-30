@@ -27,10 +27,10 @@ const CreateNote = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.name.trim()) {
-      newErrors.name = "Invalid name";
+      newErrors.name = "Invalid Name";
     }
     if (!form.note.trim()) {
-      newErrors.note = "Invalid note";
+      newErrors.note = "Invalid Note";
     }
     return newErrors;
   };
