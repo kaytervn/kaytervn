@@ -258,7 +258,7 @@ const UpdateSchedule = () => {
                   </div>
                 )}
                 <JsonListField
-                  title="Emails"
+                  title="Email(s)"
                   isRequired={true}
                   value={form?.emails}
                   onChange={(value: any) => handleChange("emails", value)}
