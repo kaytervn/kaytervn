@@ -69,7 +69,7 @@ const InputKeyForm = ({ isVisible, formConfig }: any) => {
       <ModalForm
         isVisible={isVisible}
         onClose={formConfig?.hideModal}
-        title={"Input session key"}
+        title={"Input Session Key"}
         children={
           <>
             <div className="flex flex-col space-y-4">
