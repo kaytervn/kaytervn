@@ -50,7 +50,7 @@ const MainHeader = ({ breadcrumbs }: any) => {
     setIsDropdownOpen(false);
     showRequestKeyForm(
       configModalForm({
-        label: "Send request key",
+        label: "Send Request Key",
         fetchApi: user.requestKey,
         setToast,
         hideModal: hideRequestKeyForm,
