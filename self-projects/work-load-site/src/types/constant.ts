@@ -466,7 +466,7 @@ export const SCHEDULE_EMAIL_FIELD_CONFIG = {
     required: true,
   },
   value: {
-    label: "Name",
+    label: "Receiver",
     required: true,
   },
 };
