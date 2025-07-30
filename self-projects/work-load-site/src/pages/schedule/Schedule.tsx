@@ -15,6 +15,7 @@ import {
   basicRender,
   renderActionButton,
   renderEnum,
+  renderExpirationDateField,
   renderImage,
 } from "../../components/config/ItemRender";
 import { PAGE_CONFIG } from "../../components/config/PageConfig";
@@ -103,15 +104,11 @@ const Schedule = () => {
       dataMap: SCHEDULE_TYPE_MAP,
     }),
     {
-      label: "Expired date",
+      label: "Due Date",
       accessor: "dueDate",
-      align: ALIGNMENT.CENTER,
-      render: (item: any) => {
-        return basicRender({
-          align: ALIGNMENT.CENTER,
-          content: convertUtcToVn(item.dueDate),
-        });
-      },
+      align: ALIGNMENT.LEFT,
+      render: (item: any) =>
+        renderExpirationDateField(convertUtcToVn(item?.dueDate), item?.dueDate),
     },
     {
       label: "Created date",

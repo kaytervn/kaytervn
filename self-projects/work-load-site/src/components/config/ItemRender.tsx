@@ -12,6 +12,7 @@ import {
   convertUtcToVn,
   getEnumItem,
   getNestedValue,
+  parseDate,
   truncateString,
 } from "../../types/utils";
 import { parse } from "date-fns";
@@ -67,6 +68,37 @@ const renderEnum = ({
       );
     },
   };
+};
+
+export const renderExpirationDateField = (dateStr: any, content: any) => {
+  const expiredDate = parseDate(dateStr);
+  if (!expiredDate) {
+    return basicRender({ align: ALIGNMENT.LEFT, content });
+  }
+  expiredDate.setDate(expiredDate.getDate() + 30);
+  const daysLeft = Math.ceil(
+    (expiredDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+  );
+  const isExpired = daysLeft < 0;
+  const isWarning = daysLeft >= 0 && daysLeft <= 7;
+  return (
+    <div className="flex items-center space-x-2 py-2">
+      <span className={`text-gray-300 text-sm text-left whitespace-nowrap`}>
+        {content}
+      </span>
+      <span
+        className={`text-xs whitespace-nowrap px-2 py-1 rounded-full ${
+          isExpired
+            ? "bg-red-900/20 text-red-300"
+            : isWarning
+            ? "bg-yellow-900/20 text-yellow-300"
+            : "bg-green-900/20 text-green-300"
+        }`}
+      >
+        {isExpired ? "Expired" : `${daysLeft} days`}
+      </span>
+    </div>
+  );
 };
 
 const renderHrefLink = ({

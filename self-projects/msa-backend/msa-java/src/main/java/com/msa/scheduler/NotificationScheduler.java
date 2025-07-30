@@ -111,6 +111,8 @@ public class NotificationScheduler {
         String currentDateStr = DateUtils.formatDate(today, AppConstant.DATE_FORMAT);
         Date fromDate = Date.from(today.atStartOfDay(zoneVN).toInstant());
         Date toDate = Date.from(today.atTime(23, 59, 59).atZone(zoneVN).toInstant());
+        log.warn("today: {}", today);
+        log.warn("currentTime: {}", currentTime);
         log.warn("currentDateStr: {}", currentDateStr);
         log.warn("fromDate: {}", fromDate);
         log.warn("toDate: {}", toDate);
