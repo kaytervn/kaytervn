@@ -71,10 +71,6 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             position: relative;
             z-index: 1;
-        }
-
-        .schedule-icon::after {
-            content: '📅';
             font-size: 36px;
         }
 
@@ -105,11 +101,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .greeting::before {
-            content: '👋';
-            font-size: 28px;
         }
 
         .greeting span {
@@ -159,8 +150,7 @@
             position: relative;
         }
 
-        .content-section::before {
-            content: '📋';
+        .content-section-icon {
             position: absolute;
             top: -10px;
             left: 20px;
@@ -172,6 +162,7 @@
             align-items: center;
             justify-content: center;
             font-size: 18px;
+            z-index: 1;
         }
 
         .content-section h3 {
@@ -214,17 +205,6 @@
             overflow: hidden;
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
         .btn:hover::before {
             left: 100%;
         }
@@ -234,8 +214,8 @@
             box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
         }
 
-        .btn::after {
-            content: '🔗';
+        .btn-icon {
+            margin-left: 10px;
             font-size: 16px;
         }
 
@@ -246,13 +226,11 @@
             position: relative;
         }
 
-        .divider::after {
-            content: '✨';
+        .divider-icon {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
             padding: 0 15px;
             font-size: 16px;
         }
@@ -263,17 +241,6 @@
             border-radius: 20px;
             margin: 40px 0;
             position: relative;
-        }
-
-        .signature::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border-radius: 20px 20px 0 0;
         }
 
         .signature-header {
@@ -310,10 +277,6 @@
             color: #718096;
         }
 
-        .signature-date::before {
-            content: '📅';
-        }
-
         .signature-message {
             font-style: italic;
             color: #4a5568;
@@ -334,11 +297,6 @@
             flex-direction: column;
             align-items: center;
             gap: 20px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
         }
 
         .social-links a {
@@ -364,23 +322,6 @@
             font-size: 14px;
             color: #a0aec0;
             margin: 0;
-        }
-
-        .schedule-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .schedule-badge::before {
-            content: '⏰';
         }
 
         @media (max-width: 600px) {
@@ -414,11 +355,6 @@
             .signature-header {
                 flex-direction: column;
                 text-align: center;
-            }
-
-            .social-links {
-                flex-wrap: wrap;
-                justify-content: center;
             }
         }
 
@@ -526,10 +462,6 @@
                 box-shadow: 0 8px 20px rgba(159, 122, 234, 0.3);
             }
 
-            .schedule-badge {
-                background: linear-gradient(135deg, #9f7aea, #ed64a6);
-            }
-
             .image-overlay {
                 background: rgba(159, 122, 234, 0.9);
             }
@@ -540,22 +472,22 @@
 <div class="email-wrapper">
     <div class="email-container">
         <div class="header">
-            <div class="schedule-icon"></div>
+            <div class="schedule-icon">📅</div>
             <h1 th:text="${title}">Scheduled Notification</h1>
             <p class="subtitle">Your personalized reminder is here</p>
         </div>
 
         <div class="content">
-            <div class="greeting">
-                Dear <span th:text="${receiver}">Receiver Name</span>
-            </div>
+            <div class="greeting" th:text="'👋 Dear ' + ${receiver}">Dear Receiver</div>
 
-            <div class="image-container" th:if="${imagePath}">
+            <div th:if="${imagePath}" class="image-container">
                 <div class="image-overlay">📸</div>
                 <img th:src="${imagePath}">
             </div>
 
             <div class="content-section">
+                <div class="content-section-icon">📋</div>
+                <h3 th:text="${title}">Section Title</h3>
                 <div class="content-text" th:utext="${content}">
                     <p>This is your scheduled reminder. We wanted to make sure you don't miss this important
                         information.</p>
@@ -563,13 +495,15 @@
                 </div>
             </div>
 
-            <div th:if="${link != null}" class="btn-container">
+            <div th:if="${link}" class="btn-container">
                 <a class="btn" th:href="${link}" target="_blank" rel="noopener noreferrer">
                     Mark As Checked
                 </a>
             </div>
 
-            <div class="divider"></div>
+            <div class="divider">
+                <span class="divider-icon">✨</span>
+            </div>
 
             <div class="signature">
                 <div class="signature-header">
@@ -578,7 +512,9 @@
                     </div>
                     <div class="signature-info">
                         <h4 th:text="${sender}">Sender Name</h4>
-                        <div class="signature-date" th:text="${date}">Date</div>
+                        <div class="signature-date">
+                            <span th:text="'📅 ' + ${date}">📅 Date</span>
+                        </div>
                     </div>
                 </div>
                 <div class="signature-message">

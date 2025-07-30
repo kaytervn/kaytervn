@@ -107,7 +107,13 @@ public class BasicApiService {
                 for (int i = 0; i <= 365; i++) {
                     String dayMonthStr = DateUtils.formatDate(nextDate, AppConstant.DAY_MONTH_FORMAT);
                     if (targetDayMonth.equals(dayMonthStr)) {
-                        return Date.from(LocalDateTime.of(nextDate, time).atZone(zoneVN).toInstant());
+                        LocalDateTime scheduledDateTime = LocalDateTime.of(nextDate, time);
+                        if (scheduledDateTime.isAfter(now)) {
+                            return Date.from(scheduledDateTime.atZone(zoneVN).toInstant());
+                        } else {
+                            LocalDate nextYearDate = LocalDate.of(nextDate.getYear() + 1, nextDate.getMonth(), nextDate.getDayOfMonth());
+                            return Date.from(LocalDateTime.of(nextYearDate, time).atZone(zoneVN).toInstant());
+                        }
                     }
                     nextDate = nextDate.plusDays(1);
                 }
