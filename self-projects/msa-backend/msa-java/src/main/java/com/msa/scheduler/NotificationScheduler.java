@@ -70,12 +70,14 @@ public class NotificationScheduler {
         try {
             LocalTime scheduleTime = LocalTime.parse(schedule.getTime());
             long diffMinutes = ChronoUnit.MINUTES.between(scheduleTime, currentTime);
+            log.warn("scheduleTime: {}", scheduleTime);
+            log.warn("diffMinutes: {}", diffMinutes);
             if (diffMinutes < 0 || diffMinutes > ALLOWED_MINUTES) {
                 return false;
             }
             String checkedDateStr = schedule.getCheckedDate();
             Integer kind = schedule.getKind();
-            int amount = schedule.getAmount();
+            Integer amount = schedule.getAmount();
             if (AppConstant.SCHEDULE_KIND_DAYS.equals(kind)) {
                 LocalDate startDate = DateUtils.parseDate(checkedDateStr, AppConstant.DATE_FORMAT);
                 long daysBetween = ChronoUnit.DAYS.between(startDate, today);
