@@ -86,6 +86,7 @@ const JsonListField = ({
 
   const handleUpdate = (newItem: any) => {
     const editIndex = newItem.id;
+    delete newItem.id;
     const updatedItems = sortItemsByName(
       items.map((item, index) => (index === editIndex ? newItem : item))
     );
