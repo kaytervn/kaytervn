@@ -170,7 +170,7 @@ const ImageUploadField = ({
 
   return (
     <>
-      <LoadingDialog loading={loading} />
+      <LoadingDialog isVisible={loading} />
       <div className="flex-1 items-center">
         {title && (
           <label className="text-base font-semibold text-gray-200 mb-2 text-left flex items-center">
