@@ -37,6 +37,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -193,8 +194,10 @@ public class ScheduleController extends ABasicController {
             }
             schedule.setTag(tag);
         }
-        schedule.setDueDate(basicApiService.calculateDueDate(schedule));
-        if (isKindChanged || isCheckedDateChanged || isTimeChanged) {
+        Date newDueDate = basicApiService.calculateDueDate(schedule);
+        boolean isDueDateChanged = !Objects.equals(newDueDate, schedule.getDueDate());
+        schedule.setDueDate(newDueDate);
+        if (isKindChanged || isCheckedDateChanged || isTimeChanged || isDueDateChanged) {
             schedule.setIsSent(false);
         }
         scheduleRepository.save(schedule);

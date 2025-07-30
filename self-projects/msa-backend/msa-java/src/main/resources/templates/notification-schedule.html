@@ -18,36 +18,32 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #333333;
-            padding: 40px 20px;
-            line-height: 1.6;
+            padding: 15px;
+            line-height: 1.5;
             min-height: 100vh;
         }
 
         .email-wrapper {
-            max-width: 700px;
+            max-width: 600px;
             margin: 0 auto;
         }
 
         .email-container {
             background: #ffffff;
-            border-radius: 24px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px;
+            padding: 20px;
             text-align: center;
             color: white;
             position: relative;
-            overflow: hidden;
-            justify-content: center;
-            align-items: center;
         }
 
         .header::before {
@@ -57,36 +53,28 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="15" height="15" patternUnits="userSpaceOnUse"><circle cx="7.5" cy="7.5" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
         }
 
         .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header .subtitle {
-            font-size: 16px;
-            opacity: 0.9;
+            font-size: 22px;
+            font-weight: 600;
             position: relative;
             z-index: 1;
         }
 
         .content {
-            padding: 50px 40px;
+            padding: 25px;
         }
 
         .greeting {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 600;
             color: #2d3748;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .greeting span {
@@ -96,209 +84,124 @@
             background-clip: text;
         }
 
-        .image-container {
-            text-align: center;
-            margin: 40px 0;
-            position: relative;
-        }
-
-        .image-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .image-container img:hover {
-            transform: scale(1.02);
-        }
-
         .content-section {
             background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-            padding: 30px;
-            border-radius: 20px;
-            margin: 30px 0;
-            border-left: 5px solid #667eea;
-            position: relative;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
         }
 
         .content-section h3 {
             color: #2d3748;
-            font-size: 20px;
-            margin-bottom: 15px;
-            margin-top: 10px;
+            font-size: 16px;
+            margin-bottom: 12px;
+            font-weight: 600;
         }
 
         .content-text {
-            font-size: 16px;
+            font-size: 14px;
             color: #4a5568;
-            line-height: 1.7;
-            margin-top: 2px;
+            line-height: 1.6;
         }
 
         .content-text p {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+        }
+
+        .content-text p:last-child {
+            margin-bottom: 0;
         }
 
         .btn-container {
             text-align: center;
-            margin: 40px 0;
+            margin: 20px 0;
         }
 
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 18px 40px;
+            gap: 8px;
+            padding: 12px 28px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #ffffff !important;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 25px;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 14px;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn:hover::before {
-            left: 100%;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
-        }
-
-        .divider {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
-            margin: 50px 0;
-            position: relative;
+            transform: translateY(-1px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.35);
         }
 
         .signature {
             background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-            padding: 30px;
-            border-radius: 20px;
-            margin: 40px 0;
-            position: relative;
-        }
-
-        .signature-header {
+            padding: 18px;
+            border-radius: 12px;
+            margin: 20px 0 0 0;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .signature-avatar {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-            font-weight: bold;
         }
 
         .signature-info h4 {
-            font-size: 18px;
+            font-size: 15px;
             color: #2d3748;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            font-weight: 600;
         }
 
         .signature-date {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            font-size: 12px;
             color: #718096;
-        }
-
-        .signature-message {
-            font-style: italic;
-            color: #4a5568;
-            font-size: 16px;
-            line-height: 1.6;
-            margin-top: 15px;
         }
 
         .footer {
             background: #f8fafc;
-            padding: 30px 40px;
+            padding: 15px 25px;
             text-align: center;
             border-top: 1px solid #e2e8f0;
         }
 
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            text-decoration: none;
-            border-radius: 50%;
-            font-size: 18px;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-        }
-
         .footer p {
-            font-size: 14px;
+            font-size: 12px;
             color: #a0aec0;
             margin: 0;
         }
 
         @media (max-width: 600px) {
             body {
-                padding: 20px 10px;
+                padding: 10px;
             }
 
             .header,
             .content,
             .footer {
-                padding: 30px 20px;
+                padding: 20px 15px;
             }
 
             .signature {
-                padding: 20px;
+                padding: 15px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
             }
 
             .header h1 {
-                font-size: 24px;
-            }
-
-            .greeting {
                 font-size: 20px;
             }
 
-            .btn {
-                padding: 16px 32px;
-                font-size: 15px;
+            .greeting {
+                font-size: 16px;
             }
 
-            .signature-header {
-                flex-direction: column;
-                text-align: center;
+            .btn {
+                padding: 10px 24px;
+                font-size: 13px;
             }
         }
 
@@ -309,15 +212,11 @@
 
             .email-container {
                 background: #2d3748;
-                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             }
 
             .header {
                 background: linear-gradient(135deg, #4c51bf 0%, #553c9a 100%);
-            }
-
-            .content {
-                background: #2d3748;
             }
 
             .greeting {
@@ -336,10 +235,6 @@
                 border-left-color: #9f7aea;
             }
 
-            .content-section::before {
-                background: #9f7aea;
-            }
-
             .content-section h3 {
                 color: #e2e8f0;
             }
@@ -350,27 +245,15 @@
 
             .btn {
                 background: linear-gradient(135deg, #9f7aea 0%, #ed64a6 100%);
-                box-shadow: 0 10px 25px rgba(159, 122, 234, 0.3);
+                box-shadow: 0 8px 20px rgba(159, 122, 234, 0.25);
             }
 
             .btn:hover {
-                box-shadow: 0 15px 35px rgba(159, 122, 234, 0.4);
-            }
-
-            .divider {
-                background: linear-gradient(90deg, transparent, #4a5568, transparent);
-            }
-
-            .divider::after {
-                background: #2d3748;
+                box-shadow: 0 12px 25px rgba(159, 122, 234, 0.35);
             }
 
             .signature {
                 background: linear-gradient(135deg, #1a202c, #2d3748);
-            }
-
-            .signature::before {
-                background: linear-gradient(90deg, #9f7aea, #ed64a6);
             }
 
             .signature-info h4 {
@@ -381,14 +264,6 @@
                 color: #a0aec0;
             }
 
-            .signature-message {
-                color: #cbd5e0;
-            }
-
-            .signature-avatar {
-                background: linear-gradient(135deg, #9f7aea, #ed64a6);
-            }
-
             .footer {
                 background: #1a202c;
                 border-top-color: #4a5568;
@@ -396,18 +271,6 @@
 
             .footer p {
                 color: #718096;
-            }
-
-            .social-links a {
-                background: linear-gradient(135deg, #9f7aea, #ed64a6);
-            }
-
-            .social-links a:hover {
-                box-shadow: 0 8px 20px rgba(159, 122, 234, 0.3);
-            }
-
-            .image-overlay {
-                background: rgba(159, 122, 234, 0.9);
             }
         }
     </style>
@@ -417,21 +280,15 @@
     <div class="email-container">
         <div class="header">
             <h1 th:text="${title}">Scheduled Notification</h1>
-            <p class="subtitle">Your personalized reminder is here</p>
         </div>
 
         <div class="content">
             <div class="greeting" th:text="'👋 Dear ' + ${receiver}">👋 Dear Receiver</div>
 
-            <div th:if="${imagePath != null}" class="image-container">
-                <img th:src="@{${imagePath}}">
-            </div>
-
             <div class="content-section">
                 <h3 th:text="${title}">Section Title</h3>
                 <div class="content-text" th:utext="${content}">
-                    <p>This is your scheduled reminder. We wanted to make sure you don't miss this important
-                        information.</p>
+                    <p>This is your scheduled reminder. We wanted to make sure you don't miss this important information.</p>
                     <p>Please take a moment to review the details and take any necessary action.</p>
                 </div>
             </div>
@@ -442,29 +299,16 @@
                 </a>
             </div>
 
-            <div class="divider"></div>
-
             <div class="signature">
-                <div class="signature-header">
-                    <div class="signature-info">
-                        <h4 th:text="${sender}">Sender Name</h4>
-                        <div class="signature-date">
-                            <span th:text="${date}">Date</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="signature-message">
-                    <p>✨ Best regards,</p>
-                    <p>Thank you for your attention to this scheduled notification. If you have any questions, please
-                        don't hesitate to reach out.</p>
+                <div class="signature-info">
+                    <h4 th:text="${sender}">Sender Name</h4>
+                    <div class="signature-date" th:text="${date}">Date</div>
                 </div>
             </div>
         </div>
 
         <div class="footer">
-            <div class="footer-content">
-                <p>© 2025 MSA. All rights reserved.</p>
-            </div>
+            <p>© 2025 MSA. All rights reserved.</p>
         </div>
     </div>
 </div>

@@ -49,14 +49,14 @@ const CheckSchedule = () => {
       }
     };
     ifTokenExist();
-  }, [token]);
+  }, []);
 
   return (
     <>
       <LoadingDialog isVisible={loading} />
       {submittedData?.result ? (
         <MessageForm
-          title="Schedule Successfully Renewed"
+          title="Schedule Renewed"
           message="Your schedule has been renewed successfully. Click Continue to return to the previous page."
           imgSrc={checkedSchedule}
           children={
