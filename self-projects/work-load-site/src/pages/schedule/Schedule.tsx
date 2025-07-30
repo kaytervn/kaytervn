@@ -109,7 +109,7 @@ const Schedule = () => {
       align: ALIGNMENT.LEFT,
       render: (item: any) => {
         const dueDate = convertUtcToVn(item?.dueDate);
-        return renderExpirationDateField(dueDate, dueDate);
+        return renderExpirationDateField(dueDate, dueDate, 0);
       },
     },
     {

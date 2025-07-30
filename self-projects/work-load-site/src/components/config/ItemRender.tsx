@@ -70,12 +70,16 @@ const renderEnum = ({
   };
 };
 
-export const renderExpirationDateField = (dateStr: any, content: any) => {
+export const renderExpirationDateField = (
+  dateStr: any,
+  content: any,
+  offsets = 30
+) => {
   const expiredDate = parseDate(dateStr);
   if (!expiredDate) {
     return basicRender({ align: ALIGNMENT.LEFT, content });
   }
-  expiredDate.setDate(expiredDate.getDate() + 30);
+  expiredDate.setDate(expiredDate.getDate() + offsets);
   const daysLeft = Math.ceil(
     (expiredDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
   );
