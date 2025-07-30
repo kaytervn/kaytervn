@@ -480,7 +480,7 @@
         <div class="content">
             <div class="greeting" th:text="'👋 Dear ' + ${receiver}">Dear Receiver</div>
 
-            <div th:if="${imagePath}" class="image-container">
+            <div th:if="${imagePath != null}" class="image-container">
                 <div class="image-overlay">📸</div>
                 <img th:src="${imagePath}">
             </div>
@@ -495,7 +495,7 @@
                 </div>
             </div>
 
-            <div th:if="${link}" class="btn-container">
+            <div th:if="${link != null}" class="btn-container">
                 <a class="btn" th:href="${link}" target="_blank" rel="noopener noreferrer">
                     Mark As Checked
                 </a>
@@ -507,7 +507,7 @@
 
             <div class="signature">
                 <div class="signature-header">
-                    <div class="signature-avatar" th:text="${sender? #strings.substring(sender, 0, 1) : 'M'}">
+                    <div class="signature-avatar" th:text="${sender != null ? #strings.substring(sender, 0, 1) : 'M'}">
                         M
                     </div>
                     <div class="signature-info">

@@ -3,6 +3,7 @@ package com.msa.service.mail;
 import com.msa.constant.AppConstant;
 import com.msa.dto.schedule.ScheduleMailDto;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,11 +49,15 @@ public class MailServiceImpl {
         Map<String, Object> variables = new HashMap<>();
         variables.put("title", subject);
         variables.put("receiver", dto.getReceiver());
-        variables.put("link", dto.getLink());
-        variables.put("imagePath", dto.getImagePath());
         variables.put("content", dto.getContent());
         variables.put("sender", sender);
         variables.put("date", dto.getDate());
+        if (StringUtils.isNotBlank(dto.getLink())) {
+            variables.put("link", dto.getLink());
+        }
+        if (StringUtils.isNotBlank(dto.getImagePath())) {
+            variables.put("imagePath", dto.getImagePath());
+        }
         emailService.sendEmail(sender, dto.getToEmail(), subject, AppConstant.TEMPLATE_SCHEDULE, variables);
     }
 }
