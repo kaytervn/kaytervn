@@ -99,7 +99,7 @@ export const renderExpirationDateField = (
             : "bg-green-900/20 text-green-300"
         }`}
       >
-        {isExpired ? "Expired" : `${daysLeft} days`}
+        {isExpired ? "Expired" : `${daysLeft} day(s)`}
       </span>
     </div>
   );

@@ -474,12 +474,12 @@ export const SCHEDULE_EMAIL_FIELD_CONFIG = {
 export const SCHEDULE_KIND_MAP = {
   DAYS: {
     value: 1,
-    label: "Repeat every X days",
+    label: "Repeat every X day(s)",
     className: "bg-blue-700 text-blue-100",
   },
   MONTHS: {
     value: 2,
-    label: "Repeat every X months",
+    label: "Repeat every X month(s)",
     className: "bg-green-700 text-green-100",
   },
   DAY_MONTH: {
