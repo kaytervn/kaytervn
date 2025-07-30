@@ -550,9 +550,9 @@
                 Dear <span th:text="${receiver}">Receiver Name</span>
             </div>
 
-            <div class="image-container" th:if="${imagePath != null}">
+            <div class="image-container" th:if="${imagePath}">
                 <div class="image-overlay">📸</div>
-                <img th:src="${imagePath}" alt="Notification Image">
+                <img th:src="${imagePath}">
             </div>
 
             <div class="content-section">
@@ -573,7 +573,7 @@
 
             <div class="signature">
                 <div class="signature-header">
-                    <div class="signature-avatar" th:text="${sender != null ? #strings.substring(sender, 0, 1) : 'M'}">
+                    <div class="signature-avatar" th:text="${sender? #strings.substring(sender, 0, 1) : 'M'}">
                         M
                     </div>
                     <div class="signature-info">

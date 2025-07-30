@@ -4,6 +4,7 @@ import useApi from "../../hooks/useApi";
 import { formatToDDMMYYYY, parseToYYYYMMDD } from "../../types/utils";
 import { useGlobalContext } from "../config/GlobalProvider";
 import { BASIC_MESSAGES, TOAST } from "../../types/constant";
+import { LoadingDialog } from "./Dialog";
 
 const DatePickerField = ({
   title = "",
@@ -128,7 +129,7 @@ const ImageUploadField = ({
   disabled = false,
 }: any) => {
   const { setToast } = useGlobalContext();
-  const { media } = useApi();
+  const { media, loading } = useApi();
   const [preview, setPreview] = useState<string | null>(value || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -168,37 +169,40 @@ const ImageUploadField = ({
   };
 
   return (
-    <div className="flex-1 items-center">
-      {title && (
-        <label className="text-base font-semibold text-gray-200 mb-2 text-left flex items-center">
-          {title}
-        </label>
-      )}
-      <div className="relative w-32 h-32">
-        <input
-          type="file"
-          accept={accept}
-          onChange={handleFileChange}
-          ref={fileInputRef}
-          disabled={disabled}
-          className={`absolute inset-0 w-full h-full opacity-0 z-10 ${
-            disabled ? "cursor-not-allowed" : "cursor-pointer"
-          }`}
-        />
-        <div
-          className={`w-full h-full flex items-center justify-center border border-gray-600 rounded-md bg-gray-800 overflow-hidden ${
-            disabled ? "opacity-50" : ""
-          }`}
-          onClick={handleClick}
-        >
-          {preview ? (
-            <img src={preview} className="w-full h-full object-cover" />
-          ) : (
-            <UploadIcon size={20} className="text-gray-400" />
-          )}
+    <>
+      <LoadingDialog loading={loading} />
+      <div className="flex-1 items-center">
+        {title && (
+          <label className="text-base font-semibold text-gray-200 mb-2 text-left flex items-center">
+            {title}
+          </label>
+        )}
+        <div className="relative w-32 h-32">
+          <input
+            type="file"
+            accept={accept}
+            onChange={handleFileChange}
+            ref={fileInputRef}
+            disabled={disabled}
+            className={`absolute inset-0 w-full h-full opacity-0 z-10 ${
+              disabled ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
+          />
+          <div
+            className={`w-full h-full flex items-center justify-center border border-gray-600 rounded-md bg-gray-800 overflow-hidden ${
+              disabled ? "opacity-50" : ""
+            }`}
+            onClick={handleClick}
+          >
+            {preview ? (
+              <img src={preview} className="w-full h-full object-cover" />
+            ) : (
+              <UploadIcon size={20} className="text-gray-400" />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

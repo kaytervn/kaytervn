@@ -46,6 +46,7 @@ public class NotificationScheduler {
         Map<String, String> emailsMap = basicApiService.extractMapNameNote(schedule.getEmails());
         for (Map.Entry<String, String> entry : emailsMap.entrySet()) {
             ScheduleMailDto dto = new ScheduleMailDto();
+            dto.setSender(schedule.getSender());
             dto.setDate(currentDate);
             dto.setToEmail(entry.getKey());
             dto.setReceiver(entry.getValue());
