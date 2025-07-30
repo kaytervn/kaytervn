@@ -64,6 +64,7 @@ public class NotificationScheduler {
                 scheduleRepository.save(schedule);
             }
             mailService.sendScheduleNotification(dto);
+            log.error("Email sent successfully, {}", dto.getTitle());
         }
     }
 
