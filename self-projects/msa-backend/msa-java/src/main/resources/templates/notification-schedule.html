@@ -46,6 +46,8 @@
             color: white;
             position: relative;
             overflow: hidden;
+            justify-content: center;
+            align-items: center;
         }
 
         .header::before {
@@ -472,21 +474,18 @@
 <div class="email-wrapper">
     <div class="email-container">
         <div class="header">
-            <div class="schedule-icon">📅</div>
             <h1 th:text="${title}">Scheduled Notification</h1>
             <p class="subtitle">Your personalized reminder is here</p>
         </div>
 
         <div class="content">
-            <div class="greeting" th:text="'👋 Dear ' + ${receiver}">Dear Receiver</div>
+            <div class="greeting" th:text="'👋 Dear ' + ${receiver}">👋 Dear Receiver</div>
 
             <div th:if="${imagePath != null}" class="image-container">
-                <div class="image-overlay">📸</div>
-                <img th:src="${imagePath}">
+                <img th:src="@{${imagePath}}">
             </div>
 
             <div class="content-section">
-                <div class="content-section-icon">📋</div>
                 <h3 th:text="${title}">Section Title</h3>
                 <div class="content-text" th:utext="${content}">
                     <p>This is your scheduled reminder. We wanted to make sure you don't miss this important
@@ -501,19 +500,14 @@
                 </a>
             </div>
 
-            <div class="divider">
-                <span class="divider-icon">✨</span>
-            </div>
+            <div class="divider"></div>
 
             <div class="signature">
                 <div class="signature-header">
-                    <div class="signature-avatar" th:text="${sender != null ? #strings.substring(sender, 0, 1) : 'M'}">
-                        M
-                    </div>
                     <div class="signature-info">
                         <h4 th:text="${sender}">Sender Name</h4>
                         <div class="signature-date">
-                            <span th:text="'📅 ' + ${date}">📅 Date</span>
+                            <span th:text="${date}">Date</span>
                         </div>
                     </div>
                 </div>
