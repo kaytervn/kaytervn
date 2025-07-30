@@ -107,8 +107,10 @@ const Schedule = () => {
       label: "Due Date",
       accessor: "dueDate",
       align: ALIGNMENT.LEFT,
-      render: (item: any) =>
-        renderExpirationDateField(convertUtcToVn(item?.dueDate), item?.dueDate),
+      render: (item: any) => {
+        const dueDate = convertUtcToVn(item?.dueDate);
+        return renderExpirationDateField(dueDate, dueDate);
+      },
     },
     {
       label: "Created date",
