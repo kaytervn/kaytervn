@@ -13,10 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -102,21 +99,39 @@ public class BasicApiService {
                 return Date.from(LocalDateTime.of(nextDate, time).atZone(zoneVN).toInstant());
 
             } else if (AppConstant.SCHEDULE_KIND_DAY_MONTH.equals(kind)) {
+                int maxYearsToCheck = 8;
+                String specialDate = "29/02";
                 String targetDayMonth = checkedDateStr;
                 LocalDate nextDate = today;
-                for (int i = 0; i <= 365; i++) {
+                for (int i = 0; i < maxYearsToCheck * 365; i++) {
                     String dayMonthStr = DateUtils.formatDate(nextDate, AppConstant.DAY_MONTH_FORMAT);
                     if (targetDayMonth.equals(dayMonthStr)) {
-                        LocalDateTime scheduledDateTime = LocalDateTime.of(nextDate, time);
-                        if (scheduledDateTime.isAfter(now)) {
-                            return Date.from(scheduledDateTime.atZone(zoneVN).toInstant());
-                        } else {
-                            LocalDate nextYearDate = LocalDate.of(nextDate.getYear() + 1, nextDate.getMonth(), nextDate.getDayOfMonth());
-                            return Date.from(LocalDateTime.of(nextYearDate, time).atZone(zoneVN).toInstant());
-                        }
+                        try {
+                            LocalDate.of(nextDate.getYear(), nextDate.getMonth(), nextDate.getDayOfMonth());
+                            LocalDateTime scheduledDateTime = LocalDateTime.of(nextDate, time);
+                            if (scheduledDateTime.isAfter(now)) {
+                                return Date.from(scheduledDateTime.atZone(zoneVN).toInstant());
+                            }
+                        } catch (DateTimeException ignored) {}
                     }
                     nextDate = nextDate.plusDays(1);
                 }
+                if (specialDate.equals(targetDayMonth)) {
+                    int currentYear = today.getYear();
+                    LocalDate nextLeapYearDate;
+                    for (int year = currentYear; year <= currentYear + maxYearsToCheck; year++) {
+                        if (Year.isLeap(year)) {
+                            try {
+                                nextLeapYearDate = LocalDate.of(year, 2, 29);
+                                LocalDateTime scheduledDateTime = LocalDateTime.of(nextLeapYearDate, time);
+                                if (scheduledDateTime.isAfter(now)) {
+                                    return Date.from(scheduledDateTime.atZone(zoneVN).toInstant());
+                                }
+                            } catch (DateTimeException ignored) {}
+                        }
+                    }
+                }
+                return null;
 
             }
             LocalDate exactDate = DateUtils.parseDate(checkedDateStr, AppConstant.DATE_FORMAT);

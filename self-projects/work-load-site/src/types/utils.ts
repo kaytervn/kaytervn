@@ -719,25 +719,37 @@ export const calculateDueDate = (
     if (kind === SCHEDULE_KIND_MAP.DAY_MONTH.value) {
       const [day, month] = checkedDateStr.split("/").map(Number);
       let nextDate = today;
-      for (let i = 0; i <= 365; i++) {
+      const maxYearsToCheck = 8;
+      for (let i = 0; i < maxYearsToCheck * 365; i++) {
         if (nextDate.date() === day && nextDate.month() + 1 === month) {
-          const scheduledDateTime = nextDate
-            .set("hour", time.hour())
-            .set("minute", time.minute())
-            .set("second", 0);
-          if (scheduledDateTime.isAfter(now)) {
-            return scheduledDateTime.format(DATE_TIME_FORMAT);
-          } else {
-            const nextYearDate = nextDate.add(1, "year");
-            const nextYearDateTime = nextYearDate
+          if (dayjs(nextDate).isValid()) {
+            const scheduledDateTime = nextDate
               .set("hour", time.hour())
               .set("minute", time.minute())
               .set("second", 0);
-            return nextYearDateTime.format(DATE_TIME_FORMAT);
+            if (scheduledDateTime.isAfter(now)) {
+              return scheduledDateTime.format(DATE_TIME_FORMAT);
+            }
           }
         }
         nextDate = nextDate.add(1, "day");
       }
+      if (day === 29 && month === 2) {
+        let year = today.year();
+        for (let y = 0; y <= maxYearsToCheck; y++, year++) {
+          const nextLeapYearDate = dayjs(`${year}-02-29`).tz(TIMEZONE_VIETNAM);
+          if (nextLeapYearDate.isValid()) {
+            const scheduledDateTime = nextLeapYearDate
+              .set("hour", time.hour())
+              .set("minute", time.minute())
+              .set("second", 0);
+            if (scheduledDateTime.isAfter(now)) {
+              return scheduledDateTime.format(DATE_TIME_FORMAT);
+            }
+          }
+        }
+      }
+      return error;
     }
     return error;
   } catch {
