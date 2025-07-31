@@ -21,7 +21,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long>, JpaSp
     @Query("UPDATE Schedule tb SET tb.tag = NULL WHERE tb.tag.id = :id")
     void updateTagIdNull(@Param("id") Long id);
 
-    @Query("SELECT s FROM Schedule s WHERE s.isSent = :isSent AND s.type <> :type AND s.dueDate >= :startDate AND s.dueDate <= :endDate")
+    @Query("SELECT s FROM Schedule s WHERE s.isSent = :isSent AND (s.type IS NULL OR s.type <> :type) AND s.dueDate >= :startDate AND s.dueDate <= :endDate")
     List<Schedule> findAllDueToday(@Param("isSent") Boolean isSent,
                                    @Param("type") Integer type,
                                    @Param("startDate") Date startDate,

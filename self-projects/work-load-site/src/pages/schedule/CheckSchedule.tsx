@@ -9,9 +9,10 @@ import { decryptClientField } from "../../services/encryption/clientEncryption";
 import { LoadingDialog } from "../../components/form/Dialog";
 import { BASIC_MESSAGES, BUTTON_TEXT } from "../../types/constant";
 import { ActionSection, MessageForm } from "../../components/form/FormCard";
-import { SubmitButton } from "../../components/form/Button";
+import { CancelButton, SubmitButton } from "../../components/form/Button";
 import badRequest from "../../assets/bad_request.png";
 import checkedSchedule from "../../assets/checked_schedule.png";
+import mark from "../../assets/mark.png";
 import { unzipString } from "../../types/utils";
 
 const CheckSchedule = () => {
@@ -19,6 +20,7 @@ const CheckSchedule = () => {
   const { profile } = useGlobalContext();
   const navigate = useNavigate();
   const { schedule, loading } = useApi();
+  const [decryptedToken, setDecryptedToken] = useState<any>(null);
   const [submittedData, setSubmittedData] = useState<any>(null);
   const handleNavigateBack = () => {
     if (profile) {
@@ -34,16 +36,14 @@ const CheckSchedule = () => {
         if (!token) {
           handleNavigateBack();
         }
-        const decryptedToken = unzipString(decryptClientField(token));
-        if (!decryptedToken) {
+        const myToken = unzipString(decryptClientField(token));
+        if (!myToken) {
           handleNavigateBack();
           return;
         }
-        const tenant = decryptedToken.split(";")[0];
-        const serverToken = decryptedToken.split(";")[1];
-        const res = await schedule.checkSchedule(tenant, serverToken);
-        setSubmittedData(res);
-        return;
+        const tenant = myToken.split(";")[0];
+        const serverToken = myToken.split(";")[1];
+        setDecryptedToken({ tenant, token: serverToken });
       } catch {
         handleNavigateBack();
       }
@@ -51,10 +51,30 @@ const CheckSchedule = () => {
     ifTokenExist();
   }, []);
 
+  const handleSubmit = async () => {
+    const res = await schedule.checkSchedule(
+      decryptedToken.tenant,
+      decryptedToken.token
+    );
+    setSubmittedData(res);
+  };
+
   return (
     <>
       <LoadingDialog isVisible={loading} />
-      {submittedData?.result ? (
+      {!submittedData ? (
+        <MessageForm
+          title="Mark as Checked"
+          message="Please click the button below to confirm that your schedule has been checked."
+          imgSrc={mark}
+          children={
+            <ActionSection>
+              <CancelButton onClick={handleNavigateBack} />
+              <SubmitButton text={BUTTON_TEXT.SUBMIT} onClick={handleSubmit} />
+            </ActionSection>
+          }
+        />
+      ) : submittedData?.result ? (
         <MessageForm
           title="Schedule Renewed"
           message="Your schedule has been renewed successfully. Click Continue to return to the previous page."

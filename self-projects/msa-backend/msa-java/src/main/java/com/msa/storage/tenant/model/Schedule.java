@@ -24,7 +24,6 @@ public class Schedule extends Auditable<String> {
     private String sender;
     @Column(columnDefinition = "TEXT")
     private String emails;
-    private String imagePath;
     @Column(columnDefinition = "TEXT")
     private String content;
     private Integer kind; // 1: days, 2: months, 3: day_month, 4: exact_date

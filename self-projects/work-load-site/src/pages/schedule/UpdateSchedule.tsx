@@ -26,7 +26,6 @@ import {
   StaticSelectField,
 } from "../../components/form/SelectTextField";
 import { TextAreaField2 } from "../../components/form/TextareaField";
-import { ImageUploadField } from "../../components/form/OtherField";
 import { CustomDatePickerField } from "../../components/form/SchedulePickerField";
 import JsonListField from "../../components/form/json/JsonListField";
 import { calculateDueDate } from "../../types/utils";
@@ -76,7 +75,6 @@ const UpdateSchedule = () => {
   const { form, errors, setForm, resetForm, handleChange, isValidForm } =
     useForm(
       {
-        imagePath: "",
         name: "",
         sender: "",
         kind: "",
@@ -151,11 +149,6 @@ const UpdateSchedule = () => {
             title={PAGE_CONFIG.UPDATE_SCHEDULE.label}
             children={
               <div className="flex flex-col space-y-4">
-                <ImageUploadField
-                  title="Image"
-                  value={form?.imagePath}
-                  onChange={(value: any) => handleChange("imagePath", value)}
-                />
                 <div className="flex flex-row space-x-2">
                   <InputField2
                     title="Name"

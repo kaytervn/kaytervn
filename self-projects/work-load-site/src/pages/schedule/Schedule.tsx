@@ -16,7 +16,6 @@ import {
   renderActionButton,
   renderEnum,
   renderExpirationDateField,
-  renderImage,
 } from "../../components/config/ItemRender";
 import { PAGE_CONFIG } from "../../components/config/PageConfig";
 import {
@@ -36,7 +35,6 @@ import {
   StaticSelectBox,
 } from "../../components/form/SelectTextField";
 import { convertUtcToVn, getEnumItem } from "../../types/utils";
-import { BoxIcon } from "lucide-react";
 
 const initQuery = {
   keyword: "",
@@ -67,7 +65,6 @@ const Schedule = () => {
   });
 
   const columns = [
-    renderImage({ label: "Image", accessor: "imagePath", Icon: BoxIcon }),
     {
       label: "Name",
       accessor: "name",

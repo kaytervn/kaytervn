@@ -55,9 +55,6 @@ public class MailServiceImpl {
         if (StringUtils.isNotBlank(dto.getLink())) {
             variables.put("link", dto.getLink());
         }
-        if (StringUtils.isNotBlank(dto.getImagePath())) {
-            variables.put("imagePath", dto.getImagePath());
-        }
         emailService.sendEmail(sender, dto.getToEmail(), subject, AppConstant.TEMPLATE_SCHEDULE, variables);
     }
 }

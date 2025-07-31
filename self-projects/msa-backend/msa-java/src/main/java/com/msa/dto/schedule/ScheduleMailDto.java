@@ -6,7 +6,6 @@ import lombok.Data;
 public class ScheduleMailDto {
     private String title;
     private String receiver;
-    private String imagePath;
     private String content;
     private String link;
     private String sender;

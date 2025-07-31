@@ -14,7 +14,6 @@ import java.util.List;
 public interface ScheduleMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "sender", target = "sender")
-    @Mapping(source = "imagePath", target = "imagePath")
     @Mapping(source = "content", target = "content")
     @Mapping(source = "kind", target = "kind")
     @Mapping(source = "time", target = "time")
@@ -23,7 +22,6 @@ public interface ScheduleMapper {
 
     @Mapping(source = "name", target = "name")
     @Mapping(source = "sender", target = "sender")
-    @Mapping(source = "imagePath", target = "imagePath")
     @Mapping(source = "content", target = "content")
     @Mapping(source = "kind", target = "kind")
     @Mapping(source = "time", target = "time")
@@ -34,7 +32,6 @@ public interface ScheduleMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "sender", target = "sender")
     @Mapping(source = "emails", target = "emails")
-    @Mapping(source = "imagePath", target = "imagePath")
     @Mapping(source = "content", target = "content")
     @Mapping(source = "kind", target = "kind")
     @Mapping(source = "amount", target = "amount")

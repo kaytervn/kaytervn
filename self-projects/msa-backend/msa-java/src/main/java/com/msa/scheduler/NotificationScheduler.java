@@ -58,7 +58,6 @@ public class NotificationScheduler {
             dto.setToEmail(entry.getKey());
             dto.setReceiver(entry.getValue());
             dto.setTitle(schedule.getName());
-            dto.setImagePath(schedule.getImagePath());
             dto.setContent(schedule.getContent());
             if (AppConstant.SCHEDULE_TYPE_AUTO_RENEW.equals(schedule.getType())) {
                 basicApiService.updateCheckedDate(schedule);

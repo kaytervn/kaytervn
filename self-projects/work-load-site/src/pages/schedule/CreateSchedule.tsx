@@ -6,7 +6,6 @@ import { LoadingDialog } from "../../components/form/Dialog";
 import { ActionSection, FormCard } from "../../components/form/FormCard";
 import { InputField2 } from "../../components/form/InputTextField";
 import JsonListField from "../../components/form/json/JsonListField";
-import { ImageUploadField } from "../../components/form/OtherField";
 import { CustomDatePickerField } from "../../components/form/SchedulePickerField";
 import {
   SelectField2,
@@ -72,7 +71,6 @@ const CreateSchedule = () => {
 
   const { form, errors, handleChange, isValidForm } = useForm(
     {
-      imagePath: "",
       name: "",
       sender: "",
       kind: "",
@@ -124,11 +122,6 @@ const CreateSchedule = () => {
             title={PAGE_CONFIG.CREATE_SCHEDULE.label}
             children={
               <div className="flex flex-col space-y-4">
-                <ImageUploadField
-                  title="Image"
-                  value={form?.imagePath}
-                  onChange={(value: any) => handleChange("imagePath", value)}
-                />
                 <div className="flex flex-row space-x-2">
                   <InputField2
                     title="Name"

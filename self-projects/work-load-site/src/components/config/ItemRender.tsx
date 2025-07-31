@@ -17,6 +17,7 @@ import {
 } from "../../types/utils";
 import { parse } from "date-fns";
 import { useGlobalContext } from "./GlobalProvider";
+import { formatDistanceToNow } from "date-fns";
 
 const basicRender = ({ content, align = ALIGNMENT.LEFT }: any) => {
   return (
@@ -80,14 +81,19 @@ export const renderExpirationDateField = (
     return basicRender({ align: ALIGNMENT.LEFT, content });
   }
   expiredDate.setDate(expiredDate.getDate() + offsets);
-  const daysLeft = Math.ceil(
-    (expiredDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
-  );
-  const isExpired = daysLeft < 0;
-  const isWarning = daysLeft >= 0 && daysLeft <= 7;
+  const now = new Date();
+  const isExpired = expiredDate < now;
+  const isWarning =
+    !isExpired &&
+    (expiredDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24) <= 7;
+
+  const timeText = isExpired
+    ? `Expired ${formatDistanceToNow(expiredDate, { addSuffix: true })}`
+    : `In ${formatDistanceToNow(expiredDate, { addSuffix: false })}`;
+
   return (
     <div className="flex items-center space-x-2 py-2">
-      <span className={`text-gray-300 text-sm text-left whitespace-nowrap`}>
+      <span className="text-gray-300 text-sm text-left whitespace-nowrap">
         {content}
       </span>
       <span
@@ -99,7 +105,7 @@ export const renderExpirationDateField = (
             : "bg-green-900/20 text-green-300"
         }`}
       >
-        {isExpired ? "Expired" : `${daysLeft} day(s)`}
+        {timeText}
       </span>
     </div>
   );

@@ -272,4 +272,7 @@
     <changeSet author="MSA" id="1753333929415-25">
         <dropUniqueConstraint constraintName="UC_DB_TAGNAME_COL" tableName="db_tag"/>
     </changeSet>
+    <changeSet author="MSA" id="1753333929415-26">
+        <dropColumn columnName="image_path" tableName="db_schedule"/>
+    </changeSet>
 </databaseChangeLog>

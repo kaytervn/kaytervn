@@ -11,7 +11,6 @@ public class ScheduleDto extends ABasicAdminDto {
     private String name;
     private String sender;
     private String emails;
-    private String imagePath;
     private String content;
     private Integer kind;
     private Integer amount;

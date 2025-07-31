@@ -20,8 +20,6 @@ public class CreateScheduleForm {
     @ValidJsonField(classType = List.class, type = AppConstant.JSON_TYPE_LIST_OBJECT)
     @ApiModelProperty(required = true)
     private String emails;
-    @UrlConstraint
-    private String imagePath;
     @NotBlank(message = "content cannot be blank")
     @ApiModelProperty(required = true)
     private String content;

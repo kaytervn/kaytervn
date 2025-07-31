@@ -155,6 +155,11 @@
             font-weight: 600;
         }
 
+        .signature-info p {
+            color: #4a5568;
+            margin-bottom: 4px;
+        }
+
         .signature-date {
             font-size: 12px;
             color: #718096;
@@ -260,6 +265,10 @@
                 color: #e2e8f0;
             }
 
+            .signature-info p {
+                color: #4a5568;
+            }
+
             .signature-date {
                 color: #a0aec0;
             }
@@ -284,7 +293,6 @@
 
         <div class="content">
             <div class="greeting" th:text="'👋 Dear ' + ${receiver}">👋 Dear Receiver</div>
-
             <div class="content-section">
                 <div class="content-text" th:utext="${content}">
                     <p>This is your scheduled reminder. We wanted to make sure you don't miss this important information.</p>
@@ -300,6 +308,7 @@
 
             <div class="signature">
                 <div class="signature-info">
+                    <p>✨ Best regards,</p>
                     <h4 th:text="${sender}">Sender Name</h4>
                     <div class="signature-date" th:text="${date}">Date</div>
                 </div>
