@@ -26,9 +26,8 @@ import {
   StaticSelectField,
 } from "../../components/form/SelectTextField";
 import { TextAreaField2 } from "../../components/form/TextareaField";
-import { CustomDatePickerField } from "../../components/form/SchedulePickerField";
 import JsonListField from "../../components/form/json/JsonListField";
-import { calculateDueDate } from "../../types/utils";
+import { calculateDueDate, validateCheckedDate } from "../../types/utils";
 
 const UpdateSchedule = () => {
   const isExactDate = () =>
@@ -191,15 +190,18 @@ const UpdateSchedule = () => {
                 </div>
                 {form?.kind && (
                   <div className="flex flex-row space-x-2">
-                    <CustomDatePickerField
+                    <InputField2
                       title="Checked Date"
                       isRequired={true}
+                      placeholder="Enter checked date"
                       value={form?.checkedDate}
-                      onChange={(value: any) =>
+                      onChangeText={(value: any) =>
                         handleChange("checkedDate", value)
                       }
-                      error={errors.checkedDate}
-                      kind={form?.kind}
+                      error={
+                        errors.checkedDate ||
+                        validateCheckedDate(form?.checkedDate, form?.kind)
+                      }
                     />
                     <InputField2
                       title="Time"
@@ -208,9 +210,10 @@ const UpdateSchedule = () => {
                       value={form?.time}
                       onChangeText={(value: any) => handleChange("time", value)}
                       error={
-                        form?.time && !VALID_PATTERN.TIME.test(form?.time)
+                        errors.time ||
+                        (form?.time && !VALID_PATTERN.TIME.test(form?.time)
                           ? "Invalid format (HH:mm)"
-                          : null
+                          : null)
                       }
                     />
                     {(isMonths() || isDays()) && (

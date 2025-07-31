@@ -6,7 +6,6 @@ import { LoadingDialog } from "../../components/form/Dialog";
 import { ActionSection, FormCard } from "../../components/form/FormCard";
 import { InputField2 } from "../../components/form/InputTextField";
 import JsonListField from "../../components/form/json/JsonListField";
-import { CustomDatePickerField } from "../../components/form/SchedulePickerField";
 import {
   SelectField2,
   StaticSelectField,
@@ -26,7 +25,7 @@ import {
   TOAST,
   VALID_PATTERN,
 } from "../../types/constant";
-import { calculateDueDate } from "../../types/utils";
+import { calculateDueDate, validateCheckedDate } from "../../types/utils";
 
 const CreateSchedule = () => {
   const isExactDate = () =>
@@ -163,15 +162,18 @@ const CreateSchedule = () => {
                 </div>
                 {form?.kind && (
                   <div className="flex flex-row space-x-2">
-                    <CustomDatePickerField
+                    <InputField2
                       title="Checked Date"
                       isRequired={true}
+                      placeholder="Enter checked date"
                       value={form?.checkedDate}
-                      onChange={(value: any) =>
+                      onChangeText={(value: any) =>
                         handleChange("checkedDate", value)
                       }
-                      error={errors.checkedDate}
-                      kind={form?.kind}
+                      error={
+                        errors.checkedDate ||
+                        validateCheckedDate(form?.checkedDate, form?.kind)
+                      }
                     />
                     <InputField2
                       title="Time"
@@ -180,9 +182,10 @@ const CreateSchedule = () => {
                       value={form?.time}
                       onChangeText={(value: any) => handleChange("time", value)}
                       error={
-                        form?.time && !VALID_PATTERN.TIME.test(form?.time)
+                        errors.time ||
+                        (form?.time && !VALID_PATTERN.TIME.test(form?.time)
                           ? "Invalid format (HH:mm)"
-                          : null
+                          : null)
                       }
                     />
                     {(isMonths() || isDays()) && (

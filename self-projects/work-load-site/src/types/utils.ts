@@ -9,6 +9,7 @@ import {
   myPublicSecretKey,
   SCHEDULE_KIND_MAP,
   TIMEZONE_VIETNAM,
+  VALID_PATTERN,
 } from "./constant";
 import gifs from "./gifs";
 import forge from "node-forge";
@@ -623,6 +624,36 @@ const truncateToDDMMYYYY = (dateString: string): string => {
   } catch {
     return "";
   }
+};
+
+export const validateCheckedDate = (
+  value: string | undefined,
+  kind: number
+): string | null => {
+  if (!value || !kind) {
+    return null;
+  }
+  let date: dayjs.Dayjs | null = null;
+  if (
+    [
+      SCHEDULE_KIND_MAP.DAYS.value,
+      SCHEDULE_KIND_MAP.MONTHS.value,
+      SCHEDULE_KIND_MAP.EXACT_DATE.value,
+    ].includes(kind)
+  ) {
+    if (!VALID_PATTERN.DATE.test(value)) {
+      return "Invalid Format (dd/MM/yyyy)";
+    }
+    date = dayjs(value, DATE_FORMAT, true).tz(TIMEZONE_VIETNAM);
+  } else if (kind == SCHEDULE_KIND_MAP.DAY_MONTH.value) {
+    if (!VALID_PATTERN.DAY_MONTH.test(value)) {
+      return "Invalid Format (dd/MM)";
+    }
+    date = dayjs(`${value}/${dayjs().year()}`, DATE_FORMAT, true).tz(
+      TIMEZONE_VIETNAM
+    );
+  }
+  return date && date.isValid() ? null : "Invalid Date";
 };
 
 export const calculateDueDate = (
