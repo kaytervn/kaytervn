@@ -103,9 +103,9 @@ const Schedule = () => {
         const value: any = getEnumItem(SCHEDULE_TYPE_MAP, item.type);
         const amount =
           SCHEDULE_KIND_MAP.DAYS.value == item.kind
-            ? `- ${item.amount} day(s)`
+            ? ` - ${item.amount} day(s)`
             : SCHEDULE_KIND_MAP.MONTHS.value == item.kind
-            ? `- ${item.amount} month(s)`
+            ? ` - ${item.amount} month(s)`
             : "";
         const content = `[${item.time}] ${item.checkedDate}${amount}`;
         return (
