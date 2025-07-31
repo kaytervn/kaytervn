@@ -45,28 +45,28 @@ const UpdateSchedule = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.name.trim()) {
-      newErrors.name = "Invalid name";
+      newErrors.name = "Invalid Name";
     }
     if (!form.sender.trim()) {
-      newErrors.sender = "Invalid sender";
+      newErrors.sender = "Invalid Sender";
     }
     if (!form.content.trim()) {
-      newErrors.content = "Invalid content";
+      newErrors.content = "Invalid Content";
     }
     if (!VALID_PATTERN.TIME.test(form.time)) {
-      newErrors.time = "Invalid time";
+      newErrors.time = "Invalid Time";
     }
     if (!form.kind) {
-      newErrors.kind = "Invalid kind";
+      newErrors.kind = "Invalid Kind";
     }
     if (!isExactDate() && !form.type) {
-      newErrors.type = "Invalid type";
+      newErrors.type = "Invalid Type";
     }
-    if ((isDays() || isMonths()) && !form.amount) {
-      newErrors.amount = "Invalid amount";
+    if (((isDays() || isMonths()) && !form.amount) || form.amount < 0) {
+      newErrors.amount = "Invalid Amount";
     }
     if (!form.checkedDate) {
-      newErrors.checkedDate = "Invalid date";
+      newErrors.checkedDate = "Invalid Date";
     }
     return newErrors;
   };
@@ -212,7 +212,7 @@ const UpdateSchedule = () => {
                       error={
                         errors.time ||
                         (form?.time && !VALID_PATTERN.TIME.test(form?.time)
-                          ? "Invalid format (HH:mm)"
+                          ? "Invalid Format (HH:mm)"
                           : null)
                       }
                     />

@@ -35,10 +35,10 @@ const UpdateContact = () => {
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.name.trim()) {
-      newErrors.name = "Invalid name";
+      newErrors.name = "Invalid Name";
     }
     if (!VALID_PATTERN.PHONE.test(form.phone)) {
-      newErrors.phone = "Invalid phone";
+      newErrors.phone = "Invalid Phone";
     }
     return newErrors;
   };
