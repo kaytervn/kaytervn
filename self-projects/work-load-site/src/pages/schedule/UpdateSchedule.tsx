@@ -210,11 +210,10 @@ const UpdateSchedule = () => {
                       value={form?.time}
                       onChangeText={(value: any) => handleChange("time", value)}
                       error={
-                        errors.time
-                          ? errors.time
-                          : form?.time && !VALID_PATTERN.TIME.test(form?.time)
+                        errors.time ||
+                        (form?.time && !VALID_PATTERN.TIME.test(form?.time)
                           ? "Invalid Format (HH:mm)"
-                          : null
+                          : null)
                       }
                     />
                     {(isMonths() || isDays()) && (

@@ -666,12 +666,13 @@ export const calculateDueDate = (
   const error = "Invalid Date";
   try {
     if (
+      !timeStr ||
       !VALID_PATTERN.TIME.test(timeStr) ||
-      !checkedDateStr ||
       !kind ||
-      ([SCHEDULE_KIND_MAP.DAYS.value, SCHEDULE_KIND_MAP.MONTHS.value].includes(
-        kind
-      ) &&
+      !checkedDateStr ||
+      validateCheckedDate(checkedDateStr, kind) ||
+      ((kind === SCHEDULE_KIND_MAP.DAYS.value ||
+        kind === SCHEDULE_KIND_MAP.MONTHS.value) &&
         (!amount || amount < 0))
     ) {
       return error;
