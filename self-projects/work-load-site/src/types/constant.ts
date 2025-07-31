@@ -512,6 +512,19 @@ export const SCHEDULE_TYPE_MAP = {
   },
 };
 
+export const SCHEDULE_STATE_MAP = {
+  PENDING: {
+    value: false,
+    label: "Pending",
+    className: "bg-yellow-800 text-yellow-100",
+  },
+  SENT: {
+    icon: true,
+    label: "Sent",
+    className: "bg-green-800 text-green-100",
+  },
+};
+
 export {
   GRANT_TYPE_MAP,
   defaultInteger,

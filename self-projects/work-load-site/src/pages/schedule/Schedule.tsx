@@ -4,6 +4,7 @@ import {
   ALIGNMENT,
   ITEMS_PER_PAGE,
   SCHEDULE_KIND_MAP,
+  SCHEDULE_STATE_MAP,
   SCHEDULE_TYPE_MAP,
   TAG_KIND_MAP,
 } from "../../types/constant";
@@ -14,6 +15,7 @@ import { useGridView } from "../../hooks/useGridView";
 import {
   basicRender,
   renderActionButton,
+  renderEnum,
   renderExpirationDateField,
 } from "../../components/config/ItemRender";
 import { PAGE_CONFIG } from "../../components/config/PageConfig";
@@ -129,6 +131,12 @@ const Schedule = () => {
         return renderExpirationDateField(dueDate, dueDate, 0);
       },
     },
+    renderEnum({
+      label: "State",
+      accessor: "isSent",
+      align: ALIGNMENT.CENTER,
+      dataMap: SCHEDULE_STATE_MAP,
+    }),
     {
       label: "Created date",
       accessor: "createdDate",
