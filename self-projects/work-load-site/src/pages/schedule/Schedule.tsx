@@ -14,7 +14,6 @@ import { useGridView } from "../../hooks/useGridView";
 import {
   basicRender,
   renderActionButton,
-  renderEnum,
   renderExpirationDateField,
 } from "../../components/config/ItemRender";
 import { PAGE_CONFIG } from "../../components/config/PageConfig";
@@ -94,12 +93,6 @@ const Schedule = () => {
         );
       },
     },
-    renderEnum({
-      label: "Type",
-      accessor: "type",
-      align: ALIGNMENT.CENTER,
-      dataMap: SCHEDULE_TYPE_MAP,
-    }),
     {
       label: "Checked date",
       accessor: "checkedDate",
