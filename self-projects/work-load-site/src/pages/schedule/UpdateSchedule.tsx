@@ -54,7 +54,7 @@ const UpdateSchedule = () => {
       newErrors.content = "Invalid Content";
     }
     if (!VALID_PATTERN.TIME.test(form.time)) {
-      newErrors.time = "Invalid Time";
+      newErrors.time = "Invalid Format (HH:mm)";
     }
     if (!form.kind) {
       newErrors.kind = "Invalid Kind";
@@ -62,10 +62,13 @@ const UpdateSchedule = () => {
     if (!isExactDate() && !form.type) {
       newErrors.type = "Invalid Type";
     }
-    if (((isDays() || isMonths()) && !form.amount) || form.amount < 0) {
+    if (
+      (isDays() || isMonths()) &&
+      (!form.amount || form.amount < 0 || form.amount > 999)
+    ) {
       newErrors.amount = "Invalid Amount";
     }
-    if (!form.checkedDate) {
+    if (!form.checkedDate || validateCheckedDate(form.checkedDate, form.kind)) {
       newErrors.checkedDate = "Invalid Date";
     }
     return newErrors;
@@ -224,7 +227,6 @@ const UpdateSchedule = () => {
                         isRequired={true}
                         placeholder="Enter count"
                         type="number"
-                        maxLength={3}
                         value={form?.amount}
                         onChangeText={(value: any) =>
                           handleChange("amount", value)

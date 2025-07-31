@@ -673,7 +673,7 @@ export const calculateDueDate = (
       validateCheckedDate(checkedDateStr, kind) ||
       ((kind === SCHEDULE_KIND_MAP.DAYS.value ||
         kind === SCHEDULE_KIND_MAP.MONTHS.value) &&
-        (!amount || amount < 0))
+        (!amount || amount < 0 || amount > 999))
     ) {
       return error;
     }
