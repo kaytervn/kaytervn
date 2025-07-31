@@ -168,8 +168,9 @@ const TRUNCATE_LENGTH = 150;
 const FETCH_INTERVAL = 300;
 const SESSION_KEY_TIMEOUT = 2 * 60 * 60 * 1000; // 2 hours
 const PING_INTERVAL = 50000; // 50s
-export const DATE_FORMAT = "dd/MM/yyyy";
-export const DAY_MONTH_FORMAT = "dd/MM";
+export const DATE_FORMAT = "DD/MM/YYYY";
+export const DATE_TIME_FORMAT = "DD/MM/YYYY HH:mm:ss";
+export const DAY_MONTH_FORMAT = "DD/MM";
 export const TIMEZONE_VIETNAM = "Asia/Ho_Chi_Minh";
 
 const LOCAL_STORAGE = {

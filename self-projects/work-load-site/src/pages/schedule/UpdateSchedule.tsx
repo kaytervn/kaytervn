@@ -234,7 +234,8 @@ const UpdateSchedule = () => {
                       title="Due Date"
                       disabled={true}
                       value={calculateDueDate(
-                        form?.checkdDate,
+                        form?.checkedDate,
+                        form?.time,
                         form?.kind,
                         form?.amount
                       )}

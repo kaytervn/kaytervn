@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
   colors,
   DATE_FORMAT,
+  DATE_TIME_FORMAT,
   ENV,
   MIME_TYPES,
   myPublicSecretKey,
@@ -626,12 +627,17 @@ const truncateToDDMMYYYY = (dateString: string): string => {
 
 export const calculateDueDate = (
   checkedDateStr: string,
+  timeStr: string,
   kind: number,
   amount: number
-): string | null => {
+): string => {
+  const error = "Invalid Date";
   try {
-    const now = dayjs().tz?.(TIMEZONE_VIETNAM) ?? dayjs();
+    const now = dayjs().tz(TIMEZONE_VIETNAM);
     const today = now.startOf("day");
+    const time = dayjs(timeStr, "HH:mm", true);
+    if (!time.isValid()) return error;
+
     if (
       [
         SCHEDULE_KIND_MAP.DAYS.value,
@@ -640,7 +646,7 @@ export const calculateDueDate = (
       ].includes(kind)
     ) {
       const startDate = dayjs(checkedDateStr, DATE_FORMAT, true);
-      if (!startDate.isValid()) return null;
+      if (!startDate.isValid()) return error;
 
       let nextDate = startDate;
       if (kind === SCHEDULE_KIND_MAP.DAYS.value) {
@@ -652,23 +658,47 @@ export const calculateDueDate = (
           nextDate = nextDate.add(amount, "month");
         }
       } else {
-        return startDate.isValid() ? startDate.format(DATE_FORMAT) : null;
+        const scheduledDateTime = startDate
+          .set("hour", time.hour())
+          .set("minute", time.minute())
+          .set("second", 0);
+        return scheduledDateTime.isValid()
+          ? scheduledDateTime.format(DATE_TIME_FORMAT)
+          : error;
       }
-      return nextDate.format(DATE_FORMAT);
+      const scheduledDateTime = nextDate
+        .set("hour", time.hour())
+        .set("minute", time.minute())
+        .set("second", 0);
+      return scheduledDateTime.format(DATE_TIME_FORMAT);
     }
+
     if (kind === SCHEDULE_KIND_MAP.DAY_MONTH.value) {
       const [day, month] = checkedDateStr.split("/").map(Number);
       let nextDate = today;
       for (let i = 0; i <= 365; i++) {
         if (nextDate.date() === day && nextDate.month() + 1 === month) {
-          return nextDate.format(DATE_FORMAT);
+          const scheduledDateTime = nextDate
+            .set("hour", time.hour())
+            .set("minute", time.minute())
+            .set("second", 0);
+          if (scheduledDateTime.isAfter(now)) {
+            return scheduledDateTime.format(DATE_TIME_FORMAT);
+          } else {
+            const nextYearDate = nextDate.add(1, "year");
+            const nextYearDateTime = nextYearDate
+              .set("hour", time.hour())
+              .set("minute", time.minute())
+              .set("second", 0);
+            return nextYearDateTime.format(DATE_TIME_FORMAT);
+          }
         }
         nextDate = nextDate.add(1, "day");
       }
     }
-    return null;
+    return error;
   } catch {
-    return null;
+    return error;
   }
 };
 
