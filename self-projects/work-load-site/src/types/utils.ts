@@ -665,11 +665,23 @@ export const calculateDueDate = (
 ): string => {
   const error = "Invalid Date";
   try {
+    if (!VALID_PATTERN.TIME.test(timeStr) || !checkedDateStr || !kind) {
+      return error;
+    }
     const now = dayjs().tz(TIMEZONE_VIETNAM);
     const today = now.startOf("day");
     const time = dayjs(timeStr, "HH:mm", true);
     if (!time.isValid()) return error;
 
+    if (
+      ([SCHEDULE_KIND_MAP.DAYS.value, SCHEDULE_KIND_MAP.MONTHS.value].includes(
+        kind
+      ) &&
+        !amount) ||
+      amount < 0
+    ) {
+      return error;
+    }
     if (
       [
         SCHEDULE_KIND_MAP.DAYS.value,
