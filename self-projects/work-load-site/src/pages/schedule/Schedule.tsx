@@ -101,6 +101,33 @@ const Schedule = () => {
       dataMap: SCHEDULE_TYPE_MAP,
     }),
     {
+      label: "Checked date",
+      accessor: "checkedDate",
+      align: ALIGNMENT.LEFT,
+      render: (item: any) => {
+        const value: any = getEnumItem(SCHEDULE_TYPE_MAP, item.type);
+        const amount =
+          SCHEDULE_KIND_MAP.DAYS.value == item.kind
+            ? `- ${item.amount} day(s)`
+            : SCHEDULE_KIND_MAP.MONTHS.value == item.kind
+            ? `- ${item.amount} month(s)`
+            : "";
+        const content = `[${item.time}] ${item.checkedDate}${amount}`;
+        return (
+          <div className="flex flex-row space-x-2 items-center">
+            <span
+              className={`px-2 py-1 rounded-md font-semibold whitespace-nowrap text-xs ${value.className}`}
+            >
+              {value.label}
+            </span>
+            <span className="text-gray-300 text-sm text-left whitespace-nowrap">
+              {content}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
       label: "Due Date",
       accessor: "dueDate",
       align: ALIGNMENT.LEFT,
