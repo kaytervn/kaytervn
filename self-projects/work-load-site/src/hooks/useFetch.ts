@@ -65,7 +65,7 @@ const useFetch = () => {
     let fingerprint: any;
 
     const token = getStorageData(LOCAL_STORAGE.ACCESS_TOKEN);
-    if (isValidJWT(token)) {
+    if (isValidJWT(token) && AUTH_TYPE.BEARER == options.authType) {
       const decoded: any = jwtDecode(token);
       fingerprint = zipString(
         [decoded.user_id, fingerSecret, decoded.username].join("|")
