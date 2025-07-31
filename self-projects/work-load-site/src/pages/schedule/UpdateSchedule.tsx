@@ -193,6 +193,7 @@ const UpdateSchedule = () => {
                     <InputField2
                       title="Checked Date"
                       isRequired={true}
+                      maxLength={10}
                       placeholder="Enter checked date"
                       value={form?.checkedDate}
                       onChangeText={(value: any) =>
@@ -208,6 +209,7 @@ const UpdateSchedule = () => {
                       isRequired={true}
                       placeholder="Enter time (HH:mm)"
                       value={form?.time}
+                      maxLength={5}
                       onChangeText={(value: any) => handleChange("time", value)}
                       error={
                         errors.time ||
@@ -222,6 +224,7 @@ const UpdateSchedule = () => {
                         isRequired={true}
                         placeholder="Enter count"
                         type="number"
+                        maxLength={3}
                         value={form?.amount}
                         onChangeText={(value: any) =>
                           handleChange("amount", value)
