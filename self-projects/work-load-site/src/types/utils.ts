@@ -646,10 +646,11 @@ export const validateCheckedDate = (
     }
     date = dayjs(value, DATE_FORMAT, true).tz(TIMEZONE_VIETNAM);
   } else if (kind == SCHEDULE_KIND_MAP.DAY_MONTH.value) {
+    const defaultLeapYear = 2024;
     if (!VALID_PATTERN.DAY_MONTH.test(value)) {
       return "Invalid Format (dd/MM)";
     }
-    date = dayjs(`${value}/${dayjs().year()}`, DATE_FORMAT, true).tz(
+    date = dayjs(`${value}/${defaultLeapYear}`, DATE_FORMAT, true).tz(
       TIMEZONE_VIETNAM
     );
   }

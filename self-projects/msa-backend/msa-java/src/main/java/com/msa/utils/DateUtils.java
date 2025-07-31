@@ -126,12 +126,13 @@ public final class DateUtils {
     }
 
     public static LocalDate parseDate(String dateStr, String format) {
+        int defaultLeapYear = 2024;
         try {
             DateTimeFormatter formatter;
             if (format.equals(AppConstant.DAY_MONTH_FORMAT)) {
                 formatter = new DateTimeFormatterBuilder()
                         .appendPattern(format)
-                        .parseDefaulting(ChronoField.YEAR, LocalDate.now().getYear())
+                        .parseDefaulting(ChronoField.YEAR, defaultLeapYear)
                         .toFormatter();
             } else {
                 formatter = DateTimeFormatter.ofPattern(format);
