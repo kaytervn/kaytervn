@@ -519,7 +519,7 @@ export const SCHEDULE_STATE_MAP = {
     className: "bg-yellow-800 text-yellow-100",
   },
   SENT: {
-    icon: true,
+    value: true,
     label: "Sent",
     className: "bg-green-800 text-green-100",
   },
