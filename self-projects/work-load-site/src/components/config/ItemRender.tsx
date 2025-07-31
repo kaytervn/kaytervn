@@ -424,7 +424,7 @@ export const renderTagField = ({
     return (
       <span
         title={label}
-        className="inline-block w-4 h-4 rounded"
+        className="w-4 h-4 rounded"
         style={{ backgroundColor: colorCode }}
       />
     );

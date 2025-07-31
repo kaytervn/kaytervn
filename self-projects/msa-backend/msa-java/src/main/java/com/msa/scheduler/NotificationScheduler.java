@@ -68,6 +68,9 @@ public class NotificationScheduler {
                 dto.setLink(link);
                 schedule.setIsSent(true);
                 scheduleRepository.save(schedule);
+            } else {
+                schedule.setIsSent(true);
+                scheduleRepository.save(schedule);
             }
             mailService.sendScheduleNotification(dto);
             log.error("Email sent successfully, {}", dto.getTitle());

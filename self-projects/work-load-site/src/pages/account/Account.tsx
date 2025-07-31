@@ -109,7 +109,7 @@ const Account = () => {
             {colorCode && (
               <span
                 title={item.tag.name}
-                className="inline-block w-4 h-4 rounded"
+                className="w-4 h-4 rounded"
                 style={{ backgroundColor: colorCode }}
               />
             )}
