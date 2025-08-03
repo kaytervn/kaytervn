@@ -57,7 +57,7 @@ public class LogInterceptor implements HandlerInterceptor {
         if (!isValidSession(jwt)) {
             return handleUnauthorized(response, ErrorCode.GENERAL_ERROR_INVALID_SESSION, "Invalid session");
         }
-        String tenantName = encryptionService.clientDecrypt(request.getHeader(SecurityConstant.HEADER_X_TENANT));
+        String tenantName = encryptionService.clientDecryptIgnoreNonce(request.getHeader(SecurityConstant.HEADER_X_TENANT));
         if (jwt != null) {
             TenantDBContext.setCurrentTenant(SecurityConstant.DB_USER_PREFIX + jwt.getUsername());
         } else if (StringUtils.isNotBlank(tenantName)) {
@@ -77,7 +77,7 @@ public class LogInterceptor implements HandlerInterceptor {
         apiMessageDto.setCode(code);
         apiMessageDto.setResult(false);
         ResponseDto responseDto = new ResponseDto();
-        responseDto.setResponse(encryptionService.clientEncrypt(JSONUtils.convertObjectToJson(apiMessageDto)));
+        responseDto.setResponse(encryptionService.clientEncryptInjectNonce(JSONUtils.convertObjectToJson(apiMessageDto)));
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");

@@ -20,10 +20,11 @@ import {
 import { InputField2 } from "../../components/form/InputTextField";
 import { CancelButton, SubmitButton } from "../../components/form/Button";
 import { PAGE_CONFIG } from "../../components/config/PageConfig";
-import { decryptClientField } from "../../services/encryption/clientEncryption";
 import skateboarding from "../../assets/skateboarding.png";
+import useEncryption from "../../hooks/useEncryption";
 
 const ActivateAccount = () => {
+  const { clientDecryptIgnoreNonce } = useEncryption();
   const { token } = useParams();
   const { profile, setToast } = useGlobalContext();
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ const ActivateAccount = () => {
         if (!token) {
           handleNavigateBack();
         }
-        const decryptedToken = decryptClientField(token);
+        const decryptedToken = clientDecryptIgnoreNonce(token);
         if (!decryptedToken) {
           handleNavigateBack();
         }

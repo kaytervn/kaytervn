@@ -37,7 +37,7 @@ public class CustomResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         }
         try {
             String rawJson = objectMapper.writeValueAsString(body);
-            String encrypted = encryptionService.clientEncrypt(rawJson);
+            String encrypted = encryptionService.clientEncryptInjectNonce(rawJson);
             ResponseDto responseDto = new ResponseDto();
             responseDto.setResponse(encrypted);
             return responseDto;

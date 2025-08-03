@@ -1,5 +1,6 @@
 import { encryptClientField } from "../services/encryption/clientEncryption";
 import { API_HEADER, AUTH_TYPE, ENV, METHOD } from "../types/constant";
+import { generateTimestamp } from "../types/utils";
 
 export const scheduleController = (fetchApi: any) => {
   const list = (payload: any) =>
@@ -55,6 +56,9 @@ export const scheduleController = (fetchApi: any) => {
     });
 
   const checkSchedule = (tenant: any, token: any) => {
+    const myTenant = encryptClientField(
+      [generateTimestamp(), tenant].join("|")
+    );
     return fetchApi({
       apiUrl: ENV.MSA_JAVA_API_URL,
       endpoint: "/v1/schedule/check-schedule",
@@ -62,7 +66,7 @@ export const scheduleController = (fetchApi: any) => {
       payload: { token },
       authType: AUTH_TYPE.NONE,
       headers: {
-        [API_HEADER.X_TENANT]: encryptClientField(tenant),
+        [API_HEADER.X_TENANT]: myTenant,
       },
     });
   };

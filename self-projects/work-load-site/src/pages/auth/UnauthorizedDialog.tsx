@@ -13,8 +13,8 @@ const UnauthorizedDialog = () => {
 
   useEffect(() => {
     if (
-      message?.responseCode === 400 ||
-      message?.cmd === SOCKET_CMD.CMD_LOCK_DEVICE
+      message?.responseCode == 400 ||
+      message?.cmd == SOCKET_CMD.CMD_LOCK_DEVICE
     ) {
       removeSessionCache();
       setIsUnauthorized(true);

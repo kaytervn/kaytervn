@@ -327,7 +327,7 @@ public class UserController extends ABasicController {
         KeyPair keyPair = RSAUtils.generateKeyPair();
         String publicKey = RSAUtils.keyToString(keyPair.getPublic());
         String privateKey = RSAUtils.keyToString(keyPair.getPrivate());
-        String contentBuilder = encryptionService.clientEncrypt(privateKey);
+        String contentBuilder = encryptionService.clientEncryptInjectNonce(privateKey);
         String key = sessionService.getKeyString(user.getKind(), user.getUsername());
         sessionService.putPublicKey(key, publicKey);
         byte[] contentBytes = contentBuilder.getBytes(StandardCharsets.UTF_8);

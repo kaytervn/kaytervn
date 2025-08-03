@@ -8,12 +8,11 @@ import {
   PING_INTERVAL,
   SOCKET_CMD,
 } from "../types/constant";
-import {
-  decryptClientField,
-  encryptClientField,
-} from "../services/encryption/clientEncryption";
+import useEncryption from "./useEncryption";
 
 const useWebSocket = () => {
+  const { clientDecryptIgnoreNonce, clientEncryptInjectNonce } =
+    useEncryption();
   const { isUnauthorized } = useGlobalContext();
   const [message, setMessage] = useState<any>(null);
   const ws = useRef<WebSocket | null>(null);
@@ -34,7 +33,7 @@ const useWebSocket = () => {
 
   const sendMessage = useCallback((msg: any) => {
     if (ws.current?.readyState === WebSocket.OPEN) {
-      const request = encryptClientField(JSON.stringify(msg));
+      const request = clientEncryptInjectNonce(JSON.stringify(msg));
       ws.current.send(JSON.stringify({ request }));
       return true;
     }
@@ -67,7 +66,7 @@ const useWebSocket = () => {
     socket.onmessage = (event) => {
       try {
         const { response } = JSON.parse(event.data);
-        setMessage(JSON.parse(decryptClientField(response) || ""));
+        setMessage(JSON.parse(clientDecryptIgnoreNonce(response) || ""));
       } catch (error) {
         console.error("WebSocket message parsing error:", error);
         setMessage(null);

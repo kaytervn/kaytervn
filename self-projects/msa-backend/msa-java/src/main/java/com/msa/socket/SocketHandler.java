@@ -41,7 +41,7 @@ public class SocketHandler extends TextWebSocketHandler {
     private String getPayloadMsg(String rawMsg) {
         try {
             RequestDto requestDto = objectMapper.readValue(rawMsg, RequestDto.class);
-            return encryptionService.clientDecrypt(requestDto.getRequest());
+            return encryptionService.clientDecryptIgnoreNonce(requestDto.getRequest());
         } catch (Exception e) {
             return null;
         }

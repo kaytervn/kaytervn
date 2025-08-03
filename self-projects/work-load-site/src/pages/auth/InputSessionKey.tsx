@@ -11,16 +11,17 @@ import { BASIC_MESSAGES, BUTTON_TEXT, TOAST } from "../../types/constant";
 import { LoadingDialog } from "../../components/form/Dialog";
 import useForm from "../../hooks/useForm";
 import { decryptRSA } from "../../types/utils";
-import { decryptClientField } from "../../services/encryption/clientEncryption";
+import useEncryption from "../../hooks/useEncryption";
 
 const InputKeyForm = ({ isVisible, formConfig }: any) => {
+  const { clientDecryptIgnoreNonce } = useEncryption();
   const { user, loading } = useApi();
   const { setToast, setSessionKey, refreshSessionTimeout } = useGlobalContext();
   const [mySecretKey, setMySecretKey] = useState<any>(null);
   const validate = (form: any) => {
     const newErrors: any = {};
     const decryptedKey = decryptRSA(
-      decryptClientField(form.sessionKey),
+      clientDecryptIgnoreNonce(form.sessionKey),
       mySecretKey
     );
     if (!decryptedKey) {

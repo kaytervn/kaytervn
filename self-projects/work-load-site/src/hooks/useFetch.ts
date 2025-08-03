@@ -50,7 +50,7 @@ const useFetch = () => {
     "/v1/lesson/**",
   ];
   const { refreshSessionTimeout, setIsUnauthorized } = useGlobalContext();
-  const { getAuthHeader } = useEncryption();
+  const { getAuthHeader, clientDecryptIgnoreNonce } = useEncryption();
   const [loading, setLoading] = useState(false);
 
   const handleFetch = useCallback(async (options: FetchOptions) => {
@@ -183,7 +183,9 @@ const useFetch = () => {
 
       // Decrypt response
       try {
-        return JSON.parse(decryptClientField(responseData?.response) || "");
+        return JSON.parse(
+          clientDecryptIgnoreNonce(responseData?.response) || ""
+        );
       } catch {
         return responseData;
       }

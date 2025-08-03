@@ -52,7 +52,7 @@ public class SocketService {
             response.setMsg(message);
             response.setResponseCode(responseCode);
             ResponseDto dto = new ResponseDto();
-            dto.setResponse(encryptionService.clientEncrypt(response.toJson()));
+            dto.setResponse(encryptionService.clientEncryptInjectNonce(response.toJson()));
             session.sendMessage(new TextMessage(JSONUtils.convertObjectToJson(dto)));
         } catch (Exception e) {
             log.error("Failed to send WebSocket response: {}", e.getMessage(), e);

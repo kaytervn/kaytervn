@@ -63,7 +63,7 @@ public class NotificationScheduler {
                 basicApiService.updateCheckedDate(schedule);
             } else if (AppConstant.SCHEDULE_TYPE_MANUAL_RENEW.equals(schedule.getType()) && List.of(AppConstant.SCHEDULE_KIND_DAYS, AppConstant.SCHEDULE_KIND_MONTHS, AppConstant.SCHEDULE_KIND_DAY_MONTH).contains(schedule.getKind())) {
                 String token = encryptionService.serverEncrypt(ZipUtils.zipString(String.join(";", List.of(schedule.getId().toString(), new Date().toString()))));
-                String clientToken = encryptionService.clientEncrypt(ZipUtils.zipString(String.join(";", List.of(tenantName, token))));
+                String clientToken = encryptionService.clientEncryptInjectNonce(ZipUtils.zipString(String.join(";", List.of(tenantName, token))));
                 String link = clientDomain + "/check-schedule/" + URLEncoder.encode(clientToken, StandardCharsets.UTF_8);
                 dto.setLink(link);
                 schedule.setIsSent(true);

@@ -6,6 +6,7 @@ import com.msa.dto.auth.KeyWrapperDto;
 import com.msa.jwt.AppJwt;
 import com.msa.service.impl.UserServiceImpl;
 import com.msa.utils.AESUtils;
+import com.msa.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +14,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
 public class EncryptionService {
+    public static final String DELIM = "\\|";
     @Value("${app.server-key}")
     private String serverKey;
     @Value("${app.client-key}")
@@ -26,6 +29,23 @@ public class EncryptionService {
     @Autowired
     @Lazy
     private SessionService sessionService;
+
+    public String clientDecryptIgnoreNonce(String value) {
+        try {
+            return Objects.requireNonNull(AESUtils.decrypt(clientKey, value)).split(DELIM)[1];
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String clientEncryptInjectNonce(String value) {
+        try {
+            String nonce = DateUtils.generateTimestamp();
+            return AESUtils.encrypt(clientKey, String.join(DELIM, List.of(nonce, value)));
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public String clientDecrypt(String value) {
         return AESUtils.decrypt(clientKey, value);

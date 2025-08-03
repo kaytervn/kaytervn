@@ -5,7 +5,6 @@ import useApi from "../../hooks/useApi";
 import { useEffect, useState } from "react";
 import { PAGE_CONFIG } from "../../components/config/PageConfig";
 import { AUTH_CONFIG } from "../../components/config/PageConfigDetails";
-import { decryptClientField } from "../../services/encryption/clientEncryption";
 import { LoadingDialog } from "../../components/form/Dialog";
 import { BASIC_MESSAGES, BUTTON_TEXT } from "../../types/constant";
 import { ActionSection, MessageForm } from "../../components/form/FormCard";
@@ -14,8 +13,10 @@ import badRequest from "../../assets/bad_request.png";
 import checkedSchedule from "../../assets/checked_schedule.png";
 import mark from "../../assets/mark.png";
 import { unzipString } from "../../types/utils";
+import useEncryption from "../../hooks/useEncryption";
 
 const CheckSchedule = () => {
+  const { clientDecryptIgnoreNonce } = useEncryption();
   const { token } = useParams();
   const { profile } = useGlobalContext();
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const CheckSchedule = () => {
         if (!token) {
           handleNavigateBack();
         }
-        const myToken = unzipString(decryptClientField(token));
+        const myToken = unzipString(clientDecryptIgnoreNonce(token));
         if (!myToken) {
           handleNavigateBack();
           return;

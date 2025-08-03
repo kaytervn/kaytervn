@@ -52,7 +52,7 @@ public class QuarterlyReminderScheduler {
                 if (StringUtils.isBlank(token)) {
                     return;
                 }
-                String activationLink = clientDomain + "/activate-account/" + URLEncoder.encode(encryptionService.clientEncrypt(token), StandardCharsets.UTF_8);
+                String activationLink = clientDomain + "/activate-account/" + URLEncoder.encode(encryptionService.clientEncryptInjectNonce(token), StandardCharsets.UTF_8);
                 sessionService.sendMessageLockUser(user.getKind(), username);
                 mailService.sendQuarterlyReminderMail(user.getEmail(), user.getFullName(), activationLink);
             } catch (Exception e) {

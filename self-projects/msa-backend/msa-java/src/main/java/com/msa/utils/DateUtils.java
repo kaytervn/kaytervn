@@ -1,7 +1,6 @@
 package com.msa.utils;
 
 import com.msa.constant.AppConstant;
-import com.msa.constant.SecurityConstant;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
@@ -152,5 +151,9 @@ public final class DateUtils {
     public static LocalDateTime getCurrentDateTime(String zoneId) {
         ZoneId zone = ZoneId.of(zoneId);
         return LocalDateTime.now(zone);
+    }
+
+    public static String generateTimestamp() {
+        return String.valueOf(System.currentTimeMillis());
     }
 }
