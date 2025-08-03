@@ -1164,4 +1164,20 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet author="MSA" id="1752728957490-23">
+        <addColumn tableName="db_session">
+            <column name="session_key" type="varchar(255)" afterColumn="id"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="MSA" id="1752728957490-24">
+        <addColumn tableName="db_session">
+            <column name="session_value" type="varchar(255)" afterColumn="session_key"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="MSA" id="1752728957490-25">
+        <dropColumn columnName="key" tableName="db_session"/>
+    </changeSet>
+    <changeSet author="MSA" id="1752728957490-26">
+        <dropColumn columnName="session" tableName="db_session"/>
+    </changeSet>
 </databaseChangeLog>

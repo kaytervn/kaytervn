@@ -46,9 +46,9 @@ public class SessionService {
     }
 
     public void storeSession(String key, String session) {
-        Session mySession = sessionRepository.findFirstByKey(key).orElse(new Session());
-        mySession.setKey(key);
-        mySession.setSession(session);
+        Session mySession = sessionRepository.findFirstBySessionKey(key).orElse(new Session());
+        mySession.setSessionKey(key);
+        mySession.setSessionValue(session);
         mySession.setAccessTime(new Date());
         sessionRepository.save(mySession);
     }

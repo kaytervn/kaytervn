@@ -33,7 +33,7 @@ public class CacheConfig {
         Date expiredDate = DateUtils.getExpiredDate(SecurityConstant.DAYS_TO_EXPIRED);
         List<Session> sessions = sessionRepository.findAllByAccessTimeAfter(expiredDate);
         for (Session session : sessions) {
-            sessionService.putKey(session.getKey(), session.getSession());
+            sessionService.putKey(session.getSessionKey(), session.getSessionValue());
         }
         log.warn("Session restored. Size: {}", sessions.size());
     }

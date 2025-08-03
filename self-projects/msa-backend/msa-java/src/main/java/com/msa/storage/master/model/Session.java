@@ -20,7 +20,7 @@ public class Session extends Auditable<String> {
     @GenericGenerator(name = AppConstant.ID_GENERATOR_NAME, strategy = AppConstant.ID_GENERATOR_STRATEGY)
     @GeneratedValue(generator = AppConstant.ID_GENERATOR_NAME)
     private Long id;
-    private String key;
-    private String session;
+    private String sessionKey;
+    private String sessionValue;
     private Date accessTime;
 }

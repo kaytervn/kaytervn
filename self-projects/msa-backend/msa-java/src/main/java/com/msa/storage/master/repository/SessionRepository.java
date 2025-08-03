@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SessionRepository extends JpaRepository<Session, Long>, JpaSpecificationExecutor<Session> {
-    Optional<Session> findFirstByKey(String key);
+    Optional<Session> findFirstBySessionKey(String key);
 
     List<Session> findAllByAccessTimeAfter(Date exp);
 
