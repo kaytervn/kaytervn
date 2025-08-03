@@ -80,13 +80,13 @@ const ViewBank = () => {
                     type="password"
                   />
                   <JsonListField
-                    title="Pins"
+                    title="Pin(s)"
                     disabled={true}
                     value={userDecrypt(fetchData?.pins)}
                   />
                 </div>
                 <JsonListField
-                  title="Numbers"
+                  title="Number(s)"
                   disabled={true}
                   value={fetchData?.numbers}
                 />

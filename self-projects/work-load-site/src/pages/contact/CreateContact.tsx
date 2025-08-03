@@ -121,7 +121,7 @@ const CreateContact = () => {
                   error={errors?.note}
                 />
                 <JsonListField
-                  title="Extra Phones"
+                  title="Extra Phone(s)"
                   value={form?.phones}
                   onChange={(value: any) => handleChange("phones", value)}
                   fieldConfig={CONTACT_PHONE_FIELD_CONFIG}

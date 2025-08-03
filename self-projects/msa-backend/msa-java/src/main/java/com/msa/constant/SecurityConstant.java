@@ -3,6 +3,9 @@ package com.msa.constant;
 import java.util.List;
 
 public class SecurityConstant {
+    public static final int CACHE_MAX_SIZE = 1000;
+    public static final long CACHE_TTL = 2_592_000_000L;
+
     public static final String DEFAULT_TENANT_ID = "tenant_id_default";
     public static final String DB_USER_PREFIX = "msa_user_";
     public static final String DB_SCHEMA_PREFIX = "msa_tenant_";

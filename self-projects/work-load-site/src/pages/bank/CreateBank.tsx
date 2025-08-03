@@ -123,14 +123,14 @@ const CreateBank = () => {
                     type="password"
                   />
                   <JsonListField
-                    title="Pins"
+                    title="Pin(s)"
                     value={form?.pins}
                     onChange={(value: any) => handleChange("pins", value)}
                     fieldConfig={BANK_PIN_FIELD_CONFIG}
                   />
                 </div>
                 <JsonListField
-                  title="Numbers"
+                  title="Number(s)"
                   value={form?.numbers}
                   onChange={(value: any) => handleChange("numbers", value)}
                 />
