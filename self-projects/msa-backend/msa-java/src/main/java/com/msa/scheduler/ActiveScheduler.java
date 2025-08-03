@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 @Slf4j
 public class ActiveScheduler {
-    private static final long INTERVAL = 50 * 1000; // 50s
+    private static final long INTERVAL = 45 * 1000; // 45s
     @Autowired
     private FeignActiveService feignActiveService;
     @Value("#{'${app.active-urls}'.split(',')}")
@@ -31,8 +31,7 @@ public class ActiveScheduler {
         for (String url : ACTIVE_URLS) {
             try {
                 feignActiveService.ping(url);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
             log.error("GET request sent to {}", url);
         }
     }

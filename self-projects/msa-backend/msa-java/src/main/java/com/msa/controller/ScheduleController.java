@@ -1,5 +1,6 @@
 package com.msa.controller;
 
+import com.msa.cache.CacheService;
 import com.msa.constant.AppConstant;
 import com.msa.constant.ErrorCode;
 import com.msa.constant.SecurityConstant;
@@ -56,6 +57,8 @@ public class ScheduleController extends ABasicController {
     private BasicApiService basicApiService;
     @Autowired
     private EncryptionService encryptionService;
+    @Autowired
+    private CacheService cacheService;
 
     private void validateCheckedDate(String checkedDateStr, Integer kind) {
         LocalDate date = null;
@@ -143,6 +146,7 @@ public class ScheduleController extends ABasicController {
         }
         schedule.setDueDate(basicApiService.calculateDueDate(schedule));
         scheduleRepository.save(schedule);
+        cacheService.addOrRemoveSchedule(schedule);
         return makeSuccessResponse(null, "Create schedule success");
     }
 
@@ -201,6 +205,7 @@ public class ScheduleController extends ABasicController {
             schedule.setIsSent(false);
         }
         scheduleRepository.save(schedule);
+        cacheService.addOrRemoveSchedule(schedule);
         return makeSuccessResponse(null, "Update schedule success");
     }
 
@@ -212,6 +217,7 @@ public class ScheduleController extends ABasicController {
             throw new BadRequestException(ErrorCode.SCHEDULE_ERROR_NOT_FOUND, "Not found schedule");
         }
         scheduleRepository.deleteById(id);
+        cacheService.removeScheduleId(schedule.getId());
         return makeSuccessResponse(null, "Delete schedule success");
     }
 

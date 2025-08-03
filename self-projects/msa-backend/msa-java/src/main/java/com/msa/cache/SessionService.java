@@ -6,7 +6,9 @@ import com.msa.constant.SecurityConstant;
 import com.msa.socket.SocketService;
 import com.msa.socket.dto.LockDeviceRequest;
 import com.msa.socket.dto.MessageDto;
+import com.msa.storage.master.model.Session;
 import com.msa.storage.master.model.User;
+import com.msa.storage.master.repository.SessionRepository;
 import com.msa.storage.master.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class SessionService {
     private SocketService socketService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private SessionRepository sessionRepository;
 
     public String getKeyString(Integer userKind, String username) {
         if (SecurityConstant.USER_KIND_ADMIN.equals(userKind)) {
@@ -39,6 +43,14 @@ public class SessionService {
     public void putKey(String key, String session) {
         SessionDto value = new SessionDto(session);
         CacheManager.getCache().put(key, value);
+    }
+
+    public void storeSession(String key, String session) {
+        Session mySession = sessionRepository.findFirstByKey(key).orElse(new Session());
+        mySession.setKey(key);
+        mySession.setSession(session);
+        mySession.setAccessTime(new Date());
+        sessionRepository.save(mySession);
     }
 
     public SessionDto getKey(String key) {

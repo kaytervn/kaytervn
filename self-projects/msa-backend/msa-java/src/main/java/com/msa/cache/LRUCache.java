@@ -62,5 +62,10 @@ public class LRUCache<K, V> {
             put(key, value);
         }
     }
+
+    public synchronized Set<K> getAllKeys() {
+        purgeExpiredItems();
+        return new LinkedHashSet<>(cache.keySet());
+    }
 }
 

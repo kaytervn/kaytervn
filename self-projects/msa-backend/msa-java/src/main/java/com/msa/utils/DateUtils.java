@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -155,5 +156,9 @@ public final class DateUtils {
 
     public static String generateTimestamp() {
         return String.valueOf(System.currentTimeMillis());
+    }
+
+    public static Date getExpiredDate(Integer daysToExpired) {
+        return Date.from(Instant.now().minus(daysToExpired, ChronoUnit.DAYS));
     }
 }

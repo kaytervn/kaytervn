@@ -64,7 +64,7 @@ public class TenantService {
                     statement.execute("CREATE USER '" + dbConfig.getUsername() + "'@'%' IDENTIFIED BY '" + password + "';");
                     statement.execute("GRANT ALL PRIVILEGES ON `" + databaseName + "`.* TO '" + dbConfig.getUsername() + "'@'%';");
                     statement.execute("FLUSH PRIVILEGES;");
-                    log.info("Tenant database and user created successfully...");
+                    log.info("Tenant database {} and user created successfully...", databaseName);
                 } catch (SQLException e) {
                     statement.execute("DROP DATABASE IF EXISTS `" + databaseName + "`;");
                     throw new BadRequestException(ErrorCode.GENERAL_ERROR_CREATE_DATABASE, e.getMessage());
@@ -87,7 +87,7 @@ public class TenantService {
                 statement.execute("DROP DATABASE IF EXISTS `" + databaseName + "`;");
                 statement.execute("DROP USER IF EXISTS '" + dbConfig.getUsername() + "';");
                 statement.execute("FLUSH PRIVILEGES;");
-                log.info("Tenant database deleted successfully...");
+                log.info("Tenant database {} deleted successfully...", databaseName);
             } catch (SQLException e) {
                 throw new BadRequestException(ErrorCode.GENERAL_ERROR_DELETE_DATABASE, e.getMessage());
             }

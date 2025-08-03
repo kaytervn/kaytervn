@@ -59,7 +59,7 @@ public class QuarterlyReminderScheduler {
                 log.error(e.getMessage());
             }
         }
-        log.info("Account activation request scheduler executed");
+        log.info("Account activation request scheduler executed. Size: {}", users.size());
     }
 }
 

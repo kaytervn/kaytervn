@@ -5,6 +5,9 @@ import java.util.List;
 public class SecurityConstant {
     public static final int CACHE_MAX_SIZE = 1000;
     public static final long CACHE_TTL = 2_592_000_000L;
+    public static final Integer DAYS_TO_EXPIRED = 30;
+    public static final String CACHE_TENANTS = "CACHE_TENANTS";
+    public static final String CACHE_SCHEDULES = "CACHE_SCHEDULES";
 
     public static final String DEFAULT_TENANT_ID = "tenant_id_default";
     public static final String DB_USER_PREFIX = "msa_user_";

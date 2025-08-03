@@ -1,5 +1,6 @@
 package com.msa.scheduler;
 
+import com.msa.cache.CacheService;
 import com.msa.constant.AppConstant;
 import com.msa.constant.SecurityConstant;
 import com.msa.dto.schedule.ScheduleMailDto;
@@ -7,7 +8,6 @@ import com.msa.multitenancy.TenantDBContext;
 import com.msa.service.BasicApiService;
 import com.msa.service.encryption.EncryptionService;
 import com.msa.service.mail.MailServiceImpl;
-import com.msa.storage.master.repository.DbConfigRepository;
 import com.msa.storage.tenant.model.Schedule;
 import com.msa.storage.tenant.repository.ScheduleRepository;
 import com.msa.utils.DateUtils;
@@ -34,8 +34,6 @@ public class NotificationScheduler {
     @Autowired
     private ScheduleRepository scheduleRepository;
     @Autowired
-    private DbConfigRepository dbConfigRepository;
-    @Autowired
     private BasicApiService basicApiService;
     @Autowired
     private EncryptionService encryptionService;
@@ -43,6 +41,13 @@ public class NotificationScheduler {
     private String clientDomain;
     @Autowired
     private MailServiceImpl mailService;
+    @Autowired
+    private CacheService cacheService;
+
+    @Scheduled(cron = "0 0 0 * * *", zone = SecurityConstant.TIMEZONE_VIETNAM)
+    private void startScheduler() {
+        cacheService.handleCacheSchedules();
+    }
 
     @Scheduled(fixedRate = INTERVAL)
     public void runSchedule() {
@@ -73,12 +78,16 @@ public class NotificationScheduler {
                 scheduleRepository.save(schedule);
             }
             mailService.sendScheduleNotification(dto);
+            cacheService.removeScheduleId(schedule.getId());
             log.error("Email sent successfully, {}", dto.getTitle());
         }
     }
 
     private boolean shouldSend(Schedule schedule, LocalDate today, LocalTime currentTime) {
         try {
+            if (schedule.getIsSent() || AppConstant.SCHEDULE_TYPE_SUSPENDED.equals(schedule.getType())) {
+                return false;
+            }
             LocalTime scheduleTime = LocalTime.parse(schedule.getTime());
             long diffMinutes = ChronoUnit.MINUTES.between(scheduleTime, currentTime);
             log.warn("scheduleTime: {}", scheduleTime);
@@ -120,7 +129,7 @@ public class NotificationScheduler {
         LocalDateTime now = LocalDateTime.now(zoneVN);
         LocalDate today = now.toLocalDate();
         LocalTime currentTime = now.toLocalTime().withSecond(0).withNano(0);
-        List<String> tenants = dbConfigRepository.findAllUsername();
+        List<String> tenants = cacheService.getTenants();
         String currentDateStr = DateUtils.formatDate(today, AppConstant.DATE_FORMAT);
         Date fromDate = Date.from(today.atStartOfDay(zoneVN).toInstant());
         Date toDate = Date.from(today.atTime(23, 59, 59).atZone(zoneVN).toInstant());
@@ -131,14 +140,17 @@ public class NotificationScheduler {
         log.warn("toDate: {}", toDate);
         for (String tenant : tenants) {
             TenantDBContext.setCurrentTenant(tenant);
-            List<Schedule> schedules = scheduleRepository.findAllDueToday(
-                    false, AppConstant.SCHEDULE_TYPE_SUSPENDED, fromDate, toDate
-            );
-            log.warn("currentTenant: {}", tenant);
-            log.warn("schedulesSize: {}", schedules.size());
-            for (Schedule schedule : schedules) {
-                if (shouldSend(schedule, today, currentTime)) {
-                    handleSendEmail(tenant, schedule, currentDateStr);
+            List<Long> scheduleIds = cacheService.getScheduleIds(tenant);
+            if (scheduleIds != null && !scheduleIds.isEmpty()) {
+                List<Schedule> schedules = scheduleRepository.findAllDueToday(
+                        false, AppConstant.SCHEDULE_TYPE_SUSPENDED, fromDate, toDate
+                );
+                log.warn("currentTenant: {}", tenant);
+                log.warn("schedulesSize: {}", schedules.size());
+                for (Schedule schedule : schedules) {
+                    if (shouldSend(schedule, today, currentTime)) {
+                        handleSendEmail(tenant, schedule, currentDateStr);
+                    }
                 }
             }
         }

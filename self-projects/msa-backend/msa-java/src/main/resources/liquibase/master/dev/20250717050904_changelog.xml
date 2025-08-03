@@ -1139,4 +1139,29 @@
             <column name="modified_date" valueDate="2025-02-18T02:27:59"/>
         </insert>
     </changeSet>
+    <changeSet author="MSA" id="1752728957490-22">
+        <createTable tableName="db_session">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_sessionPK"/>
+            </column>
+            <column name="key" type="VARCHAR(255)"/>
+            <column name="session" type="VARCHAR(255)"/>
+            <column name="access_time" type="datetime"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

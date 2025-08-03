@@ -70,6 +70,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
         sessionService.sendMessageLockUser(userKind, username);
         sessionService.updateLastLogin(username);
         sessionService.putKey(key, sessionId);
+        sessionService.storeSession(key, sessionId);
         return additionalInfo;
     }
 

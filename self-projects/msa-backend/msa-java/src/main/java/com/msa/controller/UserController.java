@@ -1,5 +1,6 @@
 package com.msa.controller;
 
+import com.msa.cache.CacheService;
 import com.msa.cache.SessionService;
 import com.msa.cloudinary.CloudinaryService;
 import com.msa.constant.AppConstant;
@@ -81,6 +82,8 @@ public class UserController extends ABasicController {
     private DbConfigRepository dbConfigRepository;
     @Autowired
     private TenantService tenantService;
+    @Autowired
+    private CacheService cacheService;
 
     private void createDbConfig(User user) {
         if (dbConfigRepository.existsByUserId(user.getId())) {
@@ -96,6 +99,7 @@ public class UserController extends ABasicController {
         dbConfig.setUrl(tenantService.getDbConfigUrl(prefixUrl, dbName));
         tenantService.createTenantDatabase(dbConfig);
         dbConfigRepository.save(dbConfig);
+        cacheService.addTenant(username);
     }
 
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

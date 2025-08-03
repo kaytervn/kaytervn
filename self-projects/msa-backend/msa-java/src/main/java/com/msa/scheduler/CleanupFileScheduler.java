@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 @Slf4j
 public class CleanupFileScheduler {
-    private static final long INTERVAL = 5 * 60 * 1000; // 5 minutes
+    private static final long INTERVAL = 2 * 60 * 60 * 1000; // 2 hours
     private static final int HOURS_TO_EXPIRED = 2; // 2 hours
     @Autowired
     private FileRepository fileRepository;
@@ -31,5 +31,6 @@ public class CleanupFileScheduler {
         for (File file : files) {
             cloudinaryService.deleteFile(file.getUrl());
         }
+        log.warn("Files have been cleared. Size: {}", files.size());
     }
 }
