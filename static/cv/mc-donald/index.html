@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CV - Nhân viên phục vụ McDonald's</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: #f5f5f5;
+        padding: 10mm;
+      }
+
+      .cv-container {
+        max-width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #da291c, #ff5722);
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .job-title {
+        font-size: 1rem;
+        background: rgba(255, 255, 255, 0.9);
+        color: #da291c;
+        padding: 5px 15px;
+        border-radius: 15px;
+        display: inline-block;
+        margin: 10px 0;
+      }
+
+      .contact-info {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .contact-item i {
+        color: #ffc107;
+      }
+
+      .main-content {
+        padding: 20px;
+      }
+
+      .section {
+        margin-bottom: 20px;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #da291c;
+        border-bottom: 2px solid #ffc107;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .section-title i {
+        font-size: 1rem;
+      }
+
+      .objective {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        background: #fff8e1;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #ffc107;
+      }
+
+      .card {
+        background: #fafafa;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #da291c;
+        margin-bottom: 15px;
+        transition: box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .card-title {
+        font-weight: 600;
+        color: #da291c;
+        font-size: 1rem;
+      }
+
+      .card-date {
+        font-size: 0.8rem;
+        background: #ffc107;
+        color: white;
+        padding: 3px 10px;
+        border-radius: 10px;
+      }
+
+      .card-content {
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
+
+      .card-content ul {
+        list-style: none;
+        padding-left: 15px;
+      }
+
+      .card-content li {
+        position: relative;
+        margin-bottom: 5px;
+      }
+
+      .card-content li::before {
+        content: "•";
+        position: absolute;
+        left: -15px;
+        color: #da291c;
+      }
+
+      .skills-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .skill-item {
+        background: #fff8e1;
+        padding: 10px;
+        border-radius: 8px;
+        border-left: 3px solid #ffc107;
+        font-size: 0.85rem;
+      }
+
+      .skill-item h4 {
+        color: #da291c;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .availability {
+        background: #e8f5e8;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #4caf50;
+        font-size: 0.85rem;
+      }
+
+      .availability h4 {
+        color: #2e7d32;
+        font-weight: 600;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .availability h4 i {
+        font-size: 1rem;
+      }
+
+      @media print {
+        body {
+          background: white;
+          padding: 0;
+        }
+
+        .cv-container {
+          box-shadow: none;
+          border-radius: 0;
+          max-width: none;
+        }
+
+        .card {
+          break-inside: avoid;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .contact-info {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .skills-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cv-container">
+      <div class="header">
+        <h1>Kiến Đức Trọng</h1>
+        <div class="job-title">Nhân viên phục vụ (Part-time)</div>
+        <div class="contact-info">
+          <div class="contact-item">
+            <i class="fas fa-birthday-cake"></i>**/**/****
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>**** *** ***
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>**************@gmail.com
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>Q.8, TP.HCM
+          </div>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="section">
+          <h2 class="section-title">
+            <i class="fas fa-bullseye"></i>Mục Tiêu Nghề Nghiệp
+          </h2>
+          <div class="objective">
+            Mong muốn làm việc bán thời gian tại McDonald's để nâng cao kỹ năng
+            giao tiếp, phục vụ khách hàng và làm việc nhóm. Sẵn sàng học hỏi quy
+            trình phục vụ nhanh và đóng góp vào môi trường làm việc thân thiện,
+            chuyên nghiệp.
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">
+            <i class="fas fa-graduation-cap"></i>Học Vấn
+          </h2>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Đại học Sư phạm Kỹ thuật TP.HCM</div>
+              <div class="card-date">2021 - 2025</div>
+            </div>
+            <div class="card-content">
+              <ul>
+                <li><strong>Ngành:</strong> Công nghệ Thông tin</li>
+                <li>
+                  <strong>Tình trạng:</strong> Hiện đã hoàn thành xong chương
+                  trình học, đang chờ xét tốt nghiệp
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">
+            <i class="fas fa-briefcase"></i>Kinh Nghiệm Làm Việc
+          </h2>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                Giảng viên lập trình (Bán thời gian) - Học viện TEKY
+              </div>
+              <div class="card-date">03/2023 - 12/2023</div>
+            </div>
+            <div class="card-content">
+              <ul>
+                <li>
+                  Giảng dạy lập trình, giao tiếp hiệu quả với học sinh và phụ
+                  huynh
+                </li>
+                <li>
+                  Quản lý lớp học, tổ chức hoạt động nhóm, xây dựng môi trường
+                  học tập tích cực
+                </li>
+                <li>
+                  Phối hợp với đồng nghiệp để đảm bảo chất lượng giảng dạy
+                </li>
+                <li>Xử lý linh hoạt các tình huống phát sinh trong lớp</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title"><i class="fas fa-star"></i>Kỹ Năng</h2>
+          <div class="skills-grid">
+            <div class="skill-item">
+              <h4>Giao Tiếp</h4>
+              <p>Thân thiện, hỗ trợ khách hàng và đồng nghiệp hiệu quả</p>
+            </div>
+            <div class="skill-item">
+              <h4>Làm Việc Nhóm</h4>
+              <p>Phối hợp tốt, đảm bảo hoàn thành mục tiêu chung</p>
+            </div>
+            <div class="skill-item">
+              <h4>Thích Nghi</h4>
+              <p>Học hỏi nhanh, làm việc hiệu quả trong môi trường năng động</p>
+            </div>
+            <div class="skill-item">
+              <h4>Quản Lý Thời Gian</h4>
+              <p>Đảm bảo hoàn thành công việc đúng tiến độ</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">
+            <i class="fas fa-clock"></i>Khả Năng Làm Việc
+          </h2>
+          <div class="availability">
+            <h4>
+              <i class="fas fa-check-circle"></i>Khả Năng Làm Việc Theo Ca
+            </h4>
+            <p></p>
+            <p>
+              - Sẵn sàng làm việc tối thiểu 5 tiếng/ca, 4 ngày/tuần<br />
+              - Sức khỏe tốt, chịu được áp lực trong môi trường phục vụ nhanh<br />
+              - Có thể làm việc vào Thứ Bảy, Chủ Nhật và các ngày lễ
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
