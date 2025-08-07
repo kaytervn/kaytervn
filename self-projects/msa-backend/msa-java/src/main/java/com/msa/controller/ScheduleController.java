@@ -201,7 +201,9 @@ public class ScheduleController extends ABasicController {
         Date newDueDate = basicApiService.calculateDueDate(schedule);
         boolean isDueDateChanged = !Objects.equals(newDueDate, schedule.getDueDate());
         schedule.setDueDate(newDueDate);
-        if (isKindChanged || isCheckedDateChanged || isTimeChanged || isDueDateChanged) {
+        if (newDueDate.before(new Date())) {
+            schedule.setIsSent(true);
+        } else if (isKindChanged || isCheckedDateChanged || isTimeChanged || isDueDateChanged) {
             schedule.setIsSent(false);
         }
         scheduleRepository.save(schedule);

@@ -49,6 +49,7 @@ public class ScheduleCriteria {
                 predicates.add(cb.equal(root.get("status"), getStatus()));
             }
             query.orderBy(
+                    cb.asc(root.get("isSent")),
                     cb.asc(cb.function("DATEDIFF", Integer.class, root.get("dueDate"), cb.currentDate())),
                     cb.asc(tagJoin.get("name")),
                     cb.asc(root.get("name")),
