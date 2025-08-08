@@ -144,7 +144,11 @@ public class ScheduleController extends ABasicController {
             }
             schedule.setTag(tag);
         }
-        schedule.setDueDate(basicApiService.calculateDueDate(schedule));
+        Date newDueDate = basicApiService.calculateDueDate(schedule);
+        schedule.setDueDate(newDueDate);
+        if (newDueDate.before(new Date())) {
+            schedule.setIsSent(true);
+        }
         scheduleRepository.save(schedule);
         cacheService.addOrRemoveSchedule(schedule);
         return makeSuccessResponse(null, "Create schedule success");
