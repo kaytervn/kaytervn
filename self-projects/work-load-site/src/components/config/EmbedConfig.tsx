@@ -12,6 +12,7 @@ import {
   MessageSquareIcon,
   PaletteIcon,
   PlayIcon,
+  PuzzleIcon,
   RocketIcon,
   ServerIcon,
   SmartphoneIcon,
@@ -63,6 +64,13 @@ const EMBED_LIST = [
     icon: GoalIcon,
     color: "#E57373",
     url: BASE_EMBED_URL + "fps-game",
+  },
+  {
+    label: "Rubik Algorithms",
+    path: "/rubik-algorithms",
+    icon: PuzzleIcon,
+    color: "#FFEB3B",
+    url: BASE_EMBED_URL + "rubik",
   },
   {
     label: "Socket Client",
