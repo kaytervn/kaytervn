@@ -92,6 +92,7 @@ const CreateSchedule = () => {
       const emails = JSON.parse(form.emails || "[]");
       if (emails.length == 0) {
         setToast("At least one email is required", TOAST.ERROR);
+        return;
       }
       const res = await schedule.create(form);
       if (res.result) {
