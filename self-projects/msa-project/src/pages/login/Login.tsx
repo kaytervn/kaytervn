@@ -13,7 +13,6 @@ import { useToast } from "../../config/ToastProvider";
 import { useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { setStorageData } from "../../services/storages";
-import { PAGE_CONFIG } from "../../config/PageConfig";
 import { AUTH_CONFIG } from "../../config/PageConfigDetails";
 
 export const Login = () => {
@@ -77,7 +76,7 @@ export const Login = () => {
       if (accessToken) {
         showToast(TEXT.LOGGED_IN, TOAST.SUCCESS);
         setStorageData(LOCAL_STORAGE.ACCESS_TOKEN, accessToken);
-        // window.location.href = PAGE_CONFIG.MSA_HOME.path;
+        window.location.href = AUTH_CONFIG.HOME.path;
       } else {
         showToast(TEXT.INVALID_TOTP, TOAST.ERROR);
       }

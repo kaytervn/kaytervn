@@ -3,7 +3,7 @@ import { AUTH_TYPE, ENV, LOCAL_STORAGE, METHOD } from "../services/constant";
 export const userController = (fetchApi: any) => {
   const login = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/api/token",
       method: METHOD.POST,
       payload,
@@ -12,7 +12,7 @@ export const userController = (fetchApi: any) => {
 
   const verifyCreditial = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/verify-credential",
       method: METHOD.POST,
       payload,
@@ -21,7 +21,7 @@ export const userController = (fetchApi: any) => {
 
   const changePassword = (payload: any) => {
     return fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/change-password",
       method: METHOD.PUT,
       payload,
@@ -31,7 +31,7 @@ export const userController = (fetchApi: any) => {
 
   const requestKey = (payload: any) => {
     return fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/request-key",
       method: METHOD.POST,
       payload,
@@ -41,7 +41,7 @@ export const userController = (fetchApi: any) => {
 
   const profile = () => {
     return fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/profile",
       method: METHOD.GET,
       authType: AUTH_TYPE.BEARER,
@@ -50,7 +50,7 @@ export const userController = (fetchApi: any) => {
 
   const create = (payload: any) => {
     return fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/create",
       method: METHOD.POST,
       payload,
@@ -60,7 +60,7 @@ export const userController = (fetchApi: any) => {
 
   const update = (payload: any) => {
     return fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/update",
       method: METHOD.PUT,
       payload,
@@ -70,7 +70,7 @@ export const userController = (fetchApi: any) => {
 
   const updateProfile = (payload: any) => {
     return fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/update-profile",
       method: METHOD.PUT,
       payload,
@@ -81,7 +81,7 @@ export const userController = (fetchApi: any) => {
   const getMyKey = () => {
     localStorage.removeItem(LOCAL_STORAGE.SESSION_KEY);
     return fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/my-key",
       method: METHOD.GET,
       authType: AUTH_TYPE.BEARER,
@@ -90,7 +90,7 @@ export const userController = (fetchApi: any) => {
 
   const requestForgetPassword = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/request-forgot-password",
       method: METHOD.POST,
       payload: payload,
@@ -99,7 +99,7 @@ export const userController = (fetchApi: any) => {
 
   const resetPassword = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/reset-password",
       method: METHOD.POST,
       payload,
@@ -108,7 +108,7 @@ export const userController = (fetchApi: any) => {
 
   const list = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/list",
       method: METHOD.GET,
       payload,
@@ -117,7 +117,7 @@ export const userController = (fetchApi: any) => {
 
   const autoComplete = (payload: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/auto-complete",
       method: METHOD.GET,
       payload,
@@ -126,7 +126,7 @@ export const userController = (fetchApi: any) => {
 
   const resetMfa = (id: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/reset-mfa",
       method: METHOD.PUT,
       payload: { id },
@@ -135,7 +135,7 @@ export const userController = (fetchApi: any) => {
 
   const get = (id: any) =>
     fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: `/v1/user/get/${id}`,
       method: METHOD.GET,
       authType: AUTH_TYPE.BEARER,
@@ -143,7 +143,7 @@ export const userController = (fetchApi: any) => {
 
   const activateAccount = (payload: any) => {
     return fetchApi({
-      apiUrl: ENV.MSA_JAVA_API_URL,
+      apiUrl: ENV.API_URL,
       endpoint: "/v1/user/activate-account",
       method: METHOD.POST,
       payload,

@@ -49,7 +49,7 @@ const useFetch = () => {
     const fingerSecret = generateRandomString(9);
     const clientRequestId = generateRandomString(16);
     const timestamp = formatJavaDate(new Date());
-    const apiKey = generateMd5(timestamp + ENV.MSA_X_API_KEY + fingerSecret);
+    const apiKey = generateMd5(timestamp + ENV.API_KEY + fingerSecret);
     let messageSignature: string | undefined;
     let fingerprint: any;
 
@@ -73,14 +73,14 @@ const useFetch = () => {
       if (isEncryptedEndpoint) {
         if (isFormData) {
           messageSignature = generateMd5(
-            timestamp + clientRequestId + ENV.MSA_CLIENT_KEY
+            timestamp + clientRequestId + ENV.CLIENT_KEY
           );
         } else {
           const rawBody = finalPayload ? JSON.stringify(options.payload) : "";
           const encryptedPayload = encryptAES(clientRequestId, rawBody);
           finalPayload = { request: encryptedPayload };
           messageSignature = generateMd5(
-            timestamp + rawBody + clientRequestId + ENV.MSA_CLIENT_KEY
+            timestamp + rawBody + clientRequestId + ENV.CLIENT_KEY
           );
         }
       }
@@ -111,9 +111,7 @@ const useFetch = () => {
           break;
         }
         case AUTH_TYPE.BASIC: {
-          const credentials = btoa(
-            `${ENV.MSA_CLIENT_ID}:${ENV.MSA_CLIENT_SECRET}`
-          );
+          const credentials = btoa(`${ENV.CLIENT_ID}:${ENV.CLIENT_SECRET}`);
           headers[API_HEADER.AUTHORIZATION] = getAuthHeader(
             nonce,
             `Basic ${credentials}`

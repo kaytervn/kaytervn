@@ -86,12 +86,12 @@ export const SOCKET_CMD = {
 };
 
 export const ENV = {
-  MSA_CLIENT_ID: process.env.REACT_APP_MSA_CLIENT_ID,
-  MSA_CLIENT_SECRET: process.env.REACT_APP_MSA_CLIENT_SECRET,
-  MSA_X_API_KEY: process.env.REACT_APP_MSA_X_API_KEY,
-  MSA_JAVA_API_URL: process.env.REACT_APP_MSA_JAVA_API_URL,
-  MSA_CLIENT_KEY: process.env.REACT_APP_MSA_CLIENT_KEY,
-  MSA_SOCKET_URL: process.env.REACT_APP_MSA_SOCKET_URL,
+  CLIENT_SECRET: process.env.REACT_APP_CLIENT_SECRET,
+  CLIENT_ID: process.env.REACT_APP_CLIENT_ID,
+  API_KEY: process.env.REACT_APP_API_KEY,
+  API_URL: process.env.REACT_APP_API_URL,
+  CLIENT_KEY: process.env.REACT_APP_CLIENT_KEY,
+  SOCKET_URL: process.env.REACT_APP_SOCKET_URL,
 };
 
 export const VALID_PATTERN = {
@@ -106,3 +106,5 @@ export const VALID_PATTERN = {
   DATE: /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(\d{4})$/,
   DAY_MONTH: /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])$/,
 };
+
+console.log(process.env);

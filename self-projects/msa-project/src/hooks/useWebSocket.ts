@@ -53,9 +53,9 @@ const useWebSocket = () => {
 
   const initializeWebSocket = useCallback(() => {
     const token = getToken();
-    if (!token || !ENV.MSA_SOCKET_URL) return;
+    if (!token || !ENV.SOCKET_URL) return;
 
-    const socket = new WebSocket(ENV.MSA_SOCKET_URL);
+    const socket = new WebSocket(ENV.SOCKET_URL);
     ws.current = socket;
 
     socket.onopen = () => {

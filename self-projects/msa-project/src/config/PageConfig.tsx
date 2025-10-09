@@ -1,4 +1,14 @@
+import { Account } from "../pages/account/Account";
+import { PLATFORM_CONFIG } from "./PageConfigDetails";
+
 export const PAGE_CONFIG = {
+  PLATFORM: {
+    name: "platform",
+    label: "Platform",
+    path: "/platform",
+    role: "PL_L",
+    element: <Account />,
+  },
   PROFILE: {
     label: "Profile",
     path: "/profile",
@@ -6,7 +16,6 @@ export const PAGE_CONFIG = {
   },
   //   ...USER_CONFIG,
   //   ...ROLE_CONFIG,
-  //   ...PLATFORM_CONFIG,
   //   ...ACCOUNT_CONFIG,
   //   ...LINK_ACCOUNT_CONFIG,
   //   ...BACKUP_CODE_CONFIG,

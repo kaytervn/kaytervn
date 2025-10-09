@@ -3,7 +3,7 @@ import { ENV } from "../constant";
 import { decryptAES, encryptAES } from "../utils";
 
 const getClientSecretKey = () => {
-  return ENV.MSA_CLIENT_KEY;
+  return ENV.CLIENT_KEY;
 };
 
 const encryptBasic = (key: any, value: any) => {
