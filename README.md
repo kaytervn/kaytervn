@@ -1,5 +1,8 @@
-<p align="center">I'm a back-end <b>Java</b> developer ☕</p>
+<p align="center">
+  I used to be a <b>Java</b> developer ☕<br/>
+  ...then I became a victim of <b>JavaScript frameworks</b> 😭
+</p>
 
 <p align="center">
-  <img src="doge.webp" width="75"/>
+  <img src="doge.webp" width="75" alt="doge"/>
 </p>
