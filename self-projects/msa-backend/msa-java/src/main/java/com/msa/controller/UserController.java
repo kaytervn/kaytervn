@@ -234,10 +234,10 @@ public class UserController extends ABasicController {
     public ApiMessageDto<VerifyCredentialDto> verifyCredential(@Valid @RequestBody VerifyCredentialForm verifyCredentialForm, BindingResult bindingResult) {
         User user = userRepository.findFirstByUsername(verifyCredentialForm.getUsername()).orElse(null);
         if (user == null || !passwordEncoder.matches(verifyCredentialForm.getPassword(), user.getPassword())) {
-            throw new BadRequestException(ErrorCode.GENERAL_ERROR_INVALID_USERNAME_OR_PASSWORD, "Username or password is wrong");
+            throw new BadRequestException(ErrorCode.GENERAL_ERROR_INVALID_USERNAME_OR_PASSWORD, "Username or password is invalid");
         }
         if (!AppConstant.STATUS_ACTIVE.equals(user.getStatus())) {
-            throw new BadRequestException(ErrorCode.USER_ERROR_NOT_ACTIVE, "Username is  not active");
+            throw new BadRequestException(ErrorCode.USER_ERROR_NOT_ACTIVE, "User is  not active");
         }
         if (SecurityConstant.USER_KIND_USER.equals(user.getKind()) && !dbConfigRepository.existsByUserId(user.getId())) {
             throw new BadRequestException(ErrorCode.GENERAL_ERROR_INVALID_USERNAME_OR_PASSWORD, "Invalid tenant");
