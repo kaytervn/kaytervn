@@ -1,7 +1,6 @@
 import { Account } from "../pages/account/Account";
 import { ForgotPassword } from "../pages/auth/ForgotPassword";
 import { Login } from "../pages/login/Login";
-import RedirectHome from "./RedirectHome";
 
 export const PLATFORM_CONFIG = {
   PLATFORM: {
@@ -26,10 +25,6 @@ export const PLATFORM_CONFIG = {
 };
 
 export const AUTH_CONFIG = {
-  HOME: {
-    path: "/",
-    element: <RedirectHome />,
-  },
   LOGIN: {
     path: "/login",
     element: <Login />,

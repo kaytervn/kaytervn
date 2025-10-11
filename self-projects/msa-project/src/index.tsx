@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ToastProvider } from "./config/ToastProvider";
+import { GlobalProvider } from "./config/GlobalProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ToastProvider>
-      <App />
+      <GlobalProvider>
+        <App />
+      </GlobalProvider>
     </ToastProvider>
   </React.StrictMode>
 );

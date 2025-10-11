@@ -107,4 +107,7 @@ export const VALID_PATTERN = {
   DAY_MONTH: /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])$/,
 };
 
-console.log(process.env);
+export const USER_KIND = {
+  ADMIN: 1,
+  USER: 2,
+};

@@ -3,10 +3,8 @@ import { PLATFORM_CONFIG } from "./PageConfigDetails";
 
 export const PAGE_CONFIG = {
   PLATFORM: {
-    name: "platform",
     label: "Platform",
     path: "/platform",
-    role: "PL_L",
     element: <Account />,
   },
   PROFILE: {

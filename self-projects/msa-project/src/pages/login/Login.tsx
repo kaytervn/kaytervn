@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { setStorageData } from "../../services/storages";
 import { AUTH_CONFIG } from "../../config/PageConfigDetails";
+import { PAGE_CONFIG } from "../../config/PageConfig";
 
 export const Login = () => {
   const { showToast } = useToast();
@@ -76,7 +77,7 @@ export const Login = () => {
       if (accessToken) {
         showToast(TEXT.LOGGED_IN, TOAST.SUCCESS);
         setStorageData(LOCAL_STORAGE.ACCESS_TOKEN, accessToken);
-        window.location.href = AUTH_CONFIG.HOME.path;
+        navigate(PAGE_CONFIG.PLATFORM.path);
       } else {
         showToast(TEXT.INVALID_TOTP, TOAST.ERROR);
       }

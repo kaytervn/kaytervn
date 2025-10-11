@@ -1,5 +1,4 @@
-import { Box, CircularProgress, Stack } from "@mui/material";
-import LoadingImg from "../../assets/loading.png";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 
 const Loading = () => {
   return (
@@ -11,16 +10,28 @@ const Loading = () => {
       height="100vh"
       px={2}
     >
-      <Stack spacing={3} alignItems="center">
-        <Box
-          component="img"
-          src={LoadingImg}
+      <Stack spacing={3} alignItems="center" textAlign="center">
+        <Typography
+          variant="h4"
+          fontWeight={700}
           sx={{
-            maxWidth: "100%",
-            height: "auto",
-            width: { xs: "80%", sm: "60%", md: "20%" },
+            fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
+            color: "white",
           }}
-        />
+        >
+          Đang xử lý
+        </Typography>
+
+        <Typography
+          variant="body1"
+          sx={{
+            fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
+            color: "rgba(255,255,255,0.8)",
+          }}
+        >
+          Vui lòng chờ trong giây lát.
+        </Typography>
+
         <CircularProgress size={48} thickness={4} sx={{ color: "white" }} />
       </Stack>
     </Box>
