@@ -1,0 +1,70 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect, createContext, useState } from "react";
+import useApi from "../hooks/useApi";
+import { getStorageData, removeSessionCache } from "../services/storages";
+import { LOCAL_STORAGE, USER_KIND } from "../services/constant";
+import { jwtDecode } from "jwt-decode";
+import { useGlobalContext } from "./GlobalProvider";
+
+export const AuthContext = createContext<{
+  loading: boolean;
+}>({
+  loading: true,
+});
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { setAuthorities, setProfile } = useGlobalContext();
+  const { user } = useApi();
+  const [loading, setLoading] = useState(true);
+
+  const logout = () => {
+    setProfile(null);
+    removeSessionCache();
+  };
+
+  const getProfile = async () => {
+    try {
+      const res = await user.profile();
+      if (res?.result) {
+        const data = res.data;
+        if (data.kind === USER_KIND.ADMIN) {
+          logout();
+        } else {
+          setProfile(res.data);
+        }
+      } else {
+        logout();
+      }
+    } catch {
+      logout();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const accessToken = getStorageData(LOCAL_STORAGE.ACCESS_TOKEN);
+    if (!accessToken) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const decoded: any = jwtDecode(accessToken);
+      const roles = decoded?.authorities || [];
+      setAuthorities(roles);
+      getProfile();
+    } catch {
+      logout();
+      setLoading(false);
+    }
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ loading }}>{children}</AuthContext.Provider>
+  );
+};
+
+export const useAuthProvider = () => useContext(AuthContext);

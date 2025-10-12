@@ -61,8 +61,8 @@ export default function AutoFitListView() {
         }}
       >
         <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-          {[{ id: 1, name: "", description: "" }].map((item) => (
-            <Grid size={4}>
+          {[{ id: 1, name: "test", description: "test" }].map((item) => (
+            <Grid key={item.id} size={4}>
               <Paper
                 elevation={1}
                 sx={{
@@ -169,7 +169,7 @@ export const Account = () => {
           <Avatar>H</Avatar>
         </Toolbar>
 
-        <Box sx={{ p: 2 }}>
+        <Box sx={{ px: 2, pb: 2 }}>
           <Stack direction="row" alignItems="center" spacing={1}>
             {/* Ô nhập tự co giãn */}
             {/* <Box bgcolor="background.paper" display={"flex"}> */}
@@ -206,7 +206,9 @@ export const Account = () => {
         bgcolor={"background.paper"}
       ></Box>
       <Box mx={2} mt={2}>
-        <CustomBreadcrumb items={[{ label: "TEST" }]} />
+        <CustomBreadcrumb
+          items={[{ label: "TEST" }, { label: "TEST" }, { label: "TEST" }]}
+        />
       </Box>
       <AutoFitListView />
       <Box

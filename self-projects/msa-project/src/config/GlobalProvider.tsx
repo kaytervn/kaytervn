@@ -17,15 +17,12 @@ import {
 } from "../services/constant";
 import { getStorageData, setStorageData } from "../services/storages";
 import { useToast } from "./ToastProvider";
-import { PAGE_CONFIG, SIDEBAR_MENUS } from "./PageConfig";
 
 const GlobalContext = createContext<{
   authorities: any;
   setAuthorities: Dispatch<SetStateAction<any>>;
   profile: any;
   setProfile: Dispatch<SetStateAction<any>>;
-  getRouters: () => any[];
-  getSidebarMenus: () => any[];
   hasRoles: (role: string | string[]) => boolean;
   hasAnyRoles: (role: string | string[]) => boolean;
   isUnauthorized: boolean;
@@ -40,8 +37,6 @@ const GlobalContext = createContext<{
   setAuthorities: () => {},
   profile: null,
   setProfile: () => {},
-  getRouters: () => [],
-  getSidebarMenus: () => [],
   hasRoles: () => false,
   hasAnyRoles: () => false,
   isUnauthorized: false,
@@ -135,20 +130,6 @@ export const GlobalProvider = ({ children }: any) => {
     saveSessionToStorage(sessionKey);
   };
 
-  const getRouters = () => {
-    return Object.values(PAGE_CONFIG).filter(
-      (route: any) => route.path && hasRoles(route.role)
-    );
-  };
-
-  const getSidebarMenus = () => {
-    const allowedRoutes = new Set(getRouters().map((route: any) => route.name));
-    return SIDEBAR_MENUS.map((group: any) => ({
-      ...group,
-      items: group.items.filter((item: any) => allowedRoutes.has(item.name)),
-    })).filter((group: any) => group.items.length > 0);
-  };
-
   const hasRoles = (roles?: string | string[]) => {
     if (!roles) return true;
     if (typeof roles === "string") return authorities.includes(roles);
@@ -167,8 +148,6 @@ export const GlobalProvider = ({ children }: any) => {
       value={{
         authorities,
         setAuthorities,
-        getRouters,
-        getSidebarMenus,
         hasRoles,
         hasAnyRoles,
         message,

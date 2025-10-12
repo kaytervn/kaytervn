@@ -1,26 +1,21 @@
-import { Account } from "../pages/account/Account";
 import { ForgotPassword } from "../pages/auth/ForgotPassword";
 import { Login } from "../pages/login/Login";
+import { Platform } from "../pages/platform/Platform";
 
 export const PLATFORM_CONFIG = {
   PLATFORM: {
-    name: "platform",
-    label: "Platform",
+    label: "Nền tảng",
     path: "/platform",
-    role: "PL_L",
-    element: <Account />,
+    element: <Platform />,
   },
   CREATE_PLATFORM: {
-    label: "Create Platform",
-    role: "PL_C",
+    label: "Thêm nền tảng",
   },
   UPDATE_PLATFORM: {
-    label: "Update Platform",
-    role: ["PL_U", "PL_V"],
+    label: "Sửa nền tảng",
   },
   DELETE_PLATFORM: {
-    label: "Delete Platform",
-    role: "PL_D",
+    label: "Xoá nền tảng",
   },
 };
 
@@ -34,3 +29,5 @@ export const AUTH_CONFIG = {
     element: <ForgotPassword />,
   },
 };
+
+export const SIDEBAR_MENUS = [PLATFORM_CONFIG.PLATFORM];

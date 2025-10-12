@@ -68,7 +68,6 @@ const useWebSocket = () => {
         const { response } = JSON.parse(event.data);
         setMessage(JSON.parse(clientDecryptIgnoreNonce(response) || ""));
       } catch (error) {
-        console.error("WebSocket message parsing error:", error);
         setMessage(null);
       }
     };
@@ -81,7 +80,6 @@ const useWebSocket = () => {
     };
 
     socket.onerror = (error) => {
-      console.error("WebSocket error:", error);
       socket.close();
     };
   }, [isUnauthorized]);

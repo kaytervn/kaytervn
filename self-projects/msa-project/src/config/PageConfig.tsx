@@ -1,17 +1,12 @@
-import { Account } from "../pages/account/Account";
 import { PLATFORM_CONFIG } from "./PageConfigDetails";
 
 export const PAGE_CONFIG = {
-  PLATFORM: {
-    label: "Platform",
-    path: "/platform",
-    element: <Account />,
-  },
   PROFILE: {
     label: "Profile",
     path: "/profile",
     // element: <Profile />,
   },
+  ...PLATFORM_CONFIG,
   //   ...USER_CONFIG,
   //   ...ROLE_CONFIG,
   //   ...ACCOUNT_CONFIG,
@@ -26,26 +21,3 @@ export const PAGE_CONFIG = {
   //   ...NOTE_CONFIG,
   //   ...SCHEDULE_CONFIG,
 };
-
-export const SIDEBAR_MENUS = [
-  {
-    name: "User Management",
-    // items: [PAGE_CONFIG.USER, PAGE_CONFIG.ROLE],
-  },
-  {
-    name: "Account Management",
-    // items: [PAGE_CONFIG.PLATFORM, PAGE_CONFIG.ACCOUNT],
-  },
-  {
-    name: "Useful Links",
-    // items: [PAGE_CONFIG.LINK, PAGE_CONFIG.SOFTWARE],
-  },
-  {
-    name: "Key Information",
-    // items: [PAGE_CONFIG.TAG, PAGE_CONFIG.ID_NUMBER, PAGE_CONFIG.BANK],
-  },
-  {
-    name: "Others",
-    // items: [PAGE_CONFIG.NOTE, PAGE_CONFIG.SCHEDULE, PAGE_CONFIG.CONTACT],
-  },
-];

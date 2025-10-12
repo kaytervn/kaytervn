@@ -15,6 +15,7 @@ import useForm from "../../hooks/useForm";
 import { setStorageData } from "../../services/storages";
 import { AUTH_CONFIG } from "../../config/PageConfigDetails";
 import { PAGE_CONFIG } from "../../config/PageConfig";
+import { PasswordField } from "../../components/CustomTextField";
 
 export const Login = () => {
   const { showToast } = useToast();
@@ -77,7 +78,7 @@ export const Login = () => {
       if (accessToken) {
         showToast(TEXT.LOGGED_IN, TOAST.SUCCESS);
         setStorageData(LOCAL_STORAGE.ACCESS_TOKEN, accessToken);
-        navigate(PAGE_CONFIG.PLATFORM.path);
+        window.location.href = "/";
       } else {
         showToast(TEXT.INVALID_TOTP, TOAST.ERROR);
       }
@@ -109,16 +110,9 @@ export const Login = () => {
             helperText={errors.username}
           />
 
-          <TextField
-            label={TEXT.PASSWORD}
-            type="password"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            required
+          <PasswordField
             value={form.password}
-            onChange={(e) => handleChange("password", e.target.value)}
-            error={Boolean(errors.password)}
+            onChange={(e: any) => handleChange("password", e.target.value)}
             helperText={errors.password}
           />
 
