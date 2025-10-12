@@ -29,7 +29,7 @@ const Loading = () => {
             color: "rgba(255,255,255,0.8)",
           }}
         >
-          Vui lòng chờ trong giây lát.
+          Vui lòng chờ trong giây lát...
         </Typography>
 
         <CircularProgress size={48} thickness={4} sx={{ color: "white" }} />

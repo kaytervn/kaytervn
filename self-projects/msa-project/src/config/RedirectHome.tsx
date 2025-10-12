@@ -2,8 +2,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../config/GlobalProvider";
-import { AUTH_CONFIG } from "./PageConfigDetails";
-import { PAGE_CONFIG } from "./PageConfig";
+import { AUTH_CONFIG, PAGE_CONFIG } from "./PageConfig";
 
 const RedirectHome = () => {
   const { profile } = useGlobalContext();

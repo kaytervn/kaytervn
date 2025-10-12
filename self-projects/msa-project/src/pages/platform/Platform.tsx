@@ -1,10 +1,10 @@
 import { BasicAppBar } from "../../components/BasicAppBar";
-import { PLATFORM_CONFIG } from "../../config/PageConfigDetails";
+import { PAGE_CONFIG } from "../../config/PageConfig";
 
 export const Platform = () => {
   return (
     <BasicAppBar
-      title={PLATFORM_CONFIG.PLATFORM.label}
+      title={PAGE_CONFIG.PLATFORM.label}
       search={{
         value: "query",
         onChange: () => {},

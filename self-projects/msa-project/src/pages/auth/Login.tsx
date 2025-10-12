@@ -13,9 +13,8 @@ import { useToast } from "../../config/ToastProvider";
 import { useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { setStorageData } from "../../services/storages";
-import { AUTH_CONFIG } from "../../config/PageConfigDetails";
-import { PAGE_CONFIG } from "../../config/PageConfig";
 import { PasswordField } from "../../components/CustomTextField";
+import { AUTH_CONFIG } from "../../config/PageConfig";
 
 export const Login = () => {
   const { showToast } = useToast();
@@ -28,14 +27,14 @@ export const Login = () => {
     const newErrors: any = {};
     if (!isMfa) {
       if (!form.username.trim()) {
-        newErrors.username = "Invalid Username";
+        newErrors.username = "Tên tài khoản là bắt buộc";
       }
       if (!form.password) {
-        newErrors.password = "Invalid Password";
+        newErrors.password = "Mật khẩu là bắt buộc";
       }
     } else {
       if (!form.totp) {
-        newErrors.totp = "Invalid OTP";
+        newErrors.totp = "Mã xác thực là bắt buộc";
       }
     }
     return newErrors;
@@ -132,6 +131,7 @@ export const Login = () => {
             sx={{ mt: 2 }}
             size="large"
             onClick={handleSubmitLogin}
+            type="submit"
           >
             {TEXT.CONTINUE}
           </Button>
@@ -176,6 +176,7 @@ export const Login = () => {
               fullWidth
               size="large"
               onClick={handleSubmitTOTP}
+              type="submit"
             >
               {TEXT.SEND}
             </Button>

@@ -4,6 +4,7 @@ export const TEXT = {
   BACK: "Trở về",
   CANCEL: "Hủy",
   FORGOT_PASSWORD: "Quên mật khẩu",
+  RESET_PASSWORD: "Đặt lại mật khẩu",
   USERNAME: "Tài khoản",
   PASSWORD: "Mật khẩu",
   EMAIL: "Địa chỉ e-mail",
@@ -19,7 +20,25 @@ export const TEXT = {
   INVALID_FORM: "Vui lòng kiểm tra lại thông tin",
   INVALID_TOTP: "Mã xác thực không đúng",
   LOGGED_IN: "Đăng nhập thành công",
+  REQUEST_KEY_SUCCESS: "Tải tệp thành công",
+  CHANGE_PASSWORD_SUCCESS: "Đổi mật khẩu thành công",
+  INVALID_PASSWORD: "Sai mật khẩu",
+  REQUEST_SUCCESS: "Yêu cầu thành công",
+  INVALID_EMAIL: "Địa chỉ e-mail không tồn tại",
   SEND: "Gửi",
+  EXIT: "Thoát",
+  CLOSE: "Đóng",
+  SAVE: "Lưu",
+  CONFIRM_PASSWORD: "Mật khẩu xác nhận",
+  NEW_PASSWORD: "Mật khẩu mới",
+  CURRENT_PASSWORD: "Mật khẩu hiện tại",
+  PROFILE: "Hồ sơ",
+  REQUEST_KEY: "Lấy mã khoá",
+  CHANGE_PASSWORD: "Đổi mật khẩu",
+  LOGOUT: "Đăng xuất",
+  UPDATED: "Sửa thành công",
+  CREATED: "Thêm thành công",
+  DELETED: "Xoá thành công",
 };
 
 export const GRANT_TYPE = {
@@ -28,7 +47,7 @@ export const GRANT_TYPE = {
 
 export const ITEMS_PER_PAGE = 21;
 export const FETCH_INTERVAL = 300;
-export const SESSION_KEY_TIMEOUT = 2 * 60 * 60 * 1000; // 2 hours
+export const SESSION_KEY_TIMEOUT = 30 * 60 * 1000; // 30 minutes
 export const PING_INTERVAL = 50000; // 50s
 
 export const LOCAL_STORAGE = {

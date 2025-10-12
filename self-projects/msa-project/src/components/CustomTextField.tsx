@@ -3,7 +3,7 @@ import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { useState } from "react";
 import { TEXT } from "../services/constant";
 
-export const PasswordField = ({ value, onChange, helperText }: any) => {
+export const PasswordField = ({ label = TEXT.PASSWORD, value, onChange, helperText }: any) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -12,7 +12,7 @@ export const PasswordField = ({ value, onChange, helperText }: any) => {
 
   return (
     <TextField
-      label={TEXT.PASSWORD}
+      label={label}
       type={showPassword ? "text" : "password"}
       variant="outlined"
       fullWidth

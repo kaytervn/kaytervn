@@ -23,7 +23,7 @@ const NotFound = () => {
             color: "white",
           }}
         >
-          404 — Không tìm thấy trang
+          404: Không tìm thấy trang
         </Typography>
 
         <Typography
@@ -34,7 +34,7 @@ const NotFound = () => {
             maxWidth: 480,
           }}
         >
-          Trang bạn yêu cầu không được tìm thấy trên nền tảng này!
+          Trang bạn yêu cầu không được tìm thấy!
         </Typography>
 
         <Button

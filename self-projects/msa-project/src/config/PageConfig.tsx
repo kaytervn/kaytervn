@@ -1,23 +1,27 @@
-import { PLATFORM_CONFIG } from "./PageConfigDetails";
+import { Platform } from "../pages/platform/Platform";
+import { ForgotPassword } from "../pages/auth/ForgotPassword";
+import { Login } from "../pages/auth/Login";
+import { ResetPassword } from "../pages/auth/ResetPassword";
+
+export const AUTH_CONFIG = {
+  LOGIN: {
+    path: "/login",
+    element: <Login />,
+  },
+  FORGOT_PASSWORD: {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+  },
+  RESET_PASSWORD: {
+    path: "/reset-password",
+    element: <ResetPassword />,
+  },
+};
 
 export const PAGE_CONFIG = {
-  PROFILE: {
-    label: "Profile",
-    path: "/profile",
-    // element: <Profile />,
+  PLATFORM: {
+    label: "Nền tảng",
+    path: "/platform",
+    element: <Platform />,
   },
-  ...PLATFORM_CONFIG,
-  //   ...USER_CONFIG,
-  //   ...ROLE_CONFIG,
-  //   ...ACCOUNT_CONFIG,
-  //   ...LINK_ACCOUNT_CONFIG,
-  //   ...BACKUP_CODE_CONFIG,
-  //   ...TAG_CONFIG,
-  //   ...BANK_CONFIG,
-  //   ...ID_NUMBER_CONFIG,
-  //   ...CONTACT_CONFIG,
-  //   ...LINK_CONFIG,
-  //   ...SOFTWARE_CONFIG,
-  //   ...NOTE_CONFIG,
-  //   ...SCHEDULE_CONFIG,
 };
