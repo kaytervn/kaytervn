@@ -22,10 +22,10 @@ const App = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      {loading ? (
-        <Loading />
-      ) : (
-        <BrowserRouter>
+      <BrowserRouter>
+        {loading ? (
+          <Loading />
+        ) : (
           <Routes>
             {profile
               ? Object.values(PAGE_CONFIG).map(({ path, element }: any) => (
@@ -37,8 +37,8 @@ const App = () => {
             <Route path="/" element={<RedirectHome />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
-      )}
+        )}
+      </BrowserRouter>
     </ThemeProvider>
   );
 };
