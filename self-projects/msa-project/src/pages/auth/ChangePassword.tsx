@@ -71,7 +71,7 @@ export const ChangePassword = ({ isVisible, onClose, onSubmit }: any) => {
         <Button size="large" onClick={onClose}>
           {TEXT.CANCEL}
         </Button>
-        <Button size="large" type="submit" onClick={handleSubmit}>
+        <Button size="large" onClick={handleSubmit}>
           {TEXT.SAVE}
         </Button>
       </DialogActions>

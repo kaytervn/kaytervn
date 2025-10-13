@@ -131,7 +131,6 @@ export const Login = () => {
             sx={{ mt: 2 }}
             size="large"
             onClick={handleSubmitLogin}
-            type="submit"
           >
             {TEXT.CONTINUE}
           </Button>
@@ -176,7 +175,6 @@ export const Login = () => {
               fullWidth
               size="large"
               onClick={handleSubmitTOTP}
-              type="submit"
             >
               {TEXT.SEND}
             </Button>
