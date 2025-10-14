@@ -19,7 +19,7 @@ export const Logout = ({ isVisible, onClose }: any) => {
     <Dialog open={isVisible} onClose={onClose}>
       <DialogTitle>{TEXT.LOGOUT}</DialogTitle>
       <DialogContent>
-        <DialogContentText>Bạn có chắc chắn muốn đăng xuất?</DialogContentText>
+        <DialogContentText>Bạn có chắc muốn đăng xuất?</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button size="large" onClick={onClose}>
