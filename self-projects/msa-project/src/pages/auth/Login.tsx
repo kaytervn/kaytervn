@@ -120,6 +120,7 @@ export const Login = () => {
               variant="body2"
               underline="hover"
               onClick={() => navigate(AUTH_CONFIG.FORGOT_PASSWORD.path)}
+              sx={{ cursor: "pointer" }}
             >
               {TEXT.FORGOT_PASSWORD}
             </Link>
