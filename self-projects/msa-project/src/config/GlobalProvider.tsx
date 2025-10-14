@@ -5,8 +5,8 @@ import {
   useRef,
   useState,
   createContext,
-  Dispatch,
-  SetStateAction,
+  type Dispatch,
+  type SetStateAction,
 } from "react";
 import useWebSocket from "../hooks/useWebSocket";
 import {

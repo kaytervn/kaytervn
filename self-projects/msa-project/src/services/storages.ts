@@ -1,3 +1,6 @@
+/* eslint-disable no-empty */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LOCAL_STORAGE } from "./constant";
 import {
   decryptClientField,

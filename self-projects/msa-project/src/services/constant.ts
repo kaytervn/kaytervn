@@ -105,12 +105,12 @@ export const SOCKET_CMD = {
 };
 
 export const ENV = {
-  CLIENT_SECRET: process.env.REACT_APP_CLIENT_SECRET,
-  CLIENT_ID: process.env.REACT_APP_CLIENT_ID,
-  API_KEY: process.env.REACT_APP_API_KEY,
-  API_URL: process.env.REACT_APP_API_URL,
-  CLIENT_KEY: process.env.REACT_APP_CLIENT_KEY,
-  SOCKET_URL: process.env.REACT_APP_SOCKET_URL,
+  CLIENT_SECRET: import.meta.env.VITE_CLIENT_SECRET,
+  CLIENT_ID: import.meta.env.VITE_CLIENT_ID,
+  API_KEY: import.meta.env.VITE_API_KEY,
+  API_URL: import.meta.env.VITE_API_URL,
+  CLIENT_KEY: import.meta.env.VITE_CLIENT_KEY,
+  SOCKET_URL: import.meta.env.VITE_SOCKET_URL,
 };
 
 export const VALID_PATTERN = {

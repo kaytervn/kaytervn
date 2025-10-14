@@ -25,7 +25,7 @@ import { TEXT, TOAST } from "../services/constant";
 import { ClearOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppBarProps } from "../services/interfaces";
+import { type AppBarProps } from "../services/interfaces";
 import { PAGE_CONFIG } from "../config/PageConfig";
 import { useDialog } from "../hooks/useDialog";
 import { RequestKey } from "../pages/auth/RequestKey";

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { decryptAES, encryptAES } from "../utils";
 
 const decryptData = (secretKey: any, item: any, fields: any) => {

@@ -1,5 +1,11 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Snackbar, Alert, SnackbarCloseReason } from "@mui/material";
+/* eslint-disable react-refresh/only-export-components */
+import React, {
+  createContext,
+  useContext,
+  useState,
+  type ReactNode,
+} from "react";
+import { Snackbar, Alert, type SnackbarCloseReason } from "@mui/material";
 import { TOAST } from "../services/constant";
 
 const ToastContext = createContext<any>(undefined);

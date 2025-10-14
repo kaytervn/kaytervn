@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useCallback } from "react";
 import useEncryption from "./useEncryption";
@@ -18,7 +19,7 @@ import {
   METHOD,
   TEXT,
 } from "../services/constant";
-import minimatch from "minimatch";
+import { minimatch } from "minimatch";
 import { jwtDecode } from "jwt-decode";
 import {
   getStorageData,

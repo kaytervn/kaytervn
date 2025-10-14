@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, createContext, useState } from "react";
 import useApi from "../hooks/useApi";

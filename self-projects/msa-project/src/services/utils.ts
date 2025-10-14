@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import pako from "pako";
 import * as CryptoJS from "crypto-js";
 import forge from "node-forge";

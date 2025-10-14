@@ -27,7 +27,7 @@ export const Login = () => {
     const newErrors: any = {};
     if (!isMfa) {
       if (!form.username.trim()) {
-        newErrors.username = "Tên tài khoản là bắt buộc";
+        newErrors.username = "Tài khoản là bắt buộc";
       }
       if (!form.password) {
         newErrors.password = "Mật khẩu là bắt buộc";

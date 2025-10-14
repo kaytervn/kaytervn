@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useCallback, useState } from "react";
 import useEncryption from "./useEncryption";
@@ -67,7 +69,7 @@ const useWebSocket = () => {
       try {
         const { response } = JSON.parse(event.data);
         setMessage(JSON.parse(clientDecryptIgnoreNonce(response) || ""));
-      } catch (error) {
+      } catch {
         setMessage(null);
       }
     };
@@ -79,7 +81,7 @@ const useWebSocket = () => {
       }
     };
 
-    socket.onerror = (error) => {
+    socket.onerror = () => {
       socket.close();
     };
   }, [isUnauthorized]);

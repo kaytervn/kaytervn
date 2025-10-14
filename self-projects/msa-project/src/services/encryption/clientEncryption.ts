@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as CryptoJS from "crypto-js";
 import { ENV } from "../constant";
 import { decryptAES, encryptAES } from "../utils";

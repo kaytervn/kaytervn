@@ -2,12 +2,10 @@ import {
   AppBar,
   Avatar,
   Box,
-  Breadcrumbs,
   Button,
   Grid,
   IconButton,
   InputAdornment,
-  Link,
   Menu,
   MenuItem,
   Pagination,
@@ -16,8 +14,6 @@ import {
   TextField,
   Toolbar,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
@@ -25,7 +21,6 @@ import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TEXT } from "../../services/constant";
 import { useState } from "react";
-import { Description } from "@mui/icons-material";
 import { CustomBreadcrumb } from "../../components/Breadcrumb";
 
 export default function AutoFitListView() {
