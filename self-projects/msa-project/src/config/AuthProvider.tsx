@@ -17,7 +17,7 @@ export const AuthContext = createContext<{
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { setAuthorities, setProfile, isUnauthorized } = useGlobalContext();
+  const { setAuthorities, setProfile } = useGlobalContext();
   const { user } = useApi();
   const [loading, setLoading] = useState(true);
 
@@ -64,12 +64,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
-  useEffect(() => {
-    if (isUnauthorized) {
-      removeSessionCache();
-      window.location.href = "/";
-    }
-  }, [isUnauthorized]);
+  // useEffect(() => {
+  //   if (isUnauthorized) {
+  //     removeSessionCache();
+  //     window.location.href = "/";
+  //   }
+  // }, [isUnauthorized]);
 
   return (
     <AuthContext.Provider value={{ loading }}>{children}</AuthContext.Provider>
