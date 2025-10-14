@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, createContext, useState } from "react";
 import useApi from "../hooks/useApi";
-import { getStorageData, removeSessionCache } from "../services/storages";
+import { getStorageData } from "../services/storages";
 import { LOCAL_STORAGE, USER_KIND } from "../services/constant";
 import { jwtDecode } from "jwt-decode";
 import { useGlobalContext } from "./GlobalProvider";
