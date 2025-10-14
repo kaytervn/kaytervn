@@ -35,6 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         logout();
       } else {
         setProfile(res.data);
+        setLoading(false);
       }
     } else {
       logout();
