@@ -4,6 +4,10 @@ import { Login } from "../pages/auth/Login";
 import { ResetPassword } from "../pages/auth/ResetPassword";
 
 export const AUTH_CONFIG = {
+  HOME: {
+    path: "/",
+    element: <Login />,
+  },
   LOGIN: {
     path: "/login",
     element: <Login />,
@@ -19,6 +23,10 @@ export const AUTH_CONFIG = {
 };
 
 export const PAGE_CONFIG = {
+  HOME: {
+    path: "/",
+    element: <Platform />,
+  },
   PLATFORM: {
     label: "Nền tảng",
     path: "/platform",
