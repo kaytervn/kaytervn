@@ -22,9 +22,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   const logout = () => {
-    setLoading(false);
     setProfile(null);
     removeSessionCache();
+    setLoading(false);
   };
 
   const getProfile = async () => {
