@@ -23,7 +23,7 @@ const App = () => {
             : Object.values(AUTH_CONFIG).map(({ path, element }: any) => (
                 <Route key={path} path={path} element={element} />
               ))}
-          <Route path="/" element={<RedirectHome />} />
+          {/* <Route path="/" element={<RedirectHome />} /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       )}
