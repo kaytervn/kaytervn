@@ -3,9 +3,7 @@ import { BasicAppBar } from "../../components/BasicAppBar";
 import { AccountTabs } from "../../components/CustomTabs";
 import { BasicListView } from "../../components/ListView";
 import { PAGE_CONFIG } from "../../config/PageConfig";
-import { useToast } from "../../config/ToastProvider";
 import useApi from "../../hooks/useApi";
-import { useDialog } from "../../hooks/useDialog";
 import { useGridView } from "../../hooks/useGridView";
 import { ITEMS_PER_PAGE } from "../../services/constant";
 import { LoadingOverlay } from "../../components/CustomOverlay";
@@ -17,7 +15,6 @@ const initQuery = {
 };
 
 export const Platform = () => {
-  const { showToast } = useToast();
   const { platform, loading } = useApi();
   const {
     data,

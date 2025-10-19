@@ -15,7 +15,7 @@ import { getStorageData, removeSessionCache } from "../services/storages";
 const useWebSocket = () => {
   const { clientDecryptIgnoreNonce, clientEncryptInjectNonce } =
     useEncryption();
-  const { isUnauthorized, setIsUnauthorized } = useGlobalContext();
+  const { isUnauthorized } = useGlobalContext();
   const [message, setMessage] = useState<any>(null);
   const ws = useRef<WebSocket | null>(null);
   const pingInterval = useRef<NodeJS.Timeout | null>(null);
