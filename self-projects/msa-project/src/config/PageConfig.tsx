@@ -2,6 +2,7 @@ import { Platform } from "../pages/platform/Platform";
 import { ForgotPassword } from "../pages/auth/ForgotPassword";
 import { Login } from "../pages/auth/Login";
 import { ResetPassword } from "../pages/auth/ResetPassword";
+import { Account } from "../pages/account/Account";
 
 export const AUTH_CONFIG = {
   LOGIN: {
@@ -23,5 +24,15 @@ export const PAGE_CONFIG = {
     label: "Nền tảng",
     path: "/",
     element: <Platform />,
+  },
+  ACCOUNT_TAG: {
+    label: "Thẻ",
+    path: "/account-tag",
+    element: <Account />,
+  },
+  ACCOUNT: {
+    label: "Tài khoản",
+    path: "/account",
+    element: <Account />,
   },
 };

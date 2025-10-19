@@ -10,12 +10,12 @@ import {
   SOCKET_CMD,
 } from "../services/constant";
 import { useGlobalContext } from "../config/GlobalProvider";
-import { getStorageData } from "../services/storages";
+import { getStorageData, removeSessionCache } from "../services/storages";
 
 const useWebSocket = () => {
   const { clientDecryptIgnoreNonce, clientEncryptInjectNonce } =
     useEncryption();
-  const { isUnauthorized } = useGlobalContext();
+  const { isUnauthorized, setIsUnauthorized } = useGlobalContext();
   const [message, setMessage] = useState<any>(null);
   const ws = useRef<WebSocket | null>(null);
   const pingInterval = useRef<NodeJS.Timeout | null>(null);
@@ -106,6 +106,16 @@ const useWebSocket = () => {
       cleanup();
     };
   }, [isUnauthorized, connect, cleanup]);
+
+  useEffect(() => {
+    if (
+      message?.responseCode == 400 ||
+      message?.cmd == SOCKET_CMD.CMD_LOCK_DEVICE
+    ) {
+      removeSessionCache();
+      window.location.href = "/";
+    }
+  }, [message]);
 
   return { message, sendMessage };
 };

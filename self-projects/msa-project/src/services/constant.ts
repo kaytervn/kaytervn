@@ -39,6 +39,8 @@ export const TEXT = {
   UPDATED: "Sửa thành công",
   CREATED: "Thêm thành công",
   DELETED: "Xoá thành công",
+  LOADING: "Đang tải",
+  NO_DATA: "Không có dữ liệu",
 };
 
 export const GRANT_TYPE = {
