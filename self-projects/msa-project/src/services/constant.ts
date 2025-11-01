@@ -41,6 +41,7 @@ export const TEXT = {
   DELETED: "Xoá thành công",
   LOADING: "Đang tải",
   NO_DATA: "Không có dữ liệu",
+  CREATE_PLATFORM: "Thêm nền tảng",
 };
 
 export const GRANT_TYPE = {

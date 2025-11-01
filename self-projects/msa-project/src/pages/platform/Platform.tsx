@@ -1,12 +1,13 @@
 import { Link, Typography } from "@mui/material";
 import { BasicAppBar } from "../../components/BasicAppBar";
-import { AccountTabs } from "../../components/CustomTabs";
 import { BasicListView } from "../../components/ListView";
 import { PAGE_CONFIG } from "../../config/PageConfig";
 import useApi from "../../hooks/useApi";
 import { useGridView } from "../../hooks/useGridView";
-import { ITEMS_PER_PAGE } from "../../services/constant";
+import { ITEMS_PER_PAGE, TEXT, TOAST } from "../../services/constant";
 import { LoadingOverlay } from "../../components/CustomOverlay";
+import { useDialog } from "../../hooks/useDialog";
+import { useToast } from "../../config/ToastProvider";
 
 const initQuery = {
   keyword: "",
@@ -15,6 +16,7 @@ const initQuery = {
 };
 
 export const Platform = () => {
+  const { showToast } = useToast();
   const { platform, loading } = useApi();
   const {
     data,
@@ -27,6 +29,52 @@ export const Platform = () => {
     fetchListApi: platform.list,
     initQuery,
   });
+  const {
+    isVisible: crVisible,
+    onOpen: crOpen,
+    onClose: crClose,
+  } = useDialog();
+
+  const onDeleteButtonClick = (id: any) => {
+    showDeleteDialog(
+      configDeleteDialog({
+        label: PAGE_CONFIG.DELETE_PLATFORM.label,
+        deleteApi: () => platform.del(id),
+        refreshData: () => handleSubmitQuery(query),
+        hideModal: hideDeleteDialog,
+        setToast,
+      })
+    );
+  };
+
+  const handleCreate = async (form: any) => {
+    const res = await platform.create(form);
+    if (res.result) {
+      crClose();
+      showToast(TEXT.CREATED, TOAST.SUCCESS);
+    } else {
+      showToast(res.message || TEXT.REQUEST_FAILED, TOAST.ERROR);
+    }
+  };
+
+  const onUpdateButtonClick = (id: any) => {
+    showUpdateForm(
+      configModalForm({
+        label: PAGE_CONFIG.UPDATE_PLATFORM.label,
+        fetchApi: platform.update,
+        refreshData: () => handleSubmitQuery(query),
+        hideModal: hideUpdateForm,
+        setToast,
+        successMessage: BASIC_MESSAGES.UPDATED,
+        initForm: {
+          id,
+          name: "",
+          url: "",
+        },
+      })
+    );
+  };
+
   return (
     <BasicAppBar
       title={PAGE_CONFIG.PLATFORM.label}
@@ -37,12 +85,11 @@ export const Platform = () => {
         onClear: async () => await handleSubmitQuery(initQuery),
       }}
       create={{
-        onClick: () => {},
+        onClick: crOpen,
       }}
     >
       <>
         <LoadingOverlay loading={loading} />
-        <AccountTabs />
         <BasicListView
           data={data}
           renderContent={function (item: any): React.ReactNode {
