@@ -1,4 +1,15 @@
-import { Backdrop, CircularProgress } from "@mui/material";
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import { TEXT, TOAST } from "../services/constant";
+import { useToast } from "../config/ToastProvider";
 
 export const LoadingOverlay = ({ loading }: any) => {
   return (
@@ -8,5 +19,43 @@ export const LoadingOverlay = ({ loading }: any) => {
     >
       <CircularProgress color="inherit" />
     </Backdrop>
+  );
+};
+
+export const DeleteDialog = ({
+  open,
+  onClose,
+  onDelete,
+  title,
+  refreshData,
+}: any) => {
+  const { showToast } = useToast();
+
+  const handleSubmit = async () => {
+    const res = await onDelete();
+    onClose();
+    if (res.result) {
+      await refreshData();
+      showToast(TEXT.REQUEST_SUCCESS, TOAST.SUCCESS);
+    } else {
+      showToast(res.message || TEXT.REQUEST_FAILED, TOAST.ERROR);
+    }
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>Bạn có chắc muốn xoá?</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button size="large" onClick={onClose}>
+          {TEXT.CANCEL}
+        </Button>
+        <Button size="large" onClick={handleSubmit}>
+          {TEXT.DELETE}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };

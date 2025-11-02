@@ -159,12 +159,22 @@ export const BasicListView = <T extends { id: number }>({
                       <Box flex={1} minWidth={0}>
                         {renderContent(item)}
                       </Box>
-                      <IconButton
-                        size="large"
-                        onClick={(e) => handleOpen(e, item.id)}
+
+                      <Box
+                        sx={{
+                          flexShrink: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
                       >
-                        <MoreVert />
-                      </IconButton>
+                        <IconButton
+                          size="large"
+                          onClick={(e) => handleOpen(e, item.id)}
+                        >
+                          <MoreVert />
+                        </IconButton>
+                      </Box>
                     </Stack>
                   </Paper>
                 </Grid>
