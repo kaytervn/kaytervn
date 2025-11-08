@@ -35,4 +35,6 @@ public class Account extends Auditable<String> {
     private Tag tag;
     private Integer totalChildren = 0;
     private Integer totalBackupCodes = 0;
+    @Column(columnDefinition = "TEXT")
+    private String codes;
 }

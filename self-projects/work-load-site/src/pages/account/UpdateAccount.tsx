@@ -90,6 +90,7 @@ const UpdateAccount = () => {
           kind: data.kind,
           parentId: data.parent?.id,
           tagId: data.tag?.id || "",
+          codes: decryptFieldByUserKey(sessionKey, data.codes),
         });
       } else {
         handleNavigateBack();
@@ -110,6 +111,7 @@ const UpdateAccount = () => {
           note: form.note,
           platformId: form.platformId,
           tagId: form.tagId,
+          codes: encryptFieldByUserKey(sessionKey, form.codes),
         });
       } else {
         res = await account.update({
@@ -117,6 +119,7 @@ const UpdateAccount = () => {
           note: form.note,
           platformId: form.platformId,
           tagId: form.tagId,
+          codes: form.codes,
         });
       }
       if (res.result) {

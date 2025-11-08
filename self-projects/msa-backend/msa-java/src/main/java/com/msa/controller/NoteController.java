@@ -42,7 +42,7 @@ public class NoteController extends ABasicController {
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('NO_V')")
     public ApiMessageDto<NoteDto> get(@PathVariable("id") Long id) {
-        Note note = noteRepository.findById(id).orElse(null);
+        Note note = noteRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (note == null) {
             throw new BadRequestException(ErrorCode.NOTE_ERROR_NOT_FOUND, "Not found note");
         }
@@ -52,6 +52,7 @@ public class NoteController extends ABasicController {
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('NO_L')")
     public ApiMessageDto<ResponseListDto<List<NoteDto>>> list(NoteCriteria noteCriteria, Pageable pageable) {
+        noteCriteria.setCreatedBy(getCurrentUserName());
         Page<Note> listNote = noteRepository.findAll(noteCriteria.getCriteria(), pageable);
         ResponseListDto<List<NoteDto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(noteMapper.fromEntityListToNoteDtoList(listNote.getContent()));
@@ -62,6 +63,7 @@ public class NoteController extends ABasicController {
 
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListDto<List<NoteDto>>> autoComplete(NoteCriteria noteCriteria, @PageableDefault Pageable pageable) {
+        noteCriteria.setCreatedBy(getCurrentUserName());
         noteCriteria.setStatus(AppConstant.STATUS_ACTIVE);
         Page<Note> listNote = noteRepository.findAll(noteCriteria.getCriteria(), pageable);
         ResponseListDto<List<NoteDto>> responseListObj = new ResponseListDto<>();
@@ -74,12 +76,12 @@ public class NoteController extends ABasicController {
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('NO_C')")
     public ApiMessageDto<String> create(@Valid @RequestBody CreateNoteForm form, BindingResult bindingResult) {
-        if (noteRepository.existsByName(form.getName())) {
+        if (noteRepository.existsByNameAndCreatedBy(form.getName(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.NOTE_ERROR_NAME_EXISTED, "Name existed");
         }
         Note note = noteMapper.fromCreateNoteFormToEntity(form);
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_NOTE).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_NOTE, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -94,16 +96,16 @@ public class NoteController extends ABasicController {
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('NO_U')")
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateNoteForm form, BindingResult bindingResult) {
-        Note note = noteRepository.findById(form.getId()).orElse(null);
+        Note note = noteRepository.findFirstByIdAndCreatedBy(form.getId(), getCurrentUserName()).orElse(null);
         if (note == null) {
             throw new BadRequestException(ErrorCode.NOTE_ERROR_NOT_FOUND, "Not found note");
         }
-        if (noteRepository.existsByNameAndIdNot(form.getName(), note.getId())) {
+        if (noteRepository.existsByNameAndIdNotAndCreatedBy(form.getName(), note.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.NOTE_ERROR_NAME_EXISTED, "Name existed");
         }
         noteMapper.fromUpdateNoteFormToEntity(form, note);
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_NOTE).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_NOTE, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -118,7 +120,7 @@ public class NoteController extends ABasicController {
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('NO_D')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
-        Note note = noteRepository.findById(id).orElse(null);
+        Note note = noteRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (note == null) {
             throw new BadRequestException(ErrorCode.NOTE_ERROR_NOT_FOUND, "Not found note");
         }

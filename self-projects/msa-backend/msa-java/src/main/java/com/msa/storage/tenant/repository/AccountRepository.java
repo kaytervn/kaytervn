@@ -11,32 +11,34 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpecificationExecutor<Account> {
-    Boolean existsByPlatformId(Long id);
+    Boolean existsByPlatformIdAndCreatedBy(Long id, String createdBy);
 
-    Boolean existsByParentId(Long id);
+    Boolean existsByParentIdAndCreatedBy(Long id, String createdBy);
 
-    Boolean existsByUsernameAndPlatformId(String username, Long id);
+    Boolean existsByUsernameAndPlatformIdAndCreatedBy(String username, Long id, String createdBy);
 
-    Boolean existsByParentIdAndPlatformId(Long parentId, Long platformId);
+    Boolean existsByParentIdAndPlatformIdAndCreatedBy(Long parentId, Long platformId, String createdBy);
 
-    Integer countByParentId(Long id);
+    Integer countByParentIdAndCreatedBy(Long id, String createdBy);
 
-    Integer countByPlatformId(Long id);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE Account tb SET tb.totalChildren = :count WHERE tb.id = :id")
-    void updateTotalChildren(@Param("id") Long id, @Param("count") Integer count);
+    Integer countByPlatformIdAndCreatedBy(Long id, String createdBy);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Account tb SET tb.totalBackupCodes = :count WHERE tb.id = :id")
-    void updateTotalBackupCodes(@Param("id") Long id, @Param("count") Integer count);
+    @Query("UPDATE Account tb SET tb.totalChildren = :count WHERE tb.id = :id AND tb.createdBy = :createdBy")
+    void updateTotalChildrenAndCreatedBy(@Param("id") Long id, @Param("count") Integer count, @Param("createdBy") String createdBy);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Account tb SET tb.tag = NULL WHERE tb.tag.id = :id")
-    void updateTagIdNull(@Param("id") Long id);
+    @Query("UPDATE Account tb SET tb.totalBackupCodes = :count WHERE tb.id = :id AND tb.createdBy = :createdBy")
+    void updateTotalBackupCodesAndCreatedBy(@Param("id") Long id, @Param("count") Integer count, @Param("createdBy") String createdBy);
 
-    Optional<Account> findFirstByIdAndKind(Long id, Integer kind);
+    @Modifying
+    @Transactional
+    @Query("UPDATE Account tb SET tb.tag = NULL WHERE tb.tag.id = :id AND tb.createdBy = :createdBy")
+    void updateTagIdNullAndCreatedBy(@Param("id") Long id, @Param("createdBy") String createdBy);
+
+    Optional<Account> findFirstByIdAndKindAndCreatedBy(Long id, Integer kind, String createdBy);
+
+    Optional<Account> findFirstByIdAndCreatedBy(Long id, String createdBy);
 }

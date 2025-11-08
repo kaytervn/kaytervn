@@ -17,10 +17,12 @@ public class TagCriteria {
     private String name;
     private Integer kind;
     private Integer status;
+    private String createdBy = "";
 
     public Specification<Tag> getCriteria() {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("createdBy"), getCreatedBy()));
             if (getId() != null) {
                 predicates.add(cb.equal(root.get("id"), getId()));
             }

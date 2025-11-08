@@ -109,9 +109,6 @@ public class UserServiceImpl implements UserDetailsService {
         if (user == null || !Objects.equals(AppConstant.STATUS_ACTIVE, user.getStatus()) || !passwordEncoder.matches(password, user.getPassword())) {
             throw new BadRequestException(ErrorCode.GENERAL_ERROR_INVALID_USERNAME_OR_PASSWORD, "Invalid username or password!");
         }
-        if (SecurityConstant.USER_KIND_USER.equals(user.getKind()) && !dbConfigRepository.existsByUserId(user.getId())) {
-            throw new BadRequestException(ErrorCode.GENERAL_ERROR_INVALID_USERNAME_OR_PASSWORD, "Invalid tenant");
-        }
         boolean enabled = true;
         Set<GrantedAuthority> grantedAuthorities = getAccountPermission(user);
         checkMFA(user, totp);

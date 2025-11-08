@@ -12,6 +12,6 @@ export interface CreateProps {
 export interface AppBarProps {
   title: string;
   children: React.ReactNode;
-  search: SearchProps;
-  create: CreateProps;
+  search?: SearchProps;
+  create?: CreateProps;
 }

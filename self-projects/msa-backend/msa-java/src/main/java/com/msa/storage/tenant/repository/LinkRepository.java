@@ -8,17 +8,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 public interface LinkRepository extends JpaRepository<Link, Long>, JpaSpecificationExecutor<Link> {
-    Boolean existsByName(String name);
+    Boolean existsByNameAndCreatedBy(String name, String createdBy);
 
-    Boolean existsByLink(String value);
+    Boolean existsByLinkAndCreatedBy(String value, String createdBy);
 
-    Boolean existsByNameAndIdNot(String name, Long id);
+    Boolean existsByNameAndIdNotAndCreatedBy(String name, Long id, String createdBy);
 
-    Boolean existsByLinkAndIdNot(String value, Long id);
+    Boolean existsByLinkAndIdNotAndCreatedBy(String value, Long id, String createdBy);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Link tb SET tb.tag = NULL WHERE tb.tag.id = :id")
-    void updateTagIdNull(@Param("id") Long id);
+    @Query("UPDATE Link tb SET tb.tag = NULL WHERE tb.tag.id = :id AND tb.createdBy = :createdBy")
+    void updateTagIdNullAndCreatedBy(@Param("id") Long id, @Param("createdBy") String createdBy);
+
+    Optional<Link> findFirstByIdAndCreatedBy(Long id, String createdBy);
 }

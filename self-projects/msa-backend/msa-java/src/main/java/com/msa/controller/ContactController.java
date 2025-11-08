@@ -42,7 +42,7 @@ public class ContactController extends ABasicController {
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('CO_V')")
     public ApiMessageDto<ContactDto> get(@PathVariable("id") Long id) {
-        Contact contact = contactRepository.findById(id).orElse(null);
+        Contact contact = contactRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (contact == null) {
             throw new BadRequestException(ErrorCode.CONTACT_ERROR_NOT_FOUND, "Not found contact");
         }
@@ -52,6 +52,7 @@ public class ContactController extends ABasicController {
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('CO_L')")
     public ApiMessageDto<ResponseListDto<List<ContactDto>>> list(ContactCriteria contactCriteria, Pageable pageable) {
+        contactCriteria.setCreatedBy(getCurrentUserName());
         Page<Contact> listContact = contactRepository.findAll(contactCriteria.getCriteria(), pageable);
         ResponseListDto<List<ContactDto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(contactMapper.fromEntityListToContactDtoList(listContact.getContent()));
@@ -63,6 +64,7 @@ public class ContactController extends ABasicController {
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListDto<List<ContactDto>>> autoComplete(ContactCriteria contactCriteria, @PageableDefault Pageable pageable) {
         contactCriteria.setStatus(AppConstant.STATUS_ACTIVE);
+        contactCriteria.setCreatedBy(getCurrentUserName());
         Page<Contact> listContact = contactRepository.findAll(contactCriteria.getCriteria(), pageable);
         ResponseListDto<List<ContactDto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(contactMapper.fromEntityListToContactDtoListAutoComplete(listContact.getContent()));
@@ -74,15 +76,15 @@ public class ContactController extends ABasicController {
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('CO_C')")
     public ApiMessageDto<String> create(@Valid @RequestBody CreateContactForm form, BindingResult bindingResult) {
-        if (contactRepository.existsByName(form.getName())) {
+        if (contactRepository.existsByNameAndCreatedBy(form.getName(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.CONTACT_ERROR_NAME_EXISTED, "Name existed");
         }
-        if (contactRepository.existsByPhone(form.getPhone())) {
+        if (contactRepository.existsByPhoneAndCreatedBy(form.getPhone(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.CONTACT_ERROR_PHONE_EXISTED, "Phone existed");
         }
         Contact contact = contactMapper.fromCreateContactFormToEntity(form);
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_CONTACT).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_CONTACT, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -97,19 +99,19 @@ public class ContactController extends ABasicController {
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('CO_U')")
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateContactForm form, BindingResult bindingResult) {
-        Contact contact = contactRepository.findById(form.getId()).orElse(null);
+        Contact contact = contactRepository.findFirstByIdAndCreatedBy(form.getId(), getCurrentUserName()).orElse(null);
         if (contact == null) {
             throw new BadRequestException(ErrorCode.CONTACT_ERROR_NOT_FOUND, "Not found contact");
         }
-        if (contactRepository.existsByNameAndIdNot(form.getName(), contact.getId())) {
+        if (contactRepository.existsByNameAndIdNotAndCreatedBy(form.getName(), contact.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.CONTACT_ERROR_NAME_EXISTED, "Name existed");
         }
-        if (contactRepository.existsByPhoneAndIdNot(form.getPhone(), contact.getId())) {
+        if (contactRepository.existsByPhoneAndIdNotAndCreatedBy(form.getPhone(), contact.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.CONTACT_ERROR_PHONE_EXISTED, "Phone existed");
         }
         contactMapper.fromUpdateContactFormToEntity(form, contact);
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_CONTACT).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_CONTACT, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -124,7 +126,7 @@ public class ContactController extends ABasicController {
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('CO_D')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
-        Contact contact = contactRepository.findById(id).orElse(null);
+        Contact contact = contactRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (contact == null) {
             throw new BadRequestException(ErrorCode.CONTACT_ERROR_NOT_FOUND, "Not found contact");
         }

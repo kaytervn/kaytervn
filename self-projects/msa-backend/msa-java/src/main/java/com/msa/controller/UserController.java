@@ -17,7 +17,6 @@ import com.msa.service.BasicApiService;
 import com.msa.service.TotpManager;
 import com.msa.service.encryption.EncryptionService;
 import com.msa.service.mail.MailServiceImpl;
-import com.msa.storage.master.model.DbConfig;
 import com.msa.storage.master.model.Group;
 import com.msa.storage.master.model.User;
 import com.msa.storage.master.model.criteria.UserCriteria;
@@ -85,23 +84,6 @@ public class UserController extends ABasicController {
     @Autowired
     private CacheService cacheService;
 
-    private void createDbConfig(User user) {
-        if (dbConfigRepository.existsByUserId(user.getId())) {
-            return;
-        }
-        String username = SecurityConstant.DB_USER_PREFIX + user.getUsername();
-        String dbName = SecurityConstant.DB_SCHEMA_PREFIX + user.getUsername();
-        String prefixUrl = tenantService.getRootJdbcPrefixUrl();
-        DbConfig dbConfig = new DbConfig();
-        dbConfig.setUser(user);
-        dbConfig.setUsername(username);
-        dbConfig.setPassword(encryptionService.serverEncrypt(GenerateUtils.generateRandomString(20)));
-        dbConfig.setUrl(tenantService.getDbConfigUrl(prefixUrl, dbName));
-        tenantService.createTenantDatabase(dbConfig);
-        dbConfigRepository.save(dbConfig);
-        cacheService.addTenant(username);
-    }
-
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('US_V')")
     public ApiMessageDto<UserDto> get(@PathVariable("id") Long id) {
@@ -156,7 +138,7 @@ public class UserController extends ABasicController {
             fileRepository.deleteAllByUrl(user.getAvatarPath());
         }
         userRepository.save(user);
-        createDbConfig(user);
+//        createDbConfig(user);
         return makeSuccessResponse(null, "Create user success");
     }
 
@@ -183,15 +165,8 @@ public class UserController extends ABasicController {
         if (isChangedToInactive || isGroupChanged) {
             sessionService.sendMessageLockUser(user.getKind(), user.getUsername());
         }
-        if (user.getDbConfig() != null) {
-            DbConfig dbConfig = user.getDbConfig();
-            if (isLock && dbConfig.getLockedTime() == null) {
-                dbConfig.setLockedTime(new Date());
-                mailService.sendMsgLockAccount(user.getEmail());
-            } else {
-                dbConfig.setLockedTime(null);
-            }
-            dbConfigRepository.save(dbConfig);
+        if (isLock) {
+            mailService.sendMsgLockAccount(user.getEmail());
         }
         return makeSuccessResponse(null, "Update user success");
     }
@@ -238,9 +213,6 @@ public class UserController extends ABasicController {
         }
         if (!AppConstant.STATUS_ACTIVE.equals(user.getStatus())) {
             throw new BadRequestException(ErrorCode.USER_ERROR_NOT_ACTIVE, "User is  not active");
-        }
-        if (SecurityConstant.USER_KIND_USER.equals(user.getKind()) && !dbConfigRepository.existsByUserId(user.getId())) {
-            throw new BadRequestException(ErrorCode.GENERAL_ERROR_INVALID_USERNAME_OR_PASSWORD, "Invalid tenant");
         }
         VerifyCredentialDto verifyCredentialDto = new VerifyCredentialDto();
         if (!user.getIsMfa()) {

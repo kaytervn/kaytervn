@@ -44,12 +44,12 @@ public class NotificationScheduler {
     @Autowired
     private CacheService cacheService;
 
-    @Scheduled(cron = "0 0 0 * * *", zone = SecurityConstant.TIMEZONE_VIETNAM)
+//    @Scheduled(cron = "0 0 0 * * *", zone = SecurityConstant.TIMEZONE_VIETNAM)
     private void startScheduler() {
         cacheService.handleCacheSchedules();
     }
 
-    @Scheduled(fixedRate = INTERVAL)
+//    @Scheduled(fixedRate = INTERVAL)
     public void runSchedule() {
         sendScheduleNotification();
     }

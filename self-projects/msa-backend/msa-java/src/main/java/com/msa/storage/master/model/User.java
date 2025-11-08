@@ -35,7 +35,5 @@ public class User extends Auditable<String> {
     private String secretKey;
     private Boolean isMfa = false;
     private Boolean isSuperAdmin = false;
-    @OneToOne(mappedBy = "user")
-    private DbConfig dbConfig;
 }
 

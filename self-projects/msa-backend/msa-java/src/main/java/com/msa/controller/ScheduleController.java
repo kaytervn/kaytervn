@@ -75,7 +75,7 @@ public class ScheduleController extends ABasicController {
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('SC_V')")
     public ApiMessageDto<ScheduleDto> get(@PathVariable("id") Long id) {
-        Schedule schedule = scheduleRepository.findById(id).orElse(null);
+        Schedule schedule = scheduleRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (schedule == null) {
             throw new BadRequestException(ErrorCode.SCHEDULE_ERROR_NOT_FOUND, "Not found schedule");
         }
@@ -85,6 +85,7 @@ public class ScheduleController extends ABasicController {
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('SC_L')")
     public ApiMessageDto<ResponseListDto<List<ScheduleDto>>> list(ScheduleCriteria scheduleCriteria, Pageable pageable) {
+        scheduleCriteria.setCreatedBy(getCurrentUserName());
         Page<Schedule> listSchedule = scheduleRepository.findAll(scheduleCriteria.getCriteria(), pageable);
         ResponseListDto<List<ScheduleDto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(scheduleMapper.fromEntityListToScheduleDtoList(listSchedule.getContent()));
@@ -95,6 +96,7 @@ public class ScheduleController extends ABasicController {
 
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListDto<List<ScheduleDto>>> autoComplete(ScheduleCriteria scheduleCriteria, @PageableDefault Pageable pageable) {
+        scheduleCriteria.setCreatedBy(getCurrentUserName());
         scheduleCriteria.setStatus(AppConstant.STATUS_ACTIVE);
         Page<Schedule> listSchedule = scheduleRepository.findAll(scheduleCriteria.getCriteria(), pageable);
         ResponseListDto<List<ScheduleDto>> responseListObj = new ResponseListDto<>();
@@ -134,11 +136,11 @@ public class ScheduleController extends ABasicController {
         validateCheckedDate(form.getCheckedDate(), form.getKind());
         schedule.setCheckedDate(form.getCheckedDate());
         schedule.setCheckedDate(form.getCheckedDate());
-        if (scheduleRepository.existsByName(form.getName())) {
+        if (scheduleRepository.existsByNameAndCreatedBy(form.getName(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.SCHEDULE_ERROR_NAME_EXISTED, "Name existed");
         }
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_SCHEDULE).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_SCHEDULE, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -157,7 +159,7 @@ public class ScheduleController extends ABasicController {
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('SC_U')")
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateScheduleForm form, BindingResult bindingResult) {
-        Schedule schedule = scheduleRepository.findById(form.getId()).orElse(null);
+        Schedule schedule = scheduleRepository.findFirstByIdAndCreatedBy(form.getId(), getCurrentUserName()).orElse(null);
         if (schedule == null) {
             throw new BadRequestException(ErrorCode.SCHEDULE_ERROR_NOT_FOUND, "Not found schedule");
         }
@@ -191,12 +193,12 @@ public class ScheduleController extends ABasicController {
         }
         validateCheckedDate(form.getCheckedDate(), form.getKind());
         schedule.setCheckedDate(form.getCheckedDate());
-        if (scheduleRepository.existsByNameAndIdNot(form.getName(), schedule.getId())) {
+        if (scheduleRepository.existsByNameAndIdNotAndCreatedBy(form.getName(), schedule.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.SCHEDULE_ERROR_NAME_EXISTED, "Name existed");
         }
         scheduleMapper.fromUpdateScheduleFormToEntity(form, schedule);
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_SCHEDULE).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_SCHEDULE, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -218,7 +220,7 @@ public class ScheduleController extends ABasicController {
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('SC_D')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
-        Schedule schedule = scheduleRepository.findById(id).orElse(null);
+        Schedule schedule = scheduleRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (schedule == null) {
             throw new BadRequestException(ErrorCode.SCHEDULE_ERROR_NOT_FOUND, "Not found schedule");
         }
@@ -237,7 +239,7 @@ public class ScheduleController extends ABasicController {
         } catch (Exception e) {
             throw new BadRequestException("Invalid token");
         }
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElse(null);
+        Schedule schedule = scheduleRepository.findFirstByIdAndCreatedBy(scheduleId, getCurrentUserName()).orElse(null);
         if (schedule == null) {
             throw new BadRequestException(ErrorCode.SCHEDULE_ERROR_NOT_FOUND, "Not found schedule");
         }

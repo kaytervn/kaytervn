@@ -20,11 +20,13 @@ public class IdNumberCriteria {
     private String keyword;
     private Long tagId;
     private Integer status;
+    private String createdBy = "";
 
     public Specification<IdNumber> getCriteria() {
         return (root, query, cb) -> {
             Join<IdNumber, Tag> tagJoin = root.join("tag", JoinType.LEFT);
             List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("createdBy"), getCreatedBy()));
             if (getId() != null) {
                 predicates.add(cb.equal(root.get("id"), getId()));
             }

@@ -32,7 +32,6 @@ public interface UserMapper extends ABasicMapper {
     @Mapping(source = "avatarPath", target = "avatarPath")
     @Mapping(source = "email", target = "email")
     @Mapping(source = "group", target = "group", qualifiedByName = "fromEntityToGroupDtoAutoComplete")
-    @Mapping(source = "dbConfig", target = "dbConfig", qualifiedByName = "fromEntityToDbConfigDtoAutoComplete")
     @Mapping(source = "lastLogin", target = "lastLogin")
     @Mapping(source = "isSuperAdmin", target = "isSuperAdmin")
     @Mapping(source = "status", target = "status")
@@ -62,7 +61,6 @@ public interface UserMapper extends ABasicMapper {
     @Mapping(source = "avatarPath", target = "avatarPath")
     @Mapping(source = "email", target = "email")
     @Mapping(source = "group", target = "group", qualifiedByName = "fromEntityToGroupDtoAutoComplete")
-    @Mapping(source = "dbConfig", target = "dbConfig", qualifiedByName = "fromEntityToDbConfigDtoAutoComplete")
     @Mapping(source = "status", target = "status")
     @BeanMapping(ignoreByDefault = true)
     UserDto fromEntityToUserDtoForProfile(User user);

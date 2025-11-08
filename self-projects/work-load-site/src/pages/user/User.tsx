@@ -12,7 +12,6 @@ import { useGridView } from "../../hooks/useGridView";
 import {
   renderActionButton,
   renderEnum,
-  renderExpirationDateField,
   renderImage,
   renderLastLogin,
 } from "../../components/config/ItemRender";
@@ -32,7 +31,6 @@ import { InputBox2 } from "../../components/form/InputTextField";
 import { StaticSelectBox } from "../../components/form/SelectTextField";
 import { GridView } from "../../components/main/GridView";
 import { RefreshCwIcon } from "lucide-react";
-import { convertUtcToVn } from "../../types/utils";
 
 const initQuery = {
   keyword: "",
@@ -72,11 +70,6 @@ const User = () => {
       label: "Username",
       accessor: "username",
       align: ALIGNMENT.LEFT,
-      render: (item: any) =>
-        renderExpirationDateField(
-          convertUtcToVn(item?.dbConfig?.lockedTime),
-          item.username
-        ),
     },
     {
       label: "Role",

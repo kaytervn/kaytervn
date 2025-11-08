@@ -8,7 +8,9 @@ import com.msa.dto.account.AccountDto;
 import com.msa.exception.BadRequestException;
 import com.msa.form.account.CreateAccountForm;
 import com.msa.form.account.UpdateAccountForm;
+import com.msa.form.json.BasicObject;
 import com.msa.mapper.AccountMapper;
+import com.msa.service.BasicApiService;
 import com.msa.service.encryption.EncryptionService;
 import com.msa.storage.tenant.model.Account;
 import com.msa.storage.tenant.model.Platform;
@@ -49,21 +51,23 @@ public class AccountController extends ABasicController {
     private BackupCodeRepository backupCodeRepository;
     @Autowired
     private TagRepository tagRepository;
+    @Autowired
+    private BasicApiService basicApiService;
 
     private void updatePlatformTotalAccounts(Long platformId) {
-        Integer count = accountRepository.countByPlatformId(platformId);
-        platformRepository.updateTotalAccounts(platformId, count);
+        Integer count = accountRepository.countByPlatformIdAndCreatedBy(platformId, getCurrentUserName());
+        platformRepository.updateTotalAccountsAndCreatedBy(platformId, count, getCurrentUserName());
     }
 
     private void updateAccountTotalChildren(Long accountId) {
-        Integer count = accountRepository.countByParentId(accountId);
-        accountRepository.updateTotalChildren(accountId, count);
+        Integer count = accountRepository.countByParentIdAndCreatedBy(accountId, getCurrentUserName());
+        accountRepository.updateTotalChildrenAndCreatedBy(accountId, count, getCurrentUserName());
     }
 
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ACC_V')")
     public ApiMessageDto<AccountDto> get(@PathVariable("id") Long id) {
-        Account account = accountRepository.findById(id).orElse(null);
+        Account account = accountRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (account == null) {
             throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_NOT_FOUND, "Not found account");
         }
@@ -73,6 +77,7 @@ public class AccountController extends ABasicController {
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ACC_L')")
     public ApiMessageDto<ResponseListDto<List<AccountDto>>> list(AccountCriteria accountCriteria, Pageable pageable) {
+        accountCriteria.setCreatedBy(getCurrentUserName());
         Page<Account> listAccount = accountRepository.findAll(accountCriteria.getCriteria(), pageable);
         ResponseListDto<List<AccountDto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(accountMapper.fromEntityListToAccountDtoList(listAccount.getContent(), encryptionService.getServerKeyWrapper()));
@@ -83,6 +88,7 @@ public class AccountController extends ABasicController {
 
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListDto<List<AccountDto>>> autoComplete(AccountCriteria accountCriteria, @PageableDefault Pageable pageable) {
+        accountCriteria.setCreatedBy(getCurrentUserName());
         accountCriteria.setStatus(AppConstant.STATUS_ACTIVE);
         Page<Account> listAccount = accountRepository.findAll(accountCriteria.getCriteria(), pageable);
         ResponseListDto<List<AccountDto>> responseListObj = new ResponseListDto<>();
@@ -96,6 +102,8 @@ public class AccountController extends ABasicController {
     @PreAuthorize("hasRole('ACC_C')")
     public ApiMessageDto<String> create(@Valid @RequestBody CreateAccountForm form, BindingResult bindingResult) {
         String password = encryptionService.userDecrypt(form.getPassword());
+        String codes = encryptionService.userDecrypt(form.getCodes());
+        List<BasicObject> listCodes = basicApiService.extractListBasicJson(codes);
         if (AppConstant.ACCOUNT_KIND_ROOT.equals(form.getKind())) {
             if (StringUtils.isBlank(form.getUsername()) || StringUtils.isBlank(password)) {
                 throw new BadRequestException("Username and password are required");
@@ -104,13 +112,14 @@ public class AccountController extends ABasicController {
             throw new BadRequestException("Parent id is required");
         }
         Account account = accountMapper.fromCreateAccountFormToEntity(form);
-        Platform platform = platformRepository.findById(form.getPlatformId()).orElse(null);
+        account.setCodes(listCodes != null ? encryptionService.serverEncrypt(codes) : null);
+        Platform platform = platformRepository.findFirstByIdAndCreatedBy(form.getPlatformId(), getCurrentUserName()).orElse(null);
         if (platform == null) {
             throw new BadRequestException(ErrorCode.PLATFORM_ERROR_NOT_FOUND, "Not found platform");
         }
         account.setPlatform(platform);
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_ACCOUNT).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_ACCOUNT, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -119,18 +128,18 @@ public class AccountController extends ABasicController {
             account.setTag(null);
         }
         if (AppConstant.ACCOUNT_KIND_ROOT.equals(form.getKind())) {
-            if (accountRepository.existsByUsernameAndPlatformId(account.getUsername(), platform.getId())) {
+            if (accountRepository.existsByUsernameAndPlatformIdAndCreatedBy(account.getUsername(), platform.getId(), getCurrentUserName())) {
                 throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_RECORD_EXISTED, "Username existed with this platform");
             }
             account.setUsername(form.getUsername());
             account.setPassword(encryptionService.serverEncrypt(password));
             accountRepository.save(account);
         } else {
-            Account parent = accountRepository.findFirstByIdAndKind(form.getParentId(), AppConstant.ACCOUNT_KIND_ROOT).orElse(null);
+            Account parent = accountRepository.findFirstByIdAndKindAndCreatedBy(form.getParentId(), AppConstant.ACCOUNT_KIND_ROOT, getCurrentUserName()).orElse(null);
             if (parent == null) {
                 throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_NOT_FOUND, "Not found parent");
             }
-            if (accountRepository.existsByParentIdAndPlatformId(parent.getId(), platform.getId())) {
+            if (accountRepository.existsByParentIdAndPlatformIdAndCreatedBy(parent.getId(), platform.getId(), getCurrentUserName())) {
                 throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_RECORD_EXISTED, "Link account existed with this platform");
             }
             account.setParent(parent);
@@ -145,21 +154,24 @@ public class AccountController extends ABasicController {
     @PreAuthorize("hasRole('ACC_U')")
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateAccountForm form, BindingResult bindingResult) {
         String password = encryptionService.userDecrypt(form.getPassword());
-        Account account = accountRepository.findById(form.getId()).orElse(null);
+        String codes = encryptionService.userDecrypt(form.getCodes());
+        List<BasicObject> listCodes = basicApiService.extractListBasicJson(codes);
+        Account account = accountRepository.findFirstByIdAndCreatedBy(form.getId(), getCurrentUserName()).orElse(null);
         if (account == null) {
             throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_NOT_FOUND, "Not found account");
         }
+        account.setCodes(listCodes != null ? encryptionService.serverEncrypt(codes) : null);
         if (AppConstant.ACCOUNT_KIND_ROOT.equals(account.getKind()) &&
                 (StringUtils.isBlank(form.getUsername()) || StringUtils.isBlank(password))) {
             throw new BadRequestException("Username and password are required");
         }
         accountMapper.fromUpdateAccountFormToEntity(form, account);
-        Platform platform = platformRepository.findById(form.getPlatformId()).orElse(null);
+        Platform platform = platformRepository.findFirstByIdAndCreatedBy(form.getPlatformId(), getCurrentUserName()).orElse(null);
         if (platform == null) {
             throw new BadRequestException(ErrorCode.PLATFORM_ERROR_NOT_FOUND, "Not found platform");
         }
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_ACCOUNT).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_ACCOUNT, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -172,13 +184,13 @@ public class AccountController extends ABasicController {
         boolean isPlatformChanged = !oldPlatformId.equals(newPlatformId);
         account.setPlatform(platform);
         if (AppConstant.ACCOUNT_KIND_ROOT.equals(account.getKind())) {
-            if (isPlatformChanged && accountRepository.existsByUsernameAndPlatformId(account.getUsername(), platform.getId())) {
+            if (isPlatformChanged && accountRepository.existsByUsernameAndPlatformIdAndCreatedBy(account.getUsername(), platform.getId(), getCurrentUserName())) {
                 throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_RECORD_EXISTED, "Username existed with this platform");
             }
             account.setUsername(form.getUsername());
             account.setPassword(encryptionService.serverEncrypt(password));
 
-        } else if (isPlatformChanged && accountRepository.existsByParentIdAndPlatformId(account.getParent().getId(), platform.getId())) {
+        } else if (isPlatformChanged && accountRepository.existsByParentIdAndPlatformIdAndCreatedBy(account.getParent().getId(), platform.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_RECORD_EXISTED, "Link account existed with this platform");
         }
         accountRepository.save(account);
@@ -192,14 +204,14 @@ public class AccountController extends ABasicController {
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ACC_D')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
-        Account account = accountRepository.findById(id).orElse(null);
+        Account account = accountRepository.findFirstByIdAndCreatedBy(id,getCurrentUserName()).orElse(null);
         if (account == null) {
             throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_NOT_FOUND, "Not found account");
         }
-        if (accountRepository.existsByParentId(id)) {
+        if (accountRepository.existsByParentIdAndCreatedBy(id, getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_CHILDREN_EXISTED, "Link account existed");
         }
-        backupCodeRepository.deleteAllByAccountId(id);
+        backupCodeRepository.deleteAllByAccountIdAndCreatedBy(id, getCurrentUserName());
         accountRepository.deleteById(id);
         if (AppConstant.ACCOUNT_KIND_LINK.equals(account.getKind())) {
             updateAccountTotalChildren(account.getParent().getId());

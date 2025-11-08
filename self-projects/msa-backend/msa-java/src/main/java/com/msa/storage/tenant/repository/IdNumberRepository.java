@@ -8,17 +8,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 public interface IdNumberRepository extends JpaRepository<IdNumber, Long>, JpaSpecificationExecutor<IdNumber> {
-    Boolean existsByName(String name);
+    Boolean existsByNameAndCreatedBy(String name, String createdBy);
 
-    Boolean existsByCode(String code);
+    Boolean existsByCodeAndCreatedBy(String code, String createdBy);
 
-    Boolean existsByNameAndIdNot(String name, Long id);
+    Boolean existsByNameAndIdNotAndCreatedBy(String name, Long id, String createdBy);
 
-    Boolean existsByCodeAndIdNot(String code, Long id);
+    Boolean existsByCodeAndIdNotAndCreatedBy(String code, Long id, String createdBy);
 
     @Modifying
     @Transactional
-    @Query("UPDATE IdNumber tb SET tb.tag = NULL WHERE tb.tag.id = :id")
-    void updateTagIdNull(@Param("id") Long id);
+    @Query("UPDATE IdNumber tb SET tb.tag = NULL WHERE tb.tag.id = :id AND tb.createdBy = :createdBy")
+    void updateTagIdNullAndCreatedBy(@Param("id") Long id, @Param("createdBy") String createdBy);
+
+    Optional<IdNumber> findFirstByIdAndCreatedBy(Long id, String createdBy);
 }

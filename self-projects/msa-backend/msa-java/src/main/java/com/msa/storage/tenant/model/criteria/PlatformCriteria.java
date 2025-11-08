@@ -1,6 +1,7 @@
 package com.msa.storage.tenant.model.criteria;
 
 import com.msa.constant.AppConstant;
+import com.msa.controller.ABasicController;
 import com.msa.storage.tenant.model.Platform;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,10 +22,12 @@ public class PlatformCriteria {
     private String keyword;
     private Integer status;
     private Integer sortOption;
+    private String createdBy = "";
 
     public Specification<Platform> getCriteria() {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("createdBy"), getCreatedBy()));
             if (getId() != null) {
                 predicates.add(cb.equal(root.get("id"), getId()));
             }

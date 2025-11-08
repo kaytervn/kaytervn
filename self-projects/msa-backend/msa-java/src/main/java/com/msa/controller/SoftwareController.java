@@ -42,7 +42,7 @@ public class SoftwareController extends ABasicController {
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('SO_V')")
     public ApiMessageDto<SoftwareDto> get(@PathVariable("id") Long id) {
-        Software software = softwareRepository.findById(id).orElse(null);
+        Software software = softwareRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (software == null) {
             throw new BadRequestException(ErrorCode.SOFTWARE_ERROR_NOT_FOUND, "Not found software");
         }
@@ -52,6 +52,7 @@ public class SoftwareController extends ABasicController {
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('SO_L')")
     public ApiMessageDto<ResponseListDto<List<SoftwareDto>>> list(SoftwareCriteria softwareCriteria, Pageable pageable) {
+        softwareCriteria.setCreatedBy(getCurrentUserName());
         Page<Software> listSoftware = softwareRepository.findAll(softwareCriteria.getCriteria(), pageable);
         ResponseListDto<List<SoftwareDto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(softwareMapper.fromEntityListToSoftwareDtoList(listSoftware.getContent()));
@@ -62,6 +63,7 @@ public class SoftwareController extends ABasicController {
 
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListDto<List<SoftwareDto>>> autoComplete(SoftwareCriteria softwareCriteria, @PageableDefault Pageable pageable) {
+        softwareCriteria.setCreatedBy(getCurrentUserName());
         softwareCriteria.setStatus(AppConstant.STATUS_ACTIVE);
         Page<Software> listSoftware = softwareRepository.findAll(softwareCriteria.getCriteria(), pageable);
         ResponseListDto<List<SoftwareDto>> responseListObj = new ResponseListDto<>();
@@ -74,12 +76,12 @@ public class SoftwareController extends ABasicController {
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('SO_C')")
     public ApiMessageDto<String> create(@Valid @RequestBody CreateSoftwareForm form, BindingResult bindingResult) {
-        if (softwareRepository.existsByName(form.getName())) {
+        if (softwareRepository.existsByNameAndCreatedBy(form.getName(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.SOFTWARE_ERROR_NAME_EXISTED, "Name existed");
         }
         Software software = softwareMapper.fromCreateSoftwareFormToEntity(form);
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_SOFTWARE).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_SOFTWARE, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -94,16 +96,16 @@ public class SoftwareController extends ABasicController {
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('SO_U')")
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateSoftwareForm form, BindingResult bindingResult) {
-        Software software = softwareRepository.findById(form.getId()).orElse(null);
+        Software software = softwareRepository.findFirstByIdAndCreatedBy(form.getId(), getCurrentUserName()).orElse(null);
         if (software == null) {
             throw new BadRequestException(ErrorCode.SOFTWARE_ERROR_NOT_FOUND, "Not found software");
         }
-        if (softwareRepository.existsByNameAndIdNot(form.getName(), form.getId())) {
+        if (softwareRepository.existsByNameAndIdNotAndCreatedBy(form.getName(), form.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.SOFTWARE_ERROR_NAME_EXISTED, "Name existed");
         }
         softwareMapper.fromUpdateSoftwareFormToEntity(form, software);
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_SOFTWARE).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_SOFTWARE, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -118,7 +120,7 @@ public class SoftwareController extends ABasicController {
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('SO_D')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
-        Software software = softwareRepository.findById(id).orElse(null);
+        Software software = softwareRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (software == null) {
             throw new BadRequestException(ErrorCode.SOFTWARE_ERROR_NOT_FOUND, "Not found software");
         }

@@ -19,4 +19,5 @@ public class CreateAccountForm {
     private Long platformId;
     private Long parentId;
     private Long tagId;
+    private String codes;
 }

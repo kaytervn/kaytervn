@@ -10,20 +10,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long>, JpaSpecificationExecutor<Schedule> {
-    Boolean existsByName(String name);
+    Boolean existsByNameAndCreatedBy(String name, String createdBy);
 
-    Boolean existsByNameAndIdNot(String name, Long id);
+    Boolean existsByNameAndIdNotAndCreatedBy(String name, Long id, String createdBy);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Schedule tb SET tb.tag = NULL WHERE tb.tag.id = :id")
-    void updateTagIdNull(@Param("id") Long id);
+    @Query("UPDATE Schedule tb SET tb.tag = NULL WHERE tb.tag.id = :id AND tb.createdBy = :createdBy")
+    void updateTagIdNullAndCreatedBy(@Param("id") Long id, @Param("createdBy") String createdBy);
 
     @Query("SELECT s FROM Schedule s WHERE s.isSent = :isSent AND (s.type IS NULL OR s.type <> :type) AND s.dueDate >= :startDate AND s.dueDate <= :endDate")
     List<Schedule> findAllDueToday(@Param("isSent") Boolean isSent,
                                    @Param("type") Integer type,
                                    @Param("startDate") Date startDate,
                                    @Param("endDate") Date endDate);
+
+    Optional<Schedule> findFirstByIdAndCreatedBy(Long id, String createdBy);
 }

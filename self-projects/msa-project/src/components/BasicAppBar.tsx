@@ -26,7 +26,7 @@ import { ClearOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { type AppBarProps } from "../services/interfaces";
-import { PAGE_CONFIG } from "../config/PageConfig";
+import { SIDEBAR_MENUS } from "../config/PageConfig";
 import { useDialog } from "../hooks/useDialog";
 import { RequestKey } from "../pages/auth/RequestKey";
 import useApi from "../hooks/useApi";
@@ -37,6 +37,7 @@ import { ChangePassword } from "../pages/auth/ChangePassword";
 import { Profile } from "../pages/auth/Profile";
 
 export const BasicAppBar = (props: AppBarProps) => {
+  const showSearchBar = !!props.search && !!props.create;
   const { showToast } = useToast();
   const { user, loading } = useApi();
   const {
@@ -168,41 +169,43 @@ export const BasicAppBar = (props: AppBarProps) => {
               </MenuItem>
             </Menu>
           </Toolbar>
-          <Box sx={{ px: 2, pb: 2 }}>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <TextField
-                value={props.search.value}
-                placeholder={TEXT.SEARCH}
-                fullWidth
-                sx={{
-                  bgcolor: "background.paper",
-                }}
-                onChange={(e) => props.search.onChange(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      {props.search.value && (
-                        <IconButton
-                          onClick={() => {
-                            props.search.onChange("");
-                            props.search.onClear();
-                          }}
-                        >
-                          <ClearOutlined />
+          {showSearchBar && (
+            <Box sx={{ px: 2, pb: 2 }}>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <TextField
+                  value={props.search!.value}
+                  placeholder={TEXT.SEARCH}
+                  fullWidth
+                  sx={{
+                    bgcolor: "background.paper",
+                  }}
+                  onChange={(e) => props.search!.onChange(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {props.search!.value && (
+                          <IconButton
+                            onClick={() => {
+                              props.search!.onChange("");
+                              props.search!.onClear();
+                            }}
+                          >
+                            <ClearOutlined />
+                          </IconButton>
+                        )}
+                        <IconButton onClick={props.search!.onSearch}>
+                          <SearchIcon />
                         </IconButton>
-                      )}
-                      <IconButton onClick={props.search.onSearch}>
-                        <SearchIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <Button variant="contained" onClick={props.create.onClick}>
-                <Box sx={{ p: 1 }}>{TEXT.CREATE}</Box>
-              </Button>
-            </Stack>
-          </Box>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <Button variant="contained" onClick={props.create!.onClick}>
+                  <Box sx={{ p: 1 }}>{TEXT.CREATE}</Box>
+                </Button>
+              </Stack>
+            </Box>
+          )}
         </AppBar>
         <Drawer
           anchor="left"
@@ -216,7 +219,7 @@ export const BasicAppBar = (props: AppBarProps) => {
             onClick={handleDrawerToggle}
           >
             <List>
-              {Object.entries(PAGE_CONFIG).map(([key, item]: any) => {
+              {Object.entries(SIDEBAR_MENUS).map(([key, item]: any) => {
                 return (
                   <ListItem key={key} disablePadding>
                     <ListItemButton

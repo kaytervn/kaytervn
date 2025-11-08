@@ -18,6 +18,15 @@ public class ABasicController {
         }
     }
 
+    public String getCurrentUserName() {
+        try {
+            AppJwt AppJwt = userService.getAddInfoFromToken();
+            return AppJwt.getUsername();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
     public <T> ApiMessageDto<T> makeSuccessResponse(T data, String message) {
         ApiMessageDto<T> apiMessageDto = new ApiMessageDto<>();
         apiMessageDto.setData(data);

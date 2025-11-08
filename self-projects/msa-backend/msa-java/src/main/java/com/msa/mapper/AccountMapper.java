@@ -33,6 +33,7 @@ public interface AccountMapper extends ABasicMapper {
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "totalBackupCodes", target = "totalBackupCodes")
     @Mapping(source = "totalChildren", target = "totalChildren")
+    @Mapping(target = "codes", expression = "java(decryptAndEncrypt(keyWrapper, account.getCodes()))")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToAccountDto")
     AccountDto fromEntityToAccountDto(Account account, @Context KeyWrapperDto keyWrapper);

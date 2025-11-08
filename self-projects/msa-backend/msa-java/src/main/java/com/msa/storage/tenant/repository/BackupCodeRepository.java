@@ -5,11 +5,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 public interface BackupCodeRepository extends JpaRepository<BackupCode, Long>, JpaSpecificationExecutor<BackupCode> {
     @Transactional
-    void deleteAllByAccountId(Long accountId);
+    void deleteAllByAccountIdAndCreatedBy(Long accountId, String createdBy);
 
-    Boolean existsByAccountIdAndCode(Long accountId, String code);
+    Boolean existsByAccountIdAndCodeAndCreatedBy(Long accountId, String code, String createdBy);
 
-    Integer countByAccountId(Long id);
+    Integer countByAccountIdAndCreatedBy(Long id, String createdBy);
+
+    Optional<BackupCode> findFirstByIdAndCreatedBy(Long id, String createdBy);
 }

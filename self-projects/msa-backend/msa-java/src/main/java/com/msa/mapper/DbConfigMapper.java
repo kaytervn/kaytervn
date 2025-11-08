@@ -9,7 +9,6 @@ import org.mapstruct.*;
 public interface DbConfigMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "url", target = "url")
-    @Mapping(source = "lockedTime", target = "lockedTime")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToDbConfigDtoAutoComplete")
     DbConfigDto fromEntityToDbConfigDtoAutoComplete(DbConfig dbconfig);

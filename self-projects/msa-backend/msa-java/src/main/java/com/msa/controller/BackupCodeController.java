@@ -41,13 +41,14 @@ public class BackupCodeController extends ABasicController {
     private EncryptionService encryptionService;
 
     private void updateAccountTotalBackupCode(Long accountId) {
-        Integer count = backupCodeRepository.countByAccountId(accountId);
-        accountRepository.updateTotalBackupCodes(accountId, count);
+        Integer count = backupCodeRepository.countByAccountIdAndCreatedBy(accountId, getCurrentUserName());
+        accountRepository.updateTotalBackupCodesAndCreatedBy(accountId, count, getCurrentUserName());
     }
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('BA_C_L')")
     public ApiMessageDto<ResponseListDto<List<BackupCodeDto>>> list(BackupCodeCriteria backupCodeCriteria, Pageable pageable) {
+        backupCodeCriteria.setCreatedBy(getCurrentUserName());
         Page<BackupCode> listBackupCode = backupCodeRepository.findAll(backupCodeCriteria.getCriteria(), pageable);
         ResponseListDto<List<BackupCodeDto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(backupCodeMapper.fromEntityListToBackupCodeDtoList(listBackupCode.getContent(), encryptionService.getServerKeyWrapper()));
@@ -65,11 +66,11 @@ public class BackupCodeController extends ABasicController {
         }
         BackupCode backupCode = new BackupCode();
         backupCode.setCode(encryptionService.serverEncrypt(code));
-        Account account = accountRepository.findById(form.getAccountId()).orElse(null);
+        Account account = accountRepository.findFirstByIdAndCreatedBy(form.getAccountId(), getCurrentUserName()).orElse(null);
         if (account == null) {
             throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_NOT_FOUND, "Not found account");
         }
-        if (backupCodeRepository.existsByAccountIdAndCode(account.getId(), backupCode.getCode())) {
+        if (backupCodeRepository.existsByAccountIdAndCodeAndCreatedBy(account.getId(), backupCode.getCode(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.BACKUP_CODE_ERROR_CODE_EXISTED, "Code existed");
         }
         backupCode.setAccount(account);
@@ -81,7 +82,7 @@ public class BackupCodeController extends ABasicController {
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('BA_C_D')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
-        BackupCode backupCode = backupCodeRepository.findById(id).orElse(null);
+        BackupCode backupCode = backupCodeRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (backupCode == null) {
             throw new BadRequestException(ErrorCode.BACKUP_CODE_ERROR_NOT_FOUND, "Not found backup code");
         }

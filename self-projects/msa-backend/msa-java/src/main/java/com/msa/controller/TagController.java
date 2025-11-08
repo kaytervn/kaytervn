@@ -54,7 +54,7 @@ public class TagController extends ABasicController {
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('TA_V')")
     public ApiMessageDto<TagDto> get(@PathVariable("id") Long id) {
-        Tag tag = tagRepository.findById(id).orElse(null);
+        Tag tag = tagRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (tag == null) {
             throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
         }
@@ -64,6 +64,7 @@ public class TagController extends ABasicController {
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('TA_L')")
     public ApiMessageDto<ResponseListDto<List<TagDto>>> list(TagCriteria tagCriteria, Pageable pageable) {
+        tagCriteria.setCreatedBy(getCurrentUserName());
         Page<Tag> listTag = tagRepository.findAll(tagCriteria.getCriteria(), pageable);
         ResponseListDto<List<TagDto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(tagMapper.fromEntityListToTagDtoList(listTag.getContent()));
@@ -74,6 +75,7 @@ public class TagController extends ABasicController {
 
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListDto<List<TagDto>>> autoComplete(TagCriteria tagCriteria, @PageableDefault Pageable pageable) {
+        tagCriteria.setCreatedBy(getCurrentUserName());
         tagCriteria.setStatus(AppConstant.STATUS_ACTIVE);
         Page<Tag> listTag = tagRepository.findAll(tagCriteria.getCriteria(), pageable);
         ResponseListDto<List<TagDto>> responseListObj = new ResponseListDto<>();
@@ -86,7 +88,7 @@ public class TagController extends ABasicController {
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('TA_C')")
     public ApiMessageDto<String> create(@Valid @RequestBody CreateTagForm form, BindingResult bindingResult) {
-        if (tagRepository.existsByNameAndKind(form.getName(), form.getKind())) {
+        if (tagRepository.existsByNameAndKindAndCreatedBy(form.getName(), form.getKind(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.TAG_ERROR_NAME_EXISTED, "Name existed with this kind");
         }
         Tag tag = tagMapper.fromCreateTagFormToEntity(form);
@@ -97,11 +99,11 @@ public class TagController extends ABasicController {
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('TA_U')")
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateTagForm form, BindingResult bindingResult) {
-        Tag tag = tagRepository.findById(form.getId()).orElse(null);
+        Tag tag = tagRepository.findFirstByIdAndCreatedBy(form.getId(), getCurrentUserName()).orElse(null);
         if (tag == null) {
             throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
         }
-        if (tagRepository.existsByNameAndKindAndIdNot(form.getName(), tag.getKind(), tag.getId())) {
+        if (tagRepository.existsByNameAndKindAndIdNotAndCreatedBy(form.getName(), tag.getKind(), tag.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.TAG_ERROR_NAME_EXISTED, "Name existed with this kind");
         }
         tagMapper.fromUpdateTagFormToEntity(form, tag);
@@ -112,26 +114,26 @@ public class TagController extends ABasicController {
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('TA_D')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
-        Tag tag = tagRepository.findById(id).orElse(null);
+        Tag tag = tagRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (tag == null) {
             throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
         }
         if (AppConstant.TAG_KIND_ACCOUNT.equals(tag.getKind())) {
-            accountRepository.updateTagIdNull(id);
-        } else if (AppConstant.TAG_KIND_BANK.equals(tag.getKind()) && bankRepository.existsByTagId(id)) {
+            accountRepository.updateTagIdNullAndCreatedBy(id, getCurrentUserName());
+        } else if (AppConstant.TAG_KIND_BANK.equals(tag.getKind()) && bankRepository.existsByTagIdAndCreatedBy(id, getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.TAG_ERROR_BANK_EXISTED, "Bank existed");
         } else if (AppConstant.TAG_KIND_CONTACT.equals(tag.getKind())) {
-            contactRepository.updateTagIdNull(id);
+            contactRepository.updateTagIdNullAndCreatedBy(id, getCurrentUserName());
         } else if (AppConstant.TAG_KIND_ID_NUMBER.equals(tag.getKind())) {
-            idNumberRepository.updateTagIdNull(id);
+            idNumberRepository.updateTagIdNullAndCreatedBy(id, getCurrentUserName());
         } else if (AppConstant.TAG_KIND_LINK.equals(tag.getKind())) {
-            linkRepository.updateTagIdNull(id);
+            linkRepository.updateTagIdNullAndCreatedBy(id, getCurrentUserName());
         } else if (AppConstant.TAG_KIND_NOTE.equals(tag.getKind())) {
-            noteRepository.updateTagIdNull(id);
+            noteRepository.updateTagIdNullAndCreatedBy(id, getCurrentUserName());
         } else if (AppConstant.TAG_KIND_SOFTWARE.equals(tag.getKind())) {
-            softwareRepository.updateTagIdNull(id);
+            softwareRepository.updateTagIdNullAndCreatedBy(id, getCurrentUserName());
         } else if (AppConstant.TAG_KIND_SCHEDULE.equals(tag.getKind())) {
-            scheduleRepository.updateTagIdNull(id);
+            scheduleRepository.updateTagIdNullAndCreatedBy(id, getCurrentUserName());
         }
         tagRepository.deleteById(id);
         return makeSuccessResponse(null, "Delete tag success");

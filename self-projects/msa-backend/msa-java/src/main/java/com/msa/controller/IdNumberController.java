@@ -42,7 +42,7 @@ public class IdNumberController extends ABasicController {
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ID_N_V')")
     public ApiMessageDto<IdNumberDto> get(@PathVariable("id") Long id) {
-        IdNumber idNumber = idNumberRepository.findById(id).orElse(null);
+        IdNumber idNumber = idNumberRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (idNumber == null) {
             throw new BadRequestException(ErrorCode.ID_NUMBER_ERROR_NOT_FOUND, "Not found id number");
         }
@@ -52,6 +52,7 @@ public class IdNumberController extends ABasicController {
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ID_N_L')")
     public ApiMessageDto<ResponseListDto<List<IdNumberDto>>> list(IdNumberCriteria idNumberCriteria, Pageable pageable) {
+        idNumberCriteria.setCreatedBy(getCurrentUserName());
         Page<IdNumber> listIdNumber = idNumberRepository.findAll(idNumberCriteria.getCriteria(), pageable);
         ResponseListDto<List<IdNumberDto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(idNumberMapper.fromEntityListToIdNumberDtoList(listIdNumber.getContent()));
@@ -62,6 +63,7 @@ public class IdNumberController extends ABasicController {
 
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListDto<List<IdNumberDto>>> autoComplete(IdNumberCriteria idNumberCriteria, @PageableDefault Pageable pageable) {
+        idNumberCriteria.setCreatedBy(getCurrentUserName());
         idNumberCriteria.setStatus(AppConstant.STATUS_ACTIVE);
         Page<IdNumber> listIdNumber = idNumberRepository.findAll(idNumberCriteria.getCriteria(), pageable);
         ResponseListDto<List<IdNumberDto>> responseListObj = new ResponseListDto<>();
@@ -74,15 +76,15 @@ public class IdNumberController extends ABasicController {
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ID_N_C')")
     public ApiMessageDto<String> create(@Valid @RequestBody CreateIdNumberForm form, BindingResult bindingResult) {
-        if (idNumberRepository.existsByName(form.getName())) {
+        if (idNumberRepository.existsByNameAndCreatedBy(form.getName(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.ID_NUMBER_ERROR_NAME_EXISTED, "Name existed");
         }
-        if (idNumberRepository.existsByCode(form.getCode())) {
+        if (idNumberRepository.existsByCodeAndCreatedBy(form.getCode(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.ID_NUMBER_ERROR_CODE_EXISTED, "Code existed");
         }
         IdNumber idNumber = idNumberMapper.fromCreateIdNumberFormToEntity(form);
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_ID_NUMBER).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_ID_NUMBER, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -97,19 +99,19 @@ public class IdNumberController extends ABasicController {
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ID_N_U')")
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateIdNumberForm form, BindingResult bindingResult) {
-        IdNumber idNumber = idNumberRepository.findById(form.getId()).orElse(null);
+        IdNumber idNumber = idNumberRepository.findFirstByIdAndCreatedBy(form.getId(), getCurrentUserName()).orElse(null);
         if (idNumber == null) {
             throw new BadRequestException(ErrorCode.ID_NUMBER_ERROR_NOT_FOUND, "Not found id number");
         }
-        if (idNumberRepository.existsByNameAndIdNot(form.getName(), idNumber.getId())) {
+        if (idNumberRepository.existsByNameAndIdNotAndCreatedBy(form.getName(), idNumber.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.ID_NUMBER_ERROR_NAME_EXISTED, "Name existed");
         }
-        if (idNumberRepository.existsByCodeAndIdNot(form.getCode(), idNumber.getId())) {
+        if (idNumberRepository.existsByCodeAndIdNotAndCreatedBy(form.getCode(), idNumber.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.ID_NUMBER_ERROR_CODE_EXISTED, "Code existed");
         }
         idNumberMapper.fromUpdateIdNumberFormToEntity(form, idNumber);
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_ID_NUMBER).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_ID_NUMBER, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -124,7 +126,7 @@ public class IdNumberController extends ABasicController {
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ID_N_D')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
-        IdNumber idNumber = idNumberRepository.findById(id).orElse(null);
+        IdNumber idNumber = idNumberRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (idNumber == null) {
             throw new BadRequestException(ErrorCode.ID_NUMBER_ERROR_NOT_FOUND, "Not found id number");
         }

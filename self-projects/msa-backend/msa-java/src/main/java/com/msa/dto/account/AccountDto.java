@@ -11,6 +11,7 @@ public class AccountDto extends ABasicAdminDto {
     private String username;
     private String password;
     private String note;
+    private String codes;
     private PlatformDto platform;
     private AccountDto parent;
     private Integer totalBackupCodes;

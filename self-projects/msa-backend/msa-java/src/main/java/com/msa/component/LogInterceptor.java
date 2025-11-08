@@ -16,6 +16,7 @@ import com.msa.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,6 +44,8 @@ public class LogInterceptor implements HandlerInterceptor {
     @Autowired
     @Lazy
     private EncryptionService encryptionService;
+    @Value("${multitenancy.tenant.default}")
+    private String defaultTenant;
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws IOException {
@@ -57,12 +60,13 @@ public class LogInterceptor implements HandlerInterceptor {
         if (!isValidSession(jwt)) {
             return handleUnauthorized(response, ErrorCode.GENERAL_ERROR_INVALID_SESSION, "Invalid session");
         }
-        String tenantName = encryptionService.clientDecryptIgnoreNonce(request.getHeader(SecurityConstant.HEADER_X_TENANT));
-        if (jwt != null) {
-            TenantDBContext.setCurrentTenant(SecurityConstant.DB_USER_PREFIX + jwt.getUsername());
-        } else if (StringUtils.isNotBlank(tenantName)) {
-            TenantDBContext.setCurrentTenant(tenantName);
-        }
+//        String tenantName = encryptionService.clientDecryptIgnoreNonce(request.getHeader(SecurityConstant.HEADER_X_TENANT));
+//        if (jwt != null) {
+//            TenantDBContext.setCurrentTenant(SecurityConstant.DB_USER_PREFIX + jwt.getUsername());
+//        } else if (StringUtils.isNotBlank(tenantName)) {
+//            TenantDBContext.setCurrentTenant(tenantName);
+//        }
+        TenantDBContext.setCurrentTenant(defaultTenant);
         return true;
     }
 

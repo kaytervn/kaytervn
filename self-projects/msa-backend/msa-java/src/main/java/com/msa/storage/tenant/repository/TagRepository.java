@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.Optional;
 
 public interface TagRepository extends JpaRepository<Tag, Long>, JpaSpecificationExecutor<Tag> {
-    Boolean existsByNameAndKind(String name, Integer kind);
+    Boolean existsByNameAndKindAndCreatedBy(String name, Integer kind, String createdBy);
 
-    Boolean existsByNameAndKindAndIdNot(String name, Integer kind, Long id);
+    Boolean existsByNameAndKindAndIdNotAndCreatedBy(String name, Integer kind, Long id, String createdBy);
 
-    Optional<Tag> findFirstByIdAndKind(Long id, Integer kind);
+    Optional<Tag> findFirstByIdAndKindAndCreatedBy(Long id, Integer kind, String createdBy);
+
+    Optional<Tag> findFirstByIdAndCreatedBy(Long id, String createdBy);
 }

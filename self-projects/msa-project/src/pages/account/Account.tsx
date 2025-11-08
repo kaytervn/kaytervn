@@ -1,230 +1,96 @@
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  InputAdornment,
-  Menu,
-  MenuItem,
-  Pagination,
-  Paper,
-  Stack,
-  TextField,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { TEXT } from "../../services/constant";
-import { useState } from "react";
-import { CustomBreadcrumb } from "../../components/Breadcrumb";
+import React from "react";
+import { ITEMS_PER_PAGE, TEXT } from "../../services/constant";
+import useApi from "../../hooks/useApi";
+import { useGridView } from "../../hooks/useGridView";
+import { DIALOG_TYPE, useDialogManager } from "../../hooks/useDialog";
+import { BasicAppBar } from "../../components/BasicAppBar";
+import { PAGE_CONFIG } from "../../config/PageConfig";
+import { DeleteDialog, LoadingOverlay } from "../../components/CustomOverlay";
+import { AccountForm } from "./AccountForm";
+import { BasicListView, GroupedListView } from "../../components/ListView";
+import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-export default function AutoFitListView() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-
-  const handleOpen = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    id: number
-  ) => {
-    setAnchorEl(event.currentTarget);
-    setSelectedId(id);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-    setSelectedId(null);
-  };
-
-  return (
-    <Box
-      p={2}
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      flexDirection="column"
-    >
-      <Paper
-        elevation={0}
-        sx={{
-          width: "100%",
-          borderRadius: 2,
-        }}
-      >
-        <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-          {[{ id: 1, name: "test", description: "test" }].map((item) => (
-            <Grid key={item.id} size={4}>
-              <Paper
-                elevation={1}
-                sx={{
-                  p: 2,
-                  borderRadius: 2,
-                  height: "100%",
-                  transition: "background-color 0.2s",
-                  "&:hover": {
-                    bgcolor: "action.hover",
-                  },
-                }}
-              >
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  spacing={1}
-                >
-                  <Box flex={1} minWidth={0}>
-                    <Typography
-                      variant="h6"
-                      noWrap
-                      sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
-                    >
-                      {item.name}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      noWrap
-                      sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
-                    >
-                      {item.description}
-                    </Typography>
-                  </Box>
-                  <Box display="flex" flexShrink={0}>
-                    <IconButton
-                      size="large"
-                      onClick={(e) => handleOpen(e, item.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Box>
-                </Stack>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
-      </Paper>
-
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <MenuItem
-          onClick={() => {
-            console.log("Edit", selectedId);
-            handleClose();
-          }}
-        >
-          Edit
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            console.log("Delete", selectedId);
-            handleClose();
-          }}
-        >
-          Delete
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            console.log("View", selectedId);
-            handleClose();
-          }}
-        >
-          View
-        </MenuItem>
-      </Menu>
-    </Box>
-  );
-}
+const initQuery = {
+  keyword: "",
+  page: 0,
+  size: ITEMS_PER_PAGE,
+};
 
 export const Account = () => {
+  const { account, loading } = useApi();
+  const {
+    data,
+    query,
+    setQuery,
+    totalPages,
+    handlePageChange,
+    handleSubmitQuery,
+  } = useGridView({
+    fetchListApi: account.list,
+    initQuery,
+  });
+  const navigate = useNavigate();
+  const { visible, type, data: formData, open, close } = useDialogManager();
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="sticky">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
-
-          <Avatar>H</Avatar>
-        </Toolbar>
-
-        <Box sx={{ px: 2, pb: 2 }}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            {/* Ô nhập tự co giãn */}
-            {/* <Box bgcolor="background.paper" display={"flex"}> */}
-            <TextField
-              placeholder={TEXT.SEARCH}
-              fullWidth
-              sx={{
-                bgcolor: "background.paper",
-              }}
-              // Nếu muốn nút search nằm trong luôn thì có thể dùng InputAdornment
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton>
-                      <ClearIcon />
-                    </IconButton>
-                    <IconButton>
-                      <SearchIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Button variant="contained">
-              <Box sx={{ p: 1 }}>{TEXT.CREATE}</Box>
-            </Button>
-          </Stack>
-        </Box>
-      </AppBar>
-      <Box
-        position={"sticky"}
-        top={64}
-        zIndex={10}
-        bgcolor={"background.paper"}
-      ></Box>
-      <Box mx={2} mt={2}>
-        <CustomBreadcrumb
-          items={[{ label: "TEST" }, { label: "TEST" }, { label: "TEST" }]}
+    <BasicAppBar
+      title={PAGE_CONFIG.ACCOUNT.label}
+      search={{
+        value: query.keyword,
+        onChange: (value: any) => setQuery({ ...query, keyword: value }),
+        onSearch: async () => await handleSubmitQuery(query),
+        onClear: async () => await handleSubmitQuery(initQuery),
+      }}
+      create={{
+        onClick: () =>
+          navigate(PAGE_CONFIG.CREATE_ACCOUNT.path, {
+            state: { query },
+          }),
+      }}
+    >
+      <>
+        <LoadingOverlay loading={loading} />
+        <GroupedListView
+          groupBy={(item: any) => item.platform?.id}
+          getGroupLabel={(item: any) => item.platform?.name || "No Platform"}
+          data={data}
+          menu={[
+            { label: TEXT.UPDATE, onClick: (id) => open({ id }) },
+            {
+              label: TEXT.DELETE,
+              onClick: (id) => open({ id }, DIALOG_TYPE.DELETE),
+            },
+          ]}
+          renderContent={function (item: any): React.ReactNode {
+            return (
+              <>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
+                >
+                  {item.username}
+                </Typography>
+                {/* <Link
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="body2"
+                  noWrap
+                  sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
+                >
+                  {item.url}
+                </Link> */}
+              </>
+            );
+          }}
+          pagination={{
+            page: query.page,
+            totalPages: totalPages,
+            onChange: handlePageChange,
+          }}
         />
-      </Box>
-      <AutoFitListView />
-      <Box
-        position={"sticky"}
-        bottom={0}
-        zIndex={10}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        bgcolor={"background.paper"}
-      >
-        <Box sx={{ py: 2 }}>
-          <Pagination
-            count={1000}
-            size="large"
-            color="primary"
-            shape="rounded"
-            siblingCount={0}
-          />
-        </Box>
-      </Box>
-    </Box>
+      </>
+    </BasicAppBar>
   );
 };

@@ -1180,4 +1180,13 @@
     <changeSet author="MSA" id="1752728957490-26">
         <dropColumn columnName="session" tableName="db_session"/>
     </changeSet>
+    <changeSet author="MSA" id="1752728957490-27">
+        <dropForeignKeyConstraint baseTableName="db_db_config" constraintName="FKqww84ue8t5dvy091afmls31m3"/>
+    </changeSet>
+    <changeSet author="MSA" id="1752728957490-28">
+        <dropColumn columnName="locked_time" tableName="db_db_config"/>
+    </changeSet>
+    <changeSet author="MSA" id="1752728957490-29">
+        <dropColumn columnName="user_id" tableName="db_db_config"/>
+    </changeSet>
 </databaseChangeLog>

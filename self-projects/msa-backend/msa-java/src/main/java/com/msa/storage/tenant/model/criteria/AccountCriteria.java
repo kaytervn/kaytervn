@@ -28,10 +28,12 @@ public class AccountCriteria {
     private Integer status;
     private Integer sortOption;
     private Long tagId;
+    private String createdBy = "";
 
     public Specification<Account> getCriteria() {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("createdBy"), getCreatedBy()));
             Join<Account, Platform> platformJoin = root.join("platform", JoinType.LEFT);
             Join<Account, Tag> tagJoin = root.join("tag", JoinType.LEFT);
             Join<Account, Account> parentJoin = root.join("parent", JoinType.LEFT);

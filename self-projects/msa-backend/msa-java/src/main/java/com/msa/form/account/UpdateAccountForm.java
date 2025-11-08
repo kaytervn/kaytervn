@@ -17,4 +17,5 @@ public class UpdateAccountForm {
     @ApiModelProperty(required = true)
     private Long platformId;
     private Long tagId;
+    private String codes;
 }

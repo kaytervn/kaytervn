@@ -275,4 +275,9 @@
     <changeSet author="MSA" id="1753333929415-26">
         <dropColumn columnName="image_path" tableName="db_schedule"/>
     </changeSet>
+    <changeSet author="MSA" id="1753333929415-27">
+        <addColumn tableName="db_account">
+            <column name="codes" type="TEXT" afterColumn="note"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

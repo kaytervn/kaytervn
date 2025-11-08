@@ -41,7 +41,7 @@ public class PlatformController extends ABasicController {
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PL_V')")
     public ApiMessageDto<PlatformDto> get(@PathVariable("id") Long id) {
-        Platform platform = platformRepository.findById(id).orElse(null);
+        Platform platform = platformRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (platform == null) {
             throw new BadRequestException(ErrorCode.PLATFORM_ERROR_NOT_FOUND, "Not found platform");
         }
@@ -51,6 +51,7 @@ public class PlatformController extends ABasicController {
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PL_L')")
     public ApiMessageDto<ResponseListDto<List<PlatformDto>>> list(PlatformCriteria platformCriteria, Pageable pageable) {
+        platformCriteria.setCreatedBy(getCurrentUserName());
         Page<Platform> listPlatform = platformRepository.findAll(platformCriteria.getCriteria(), pageable);
         ResponseListDto<List<PlatformDto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(platformMapper.fromEntityListToPlatformDtoList(listPlatform.getContent()));
@@ -61,6 +62,7 @@ public class PlatformController extends ABasicController {
 
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListDto<List<PlatformDto>>> autoComplete(PlatformCriteria platformCriteria, @PageableDefault Pageable pageable) {
+        platformCriteria.setCreatedBy(getCurrentUserName());
         platformCriteria.setStatus(AppConstant.STATUS_ACTIVE);
         Page<Platform> listPlatform = platformRepository.findAll(platformCriteria.getCriteria(), pageable);
         ResponseListDto<List<PlatformDto>> responseListObj = new ResponseListDto<>();
@@ -73,7 +75,7 @@ public class PlatformController extends ABasicController {
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PL_C')")
     public ApiMessageDto<String> create(@Valid @RequestBody CreatePlatformForm form, BindingResult bindingResult) {
-        if (platformRepository.existsByName(form.getName())) {
+        if (platformRepository.existsByNameAndCreatedBy(form.getName(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.PLATFORM_ERROR_NAME_EXISTED, "Name existed");
         }
         Platform platform = platformMapper.fromCreatePlatformFormToEntity(form);
@@ -84,11 +86,11 @@ public class PlatformController extends ABasicController {
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PL_U')")
     public ApiMessageDto<String> update(@Valid @RequestBody UpdatePlatformForm form, BindingResult bindingResult) {
-        Platform platform = platformRepository.findById(form.getId()).orElse(null);
+        Platform platform = platformRepository.findFirstByIdAndCreatedBy(form.getId(), getCurrentUserName()).orElse(null);
         if (platform == null) {
             throw new BadRequestException(ErrorCode.PLATFORM_ERROR_NOT_FOUND, "Not found platform");
         }
-        if (platformRepository.existsByNameAndIdNot(form.getName(), platform.getId())) {
+        if (platformRepository.existsByNameAndIdNotAndCreatedBy(form.getName(), platform.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.PLATFORM_ERROR_NAME_EXISTED, "Name existed");
         }
         platformMapper.fromUpdatePlatformFormToEntity(form, platform);
@@ -99,11 +101,11 @@ public class PlatformController extends ABasicController {
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PL_D')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
-        Platform platform = platformRepository.findById(id).orElse(null);
+        Platform platform = platformRepository.findFirstByIdAndCreatedBy(id,getCurrentUserName()).orElse(null);
         if (platform == null) {
             throw new BadRequestException(ErrorCode.PLATFORM_ERROR_NOT_FOUND, "Not found platform");
         }
-        if (accountRepository.existsByPlatformId(id)) {
+        if (accountRepository.existsByPlatformIdAndCreatedBy(id, getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.PLATFORM_ERROR_ACCOUNT_EXISTED, "Account existed");
         }
         platformRepository.deleteById(id);

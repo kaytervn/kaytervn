@@ -50,7 +50,7 @@ public class BankController extends ABasicController {
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('BA_V')")
     public ApiMessageDto<BankDto> get(@PathVariable("id") Long id) {
-        Bank bank = bankRepository.findById(id).orElse(null);
+        Bank bank = bankRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (bank == null) {
             throw new BadRequestException(ErrorCode.BANK_ERROR_NOT_FOUND, "Not found bank");
         }
@@ -60,6 +60,7 @@ public class BankController extends ABasicController {
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('BA_L')")
     public ApiMessageDto<ResponseListDto<List<BankDto>>> list(BankCriteria bankCriteria, Pageable pageable) {
+        bankCriteria.setCreatedBy(getCurrentUserName());
         Page<Bank> listBank = bankRepository.findAll(bankCriteria.getCriteria(), pageable);
         ResponseListDto<List<BankDto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(bankMapper.fromEntityListToBankDtoList(listBank.getContent(), encryptionService.getServerKeyWrapper()));
@@ -70,6 +71,7 @@ public class BankController extends ABasicController {
 
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListDto<List<BankDto>>> autoComplete(BankCriteria bankCriteria, @PageableDefault Pageable pageable) {
+        bankCriteria.setCreatedBy(getCurrentUserName());
         bankCriteria.setStatus(AppConstant.STATUS_ACTIVE);
         Page<Bank> listBank = bankRepository.findAll(bankCriteria.getCriteria(), pageable);
         ResponseListDto<List<BankDto>> responseListObj = new ResponseListDto<>();
@@ -92,11 +94,11 @@ public class BankController extends ABasicController {
             throw new BadRequestException("Invalid pin format");
         }
         Bank bank = bankMapper.fromCreateBankFormToEntity(form);
-        Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_BANK).orElse(null);
+        Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_BANK, getCurrentUserName()).orElse(null);
         if (tag == null) {
             throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
         }
-        if (bankRepository.existsByUsernameAndTagId(form.getUsername(), form.getTagId())) {
+        if (bankRepository.existsByUsernameAndTagIdAndCreatedBy(form.getUsername(), form.getTagId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.BANK_ERROR_USERNAME_EXISTED, "Username existed with this tag");
         }
         bank.setTag(tag);
@@ -118,16 +120,16 @@ public class BankController extends ABasicController {
         if (listPins == null) {
             throw new BadRequestException("Invalid pin format");
         }
-        Bank bank = bankRepository.findById(form.getId()).orElse(null);
+        Bank bank = bankRepository.findFirstByIdAndCreatedBy(form.getId(), getCurrentUserName()).orElse(null);
         if (bank == null) {
             throw new BadRequestException(ErrorCode.BANK_ERROR_NOT_FOUND, "Not found bank");
         }
         bankMapper.fromUpdateBankFormToEntity(form, bank);
-        Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_BANK).orElse(null);
+        Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_BANK, getCurrentUserName()).orElse(null);
         if (tag == null) {
             throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
         }
-        if (bankRepository.existsByUsernameAndTagIdAndIdNot(form.getUsername(), form.getTagId(), bank.getId())) {
+        if (bankRepository.existsByUsernameAndTagIdAndIdNotAndCreatedBy(form.getUsername(), form.getTagId(), bank.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.BANK_ERROR_USERNAME_EXISTED, "Username existed with this tag");
         }
         bank.setTag(tag);
@@ -140,7 +142,7 @@ public class BankController extends ABasicController {
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('BA_D')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
-        Bank bank = bankRepository.findById(id).orElse(null);
+        Bank bank = bankRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (bank == null) {
             throw new BadRequestException(ErrorCode.BANK_ERROR_NOT_FOUND, "Not found bank");
         }

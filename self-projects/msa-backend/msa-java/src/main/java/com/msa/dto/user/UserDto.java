@@ -1,7 +1,6 @@
 package com.msa.dto.user;
 
 import com.msa.dto.ABasicAdminDto;
-import com.msa.dto.dbConfig.DbConfigDto;
 import com.msa.dto.group.GroupDto;
 import lombok.Data;
 
@@ -18,5 +17,5 @@ public class UserDto extends ABasicAdminDto {
     private Date lastLogin;
     private Boolean isMfa;
     private Boolean isSuperAdmin;
-    private DbConfigDto dbConfig;
+    private String codes;
 }

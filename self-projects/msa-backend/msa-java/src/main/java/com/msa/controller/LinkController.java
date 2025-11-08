@@ -42,7 +42,7 @@ public class LinkController extends ABasicController {
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('LI_V')")
     public ApiMessageDto<LinkDto> get(@PathVariable("id") Long id) {
-        Link link = linkRepository.findById(id).orElse(null);
+        Link link = linkRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (link == null) {
             throw new BadRequestException(ErrorCode.LINK_ERROR_NOT_FOUND, "Not found link");
         }
@@ -52,6 +52,7 @@ public class LinkController extends ABasicController {
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('LI_L')")
     public ApiMessageDto<ResponseListDto<List<LinkDto>>> list(LinkCriteria linkCriteria, Pageable pageable) {
+        linkCriteria.setCreatedBy(getCurrentUserName());
         Page<Link> listLink = linkRepository.findAll(linkCriteria.getCriteria(), pageable);
         ResponseListDto<List<LinkDto>> responseListObj = new ResponseListDto<>();
         responseListObj.setContent(linkMapper.fromEntityListToLinkDtoList(listLink.getContent()));
@@ -62,6 +63,7 @@ public class LinkController extends ABasicController {
 
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListDto<List<LinkDto>>> autoComplete(LinkCriteria linkCriteria, @PageableDefault Pageable pageable) {
+        linkCriteria.setCreatedBy(getCurrentUserName());
         linkCriteria.setStatus(AppConstant.STATUS_ACTIVE);
         Page<Link> listLink = linkRepository.findAll(linkCriteria.getCriteria(), pageable);
         ResponseListDto<List<LinkDto>> responseListObj = new ResponseListDto<>();
@@ -74,15 +76,15 @@ public class LinkController extends ABasicController {
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('LI_C')")
     public ApiMessageDto<String> create(@Valid @RequestBody CreateLinkForm form, BindingResult bindingResult) {
-        if (linkRepository.existsByName(form.getName())) {
+        if (linkRepository.existsByNameAndCreatedBy(form.getName(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.LINK_ERROR_NAME_EXISTED, "Name existed");
         }
-        if (linkRepository.existsByLink(form.getLink())) {
+        if (linkRepository.existsByLinkAndCreatedBy(form.getLink(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.LINK_ERROR_LINK_EXISTED, "Link existed");
         }
         Link link = linkMapper.fromCreateLinkFormToEntity(form);
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_LINK).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_LINK, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -97,19 +99,19 @@ public class LinkController extends ABasicController {
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('LI_U')")
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateLinkForm form, BindingResult bindingResult) {
-        Link link = linkRepository.findById(form.getId()).orElse(null);
+        Link link = linkRepository.findFirstByIdAndCreatedBy(form.getId(), getCurrentUserName()).orElse(null);
         if (link == null) {
             throw new BadRequestException(ErrorCode.LINK_ERROR_NOT_FOUND, "Not found link");
         }
-        if (linkRepository.existsByNameAndIdNot(form.getName(), link.getId())) {
+        if (linkRepository.existsByNameAndIdNotAndCreatedBy(form.getName(), link.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.LINK_ERROR_NAME_EXISTED, "Name existed");
         }
-        if (linkRepository.existsByLinkAndIdNot(form.getLink(), link.getId())) {
+        if (linkRepository.existsByLinkAndIdNotAndCreatedBy(form.getLink(), link.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.LINK_ERROR_LINK_EXISTED, "Link existed");
         }
         linkMapper.fromUpdateLinkFormToEntity(form, link);
         if (form.getTagId() != null) {
-            Tag tag = tagRepository.findFirstByIdAndKind(form.getTagId(), AppConstant.TAG_KIND_LINK).orElse(null);
+            Tag tag = tagRepository.findFirstByIdAndKindAndCreatedBy(form.getTagId(), AppConstant.TAG_KIND_LINK, getCurrentUserName()).orElse(null);
             if (tag == null) {
                 throw new BadRequestException(ErrorCode.TAG_ERROR_NOT_FOUND, "Not found tag");
             }
@@ -124,7 +126,7 @@ public class LinkController extends ABasicController {
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('LI_D')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
-        Link link = linkRepository.findById(id).orElse(null);
+        Link link = linkRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (link == null) {
             throw new BadRequestException(ErrorCode.LINK_ERROR_NOT_FOUND, "Not found link");
         }

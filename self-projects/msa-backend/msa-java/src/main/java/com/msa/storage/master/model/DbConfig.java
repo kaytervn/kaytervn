@@ -5,12 +5,9 @@ import com.msa.storage.Auditable;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "db_db_config")
@@ -25,9 +22,4 @@ public class DbConfig extends Auditable<String> {
     private String url;
     private String username;
     private String password;
-    private Date lockedTime;
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
 }

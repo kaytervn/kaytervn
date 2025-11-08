@@ -8,13 +8,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface PlatformRepository extends JpaRepository<Platform, Long>, JpaSpecificationExecutor<Platform> {
-    Boolean existsByName(String name);
+import java.util.Optional;
 
-    Boolean existsByNameAndIdNot(String name, Long id);
+public interface PlatformRepository extends JpaRepository<Platform, Long>, JpaSpecificationExecutor<Platform> {
+    Boolean existsByNameAndCreatedBy(String name, String createdBy);
+
+    Boolean existsByNameAndIdNotAndCreatedBy(String name, Long id, String createdBy);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Platform p SET p.totalAccounts = :count WHERE p.id = :id")
-    void updateTotalAccounts(@Param("id") Long id, @Param("count") Integer count);
+    @Query("UPDATE Platform p SET p.totalAccounts = :count WHERE p.id = :id AND p.createdBy = :createdBy")
+    void updateTotalAccountsAndCreatedBy(@Param("id") Long id, @Param("count") Integer count, @Param("createdBy") String createdBy);
+
+    Optional<Platform> findFirstByIdAndCreatedBy(Long id, String createdBy);
 }

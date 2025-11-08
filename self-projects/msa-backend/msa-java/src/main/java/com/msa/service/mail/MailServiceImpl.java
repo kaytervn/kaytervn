@@ -20,8 +20,8 @@ public class MailServiceImpl {
     private EmailService emailService;
 
     public void sendMsgLockAccount(String mail) {
-        String subject = "Your account has been locked";
-        String message = "Your account is locked and will be deleted in 30 days. Contact the admin for assistance.";
+        String subject = "[No-Reply] Your account has been locked";
+        String message = "Your account is locked. Contact the admin for assistance.";
         emailService.sendEmail(mail, subject, message);
     }
 
