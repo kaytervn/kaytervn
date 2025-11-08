@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:jdk-11.0.11_9-alpine
+FROM eclipse-temurin:11-jdk-alpine-3.22
 
 COPY ./target/msa-0.0.1.jar app.jar
 
