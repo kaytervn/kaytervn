@@ -19,7 +19,6 @@ public class Platform extends Auditable<String> {
     @GenericGenerator(name = AppConstant.ID_GENERATOR_NAME, strategy = AppConstant.ID_GENERATOR_STRATEGY)
     @GeneratedValue(generator = AppConstant.ID_GENERATOR_NAME)
     private Long id;
-    @Column(unique = true)
     private String name;
     private String url;
     private Integer totalAccounts = 0;

@@ -280,4 +280,7 @@
             <column name="codes" type="TEXT" afterColumn="note"/>
         </addColumn>
     </changeSet>
+    <changeSet author="MSA" id="1753333929415-28">
+        <dropUniqueConstraint constraintName="UC_DB_PLATFORMNAME_COL" tableName="db_platform"/>
+    </changeSet>
 </databaseChangeLog>
