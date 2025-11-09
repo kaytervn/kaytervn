@@ -44,6 +44,7 @@ export const AccountForm = () => {
       password: "",
       platformId: undefined,
       note: "",
+      codes: "[]",
     },
   });
   const {
