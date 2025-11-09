@@ -19,6 +19,7 @@ import { Stack } from "@mui/material";
 import { SelectPlatformField } from "../../components/SelectBox";
 import useEncryption from "../../hooks/useEncryption";
 import { CommonJsonListField } from "../../components/JsonFieldList";
+import type { platform } from "os";
 
 const schema = yup.object().shape({
   username: yup.string().required("Tài khoản không hợp lệ"),
@@ -30,7 +31,7 @@ export const AccountForm = () => {
   const { id } = useParams();
   const { showToast } = useToast();
   const { account, loading } = useApi();
-  const { userEncrypt } = useEncryption();
+  const { userEncrypt, userDecrypt } = useEncryption();
   const isUpdate = !!id;
   const {
     handleSubmit,
@@ -55,10 +56,13 @@ export const AccountForm = () => {
     if (fetchData) {
       reset({
         username: fetchData.username ?? "",
-        password: fetchData.password ?? "",
+        password: userDecrypt(fetchData.password) ?? "",
         note: fetchData.note ?? "",
+        platformId: fetchData.platform?.id,
+        codes: "[]",
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchData, reset]);
 
   const onSubmit = async (formData: any) => {
