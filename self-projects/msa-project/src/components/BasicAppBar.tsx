@@ -168,7 +168,7 @@ export const BasicAppBar = (props: AppBarProps) => {
               </MenuItem>
             </Menu>
           </Toolbar>
-          {props.renderToolbar}
+          {!sessionKeyTimout && props.renderToolbar}
         </AppBar>
         <Drawer
           anchor="left"
