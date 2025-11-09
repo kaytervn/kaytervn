@@ -47,7 +47,7 @@ export const TEXT = {
   DELETE_ACCOUNT: "Xoá tài khoản",
   UPDATE: "Sửa",
   DELETE: "Xoá",
-  SUBMIT: "Xác nhận",
+  SUBMIT: "Nhập",
 };
 
 export const GRANT_TYPE = {

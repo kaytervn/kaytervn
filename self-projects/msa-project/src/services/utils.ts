@@ -185,3 +185,19 @@ export function getAvatarInitials(fullName?: string): string {
   }
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
+
+export const normalizeVietnamese = (str: any) => {
+  if (!str || typeof str !== "string") return "";
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .replace(/\s+/g, "")
+    .replace(/[^\p{L}\p{N}]/gu, "")
+    .toLowerCase();
+};
+
+export const isExists = (value: any): boolean => {
+  return value !== undefined && value !== null;
+};

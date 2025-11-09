@@ -119,7 +119,7 @@ const UpdateAccount = () => {
           note: form.note,
           platformId: form.platformId,
           tagId: form.tagId,
-          codes: form.codes,
+          codes: encryptFieldByUserKey(sessionKey, form.codes),
         });
       }
       if (res.result) {

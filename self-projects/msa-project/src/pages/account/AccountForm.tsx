@@ -95,12 +95,16 @@ export const AccountForm = () => {
             required
           />
         </Stack>
-        <CommonJsonListField control={control} name={"codes"} label={"Code"} />
         <CommonTextAreaField
           control={control}
           name={"note"}
           label={"Ghi chú"}
           required={false}
+        />
+        <CommonJsonListField
+          control={control}
+          name={"codes"}
+          label={"Mã khôi phục"}
         />
       </Stack>
       <CommonFormActions

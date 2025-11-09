@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
+import "./index.css";
 import { ToastProvider } from "./config/ToastProvider.tsx";
 import { GlobalProvider } from "./config/GlobalProvider.tsx";
 import { AuthProvider } from "./config/AuthProvider.tsx";

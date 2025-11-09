@@ -91,7 +91,6 @@ export const Platform = () => {
                   variant="body2"
                   noWrap
                   sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
-                  display={"flex"}
                 >
                   {item.url}
                 </Link>
