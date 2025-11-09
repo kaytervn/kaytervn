@@ -37,7 +37,7 @@ public class QuarterlyReminderScheduler {
     @Value("${app.client-domain}")
     private String clientDomain;
 
-    @Scheduled(cron = "0 0 0 1 1,4,7,10 *", zone = SecurityConstant.TIMEZONE_VIETNAM)
+//    @Scheduled(cron = "0 0 0 1 1,4,7,10 *", zone = SecurityConstant.TIMEZONE_VIETNAM)
     public void sendMessageReminder() {
         userRepository.updateAllActiveUserStatus(AppConstant.STATUS_PENDING);
         List<User> users = userRepository.findAllByStatus(AppConstant.STATUS_PENDING);
