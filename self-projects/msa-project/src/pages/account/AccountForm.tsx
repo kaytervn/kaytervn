@@ -18,6 +18,7 @@ import { CommonFormActions } from "../../components/Toolbar";
 import { Stack } from "@mui/material";
 import { SelectPlatformField } from "../../components/SelectBox";
 import useEncryption from "../../hooks/useEncryption";
+import { CommonJsonListField } from "../../components/JsonFieldList";
 
 const schema = yup.object().shape({
   username: yup.string().required("Tài khoản không hợp lệ"),
@@ -94,6 +95,7 @@ export const AccountForm = () => {
             required
           />
         </Stack>
+        <CommonJsonListField control={control} name={"codes"} label={"Code"} />
         <CommonTextAreaField
           control={control}
           name={"note"}
