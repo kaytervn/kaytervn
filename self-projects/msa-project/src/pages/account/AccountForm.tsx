@@ -19,7 +19,6 @@ import { Stack } from "@mui/material";
 import { SelectPlatformField } from "../../components/SelectBox";
 import useEncryption from "../../hooks/useEncryption";
 import { CommonJsonListField } from "../../components/JsonFieldList";
-import type { platform } from "os";
 
 const schema = yup.object().shape({
   username: yup.string().required("Tài khoản không hợp lệ"),
