@@ -1,13 +1,17 @@
 import { Link, Typography } from "@mui/material";
 import { BasicAppBar } from "../../components/BasicAppBar";
 import { BasicListView } from "../../components/ListView";
-import { PAGE_CONFIG } from "../../config/PageConfig";
 import useApi from "../../hooks/useApi";
 import { useGridView } from "../../hooks/useGridView";
 import { ITEMS_PER_PAGE, TEXT } from "../../services/constant";
 import { DeleteDialog, LoadingOverlay } from "../../components/CustomOverlay";
 import { DIALOG_TYPE, useDialogManager } from "../../hooks/useDialog";
 import { PlatformForm } from "./PlatformForm";
+import {
+  CreateFabButton,
+  SearchBar,
+  ToolbarContainer,
+} from "../../components/Toolbar";
 
 const initQuery = {
   keyword: "",
@@ -31,16 +35,16 @@ export const Platform = () => {
   const { visible, type, data: formData, open, close } = useDialogManager();
   return (
     <BasicAppBar
-      title={PAGE_CONFIG.PLATFORM.label}
-      search={{
-        value: query.keyword,
-        onChange: (value: any) => setQuery({ ...query, keyword: value }),
-        onSearch: async () => await handleSubmitQuery(query),
-        onClear: async () => await handleSubmitQuery(initQuery),
-      }}
-      create={{
-        onClick: open,
-      }}
+      renderToolbar={
+        <ToolbarContainer>
+          <SearchBar
+            value={query.keyword}
+            onChange={(value: any) => setQuery({ ...query, keyword: value })}
+            onSearch={async () => await handleSubmitQuery(query)}
+            onClear={async () => await handleSubmitQuery(initQuery)}
+          />
+        </ToolbarContainer>
+      }
     >
       <>
         <LoadingOverlay loading={loading} />
@@ -87,6 +91,7 @@ export const Platform = () => {
                   variant="body2"
                   noWrap
                   sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
+                  display={"flex"}
                 >
                   {item.url}
                 </Link>
@@ -99,6 +104,7 @@ export const Platform = () => {
             onChange: handlePageChange,
           }}
         />
+        <CreateFabButton onClick={open} />
       </>
     </BasicAppBar>
   );

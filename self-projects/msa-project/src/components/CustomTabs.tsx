@@ -52,13 +52,5 @@ export const AccessibleTabs = ({ tabs }: AccessibleTabsProps) => {
 };
 
 export const AccountTabs = () => {
-  return (
-    <AccessibleTabs
-      tabs={[
-        PAGE_CONFIG.PLATFORM,
-        PAGE_CONFIG.ACCOUNT_TAG,
-        PAGE_CONFIG.ACCOUNT,
-      ]}
-    />
-  );
+  return <AccessibleTabs tabs={[PAGE_CONFIG.PLATFORM, PAGE_CONFIG.ACCOUNT]} />;
 };

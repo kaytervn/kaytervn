@@ -56,7 +56,7 @@ export const Profile = ({ isVisible, onClose, onSubmit }: any) => {
   };
 
   return (
-    <Dialog open={isVisible}>
+    <Dialog open={isVisible} onClose={onClose}>
       <DialogTitle>{TEXT.PROFILE}</DialogTitle>
       <DialogContent>
         <TextField
@@ -97,7 +97,7 @@ export const Profile = ({ isVisible, onClose, onSubmit }: any) => {
         <Button size="large" onClick={onClose}>
           {TEXT.CLOSE}
         </Button>
-        <Button size="large" onClick={handleSubmit}>
+        <Button size="large" onClick={handleSubmit} variant="contained">
           {TEXT.SAVE}
         </Button>
       </DialogActions>

@@ -39,7 +39,7 @@ export const RequestKey = ({ isVisible, onClose, onSubmit }: any) => {
     }
   };
   return (
-    <Dialog open={isVisible} onClose={onClose}>
+    <Dialog open={isVisible} onClose={onClose} fullWidth>
       <DialogTitle>{TEXT.REQUEST_KEY}</DialogTitle>
       <DialogContent>
         <PasswordField
@@ -52,7 +52,7 @@ export const RequestKey = ({ isVisible, onClose, onSubmit }: any) => {
         <Button size="large" onClick={onClose}>
           {TEXT.CANCEL}
         </Button>
-        <Button size="large" onClick={handleSubmit}>
+        <Button size="large" onClick={handleSubmit} variant="contained">
           {TEXT.SEND}
         </Button>
       </DialogActions>

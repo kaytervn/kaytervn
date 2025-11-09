@@ -112,8 +112,15 @@ export function CommonFormDialog<T extends Record<string, any>>({
         ))}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleGuardedClose}>{TEXT.CLOSE}</Button>
-        <Button onClick={handleSubmit(handleSave)} disabled={!isDirty}>
+        <Button size="large" onClick={handleGuardedClose}>
+          {TEXT.CLOSE}
+        </Button>
+        <Button
+          size="large"
+          variant="contained"
+          onClick={handleSubmit(handleSave)}
+          disabled={!isDirty}
+        >
           {TEXT.SAVE}
         </Button>
       </DialogActions>

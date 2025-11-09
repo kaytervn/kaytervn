@@ -25,7 +25,7 @@ export const Logout = ({ isVisible, onClose }: any) => {
         <Button size="large" onClick={onClose}>
           {TEXT.CANCEL}
         </Button>
-        <Button size="large" onClick={handleSubmit}>
+        <Button size="large" onClick={handleSubmit} variant="contained">
           {TEXT.EXIT}
         </Button>
       </DialogActions>

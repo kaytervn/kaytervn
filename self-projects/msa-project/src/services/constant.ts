@@ -44,8 +44,10 @@ export const TEXT = {
   CREATE_PLATFORM: "Thêm nền tảng",
   UPDATE_PLATFORM: "Sửa nền tảng",
   DELETE_PLATFORM: "Xoá nền tảng",
+  DELETE_ACCOUNT: "Xoá tài khoản",
   UPDATE: "Sửa",
   DELETE: "Xoá",
+  SUBMIT: "Xác nhận",
 };
 
 export const GRANT_TYPE = {

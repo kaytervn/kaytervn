@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useQueryState from "./useQueryState";
-import { useLocation } from "react-router-dom";
-import { ENCRYPT_PATH } from "../config/PageConfig";
+import { usePageEncryption } from "./usePageLabel";
+import { useFormGuard } from "./usePageBlocker";
 
 export function useDialogFormData(
   open: boolean,
@@ -34,16 +34,18 @@ export function useDialogFormData(
 }
 
 export function usePageFormData(
+  isDirty: boolean,
   onFallbackPath: string,
   id?: string,
   api?: any
 ) {
-  const location = useLocation();
+  const encrypt = usePageEncryption();
   const [data, setData] = useState<any | undefined>(undefined);
-  const { handleNavigateBack } = useQueryState({
+  const { handleNavigateBack, forceBack } = useQueryState({
     path: onFallbackPath,
-    // requireSessionKey: ENCRYPT_PATH.includes(location.pathname),
+    requireSessionKey: encrypt,
   });
+  const handleGuardedClose = useFormGuard(isDirty, handleNavigateBack);
 
   useEffect(() => {
     if (!id) {
@@ -59,5 +61,5 @@ export function usePageFormData(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, id]);
 
-  return { data, onClose: handleNavigateBack };
+  return { data, onClose: handleGuardedClose, forceBack };
 }

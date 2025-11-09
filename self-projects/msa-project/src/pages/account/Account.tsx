@@ -6,18 +6,25 @@ import { DIALOG_TYPE, useDialogManager } from "../../hooks/useDialog";
 import { BasicAppBar } from "../../components/BasicAppBar";
 import { PAGE_CONFIG } from "../../config/PageConfig";
 import { DeleteDialog, LoadingOverlay } from "../../components/CustomOverlay";
-import { AccountForm } from "./AccountForm";
-import { BasicListView, GroupedListView } from "../../components/ListView";
-import { Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { GroupedListView } from "../../components/ListView";
+import { Stack, Typography } from "@mui/material";
+import { generatePath, useLocation, useNavigate } from "react-router-dom";
+import {
+  CreateFabButton,
+  SearchBar,
+  ToolbarContainer,
+} from "../../components/Toolbar";
+import { SelectPlatform } from "../../components/SelectBox";
 
 const initQuery = {
   keyword: "",
   page: 0,
+  platformId: undefined,
   size: ITEMS_PER_PAGE,
 };
 
 export const Account = () => {
+  const { state } = useLocation();
   const { account, loading } = useApi();
   const {
     data,
@@ -28,34 +35,58 @@ export const Account = () => {
     handleSubmitQuery,
   } = useGridView({
     fetchListApi: account.list,
-    initQuery,
+    initQuery: state?.query || initQuery,
   });
   const navigate = useNavigate();
   const { visible, type, data: formData, open, close } = useDialogManager();
+
   return (
     <BasicAppBar
-      title={PAGE_CONFIG.ACCOUNT.label}
-      search={{
-        value: query.keyword,
-        onChange: (value: any) => setQuery({ ...query, keyword: value }),
-        onSearch: async () => await handleSubmitQuery(query),
-        onClear: async () => await handleSubmitQuery(initQuery),
-      }}
-      create={{
-        onClick: () =>
-          navigate(PAGE_CONFIG.CREATE_ACCOUNT.path, {
-            state: { query },
-          }),
-      }}
+      renderToolbar={
+        <ToolbarContainer>
+          <Stack direction={{ xs: "column", md: "row", lg: "row" }} spacing={1}>
+            <SelectPlatform
+              value={query.platformId}
+              onChange={(value: any) =>
+                setQuery({ ...query, platformId: value })
+              }
+            />
+            <SearchBar
+              value={query.keyword}
+              onChange={(value: any) => setQuery({ ...query, keyword: value })}
+              onSearch={async () => await handleSubmitQuery(query)}
+              onClear={() => setQuery({ ...query, keyword: "" })}
+            />
+          </Stack>
+        </ToolbarContainer>
+      }
     >
       <>
         <LoadingOverlay loading={loading} />
+        {type === DIALOG_TYPE.DELETE && (
+          <DeleteDialog
+            open={visible}
+            onClose={close}
+            onDelete={() => account.del(formData?.id)}
+            refreshData={() => handleSubmitQuery(query)}
+            title={TEXT.DELETE_ACCOUNT}
+          />
+        )}
         <GroupedListView
           groupBy={(item: any) => item.platform?.id}
           getGroupLabel={(item: any) => item.platform?.name || "No Platform"}
           data={data}
           menu={[
-            { label: TEXT.UPDATE, onClick: (id) => open({ id }) },
+            {
+              label: TEXT.UPDATE,
+              onClick: (id) =>
+                navigate(
+                  generatePath(PAGE_CONFIG.UPDATE_ACCOUNT.path, { id }),
+                  {
+                    state: { query },
+                  }
+                ),
+            },
             {
               label: TEXT.DELETE,
               onClick: (id) => open({ id }, DIALOG_TYPE.DELETE),
@@ -67,20 +98,19 @@ export const Account = () => {
                 <Typography
                   variant="h6"
                   noWrap
+                  display={"flex"}
                   sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
                 >
-                  {item.username}
+                  {item.username ?? item?.parent?.username}
                 </Typography>
-                {/* <Link
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="body2"
+                <Typography
                   noWrap
+                  variant="body2"
                   sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
+                  color="text.secondary"
                 >
-                  {item.url}
-                </Link> */}
+                  {item?.parent?.platform?.name}
+                </Typography>
               </>
             );
           }}
@@ -89,6 +119,13 @@ export const Account = () => {
             totalPages: totalPages,
             onChange: handlePageChange,
           }}
+        />
+        <CreateFabButton
+          onClick={() =>
+            navigate(PAGE_CONFIG.CREATE_ACCOUNT.path, {
+              state: { query },
+            })
+          }
         />
       </>
     </BasicAppBar>

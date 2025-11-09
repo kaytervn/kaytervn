@@ -4,25 +4,19 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
 import { useGlobalContext } from "../config/GlobalProvider";
 import { getAvatarInitials } from "../services/utils";
 import {
   Avatar,
-  Button,
   Drawer,
-  InputAdornment,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   Menu,
   MenuItem,
-  Stack,
-  TextField,
 } from "@mui/material";
 import { TEXT, TOAST } from "../services/constant";
-import { ClearOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { type AppBarProps } from "../services/interfaces";
@@ -35,9 +29,13 @@ import { useToast } from "../config/ToastProvider";
 import { Logout } from "../pages/auth/Logout";
 import { ChangePassword } from "../pages/auth/ChangePassword";
 import { Profile } from "../pages/auth/Profile";
+import { usePageEncryption, usePageLabel } from "../hooks/usePageLabel";
+import InputKey from "../pages/others/InputKey";
 
 export const BasicAppBar = (props: AppBarProps) => {
-  const showSearchBar = !!props.search && !!props.create;
+  const { sessionKey } = useGlobalContext();
+  const encrypt = usePageEncryption();
+  const label = usePageLabel();
   const { showToast } = useToast();
   const { user, loading } = useApi();
   const {
@@ -62,6 +60,7 @@ export const BasicAppBar = (props: AppBarProps) => {
     onClose: pfClose,
   } = useDialog();
   const { profile } = useGlobalContext();
+  const sessionKeyTimout = encrypt && !sessionKey;
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openMenu = Boolean(anchorEl);
@@ -123,7 +122,7 @@ export const BasicAppBar = (props: AppBarProps) => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {props.title}
+              {label}
             </Typography>
             <IconButton onClick={handleMenuClick} size="small">
               <Avatar>{getAvatarInitials(profile?.fullName)}</Avatar>
@@ -169,43 +168,7 @@ export const BasicAppBar = (props: AppBarProps) => {
               </MenuItem>
             </Menu>
           </Toolbar>
-          {showSearchBar && (
-            <Box sx={{ px: 2, pb: 2 }}>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <TextField
-                  value={props.search!.value}
-                  placeholder={TEXT.SEARCH}
-                  fullWidth
-                  sx={{
-                    bgcolor: "background.paper",
-                  }}
-                  onChange={(e) => props.search!.onChange(e.target.value)}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        {props.search!.value && (
-                          <IconButton
-                            onClick={() => {
-                              props.search!.onChange("");
-                              props.search!.onClear();
-                            }}
-                          >
-                            <ClearOutlined />
-                          </IconButton>
-                        )}
-                        <IconButton onClick={props.search!.onSearch}>
-                          <SearchIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <Button variant="contained" onClick={props.create!.onClick}>
-                  <Box sx={{ p: 1 }}>{TEXT.CREATE}</Box>
-                </Button>
-              </Stack>
-            </Box>
-          )}
+          {props.renderToolbar}
         </AppBar>
         <Drawer
           anchor="left"
@@ -255,7 +218,7 @@ export const BasicAppBar = (props: AppBarProps) => {
           onSubmit={handleUpdateProfile}
         />
         <Logout isVisible={loVisible} onClose={loClose} />
-        <Box>{props.children}</Box>
+        <Box>{sessionKeyTimout ? <InputKey /> : props.children}</Box>
       </Box>
     </>
   );

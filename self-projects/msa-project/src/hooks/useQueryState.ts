@@ -18,8 +18,13 @@ const useQueryState = ({ path, requireSessionKey = false }: any) => {
     navigate(path, { state });
   };
 
+  const forceBack = () => {
+    navigate(path, { state, replace: true });
+  };
+
   return {
     handleNavigateBack,
+    forceBack,
   };
 };
 

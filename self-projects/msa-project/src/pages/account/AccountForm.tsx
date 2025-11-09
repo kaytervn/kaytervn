@@ -3,67 +3,109 @@ import { useToast } from "../../config/ToastProvider";
 import useApi from "../../hooks/useApi";
 import { usePageFormData } from "../../hooks/useFormData";
 import { TEXT, TOAST } from "../../services/constant";
-import { useMemo } from "react";
-import { LoadingOverlay } from "../../components/CustomOverlay";
-import { CommonForm } from "../../components/CommonForm";
+import { useEffect } from "react";
+import {
+  CommonFormContainer,
+  CommonPasswordField,
+  CommonTextAreaField,
+  CommonTextField,
+} from "../../components/CommonForm";
 import { useParams } from "react-router-dom";
 import { PAGE_CONFIG } from "../../config/PageConfig";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { CommonFormActions } from "../../components/Toolbar";
+import { Stack } from "@mui/material";
+import { SelectPlatformField } from "../../components/SelectBox";
+import useEncryption from "../../hooks/useEncryption";
 
 const schema = yup.object().shape({
-  name: yup.string().required("Tên không hợp lệ"),
-  url: yup.string().url("URL không hợp lệ").nullable(),
+  username: yup.string().required("Tài khoản không hợp lệ"),
+  password: yup.string().required("Mật khẩu không hợp lệ"),
+  platformId: yup.number().required("Nền tảng không hợp lệ"),
 });
 
 export const AccountForm = () => {
   const { id } = useParams();
   const { showToast } = useToast();
   const { account, loading } = useApi();
+  const { userEncrypt } = useEncryption();
   const isUpdate = !!id;
-  const { data: fetchData, onClose } = usePageFormData(
-    PAGE_CONFIG.ACCOUNT.path,
-    id,
-    account
-  );
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { isDirty },
+  } = useForm<any>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      username: "",
+      password: "",
+      platformId: undefined,
+      note: "",
+    },
+  });
+  const {
+    data: fetchData,
+    onClose,
+    forceBack,
+  } = usePageFormData(isDirty, PAGE_CONFIG.ACCOUNT.path, id, account);
+  useEffect(() => {
+    if (fetchData) {
+      reset({
+        username: fetchData.username ?? "",
+        password: fetchData.password ?? "",
+        note: fetchData.note ?? "",
+      });
+    }
+  }, [fetchData, reset]);
 
-  const handleSubmit = async (formData: any) => {
-    const payload = isUpdate ? { ...formData, id } : formData;
+  const onSubmit = async (formData: any) => {
+    const password = userEncrypt(formData.password);
+    const payload = isUpdate
+      ? { ...formData, password, id }
+      : { ...formData, password, kind: 1 };
     const action = isUpdate ? account.update : account.create;
 
     const res = await action(payload);
     if (res.result) {
-      onClose();
+      forceBack();
       showToast(TEXT.REQUEST_SUCCESS, TOAST.SUCCESS);
     } else {
       showToast(res.message || TEXT.REQUEST_FAILED, TOAST.ERROR);
     }
   };
 
-  const defaultValues = useMemo(
-    () => ({
-      name: fetchData?.name ?? "",
-      url: fetchData?.url ?? "",
-    }),
-    [fetchData]
-  );
-
   return (
-    <>
-      <LoadingOverlay loading={loading} />
-      <CommonForm
-        title={
-          isUpdate
-            ? PAGE_CONFIG.UPDATE_ACCOUNT.label
-            : PAGE_CONFIG.CREATE_ACCOUNT.label
-        }
-        schema={schema}
-        defaultValues={defaultValues}
-        fields={[
-          { name: "name", label: "Tên", required: true, size: 6 },
-          { name: "url", label: "Đường dẫn", size: 3 },
-        ]}
-        onClose={onClose}
-        onSubmit={handleSubmit}
+    <CommonFormContainer loading={loading}>
+      <Stack rowGap={3} direction={"column"}>
+        <SelectPlatformField control={control} />
+        <Stack direction={{ xs: "column", md: "row" }} columnGap={1} rowGap={3}>
+          <CommonTextField
+            control={control}
+            name={"username"}
+            label={"Tài khoản"}
+            required
+          />
+          <CommonPasswordField
+            control={control}
+            name={"password"}
+            label={"Mật khẩu"}
+            required
+          />
+        </Stack>
+        <CommonTextAreaField
+          control={control}
+          name={"note"}
+          label={"Ghi chú"}
+          required={false}
+        />
+      </Stack>
+      <CommonFormActions
+        isDirty={isDirty}
+        onCancel={onClose}
+        onSubmit={handleSubmit(onSubmit)}
       />
-    </>
+    </CommonFormContainer>
   );
 };

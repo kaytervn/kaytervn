@@ -46,7 +46,7 @@ export const ChangePassword = ({ isVisible, onClose, onSubmit }: any) => {
   };
 
   return (
-    <Dialog open={isVisible}>
+    <Dialog open={isVisible} onClose={onClose}>
       <DialogTitle>{TEXT.CHANGE_PASSWORD}</DialogTitle>
       <DialogContent>
         <PasswordField
@@ -71,7 +71,7 @@ export const ChangePassword = ({ isVisible, onClose, onSubmit }: any) => {
         <Button size="large" onClick={onClose}>
           {TEXT.CANCEL}
         </Button>
-        <Button size="large" onClick={handleSubmit}>
+        <Button size="large" onClick={handleSubmit} variant="contained">
           {TEXT.SAVE}
         </Button>
       </DialogActions>

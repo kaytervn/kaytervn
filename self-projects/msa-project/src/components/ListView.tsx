@@ -154,12 +154,9 @@ export const BasicListView = <T extends { id: number }>({
                     <Stack
                       direction="row"
                       justifyContent="space-between"
+                      alignItems="center"
                       spacing={1}
                     >
-                      <Box flex={1} minWidth={0}>
-                        {renderContent(item)}
-                      </Box>
-
                       <Box
                         sx={{
                           flexShrink: 0,
@@ -174,6 +171,9 @@ export const BasicListView = <T extends { id: number }>({
                         >
                           <MoreVert />
                         </IconButton>
+                      </Box>
+                      <Box flex={1} minWidth={0}>
+                        {renderContent(item)}
                       </Box>
                     </Stack>
                   </Paper>
@@ -294,7 +294,7 @@ export const GroupedListView = <T extends { id: number }>({
                 variant="h6"
                 sx={{
                   mb: 2,
-                  color: "text.primary",
+                  color: "text.secondary",
                 }}
               >
                 {getGroupLabel(items[0])}
@@ -316,12 +316,9 @@ export const GroupedListView = <T extends { id: number }>({
                       <Stack
                         direction="row"
                         justifyContent="space-between"
+                        alignItems={"center"}
                         spacing={1}
                       >
-                        <Box flex={1} minWidth={0}>
-                          {renderContent(item)}
-                        </Box>
-
                         <Box
                           sx={{
                             flexShrink: 0,
@@ -331,11 +328,14 @@ export const GroupedListView = <T extends { id: number }>({
                           }}
                         >
                           <IconButton
-                            size="medium"
+                            size="large"
                             onClick={(e) => handleOpen(e, item.id)}
                           >
                             <MoreVert />
                           </IconButton>
+                        </Box>
+                        <Box flex={1} minWidth={0}>
+                          {renderContent(item)}
                         </Box>
                       </Stack>
                     </Paper>
