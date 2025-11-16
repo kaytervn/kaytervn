@@ -131,7 +131,6 @@ public class AccountController extends ABasicController {
             if (accountRepository.existsByUsernameAndPlatformIdAndCreatedBy(account.getUsername(), platform.getId(), getCurrentUserName())) {
                 throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_RECORD_EXISTED, "Username existed with this platform");
             }
-            account.setUsername(form.getUsername());
             account.setPassword(encryptionService.serverEncrypt(password));
             accountRepository.save(account);
         } else {
@@ -187,7 +186,6 @@ public class AccountController extends ABasicController {
             if (isPlatformChanged && accountRepository.existsByUsernameAndPlatformIdAndCreatedBy(account.getUsername(), platform.getId(), getCurrentUserName())) {
                 throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_RECORD_EXISTED, "Username existed with this platform");
             }
-            account.setUsername(form.getUsername());
             account.setPassword(encryptionService.serverEncrypt(password));
 
         } else if (isPlatformChanged && accountRepository.existsByParentIdAndPlatformIdAndCreatedBy(account.getParent().getId(), platform.getId(), getCurrentUserName())) {
