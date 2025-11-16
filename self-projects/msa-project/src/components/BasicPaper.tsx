@@ -8,8 +8,11 @@ export const BasicPaper = ({ label, children }: any) => {
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
+      sx={{ p: 2 }}
     >
-      <Paper sx={{ p: 4, width: 350, borderRadius: 2 }}>
+      <Paper
+        sx={{ p: 4, borderRadius: 2, width: "100%", maxWidth: 500, mx: "auto" }}
+      >
         <Typography variant="h5" align="center" gutterBottom>
           {(label || TEXT.SAMPLE_TEXT).toUpperCase()}
         </Typography>

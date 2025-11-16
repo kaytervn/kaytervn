@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Box, Chip, Link, Stack, Typography } from "@mui/material";
 import { Controller } from "react-hook-form";
 import * as yup from "yup";
@@ -73,49 +73,52 @@ export const CommonJsonListField = ({
   const { visible, type, data: formData, open, close } = useDialogManager();
   const [items, setItems] = useState<Item[]>([]);
 
-  const parseItems = (jsonString: string) => {
+  const parseItems = (json: string) => {
     try {
-      const parsed = JSON.parse(jsonString || "[]");
-      return Array.isArray(parsed) ? parsed : [];
+      const p = JSON.parse(json || "[]");
+      return Array.isArray(p) ? p : [];
     } catch {
       return [];
     }
   };
 
-  const handleOpen = (index?: number) => {
-    if (isExists(index)) {
-      const item = items[index!];
-      open({ index, ...item });
-    } else {
-      open();
-    }
-  };
+  const syncFromField = useCallback(
+    (value: string) => setItems(parseItems(value)),
+    [] // không phụ thuộc
+  );
 
-  const sortItems = (items: any[]) => {
-    return [...items].sort((a, b) => {
-      const nameA = normalizeVietnamese(a.name || "");
-      const nameB = normalizeVietnamese(b.name || "");
-      return nameA.localeCompare(nameB);
-    });
+  const pushToField = useCallback(
+    (onChange: (v: string) => void) => onChange(JSON.stringify(items)),
+    [items]
+  );
+
+  const sortItems = (arr: Item[]) =>
+    [...arr].sort((a, b) =>
+      normalizeVietnamese(a.name ?? "").localeCompare(
+        normalizeVietnamese(b.name ?? "")
+      )
+    );
+
+  const handleOpen = (index?: number) => {
+    if (isExists(index)) open({ index, ...items[index!] });
+    else open();
   };
 
   const onSubmitItem = (data: Item) => {
     showToast(TEXT.REQUEST_SUCCESS, TOAST.SUCCESS);
-    let newItems: Item[];
-    const index = data.index;
-    delete data.index;
-    if (isExists(index)) {
-      newItems = items.map((item, i) => (i === index ? data : item));
-    } else {
-      newItems = [...items, data];
-    }
+    const idx = data.index;
+    delete (data as any).index;
+
+    const newItems = isExists(idx)
+      ? items.map((it, i) => (i === idx ? data : it))
+      : [...items, data];
+
     setItems(sortItems(newItems));
   };
 
-  const handleDelete = (index: number) => {
+  const handleDelete = (idx: number) => {
     showToast(TEXT.DELETED, TOAST.SUCCESS);
-    const newItems = items.filter((_, i) => i !== index);
-    setItems(sortItems(newItems));
+    setItems(sortItems(items.filter((_, i) => i !== idx)));
   };
 
   return (
@@ -124,14 +127,15 @@ export const CommonJsonListField = ({
       control={control}
       render={({ field, fieldState: { error } }) => {
         useEffect(() => {
-          const parsed = parseItems(field.value);
-          setItems(parsed);
-        }, [field.value]);
+          syncFromField(field.value ?? "[]");
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [field.value, syncFromField]);
 
         useEffect(() => {
-          field.onChange(JSON.stringify(items));
+          pushToField(field.onChange);
           // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [items, field]);
+        }, [pushToField]);
+
         return (
           <Box>
             {type === DIALOG_TYPE.FORM && (
@@ -151,28 +155,25 @@ export const CommonJsonListField = ({
                 title={`${TEXT.DELETE} ${label.toLowerCase()}`}
               />
             )}
-            <Stack
-              direction={"row"}
-              alignItems={"center"}
-              justifyItems={"center"}
-              alignContent={"center"}
-            >
+
+            <Stack direction="row" alignItems="center">
               <Link component="button" onClick={() => handleOpen()}>
-                {`${TEXT.CREATE} ${label.toLowerCase()}`}
+                {label}
               </Link>
             </Stack>
 
             <Stack direction="row" flexWrap="wrap" gap={1} my={1}>
-              {items.map((item, index) => (
+              {items.map((it, i) => (
                 <Chip
-                  key={index}
-                  label={`${item.name}${item.note ? ` - ${item.note}` : ""}`}
-                  onClick={() => handleOpen(index)}
-                  onDelete={() => open({ index }, DIALOG_TYPE.DELETE)}
+                  key={i}
+                  label={`${it.name}${it.note ? ` - ${it.note}` : ""}`}
+                  onClick={() => handleOpen(i)}
+                  onDelete={() => open({ index: i }, DIALOG_TYPE.DELETE)}
                   variant="outlined"
                 />
               ))}
             </Stack>
+
             {error && (
               <Typography color="error" variant="caption">
                 {error.message}

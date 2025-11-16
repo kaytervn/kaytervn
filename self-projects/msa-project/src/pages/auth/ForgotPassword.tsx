@@ -64,6 +64,7 @@ export const ForgotPassword = () => {
             variant="outlined"
             fullWidth
             size="large"
+            sx={{ whiteSpace: "nowrap" }}
             onClick={() => navigate(AUTH_CONFIG.LOGIN.path)}
           >
             {TEXT.BACK}
@@ -73,6 +74,7 @@ export const ForgotPassword = () => {
             fullWidth
             size="large"
             onClick={handleSubmit}
+            sx={{ whiteSpace: "nowrap" }}
           >
             {TEXT.CONTINUE}
           </Button>

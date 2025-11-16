@@ -1,16 +1,17 @@
-import * as yup from "yup";
 import { useToast } from "../../config/ToastProvider";
 import useApi from "../../hooks/useApi";
 import { usePageFormData } from "../../hooks/useFormData";
 import { TEXT, TOAST } from "../../services/constant";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
+  CommonDisplayField,
   CommonFormContainer,
   CommonPasswordField,
   CommonTextAreaField,
   CommonTextField,
+  FieldsContainer,
 } from "../../components/CommonForm";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { PAGE_CONFIG } from "../../config/PageConfig";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -19,19 +20,23 @@ import { Stack } from "@mui/material";
 import { SelectPlatformField } from "../../components/SelectBox";
 import useEncryption from "../../hooks/useEncryption";
 import { CommonJsonListField } from "../../components/JsonFieldList";
-
-const schema = yup.object().shape({
-  username: yup.string().required("Tài khoản không hợp lệ"),
-  password: yup.string().required("Mật khẩu không hợp lệ"),
-  platformId: yup.number().required("Nền tảng không hợp lệ"),
-});
+import { comparePath } from "../../hooks/usePageLabel";
+import { useAccountSchema } from "../../hooks/useSchema";
 
 export const AccountForm = () => {
+  const { pathname } = useLocation();
   const { id } = useParams();
   const { showToast } = useToast();
   const { account, loading } = useApi();
   const { userEncrypt, userDecrypt } = useEncryption();
-  const isUpdate = !!id;
+  const [fetchedData, setFetchedData] = useState<any>(undefined);
+
+  const isCreate = comparePath(pathname, PAGE_CONFIG.CREATE_ACCOUNT.path);
+  const isUpdate = comparePath(pathname, PAGE_CONFIG.UPDATE_ACCOUNT.path);
+  const isLink = comparePath(pathname, PAGE_CONFIG.LINK_ACCOUNT.path);
+  const isParent = isCreate || fetchedData?.kind === 1;
+  const schema = useAccountSchema(isCreate, isUpdate, isParent);
+
   const {
     handleSubmit,
     control,
@@ -47,31 +52,52 @@ export const AccountForm = () => {
       codes: "[]",
     },
   });
+
   const {
     data: fetchData,
     onClose,
     forceBack,
   } = usePageFormData(isDirty, PAGE_CONFIG.ACCOUNT.path, id, account);
+
+  useEffect(() => {
+    if (isLink && fetchData?.kind === 2) {
+      forceBack();
+    }
+  }, [fetchData?.kind, forceBack, isLink]);
+
+  const parent = isLink ? fetchData : fetchData?.parent;
+  const isChildren = fetchData?.kind === 2;
+  const isLinkOrChildren = isLink || isChildren;
+
   useEffect(() => {
     if (fetchData) {
+      setFetchedData(fetchData);
       reset({
-        username: fetchData.username ?? "",
-        password: userDecrypt(fetchData.password) ?? "",
-        note: fetchData.note ?? "",
-        platformId: fetchData.platform?.id,
-        codes: "[]",
+        username: isLink ? "" : fetchData.username ?? "",
+        password: isLink ? "" : userDecrypt(fetchData.password) ?? "",
+        note: isLink ? "" : fetchData.note ?? "",
+        platformId: isLink ? undefined : fetchData.platform?.id ?? undefined,
+        codes: isLink ? "[]" : userDecrypt(fetchData.codes) ?? "[]",
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchData, reset]);
+  }, [fetchData]);
 
   const onSubmit = async (formData: any) => {
+    const parentId = isLink
+      ? id
+      : isChildren
+      ? fetchData?.parent?.id
+      : undefined;
+    const tagId = isLink ? undefined : fetchData?.tag?.id ?? undefined;
+    const kind = isLinkOrChildren ? 2 : 1;
     const password = userEncrypt(formData.password);
+    const codes = userEncrypt(formData.codes);
+    const defaultFields = { tagId, kind, password, codes, parentId };
     const payload = isUpdate
-      ? { ...formData, password, id }
-      : { ...formData, password, kind: 1 };
+      ? { ...formData, ...defaultFields, id }
+      : { ...formData, ...defaultFields };
     const action = isUpdate ? account.update : account.create;
-
     const res = await action(payload);
     if (res.result) {
       forceBack();
@@ -84,21 +110,31 @@ export const AccountForm = () => {
   return (
     <CommonFormContainer loading={loading}>
       <Stack rowGap={3} direction={"column"}>
-        <SelectPlatformField control={control} />
-        <Stack direction={{ xs: "column", md: "row" }} columnGap={1} rowGap={3}>
-          <CommonTextField
-            control={control}
-            name={"username"}
-            label={"Tài khoản"}
-            required
-          />
-          <CommonPasswordField
-            control={control}
-            name={"password"}
-            label={"Mật khẩu"}
-            required
-          />
-        </Stack>
+        <FieldsContainer>
+          {isLinkOrChildren && (
+            <CommonDisplayField
+              label={"Tài khoản gốc"}
+              value={`${parent?.platform?.name}: ${parent?.username}`}
+            />
+          )}
+          <SelectPlatformField control={control} />
+        </FieldsContainer>
+        {(isCreate || (isUpdate && isParent)) && (
+          <FieldsContainer>
+            <CommonTextField
+              control={control}
+              name={"username"}
+              label={"Tài khoản"}
+              required
+            />
+            <CommonPasswordField
+              control={control}
+              name={"password"}
+              label={"Mật khẩu"}
+              required
+            />
+          </FieldsContainer>
+        )}
         <CommonTextAreaField
           control={control}
           name={"note"}

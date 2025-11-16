@@ -71,7 +71,7 @@ export const CreateFabButton = ({ onClick }: any) => {
       sx={{
         position: "fixed",
         bottom: 75,
-        right: 8,
+        right: 16,
         zIndex: 12,
       }}
     >

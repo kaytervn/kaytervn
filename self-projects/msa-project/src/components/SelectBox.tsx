@@ -179,3 +179,28 @@ export const SelectPlatformField = ({ control }: any) => {
     />
   );
 };
+
+export const SelectTagField = ({ control }: any) => {
+  const { tag, loading } = useApi();
+
+  return (
+    <Controller
+      name="tagId"
+      control={control}
+      render={({ field, fieldState: { error } }) => (
+        <AutocompleteAsync
+          placeholder={PAGE_CONFIG.TAG.label}
+          fetchOptions={tag.autoComplete}
+          loading={loading}
+          labelKey={"name"}
+          valueKey={"id"}
+          required={true}
+          value={field.value}
+          onChange={field.onChange}
+          error={Boolean(error)}
+          helperText={error?.message}
+        />
+      )}
+    />
+  );
+};

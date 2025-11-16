@@ -16,7 +16,7 @@ export const Logout = ({ isVisible, onClose }: any) => {
   };
 
   return (
-    <Dialog open={isVisible} onClose={onClose}>
+    <Dialog open={isVisible} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>{TEXT.LOGOUT}</DialogTitle>
       <DialogContent>
         <DialogContentText>Bạn có chắc muốn đăng xuất?</DialogContentText>

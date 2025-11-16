@@ -4,6 +4,9 @@ import { Login } from "../pages/auth/Login";
 import { ResetPassword } from "../pages/auth/ResetPassword";
 import { Account } from "../pages/account/Account";
 import { AccountForm } from "../pages/account/AccountForm";
+import { Tag } from "../pages/tag/Tag";
+import { Bank } from "../pages/bank/Bank";
+import { BankForm } from "../pages/bank/BankForm";
 
 export const AUTH_CONFIG = {
   LOGIN: {
@@ -31,6 +34,16 @@ export const SIDEBAR_MENUS = {
     path: "/account",
     element: <Account />,
   },
+  TAG: {
+    label: "Thẻ",
+    path: "/tag",
+    element: <Tag />,
+  },
+  BANK: {
+    label: "Ngân hàng",
+    path: "/bank",
+    element: <Bank />,
+  },
 };
 
 export const PAGE_CONFIG = {
@@ -45,10 +58,29 @@ export const PAGE_CONFIG = {
     path: "/account/update/:id",
     element: <AccountForm />,
   },
+  LINK_ACCOUNT: {
+    label: "Liên kết tài khoản",
+    path: "/account/link/:id",
+    element: <AccountForm />,
+  },
+  CREATE_BANK: {
+    label: "Thêm ngân hàng",
+    path: "/bank/create",
+    element: <BankForm />,
+  },
+  UPDATE_BANK: {
+    label: "Sửa ngân hàng",
+    path: "/bank/update/:id",
+    element: <BankForm />,
+  },
 };
 
 export const ENCRYPT_PATH = [
   PAGE_CONFIG.ACCOUNT.path,
   PAGE_CONFIG.CREATE_ACCOUNT.path,
   PAGE_CONFIG.UPDATE_ACCOUNT.path,
+  PAGE_CONFIG.LINK_ACCOUNT.path,
+  PAGE_CONFIG.BANK.path,
+  PAGE_CONFIG.CREATE_BANK.path,
+  PAGE_CONFIG.UPDATE_BANK.path,
 ];

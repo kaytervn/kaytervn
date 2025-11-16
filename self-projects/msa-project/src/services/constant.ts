@@ -39,15 +39,20 @@ export const TEXT = {
   UPDATED: "Sửa thành công",
   CREATED: "Thêm thành công",
   DELETED: "Xoá thành công",
-  LOADING: "Đang tải",
+  LOADING: "Đang tải...",
   NO_DATA: "Không có dữ liệu",
   CREATE_PLATFORM: "Thêm nền tảng",
   UPDATE_PLATFORM: "Sửa nền tảng",
   DELETE_PLATFORM: "Xoá nền tảng",
   DELETE_ACCOUNT: "Xoá tài khoản",
+  CREATE_TAG: "Thêm thẻ",
+  UPDATE_TAG: "Sửa thẻ",
+  DELETE_TAG: "Xoá thẻ",
+  DELETE_BANK: "Xoá ngân hàng",
   UPDATE: "Sửa",
   DELETE: "Xoá",
   SUBMIT: "Nhập",
+  LINK: "Liên kết",
 };
 
 export const GRANT_TYPE = {
@@ -58,6 +63,7 @@ export const ITEMS_PER_PAGE = 21;
 export const FETCH_INTERVAL = 300;
 export const SESSION_KEY_TIMEOUT = 30 * 60 * 1000; // 30 minutes
 export const PING_INTERVAL = 50000; // 50s
+export const DEFAULT_COLOR = "#FFFFFF";
 
 export const LOCAL_STORAGE = {
   SESSION_KEY: "msa_session_key",

@@ -62,7 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (isUnauthorized) {
       logout();
-      window.location.href = "/";
+      window.location.replace("/");
     }
   }, [isUnauthorized]);
 

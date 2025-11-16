@@ -6,7 +6,7 @@ export const tagController = (fetchApi: any) => {
       apiUrl: ENV.API_URL,
       endpoint: "/v1/tag/list",
       method: METHOD.GET,
-      payload,
+      payload: { ...payload, kind: 2 },
       authType: AUTH_TYPE.BEARER,
     });
 
@@ -15,7 +15,7 @@ export const tagController = (fetchApi: any) => {
       apiUrl: ENV.API_URL,
       endpoint: "/v1/tag/auto-complete",
       method: METHOD.GET,
-      payload,
+      payload: { ...payload, kind: 2 },
       authType: AUTH_TYPE.BEARER,
     });
 

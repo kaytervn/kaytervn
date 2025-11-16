@@ -3,6 +3,7 @@ import {
   IconButton,
   InputAdornment,
   Paper,
+  Stack,
   TextField,
 } from "@mui/material";
 import { BasicAppBar } from "./BasicAppBar";
@@ -11,8 +12,24 @@ import { Controller, type Control, type FieldValues } from "react-hook-form";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
+interface CommonDisplayFieldProps {
+  label: string;
+  value: string | number | null | undefined;
+}
+
+export const CommonDisplayField = ({
+  label,
+  value,
+}: CommonDisplayFieldProps) => {
+  return <TextField label={label} value={value ?? ""} fullWidth disabled />;
+};
+
 interface CommonFormContainerProps {
   loading: boolean;
+  children: React.ReactNode;
+}
+
+interface FieldsContainerProps {
   children: React.ReactNode;
 }
 
@@ -35,6 +52,14 @@ export const CommonFormContainer = ({
         </Paper>
       </Box>
     </BasicAppBar>
+  );
+};
+
+export const FieldsContainer = ({ children }: FieldsContainerProps) => {
+  return (
+    <Stack direction={{ xs: "column", md: "row" }} columnGap={1} rowGap={3}>
+      {children}
+    </Stack>
   );
 };
 

@@ -56,7 +56,7 @@ export const Profile = ({ isVisible, onClose, onSubmit }: any) => {
   };
 
   return (
-    <Dialog open={isVisible} onClose={onClose}>
+    <Dialog open={isVisible} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>{TEXT.PROFILE}</DialogTitle>
       <DialogContent>
         <TextField

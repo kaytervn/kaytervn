@@ -81,7 +81,7 @@ const InputKeyDialog = ({
   return (
     <>
       <LoadingOverlay loading={loading} />
-      <Dialog fullWidth open={open} onClose={onClose}>
+      <Dialog fullWidth open={open} onClose={onClose} maxWidth="sm">
         <DialogTitle>{"Nhập khoá giải mã"}</DialogTitle>
         <DialogContent>
           <TextField

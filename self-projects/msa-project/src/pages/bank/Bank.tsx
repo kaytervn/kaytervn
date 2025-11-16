@@ -6,26 +6,25 @@ import { DIALOG_TYPE, useDialogManager } from "../../hooks/useDialog";
 import { BasicAppBar } from "../../components/BasicAppBar";
 import { PAGE_CONFIG } from "../../config/PageConfig";
 import { DeleteDialog, LoadingOverlay } from "../../components/CustomOverlay";
-import { GroupedListView } from "../../components/ListView";
-import { Stack, Typography } from "@mui/material";
+import { BasicListView } from "../../components/ListView";
+import { Typography } from "@mui/material";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import {
   CreateFabButton,
   SearchBar,
   ToolbarContainer,
 } from "../../components/Toolbar";
-import { SelectPlatform } from "../../components/SelectBox";
 
 const initQuery = {
   keyword: "",
   page: 0,
-  platformId: undefined,
+  tagId: undefined,
   size: ITEMS_PER_PAGE,
 };
 
-export const Account = () => {
+export const Bank = () => {
   const { state } = useLocation();
-  const { account, loading } = useApi();
+  const { bank, loading } = useApi();
   const {
     data,
     query,
@@ -34,7 +33,7 @@ export const Account = () => {
     handlePageChange,
     handleSubmitQuery,
   } = useGridView({
-    fetchListApi: account.list,
+    fetchListApi: bank.list,
     initQuery: state?.query || initQuery,
   });
   const navigate = useNavigate();
@@ -44,20 +43,12 @@ export const Account = () => {
     <BasicAppBar
       renderToolbar={
         <ToolbarContainer>
-          <Stack direction={{ xs: "column", md: "row", lg: "row" }} spacing={1}>
-            <SelectPlatform
-              value={query.platformId}
-              onChange={(value: any) =>
-                setQuery({ ...query, platformId: value })
-              }
-            />
-            <SearchBar
-              value={query.keyword}
-              onChange={(value: any) => setQuery({ ...query, keyword: value })}
-              onSearch={async () => await handleSubmitQuery(query)}
-              onClear={() => setQuery({ ...query, keyword: "" })}
-            />
-          </Stack>
+          <SearchBar
+            value={query.keyword}
+            onChange={(value: any) => setQuery({ ...query, keyword: value })}
+            onSearch={async () => await handleSubmitQuery(query)}
+            onClear={async () => await handleSubmitQuery(initQuery)}
+          />
         </ToolbarContainer>
       }
     >
@@ -67,33 +58,20 @@ export const Account = () => {
           <DeleteDialog
             open={visible}
             onClose={close}
-            onDelete={() => account.del(formData?.id)}
+            onDelete={() => bank.del(formData?.id)}
             refreshData={() => handleSubmitQuery(query)}
-            title={TEXT.DELETE_ACCOUNT}
+            title={TEXT.DELETE_BANK}
           />
         )}
-        <GroupedListView
-          groupBy={(item: any) => item.platform?.id}
-          getGroupLabel={(item: any) => item.platform?.name || "No Platform"}
+        <BasicListView
           data={data}
           menu={[
             {
-              label: TEXT.LINK,
-              visible: (item: any) => item.kind === 1,
-              onClick: (id) =>
-                navigate(generatePath(PAGE_CONFIG.LINK_ACCOUNT.path, { id }), {
-                  state: { query },
-                }),
-            },
-            {
               label: TEXT.UPDATE,
               onClick: (id) =>
-                navigate(
-                  generatePath(PAGE_CONFIG.UPDATE_ACCOUNT.path, { id }),
-                  {
-                    state: { query },
-                  }
-                ),
+                navigate(generatePath(PAGE_CONFIG.UPDATE_BANK.path, { id }), {
+                  state: { query },
+                }),
             },
             {
               label: TEXT.DELETE,
@@ -109,7 +87,7 @@ export const Account = () => {
                   display={"flex"}
                   sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
                 >
-                  {item.username ?? item?.parent?.username}
+                  {item?.tag?.name}
                 </Typography>
                 <Typography
                   noWrap
@@ -117,7 +95,7 @@ export const Account = () => {
                   sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
                   color="text.secondary"
                 >
-                  {item?.parent?.platform?.name}
+                  {item.username}
                 </Typography>
               </>
             );
@@ -130,7 +108,7 @@ export const Account = () => {
         />
         <CreateFabButton
           onClick={() =>
-            navigate(PAGE_CONFIG.CREATE_ACCOUNT.path, {
+            navigate(PAGE_CONFIG.CREATE_BANK.path, {
               state: { query },
             })
           }

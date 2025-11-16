@@ -46,7 +46,7 @@ export const ChangePassword = ({ isVisible, onClose, onSubmit }: any) => {
   };
 
   return (
-    <Dialog open={isVisible} onClose={onClose}>
+    <Dialog open={isVisible} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>{TEXT.CHANGE_PASSWORD}</DialogTitle>
       <DialogContent>
         <PasswordField

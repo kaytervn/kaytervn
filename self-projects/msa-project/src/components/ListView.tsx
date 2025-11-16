@@ -14,9 +14,10 @@ import { Inbox, MoreVert } from "@mui/icons-material";
 import React, { useMemo, useState } from "react";
 import { TEXT } from "../services/constant";
 
-interface MenuItemProps {
+interface MenuItemProps<T> {
   label: string;
   onClick: (id: number | null) => void;
+  visible?: (item: T, selectedId: number) => boolean;
 }
 
 interface PaginationProps {
@@ -25,10 +26,10 @@ interface PaginationProps {
   onChange: (page: number) => void;
 }
 
-interface ListViewProps<T> {
+interface ListViewProps<T extends { id: number }> {
   data: T[];
   renderContent: (item: T) => React.ReactNode;
-  menu: MenuItemProps[];
+  menu: MenuItemProps<T>[];
   pagination: PaginationProps;
 }
 
@@ -109,18 +110,22 @@ export const BasicListView = <T extends { id: number }>({
 }: ListViewProps<T>) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedItem, setSelectedItem] = useState<T | null>(null);
 
   const handleOpen = (
     event: React.MouseEvent<HTMLButtonElement>,
-    id: number
+    id: number,
+    item: T
   ) => {
     setAnchorEl(event.currentTarget);
     setSelectedId(id);
+    setSelectedItem(item);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
     setSelectedId(null);
+    setSelectedItem(null);
   };
 
   return (
@@ -167,7 +172,7 @@ export const BasicListView = <T extends { id: number }>({
                       >
                         <IconButton
                           size="large"
-                          onClick={(e) => handleOpen(e, item.id)}
+                          onClick={(e) => handleOpen(e, item.id, item)}
                         >
                           <MoreVert />
                         </IconButton>
@@ -190,17 +195,25 @@ export const BasicListView = <T extends { id: number }>({
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
           transformOrigin={{ vertical: "top", horizontal: "right" }}
         >
-          {menu.map((item, index) => (
-            <MenuItem
-              key={index}
-              onClick={() => {
-                handleClose();
-                item.onClick(selectedId);
-              }}
-            >
-              {item.label}
-            </MenuItem>
-          ))}
+          {menu
+            .filter((menuItem) => {
+              if (!selectedItem) return false;
+              if (typeof menuItem.visible === "function") {
+                return menuItem.visible(selectedItem, selectedId!);
+              }
+              return true;
+            })
+            .map((item, index) => (
+              <MenuItem
+                key={index}
+                onClick={() => {
+                  handleClose();
+                  item.onClick(selectedId);
+                }}
+              >
+                {item.label}
+              </MenuItem>
+            ))}
         </Menu>
       </Box>
 
@@ -211,23 +224,18 @@ export const BasicListView = <T extends { id: number }>({
   );
 };
 
-interface MenuItemProps {
-  label: string;
-  onClick: (id: number | null) => void;
-}
-
 interface PaginationProps {
   page: number;
   totalPages: number;
   onChange: (page: number) => void;
 }
 
-interface GroupedListViewProps<T> {
+interface GroupedListViewProps<T extends { id: number }> {
   data: T[];
   groupBy: (item: T) => string | number | undefined;
   getGroupLabel: (item: T) => string;
   renderContent: (item: T) => React.ReactNode;
-  menu: MenuItemProps[];
+  menu: MenuItemProps<T>[];
   pagination: PaginationProps;
 }
 
@@ -241,20 +249,23 @@ export const GroupedListView = <T extends { id: number }>({
 }: GroupedListViewProps<T>) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedItem, setSelectedItem] = useState<T | null>(null);
 
   const handleOpen = (
     event: React.MouseEvent<HTMLButtonElement>,
-    id: number
+    id: number,
+    item: T
   ) => {
     setAnchorEl(event.currentTarget);
     setSelectedId(id);
+    setSelectedItem(item);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
     setSelectedId(null);
+    setSelectedItem(null);
   };
-
   const grouped = useMemo(() => {
     const map = new Map<string, T[]>();
     for (const item of data) {
@@ -329,7 +340,7 @@ export const GroupedListView = <T extends { id: number }>({
                         >
                           <IconButton
                             size="large"
-                            onClick={(e) => handleOpen(e, item.id)}
+                            onClick={(e) => handleOpen(e, item.id, item)}
                           >
                             <MoreVert />
                           </IconButton>
@@ -353,17 +364,25 @@ export const GroupedListView = <T extends { id: number }>({
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
           transformOrigin={{ vertical: "top", horizontal: "right" }}
         >
-          {menu.map((item, index) => (
-            <MenuItem
-              key={index}
-              onClick={() => {
-                handleClose();
-                item.onClick(selectedId);
-              }}
-            >
-              {item.label}
-            </MenuItem>
-          ))}
+          {menu
+            .filter((menuItem) => {
+              if (!selectedItem) return false;
+              if (typeof menuItem.visible === "function") {
+                return menuItem.visible(selectedItem, selectedId!);
+              }
+              return true;
+            })
+            .map((item, index) => (
+              <MenuItem
+                key={index}
+                onClick={() => {
+                  handleClose();
+                  item.onClick(selectedId);
+                }}
+              >
+                {item.label}
+              </MenuItem>
+            ))}
         </Menu>
       </Box>
 

@@ -43,7 +43,7 @@ export const DeleteDialog = ({
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <DialogContentText>Bạn có chắc muốn xoá?</DialogContentText>
