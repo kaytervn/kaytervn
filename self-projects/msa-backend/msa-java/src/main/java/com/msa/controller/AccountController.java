@@ -128,9 +128,10 @@ public class AccountController extends ABasicController {
             account.setTag(null);
         }
         if (AppConstant.ACCOUNT_KIND_ROOT.equals(form.getKind())) {
-            if (accountRepository.existsByUsernameAndPlatformIdAndCreatedBy(account.getUsername(), platform.getId(), getCurrentUserName())) {
+            if (accountRepository.existsByUsernameAndPlatformIdAndCreatedBy(form.getUsername(), platform.getId(), getCurrentUserName())) {
                 throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_RECORD_EXISTED, "Username existed with this platform");
             }
+            account.setUsername(form.getUsername());
             account.setPassword(encryptionService.serverEncrypt(password));
             accountRepository.save(account);
         } else {
@@ -183,11 +184,11 @@ public class AccountController extends ABasicController {
         boolean isPlatformChanged = !oldPlatformId.equals(newPlatformId);
         account.setPlatform(platform);
         if (AppConstant.ACCOUNT_KIND_ROOT.equals(account.getKind())) {
-            if (isPlatformChanged && accountRepository.existsByUsernameAndPlatformIdAndCreatedBy(account.getUsername(), platform.getId(), getCurrentUserName())) {
+            if (isPlatformChanged && accountRepository.existsByUsernameAndPlatformIdAndCreatedBy(form.getUsername(), platform.getId(), getCurrentUserName())) {
                 throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_RECORD_EXISTED, "Username existed with this platform");
             }
+            account.setUsername(form.getUsername());
             account.setPassword(encryptionService.serverEncrypt(password));
-
         } else if (isPlatformChanged && accountRepository.existsByParentIdAndPlatformIdAndCreatedBy(account.getParent().getId(), platform.getId(), getCurrentUserName())) {
             throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_RECORD_EXISTED, "Link account existed with this platform");
         }

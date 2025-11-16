@@ -15,11 +15,9 @@ import java.util.List;
 public interface AccountMapper extends ABasicMapper {
     @Mapping(source = "kind", target = "kind")
     @Mapping(source = "note", target = "note")
-    @Mapping(source = "username", target = "username")
     @BeanMapping(ignoreByDefault = true)
     Account fromCreateAccountFormToEntity(CreateAccountForm createAccountForm);
 
-    @Mapping(source = "username", target = "username")
     @Mapping(source = "note", target = "note")
     @BeanMapping(ignoreByDefault = true)
     void fromUpdateAccountFormToEntity(UpdateAccountForm updateAccountForm, @MappingTarget Account account);
