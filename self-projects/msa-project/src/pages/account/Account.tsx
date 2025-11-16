@@ -73,6 +73,14 @@ export const Account = () => {
           />
         )}
         <GroupedListView
+          onItemClick={(item: any) =>
+            navigate(
+              generatePath(PAGE_CONFIG.UPDATE_ACCOUNT.path, { id: item.id }),
+              {
+                state: { query },
+              }
+            )
+          }
           groupBy={(item: any) => item.platform?.id}
           getGroupLabel={(item: any) => item.platform?.name || "No Platform"}
           data={data}

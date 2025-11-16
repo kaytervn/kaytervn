@@ -66,6 +66,7 @@ export const Platform = () => {
           />
         )}
         <BasicListView
+          onItemClick={(item: any) => open({ id: item.id })}
           data={data}
           menu={[
             { label: TEXT.UPDATE, onClick: (id) => open({ id }) },

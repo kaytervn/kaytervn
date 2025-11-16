@@ -64,6 +64,14 @@ export const Bank = () => {
           />
         )}
         <BasicListView
+          onItemClick={(item: any) =>
+            navigate(
+              generatePath(PAGE_CONFIG.UPDATE_BANK.path, { id: item.id }),
+              {
+                state: { query },
+              }
+            )
+          }
           data={data}
           menu={[
             {

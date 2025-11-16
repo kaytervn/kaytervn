@@ -31,6 +31,7 @@ interface ListViewProps<T extends { id: number }> {
   renderContent: (item: T) => React.ReactNode;
   menu: MenuItemProps<T>[];
   pagination: PaginationProps;
+  onItemClick?: (item: T) => void;
 }
 
 export const StickyPagination: React.FC<{ pagination: PaginationProps }> = ({
@@ -107,6 +108,7 @@ export const BasicListView = <T extends { id: number }>({
   renderContent,
   menu,
   pagination,
+  onItemClick,
 }: ListViewProps<T>) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -153,8 +155,10 @@ export const BasicListView = <T extends { id: number }>({
                       transition: "background-color 0.2s",
                       "&:hover": {
                         bgcolor: "action.hover",
+                        cursor: "pointer",
                       },
                     }}
+                    onClick={() => onItemClick?.(item)}
                   >
                     <Stack
                       direction="row"
@@ -172,7 +176,10 @@ export const BasicListView = <T extends { id: number }>({
                       >
                         <IconButton
                           size="large"
-                          onClick={(e) => handleOpen(e, item.id, item)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpen(e, item.id, item);
+                          }}
                         >
                           <MoreVert />
                         </IconButton>
@@ -237,6 +244,7 @@ interface GroupedListViewProps<T extends { id: number }> {
   renderContent: (item: T) => React.ReactNode;
   menu: MenuItemProps<T>[];
   pagination: PaginationProps;
+  onItemClick?: (item: T) => void;
 }
 
 export const GroupedListView = <T extends { id: number }>({
@@ -246,6 +254,7 @@ export const GroupedListView = <T extends { id: number }>({
   renderContent,
   menu,
   pagination,
+  onItemClick,
 }: GroupedListViewProps<T>) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -322,7 +331,9 @@ export const GroupedListView = <T extends { id: number }>({
                         height: "100%",
                         transition: "background-color 0.2s",
                         "&:hover": { bgcolor: "action.hover" },
+                        cursor: "pointer",
                       }}
+                      onClick={() => onItemClick?.(item)}
                     >
                       <Stack
                         direction="row"
@@ -340,7 +351,10 @@ export const GroupedListView = <T extends { id: number }>({
                         >
                           <IconButton
                             size="large"
-                            onClick={(e) => handleOpen(e, item.id, item)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpen(e, item.id, item);
+                            }}
                           >
                             <MoreVert />
                           </IconButton>
