@@ -26,6 +26,11 @@ const schema = yup.object().shape({
   name: yup.string().required("Tên không hợp lệ"),
 });
 
+const lowerCaseFirstLetter = (str: any) => {
+  if (!str) return str;
+  return str.charAt(0).toLowerCase() + str.slice(1);
+};
+
 export const JsonListForm = ({
   open,
   data,
@@ -39,10 +44,11 @@ export const JsonListForm = ({
   onSubmitItem: (data: any) => void;
   label: string;
 }) => {
+  const lowerLabel = lowerCaseFirstLetter(label);
   const isUpdate = isExists(data?.index);
   const title = isUpdate
-    ? `${TEXT.UPDATE} ${label.toLowerCase()}`
-    : `${TEXT.CREATE} ${label.toLowerCase()}`;
+    ? `${TEXT.UPDATE} ${lowerLabel}`
+    : `${TEXT.CREATE} ${lowerLabel}`;
   const handleSubmit = async (formData: any) => {
     onClose();
     const payload = isUpdate ? { ...formData, index: data?.index } : formData;
@@ -152,7 +158,7 @@ export const CommonJsonListField = ({
                 open={visible}
                 onClose={close}
                 onDelete={() => handleDelete(formData?.index)}
-                title={`${TEXT.DELETE} ${label.toLowerCase()}`}
+                title={`${TEXT.DELETE} ${lowerCaseFirstLetter(label)}`}
               />
             )}
 
