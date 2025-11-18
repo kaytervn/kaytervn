@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Box, Chip, Link, Stack, Typography } from "@mui/material";
 import { Controller } from "react-hook-form";
 import * as yup from "yup";
@@ -54,12 +54,18 @@ export const JsonListForm = ({
     const payload = isUpdate ? { ...formData, index: data?.index } : formData;
     onSubmitItem(payload);
   };
+
+  const defaultValues = useMemo(
+    () => ({ name: data?.name ?? "", note: data?.note ?? "" }),
+    [data?.name, data?.note]
+  );
+
   return (
     <CommonFormDialog
       open={open}
       title={title}
       schema={schema}
-      defaultValues={{ name: data?.name ?? "", note: data?.note ?? "" }}
+      defaultValues={defaultValues}
       fields={[
         { name: "name", label: "Tiêu đề", required: true },
         { name: "note", label: "Ghi chú" },

@@ -60,8 +60,7 @@ export function CommonFormDialog<T extends Record<string, any>>({
     if (open) {
       reset(defaultValues as T);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, reset]);
+  }, [defaultValues, open, reset]);
 
   const handleSave = async (data: T) => {
     await onSubmit(data);
