@@ -9,6 +9,7 @@ import {
   generateMd5,
   generateRandomString,
   generateTimestamp,
+  getErrorMessage,
   zipString,
 } from "../services/utils";
 import {
@@ -17,7 +18,6 @@ import {
   ENV,
   LOCAL_STORAGE,
   METHOD,
-  TEXT,
 } from "../services/constant";
 import { minimatch } from "minimatch";
 import { jwtDecode } from "jwt-decode";
@@ -171,14 +171,21 @@ const useFetch = () => {
 
       // Decrypt response
       try {
-        return JSON.parse(
+        const res = JSON.parse(
           clientDecryptIgnoreNonce(responseData?.response) || ""
         );
+        if (!res.result) {
+          return { ...res, message: getErrorMessage(res) };
+        }
+        return res;
       } catch {
         return responseData;
       }
     } catch (err: any) {
-      return { result: false, message: err.message || TEXT.REQUEST_FAILED };
+      return {
+        result: false,
+        message: getErrorMessage(err),
+      };
     } finally {
       setLoading(false);
     }

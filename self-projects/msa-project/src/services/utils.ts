@@ -2,6 +2,15 @@
 import pako from "pako";
 import * as CryptoJS from "crypto-js";
 import forge from "node-forge";
+import { ERROR_MESSAGE_MAP, TEXT } from "./constant";
+
+export const getErrorMessage = (err: any): string => {
+  return (
+    (err?.code && ERROR_MESSAGE_MAP[err.code]) ||
+    err?.message ||
+    TEXT.REQUEST_FAILED
+  );
+};
 
 export const initializeStorage = (storageKey: string, defaultValue: any) => {
   localStorage.setItem(storageKey, JSON.stringify(defaultValue));

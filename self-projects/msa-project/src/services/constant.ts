@@ -55,6 +55,16 @@ export const TEXT = {
   LINK: "Liên kết",
 };
 
+export const ERROR_MESSAGE_MAP: Record<string, string> = {
+  "ERROR-PLATFORM-0001": "Tên nền tảng đã tồn tại",
+  "ERROR-PLATFORM-0002": "Nền tảng đang được dùng",
+  "ERROR-ACCOUNT-0001": "Tài khoản có liên kết",
+  "ERROR-ACCOUNT-0002": "Tài khoản đã tồn tại",
+  "ERROR-TAG-0001": "Tên thẻ đã tồn tại",
+  "ERROR-TAG-0002": "Thẻ đang được dùng",
+  "ERROR-BANK-0001": "Tên tài khoản đã tồn tại",
+};
+
 export const GRANT_TYPE = {
   PASSWORD: "password",
 };
