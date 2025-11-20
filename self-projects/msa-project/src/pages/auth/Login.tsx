@@ -3,6 +3,7 @@ import {
   GRANT_TYPE,
   LOCAL_STORAGE,
   TEXT,
+  TINY_TEXT_MAX_LENGTH,
   TOAST,
 } from "../../services/constant";
 import { BasicPaper } from "../../components/BasicPaper";
@@ -107,6 +108,9 @@ export const Login = () => {
             onChange={(e) => handleChange("username", e.target.value)}
             error={Boolean(errors.username)}
             helperText={errors.username}
+            inputProps={{
+              maxLength: TINY_TEXT_MAX_LENGTH,
+            }}
           />
 
           <PasswordField
@@ -160,6 +164,9 @@ export const Login = () => {
             onChange={(e) => handleChange("totp", e.target.value)}
             error={Boolean(errors.totp)}
             helperText={errors.totp}
+            inputProps={{
+              maxLength: TINY_TEXT_MAX_LENGTH,
+            }}
           />
 
           <Stack spacing={1} direction={"row"} mt={2}>

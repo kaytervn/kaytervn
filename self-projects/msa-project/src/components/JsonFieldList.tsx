@@ -183,7 +183,7 @@ export const CommonJsonListField = ({
                   onDelete={() => open({ index: i }, DIALOG_TYPE.DELETE)}
                   variant="outlined"
                   sx={{
-                    maxWidth: { xs: 240, sm: 240, md: 360, lg: 480 },
+                    maxWidth: { xs: 240, sm: 250, md: 360, lg: 480 },
                     "& .MuiChip-label": {
                       overflow: "hidden",
                       textOverflow: "ellipsis",

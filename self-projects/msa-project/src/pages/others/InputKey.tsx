@@ -17,7 +17,7 @@ import { useGlobalContext } from "../../config/GlobalProvider";
 import { useToast } from "../../config/ToastProvider";
 import { useEffect, useState } from "react";
 import { decryptRSA } from "../../services/utils";
-import { TEXT, TOAST } from "../../services/constant";
+import { TEXT, TEXT_MAX_LENGTH, TOAST } from "../../services/constant";
 import useForm from "../../hooks/useForm";
 
 const InputKeyDialog = ({
@@ -97,6 +97,9 @@ const InputKeyDialog = ({
             onChange={(e) => handleChange("sessionKey", e.target.value)}
             error={Boolean(errors.sessionKey)}
             helperText={errors.sessionKey}
+            inputProps={{
+              maxLength: TEXT_MAX_LENGTH,
+            }}
           />
         </DialogContent>
         <DialogActions>

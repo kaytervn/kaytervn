@@ -1,5 +1,10 @@
 import { Button, Stack, TextField } from "@mui/material";
-import { TEXT, TOAST, VALID_PATTERN } from "../../services/constant";
+import {
+  TEXT,
+  TINY_TEXT_MAX_LENGTH,
+  TOAST,
+  VALID_PATTERN,
+} from "../../services/constant";
 import { BasicPaper } from "../../components/BasicPaper";
 import { useNavigate } from "react-router-dom";
 import { AUTH_CONFIG } from "../../config/PageConfig";
@@ -57,6 +62,9 @@ export const ForgotPassword = () => {
           onChange={(e) => handleChange("email", e.target.value)}
           error={Boolean(errors.email)}
           helperText={errors.email}
+          inputProps={{
+            maxLength: TINY_TEXT_MAX_LENGTH,
+          }}
         />
 
         <Stack spacing={1} direction={"row"} mt={2}>

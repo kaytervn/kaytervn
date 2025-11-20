@@ -1,7 +1,7 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { useState } from "react";
-import { TEXT } from "../services/constant";
+import { TEXT, TINY_TEXT_MAX_LENGTH } from "../services/constant";
 
 export const PasswordField = ({
   label = TEXT.PASSWORD,
@@ -27,6 +27,9 @@ export const PasswordField = ({
       onChange={onChange}
       error={Boolean(helperText)}
       helperText={helperText}
+      inputProps={{
+        maxLength: TINY_TEXT_MAX_LENGTH,
+      }}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">

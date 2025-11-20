@@ -117,7 +117,14 @@ export const AccountForm = () => {
               value={`${parent?.platform?.name}: ${parent?.username}`}
             />
           )}
-          <SelectPlatformField control={control} />
+          {isUpdate ? (
+            <CommonDisplayField
+              label={"Nền tảng"}
+              value={fetchData?.platform?.name}
+            />
+          ) : (
+            <SelectPlatformField control={control} />
+          )}
         </FieldsContainer>
         {(isCreate || (isUpdate && isParent)) && (
           <FieldsContainer>

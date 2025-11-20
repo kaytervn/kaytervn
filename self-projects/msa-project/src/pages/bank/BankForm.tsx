@@ -5,6 +5,7 @@ import { usePageFormData } from "../../hooks/useFormData";
 import { TEXT, TOAST } from "../../services/constant";
 import { useEffect } from "react";
 import {
+  CommonDisplayField,
   CommonFormContainer,
   CommonPasswordField,
   CommonTextField,
@@ -88,7 +89,11 @@ export const BankForm = () => {
   return (
     <CommonFormContainer loading={loading}>
       <Stack rowGap={3} direction={"column"}>
-        <SelectTagField control={control} />
+        {isUpdate ? (
+          <CommonDisplayField label={"Thẻ"} value={fetchData?.tag?.name} />
+        ) : (
+          <SelectTagField control={control} />
+        )}
         <FieldsContainer>
           <CommonTextField
             control={control}

@@ -11,6 +11,7 @@ import { LoadingOverlay } from "./CustomOverlay";
 import { Controller, type Control, type FieldValues } from "react-hook-form";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { TEXT_MAX_LENGTH, TINY_TEXT_MAX_LENGTH } from "../services/constant";
 
 interface CommonDisplayFieldProps {
   label: string;
@@ -21,7 +22,18 @@ export const CommonDisplayField = ({
   label,
   value,
 }: CommonDisplayFieldProps) => {
-  return <TextField label={label} value={value ?? ""} fullWidth disabled />;
+  return (
+    <TextField
+      label={label}
+      value={value ?? ""}
+      fullWidth
+      slotProps={{
+        input: {
+          readOnly: true,
+        },
+      }}
+    />
+  );
 };
 
 interface CommonFormContainerProps {
@@ -88,6 +100,9 @@ export const CommonTextField = ({
           required={required}
           error={Boolean(error)}
           helperText={error?.message ?? ""}
+          inputProps={{
+            maxLength: TINY_TEXT_MAX_LENGTH,
+          }}
         />
       )}
     />
@@ -114,6 +129,9 @@ export const CommonTextAreaField = ({
           required={required}
           error={Boolean(error)}
           helperText={error?.message ?? ""}
+          inputProps={{
+            maxLength: TEXT_MAX_LENGTH,
+          }}
         />
       )}
     />
@@ -140,6 +158,9 @@ export const CommonPasswordField = ({
           required={required}
           error={Boolean(error)}
           helperText={error?.message ?? ""}
+          inputProps={{
+            maxLength: TINY_TEXT_MAX_LENGTH,
+          }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

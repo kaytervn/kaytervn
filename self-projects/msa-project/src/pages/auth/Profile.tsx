@@ -7,7 +7,7 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import { TEXT, TOAST } from "../../services/constant";
+import { TEXT, TINY_TEXT_MAX_LENGTH, TOAST } from "../../services/constant";
 import { useGlobalContext } from "../../config/GlobalProvider";
 import { useToast } from "../../config/ToastProvider";
 import useForm from "../../hooks/useForm";
@@ -69,13 +69,20 @@ export const Profile = ({ isVisible, onClose, onSubmit }: any) => {
           onChange={(e) => handleChange("fullName", e.target.value)}
           error={Boolean(errors.fullName)}
           helperText={errors.fullName}
+          inputProps={{
+            maxLength: TINY_TEXT_MAX_LENGTH,
+          }}
         />
         <TextField
           label={"Tài khoản"}
           variant="outlined"
           fullWidth
           margin="normal"
-          disabled
+          slotProps={{
+            input: {
+              readOnly: true,
+            },
+          }}
           value={form.username}
         />
         <TextField
@@ -83,7 +90,11 @@ export const Profile = ({ isVisible, onClose, onSubmit }: any) => {
           variant="outlined"
           fullWidth
           margin="normal"
-          disabled
+          slotProps={{
+            input: {
+              readOnly: true,
+            },
+          }}
           value={form.email}
         />
         <PasswordField

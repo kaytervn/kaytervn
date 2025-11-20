@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { TEXT } from "../services/constant";
+import { TEXT, TINY_TEXT_MAX_LENGTH } from "../services/constant";
 import { ClearOutlined } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -42,6 +42,9 @@ export const SearchBar = ({
         bgcolor: "background.paper",
       }}
       onChange={(e) => onChange(e.target.value)}
+      inputProps={{
+        maxLength: TINY_TEXT_MAX_LENGTH,
+      }}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">

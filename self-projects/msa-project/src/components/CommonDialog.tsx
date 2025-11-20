@@ -15,7 +15,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, type JSX } from "react";
 import { useFormGuard } from "../hooks/usePageBlocker";
-import { TEXT } from "../services/constant";
+import { TEXT, TINY_TEXT_MAX_LENGTH } from "../services/constant";
 
 export interface FieldConfig {
   name: string;
@@ -105,6 +105,9 @@ export function CommonFormDialog<T extends Record<string, any>>({
                   type={f.type || "text"}
                   error={Boolean(errors[f.name])}
                   helperText={(errors[f.name]?.message as string) || ""}
+                  inputProps={{
+                    maxLength: TINY_TEXT_MAX_LENGTH,
+                  }}
                 />
               );
             }}

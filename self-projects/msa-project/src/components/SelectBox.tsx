@@ -3,7 +3,11 @@ import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import useApi from "../hooks/useApi";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { FETCH_INTERVAL, TEXT } from "../services/constant";
+import {
+  FETCH_INTERVAL,
+  TEXT,
+  TINY_TEXT_MAX_LENGTH,
+} from "../services/constant";
 import { PAGE_CONFIG } from "../config/PageConfig";
 import { Controller } from "react-hook-form";
 
@@ -122,6 +126,18 @@ export const AutocompleteAsync = ({
           required={required}
           helperText={helperText}
           placeholder={placeholder}
+          sx={{
+            "& .MuiInputBase-input::placeholder": error
+              ? {
+                  color: "#d32f2f",
+                  opacity: 1,
+                }
+              : {},
+          }}
+          inputProps={{
+            ...params.inputProps,
+            maxLength: TINY_TEXT_MAX_LENGTH,
+          }}
           InputProps={{
             ...params.InputProps,
             endAdornment: (

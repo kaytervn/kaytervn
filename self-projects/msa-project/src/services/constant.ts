@@ -69,6 +69,8 @@ export const GRANT_TYPE = {
   PASSWORD: "password",
 };
 
+export const TINY_TEXT_MAX_LENGTH = 100;
+export const TEXT_MAX_LENGTH = 1000;
 export const ITEMS_PER_PAGE = 21;
 export const FETCH_INTERVAL = 300;
 export const SESSION_KEY_TIMEOUT = 30 * 60 * 1000; // 30 minutes
