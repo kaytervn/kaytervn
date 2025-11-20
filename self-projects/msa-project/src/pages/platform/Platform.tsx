@@ -91,27 +91,27 @@ export const Platform = () => {
                 >
                   {item.name}
                 </Typography>
-                <Link
-                  href={item.url}
-                  target="_blank"
-                  onClick={(e) => {
-                    e.stopPropagation();
+                <Typography
+                  variant="body2"
+                  noWrap
+                  sx={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "block",
+                    maxWidth: "100%",
                   }}
                 >
-                  <Typography
-                    variant="body2"
-                    noWrap
-                    sx={{
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      display: "inline-block",
-                      maxWidth: "100%",
+                  <Link
+                    href={item.url}
+                    target="_blank"
+                    onClick={(e) => {
+                      e.stopPropagation();
                     }}
                   >
                     {item.url}
-                  </Typography>
-                </Link>
+                  </Link>
+                </Typography>
               </>
             );
           }}

@@ -128,7 +128,13 @@ export const Account = () => {
                 <Typography
                   noWrap
                   variant="body2"
-                  sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
+                  sx={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "block",
+                    maxWidth: "100%",
+                  }}
                   color="text.secondary"
                 >
                   {item?.parent?.platform?.name}

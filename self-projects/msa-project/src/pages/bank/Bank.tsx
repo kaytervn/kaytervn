@@ -92,7 +92,6 @@ export const Bank = () => {
                 <Typography
                   variant="h6"
                   noWrap
-                  display={"flex"}
                   sx={{
                     whiteSpace: "nowrap",
                     overflow: "hidden",
