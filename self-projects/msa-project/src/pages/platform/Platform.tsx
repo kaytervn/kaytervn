@@ -101,7 +101,7 @@ export const Platform = () => {
                     e.stopPropagation();
                   }}
                   sx={{
-                    display: "block",
+                    display: "inline-block",
                     maxWidth: "100%",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
