@@ -115,7 +115,13 @@ export const Account = () => {
                   variant="h6"
                   noWrap
                   display={"flex"}
-                  sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
+                  sx={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "block",
+                    maxWidth: "100%",
+                  }}
                 >
                   {item.username ?? item?.parent?.username}
                 </Typography>

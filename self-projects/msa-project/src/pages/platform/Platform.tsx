@@ -81,7 +81,13 @@ export const Platform = () => {
                 <Typography
                   variant="h6"
                   noWrap
-                  sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
+                  sx={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "block",
+                    maxWidth: "100%",
+                  }}
                 >
                   {item.name}
                 </Typography>
@@ -91,7 +97,16 @@ export const Platform = () => {
                   rel="noopener noreferrer"
                   variant="body2"
                   noWrap
-                  sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  sx={{
+                    display: "block",
+                    maxWidth: "100%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
                 >
                   {item.url}
                 </Link>

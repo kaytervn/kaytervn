@@ -80,7 +80,13 @@ export const Tag = () => {
               <Typography
                 variant="h6"
                 noWrap
-                sx={{ textOverflow: "ellipsis", overflow: "hidden" }}
+                sx={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "block",
+                  maxWidth: "100%",
+                }}
               >
                 {item.name}
               </Typography>

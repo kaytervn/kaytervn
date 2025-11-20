@@ -96,7 +96,7 @@ export const CommonJsonListField = ({
 
   const syncFromField = useCallback(
     (value: string) => setItems(parseItems(value)),
-    [] // không phụ thuộc
+    []
   );
 
   const pushToField = useCallback(
