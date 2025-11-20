@@ -105,7 +105,7 @@ export const Platform = () => {
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
-                      display: "block",
+                      display: "inline-block",
                       maxWidth: "100%",
                     }}
                   >
