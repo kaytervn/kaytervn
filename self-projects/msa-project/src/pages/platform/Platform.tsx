@@ -94,21 +94,23 @@ export const Platform = () => {
                 <Link
                   href={item.url}
                   target="_blank"
-                  rel="noopener noreferrer"
-                  variant="body2"
-                  noWrap
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
-                  sx={{
-                    display: "inline-block",
-                    maxWidth: "100%",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
                 >
-                  {item.url}
+                  <Typography
+                    variant="body2"
+                    noWrap
+                    sx={{
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "block",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    {item.url}
+                  </Typography>
                 </Link>
               </>
             );
