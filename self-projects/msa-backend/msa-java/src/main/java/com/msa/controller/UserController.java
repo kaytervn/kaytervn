@@ -236,7 +236,7 @@ public class UserController extends ABasicController {
         user.setResetPwdCode(otp);
         user.setResetPwdTime(new Date());
         userRepository.save(user);
-        mailService.sendVerificationMail(user.getEmail(), otp, user.getFullName());
+        mailService.brevoSendVerificationMail(user.getEmail(), otp, user.getFullName());
         UserForgetPasswordDto accountForgetPasswordDto = new UserForgetPasswordDto();
         String zipUserId = ZipUtils.zipString(user.getId() + ";" + otp);
         accountForgetPasswordDto.setUserId(zipUserId);

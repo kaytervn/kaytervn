@@ -41,4 +41,6 @@ public class SecurityConstant {
 
     public static final int RESPONSE_CODE_SUCCESS = 200;
     public static final int RESPONSE_CODE_ERROR = 400;
+
+    public static final String HEADER_BREVO_API_KEY = "api-key";
 }

@@ -2,6 +2,7 @@ package com.msa.service.mail;
 
 import com.msa.constant.AppConstant;
 import com.msa.dto.schedule.ScheduleMailDto;
+import com.msa.feign.dto.EmailInfoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,14 @@ public class MailServiceImpl {
             variables.put("link", dto.getLink());
         }
         emailService.sendEmail(sender, dto.getToEmail(), subject, AppConstant.TEMPLATE_SCHEDULE, variables);
+    }
+
+    public void brevoSendVerificationMail(String mail, String code, String fullName) {
+        String subject = "[No-Reply] XÁC MINH ĐẶT LẠI MẬT KHẨU";
+        String htmlContent = "<html><head></head><body><p>Mã xác thực: <b>" + code + "</b></p></body></html>";
+        EmailInfoDto dto = new EmailInfoDto();
+        dto.setName(fullName);
+        dto.setEmail(mail);
+        emailService.brevoSendEmail(dto, subject, htmlContent);
     }
 }
