@@ -22,6 +22,8 @@ interface JsonListFieldProps {
   label?: string;
 }
 
+const MAX_ITEMS = 20;
+
 const schema = yup.object().shape({
   name: yup.string().required("Tên không hợp lệ"),
 });
@@ -112,6 +114,7 @@ export const CommonJsonListField = ({
     );
 
   const handleOpen = (index?: number) => {
+    if (items.length >= MAX_ITEMS && !isExists(index)) return;
     if (isExists(index)) open({ index, ...items[index!] });
     else open();
   };
@@ -168,11 +171,13 @@ export const CommonJsonListField = ({
               />
             )}
 
-            <Stack direction="row" alignItems="center">
+            {items.length < MAX_ITEMS ? (
               <Link component="button" onClick={() => handleOpen()}>
                 {label}
               </Link>
-            </Stack>
+            ) : (
+              <Typography color="text.secondary">{label}</Typography>
+            )}
 
             <Stack direction="row" flexWrap="wrap" gap={1} my={1}>
               {items.map((it, i) => (
