@@ -2,19 +2,18 @@ package com.msa.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msa.cache.SessionService;
-import com.msa.constant.ErrorCode;
-import com.msa.constant.SecurityConstant;
-import com.msa.dto.ApiMessageDto;
 import com.msa.config.filter.dto.AuthHeaderDto;
 import com.msa.config.filter.dto.ResponseDto;
+import com.msa.constant.ErrorCode;
+import com.msa.dto.ApiMessageDto;
 import com.msa.jwt.AppJwt;
 import com.msa.multitenancy.TenantDBContext;
 import com.msa.service.encryption.EncryptionService;
 import com.msa.service.encryption.HttpService;
 import com.msa.service.impl.UserServiceImpl;
 import com.msa.utils.JSONUtils;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -22,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import lombok.NonNull;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,12 +58,6 @@ public class LogInterceptor implements HandlerInterceptor {
         if (!isValidSession(jwt)) {
             return handleUnauthorized(response, ErrorCode.GENERAL_ERROR_INVALID_SESSION, "Invalid session");
         }
-//        String tenantName = encryptionService.clientDecryptIgnoreNonce(request.getHeader(SecurityConstant.HEADER_X_TENANT));
-//        if (jwt != null) {
-//            TenantDBContext.setCurrentTenant(SecurityConstant.DB_USER_PREFIX + jwt.getUsername());
-//        } else if (StringUtils.isNotBlank(tenantName)) {
-//            TenantDBContext.setCurrentTenant(tenantName);
-//        }
         TenantDBContext.setCurrentTenant(defaultTenant);
         return true;
     }

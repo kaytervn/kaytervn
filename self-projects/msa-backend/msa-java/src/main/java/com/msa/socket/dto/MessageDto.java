@@ -7,30 +7,17 @@ import java.lang.reflect.Type;
 
 @Data
 public class MessageDto {
-    private String cmd;
-    private Object data;
-    private String msg;
-    private String token;
-    private Integer responseCode;
-
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Double.class, (JsonSerializer<Double>) (src, typeOfSrc, context) -> src == src.longValue()
                     ? new JsonPrimitive(src.longValue())
                     : new JsonPrimitive(src))
             .enableComplexMapKeySerialization()
             .create();
-
-    public <T> T getDataObject(Class<T> classOfT) {
-        return data == null ? null : GSON.fromJson(GSON.toJsonTree(data), classOfT);
-    }
-
-    public <T> T getDataObject(Type type) {
-        return data == null ? null : GSON.fromJson(GSON.toJsonTree(data), type);
-    }
-
-    public String toJson() {
-        return GSON.toJson(this);
-    }
+    private String cmd;
+    private Object data;
+    private String msg;
+    private String token;
+    private Integer responseCode;
 
     public static <T> T fromJson(String json, Class<T> classOfT) {
         if (json == null || json.isEmpty() || !isJsonValid(json)) return null;
@@ -48,6 +35,18 @@ public class MessageDto {
         } catch (JsonSyntaxException e) {
             return false;
         }
+    }
+
+    public <T> T getDataObject(Class<T> classOfT) {
+        return data == null ? null : GSON.fromJson(GSON.toJsonTree(data), classOfT);
+    }
+
+    public <T> T getDataObject(Type type) {
+        return data == null ? null : GSON.fromJson(GSON.toJsonTree(data), type);
+    }
+
+    public String toJson() {
+        return GSON.toJson(this);
     }
 }
 

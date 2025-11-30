@@ -3,6 +3,7 @@ package com.msa.controller;
 import com.msa.cache.CacheService;
 import com.msa.cache.SessionService;
 import com.msa.cloudinary.CloudinaryService;
+import com.msa.component.AuditLogAnnotation;
 import com.msa.constant.AppConstant;
 import com.msa.constant.ErrorCode;
 import com.msa.constant.SecurityConstant;
@@ -24,7 +25,10 @@ import com.msa.storage.master.repository.DbConfigRepository;
 import com.msa.storage.master.repository.FileRepository;
 import com.msa.storage.master.repository.GroupRepository;
 import com.msa.storage.master.repository.UserRepository;
-import com.msa.utils.*;
+import com.msa.utils.ConvertUtils;
+import com.msa.utils.DateUtils;
+import com.msa.utils.RSAUtils;
+import com.msa.utils.ZipUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +122,7 @@ public class UserController extends ABasicController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('US_C')")
+    @AuditLogAnnotation()
     public ApiMessageDto<String> create(@Valid @RequestBody CreateUserForm form, BindingResult bindingResult) {
         if (userRepository.existsByUsername(form.getUsername())) {
             throw new BadRequestException(ErrorCode.USER_ERROR_USERNAME_EXISTED, "Username existed");
@@ -144,6 +149,7 @@ public class UserController extends ABasicController {
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('US_U')")
+    @AuditLogAnnotation()
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateUserForm form, BindingResult bindingResult) {
         User user = userRepository.findFirstByIdAndIsSuperAdminAndIdNot(form.getId(), Boolean.FALSE, getCurrentUser()).orElse(null);
         if (user == null) {
@@ -206,6 +212,7 @@ public class UserController extends ABasicController {
     }
 
     @PostMapping(value = "/verify-credential", produces = MediaType.APPLICATION_JSON_VALUE)
+    @AuditLogAnnotation()
     public ApiMessageDto<VerifyCredentialDto> verifyCredential(@Valid @RequestBody VerifyCredentialForm verifyCredentialForm, BindingResult bindingResult) {
         User user = userRepository.findFirstByUsername(verifyCredentialForm.getUsername()).orElse(null);
         if (user == null || !passwordEncoder.matches(verifyCredentialForm.getPassword(), user.getPassword())) {
@@ -227,6 +234,7 @@ public class UserController extends ABasicController {
     }
 
     @PostMapping(value = "/request-forgot-password", produces = MediaType.APPLICATION_JSON_VALUE)
+    @AuditLogAnnotation()
     public ApiMessageDto<UserForgetPasswordDto> requestForgetPassword(@Valid @RequestBody RequestForgetPasswordForm form, BindingResult bindingResult) {
         User user = userRepository.findFirstByEmail(form.getEmail()).orElse(null);
         if (user == null) {
@@ -244,6 +252,7 @@ public class UserController extends ABasicController {
     }
 
     @PostMapping(value = "/reset-password", produces = MediaType.APPLICATION_JSON_VALUE)
+    @AuditLogAnnotation()
     public ApiMessageDto<String> forgetPassword(@Valid @RequestBody ResetPasswordForm form, BindingResult bindingResult) {
         String[] unzip = Objects.requireNonNull(ZipUtils.unzipString(form.getUserId())).split(";", 2);
         Long id = ConvertUtils.convertStringToLong(unzip[0]);
@@ -262,6 +271,7 @@ public class UserController extends ABasicController {
     }
 
     @PutMapping(value = "/change-password", produces = MediaType.APPLICATION_JSON_VALUE)
+    @AuditLogAnnotation()
     public ApiMessageDto<String> changeProfilePassword(@Valid @RequestBody ChangePasswordForm form, BindingResult bindingResult) {
         User user = userRepository.findById(getCurrentUser()).orElse(null);
         if (user == null) {
@@ -279,6 +289,7 @@ public class UserController extends ABasicController {
     }
 
     @PutMapping(value = "/reset-mfa", produces = MediaType.APPLICATION_JSON_VALUE)
+    @AuditLogAnnotation()
     @PreAuthorize("hasRole('US_R_M')")
     public ApiMessageDto<String> resetMfa(@Valid @RequestBody ResetMfaForm form, BindingResult bindingResult) {
         User user = userRepository.findById(form.getId()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_ERROR_NOT_FOUND, "User not found"));

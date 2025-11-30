@@ -3,8 +3,8 @@ package com.msa.scheduler;
 import com.msa.cache.CacheService;
 import com.msa.cloudinary.CloudinaryService;
 import com.msa.constant.SecurityConstant;
+import com.msa.storage.master.repository.AuditLogRepository;
 import com.msa.storage.master.repository.DbConfigRepository;
-import com.msa.multitenancy.tenant.TenantService;
 import com.msa.storage.master.repository.SessionRepository;
 import com.msa.storage.master.repository.UserRepository;
 import com.msa.utils.DateUtils;
@@ -23,22 +23,28 @@ public class CleanupDbConfigScheduler {
     @Autowired
     private SessionRepository sessionRepository;
     @Autowired
-    private TenantService tenantService;
-    @Autowired
     private CloudinaryService cloudinaryService;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private CacheService cacheService;
+    @Autowired
+    private AuditLogRepository auditLogRepository;
 
     @Scheduled(cron = "0 0 0 * * *", zone = SecurityConstant.TIMEZONE_UTC)
     private void startScheduler() {
         Date expiredDate = DateUtils.getExpiredDate(SecurityConstant.DAYS_TO_EXPIRED);
         cleanupSession(expiredDate);
+        cleanupAuditLog(expiredDate);
     }
 
     private void cleanupSession(Date expiredDate) {
         sessionRepository.deleteAllByAccessTimeBefore(expiredDate);
         log.error(">>> Cleanup expired sessions");
+    }
+
+    private void cleanupAuditLog(Date expiredDate) {
+        auditLogRepository.deleteAllByCreatedDateBefore(expiredDate);
+        log.error(">>> Cleanup audit logs");
     }
 }

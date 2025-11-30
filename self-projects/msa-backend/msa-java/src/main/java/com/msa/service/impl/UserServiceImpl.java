@@ -1,13 +1,11 @@
 package com.msa.service.impl;
 
-import com.msa.constant.ErrorCode;
 import com.msa.constant.AppConstant;
-import com.msa.constant.SecurityConstant;
+import com.msa.constant.ErrorCode;
 import com.msa.exception.BadRequestException;
 import com.msa.jwt.AppJwt;
 import com.msa.service.TotpManager;
 import com.msa.service.encryption.EncryptionService;
-import com.msa.storage.master.model.DbConfig;
 import com.msa.storage.master.model.Permission;
 import com.msa.storage.master.model.User;
 import com.msa.storage.master.repository.DbConfigRepository;

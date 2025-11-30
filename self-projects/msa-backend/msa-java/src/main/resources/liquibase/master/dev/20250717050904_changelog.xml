@@ -1,5 +1,7 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet author="MSA" id="1752728957490-1">
         <createTable tableName="db_db_config">
             <column name="id" type="BIGINT">
@@ -130,16 +132,26 @@
         <addUniqueConstraint columnNames="name" constraintName="UC_DB_PERMISSIONNAME_COL" tableName="db_permission"/>
     </changeSet>
     <changeSet author="MSA" id="1752728957490-8">
-        <addUniqueConstraint columnNames="permission_code" constraintName="UC_DB_PERMISSIONPERMISSION_CODE_COL" tableName="db_permission"/>
+        <addUniqueConstraint columnNames="permission_code" constraintName="UC_DB_PERMISSIONPERMISSION_CODE_COL"
+                             tableName="db_permission"/>
     </changeSet>
     <changeSet author="MSA" id="1752728957490-9">
-        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_user" constraintName="FK5sqp95vcx24ioiw61r6tm68qe" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_group" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_user"
+                                 constraintName="FK5sqp95vcx24ioiw61r6tm68qe" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_group"
+                                 validate="true"/>
     </changeSet>
     <changeSet author="MSA" id="1752728957490-10">
-        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_permission_group" constraintName="FKfq2iusbvl87yreufyqsa5f6e3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_group" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_permission_group"
+                                 constraintName="FKfq2iusbvl87yreufyqsa5f6e3" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_group"
+                                 validate="true"/>
     </changeSet>
     <changeSet author="MSA" id="1752728957490-11">
-        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="db_permission_group" constraintName="FKhyl75m0nsk3ds5eewifn3arde" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_permission" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="db_permission_group"
+                                 constraintName="FKhyl75m0nsk3ds5eewifn3arde" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_permission" validate="true"/>
     </changeSet>
     <changeSet author="MSA" id="1752728957490-12">
         <insert tableName="db_group">
@@ -630,7 +642,10 @@
         </insert>
     </changeSet>
     <changeSet author="MSA" id="1752728957490-18">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="db_db_config" constraintName="FKqww84ue8t5dvy091afmls31m3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="db_db_config"
+                                 constraintName="FKqww84ue8t5dvy091afmls31m3" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_user"
+                                 validate="true"/>
     </changeSet>
     <changeSet author="MSA" id="1752728957490-19">
         <createTable tableName="db_file">
@@ -1188,5 +1203,32 @@
     </changeSet>
     <changeSet author="MSA" id="1752728957490-29">
         <dropColumn columnName="user_id" tableName="db_db_config"/>
+    </changeSet>
+    <changeSet author="MSA" id="1752728957490-30">
+        <createTable tableName="db_audit_log">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_audit_logPK"/>
+            </column>
+            <column name="endpoint" type="VARCHAR(255)"/>
+            <column name="ip_address" type="VARCHAR(255)"/>
+            <column name="user_agent" type="VARCHAR(255)"/>
+            <column name="duration_ms" type="BIGINT"/>
+            <column name="status_code" type="INT"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

@@ -1,5 +1,6 @@
 package com.msa.controller;
 
+import com.msa.component.AuditLogAnnotation;
 import com.msa.constant.AppConstant;
 import com.msa.constant.ErrorCode;
 import com.msa.dto.ApiMessageDto;
@@ -83,6 +84,7 @@ public class BankController extends ABasicController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('BA_C')")
+    @AuditLogAnnotation()
     public ApiMessageDto<String> create(@Valid @RequestBody CreateBankForm form, BindingResult bindingResult) {
         String password = encryptionService.userDecrypt(form.getPassword());
         String pins = encryptionService.userDecrypt(form.getPins());
@@ -110,6 +112,7 @@ public class BankController extends ABasicController {
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('BA_U')")
+    @AuditLogAnnotation()
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateBankForm form, BindingResult bindingResult) {
         String password = encryptionService.userDecrypt(form.getPassword());
         String pins = encryptionService.userDecrypt(form.getPins());
@@ -141,6 +144,7 @@ public class BankController extends ABasicController {
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('BA_D')")
+    @AuditLogAnnotation()
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
         Bank bank = bankRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (bank == null) {

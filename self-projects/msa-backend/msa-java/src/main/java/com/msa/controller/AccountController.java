@@ -1,5 +1,6 @@
 package com.msa.controller;
 
+import com.msa.component.AuditLogAnnotation;
 import com.msa.constant.AppConstant;
 import com.msa.constant.ErrorCode;
 import com.msa.dto.ApiMessageDto;
@@ -100,6 +101,7 @@ public class AccountController extends ABasicController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ACC_C')")
+    @AuditLogAnnotation()
     public ApiMessageDto<String> create(@Valid @RequestBody CreateAccountForm form, BindingResult bindingResult) {
         String password = encryptionService.userDecrypt(form.getPassword());
         String codes = encryptionService.userDecrypt(form.getCodes());
@@ -152,6 +154,7 @@ public class AccountController extends ABasicController {
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ACC_U')")
+    @AuditLogAnnotation()
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateAccountForm form, BindingResult bindingResult) {
         String password = encryptionService.userDecrypt(form.getPassword());
         String codes = encryptionService.userDecrypt(form.getCodes());
@@ -202,8 +205,9 @@ public class AccountController extends ABasicController {
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ACC_D')")
+    @AuditLogAnnotation()
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
-        Account account = accountRepository.findFirstByIdAndCreatedBy(id,getCurrentUserName()).orElse(null);
+        Account account = accountRepository.findFirstByIdAndCreatedBy(id, getCurrentUserName()).orElse(null);
         if (account == null) {
             throw new BadRequestException(ErrorCode.ACCOUNT_ERROR_NOT_FOUND, "Not found account");
         }

@@ -1,5 +1,6 @@
 package com.msa.controller;
 
+import com.msa.component.AuditLogAnnotation;
 import com.msa.constant.AppConstant;
 import com.msa.constant.ErrorCode;
 import com.msa.dto.ApiMessageDto;
@@ -52,6 +53,7 @@ public class PermissionController extends ABasicController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PER_C')")
+    @AuditLogAnnotation()
     public ApiMessageDto<String> create(@Valid @RequestBody CreatePermissionForm form, BindingResult bindingResult) {
         if (permissionRepository.existsByPermissionCode(form.getPermissionCode())) {
             throw new BadRequestException(ErrorCode.PERMISSION_ERROR_PERMISSION_CODE_EXISTED, "Permission code existed");
