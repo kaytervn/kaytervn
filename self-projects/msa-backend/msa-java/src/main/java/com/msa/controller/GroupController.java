@@ -1,7 +1,6 @@
 package com.msa.controller;
 
 import com.msa.cache.SessionService;
-import com.msa.component.AuditLogAnnotation;
 import com.msa.constant.AppConstant;
 import com.msa.constant.ErrorCode;
 import com.msa.constant.SecurityConstant;
@@ -85,7 +84,6 @@ public class GroupController extends ABasicController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('GR_C')")
-    @AuditLogAnnotation()
     public ApiMessageDto<String> create(@Valid @RequestBody CreateGroupForm form, BindingResult bindingResult) {
         if (groupRepository.existsByName(form.getName())) {
             throw new BadRequestException(ErrorCode.GROUP_ERROR_NAME_EXISTED, "Name existed");
@@ -101,7 +99,6 @@ public class GroupController extends ABasicController {
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('GR_U')")
-    @AuditLogAnnotation()
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateGroupForm form, BindingResult bindingResult) {
         Group group = groupRepository.findFirstByIdAndIsSystem(form.getId(), Boolean.FALSE).orElse(null);
         if (group == null) {
@@ -129,7 +126,6 @@ public class GroupController extends ABasicController {
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('GR_D')")
-    @AuditLogAnnotation()
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
         Group group = groupRepository.findFirstByIdAndKindAndIsSystem(id, SecurityConstant.USER_KIND_USER, Boolean.FALSE).orElse(null);
         if (group == null) {
