@@ -53,6 +53,7 @@ export const TEXT = {
   DELETE: "Xoá",
   SUBMIT: "Nhập",
   LINK: "Liên kết",
+  CONFIRM: "Xác nhận",
 };
 
 export const ERROR_MESSAGE_MAP: Record<string, string> = {
