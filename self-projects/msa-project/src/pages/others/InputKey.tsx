@@ -73,8 +73,6 @@ const InputKeyDialog = ({
       onClose();
       refreshSessionTimeout();
       showToast(TEXT.REQUEST_SUCCESS, TOAST.SUCCESS);
-    } else {
-      showToast(TEXT.INVALID_FORM, TOAST.ERROR);
     }
   };
 

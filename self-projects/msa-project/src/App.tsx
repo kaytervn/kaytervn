@@ -1,32 +1,15 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useAuthProvider } from "./config/AuthProvider";
 import { useGlobalContext } from "./config/GlobalProvider";
 import Loading from "./pages/others/Loading";
-import { AUTH_CONFIG, PAGE_CONFIG } from "./config/PageConfig";
-import NotFound from "./pages/others/NotFound";
+import { buildRoutes } from "./AppRoutes";
 
 const App = () => {
   const { profile } = useGlobalContext();
   const { loading } = useAuthProvider();
-
-  return (
-    <BrowserRouter>
-      {loading ? (
-        <Loading />
-      ) : (
-        <Routes>
-          {profile
-            ? Object.values(PAGE_CONFIG).map(({ path, element }: any) => (
-                <Route key={path} path={path} element={element} />
-              ))
-            : Object.values(AUTH_CONFIG).map(({ path, element }: any) => (
-                <Route key={path} path={path} element={element} />
-              ))}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      )}
-    </BrowserRouter>
-  );
+  if (loading) return <Loading />;
+  const router = createBrowserRouter(buildRoutes(profile));
+  return <RouterProvider router={router} />;
 };
 
 export default App;

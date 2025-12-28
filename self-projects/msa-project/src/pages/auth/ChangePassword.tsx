@@ -7,13 +7,11 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { PasswordField } from "../../components/CustomTextField";
-import { TEXT, TOAST } from "../../services/constant";
+import { TEXT } from "../../services/constant";
 import { useEffect } from "react";
 import useForm from "../../hooks/useForm";
-import { useToast } from "../../config/ToastProvider";
 
 export const ChangePassword = ({ isVisible, onClose, onSubmit }: any) => {
-  const { showToast } = useToast();
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!form.oldPassword.trim()) {
@@ -40,8 +38,6 @@ export const ChangePassword = ({ isVisible, onClose, onSubmit }: any) => {
   const handleSubmit = async () => {
     if (isValidForm()) {
       await onSubmit(form);
-    } else {
-      showToast(TEXT.INVALID_FORM, TOAST.ERROR);
     }
   };
 

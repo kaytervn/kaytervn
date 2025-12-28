@@ -6,14 +6,12 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { TEXT, TOAST, VALID_PATTERN } from "../../services/constant";
-import { useToast } from "../../config/ToastProvider";
+import { TEXT, VALID_PATTERN } from "../../services/constant";
 import useForm from "../../hooks/useForm";
 import { useEffect } from "react";
 import { PasswordField } from "../../components/CustomTextField";
 
 export const RequestKey = ({ isVisible, onClose, onSubmit }: any) => {
-  const { showToast } = useToast();
   const validate = (form: any) => {
     const newErrors: any = {};
     if (!VALID_PATTERN.PASSWORD.test(form.password)) {
@@ -34,8 +32,6 @@ export const RequestKey = ({ isVisible, onClose, onSubmit }: any) => {
   const handleSubmit = async () => {
     if (isValidForm()) {
       await onSubmit(form);
-    } else {
-      showToast(TEXT.INVALID_FORM, TOAST.ERROR);
     }
   };
   return (

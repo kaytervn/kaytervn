@@ -7,15 +7,13 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import { TEXT, TINY_TEXT_MAX_LENGTH, TOAST } from "../../services/constant";
+import { TEXT, TINY_TEXT_MAX_LENGTH } from "../../services/constant";
 import { useGlobalContext } from "../../config/GlobalProvider";
-import { useToast } from "../../config/ToastProvider";
 import useForm from "../../hooks/useForm";
 import { useEffect } from "react";
 import { PasswordField } from "../../components/CustomTextField";
 
 export const Profile = ({ isVisible, onClose, onSubmit }: any) => {
-  const { showToast } = useToast();
   const { profile } = useGlobalContext();
 
   const validate = (form: any) => {
@@ -50,8 +48,6 @@ export const Profile = ({ isVisible, onClose, onSubmit }: any) => {
   const handleSubmit = async () => {
     if (isValidForm()) {
       await onSubmit(form);
-    } else {
-      showToast(TEXT.INVALID_FORM, TOAST.ERROR);
     }
   };
 

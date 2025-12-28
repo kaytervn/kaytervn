@@ -57,9 +57,7 @@ export function CommonFormDialog<T extends Record<string, any>>({
   const handleGuardedClose = useFormGuard(isDirty, onClose);
 
   useEffect(() => {
-    if (open) {
-      reset(defaultValues as T);
-    }
+    reset(defaultValues as T);
   }, [defaultValues, open, reset]);
 
   const handleSave = async (data: T) => {
