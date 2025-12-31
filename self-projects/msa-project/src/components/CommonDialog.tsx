@@ -49,6 +49,7 @@ export function CommonFormDialog<T extends Record<string, any>>({
     handleSubmit,
     control,
     reset,
+    getValues,
     formState: { errors, isDirty },
   } = useForm<T>({
     resolver: yupResolver(schema) as unknown as Resolver<T>,
@@ -57,8 +58,12 @@ export function CommonFormDialog<T extends Record<string, any>>({
   const handleGuardedClose = useFormGuard(isDirty, onClose);
 
   useEffect(() => {
-    reset(defaultValues as T);
-  }, [defaultValues, open, reset]);
+    if (open) {
+      reset(defaultValues as T);
+    } else {
+      reset(getValues());
+    }
+  }, [open, defaultValues, reset, getValues]);
 
   const handleSave = async (data: T) => {
     await onSubmit(data);
