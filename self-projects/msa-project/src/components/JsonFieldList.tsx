@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { Box, Chip, Link, Stack, Typography } from "@mui/material";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import * as yup from "yup";
 import { CommonFormDialog } from "./CommonDialog";
 import { DIALOG_TYPE, useDialogManager } from "../hooks/useDialog";
@@ -18,6 +18,7 @@ interface Item {
 
 interface JsonListFieldProps {
   control: any;
+  setValue: any;
   name: string;
   label?: string;
 }
@@ -80,31 +81,27 @@ export const JsonListForm = ({
 
 export const CommonJsonListField = ({
   control,
+  setValue,
   name,
   label = TEXT.SAMPLE_TEXT,
 }: JsonListFieldProps) => {
   const { showToast } = useToast();
   const { visible, type, data: formData, open, close } = useDialogManager();
-  const [items, setItems] = useState<Item[]>([]);
-
-  const parseItems = (json: string) => {
+  const jsonValue = useWatch({ control, name });
+  const items = useMemo<Item[]>(() => {
     try {
-      const p = JSON.parse(json || "[]");
+      const p = JSON.parse(jsonValue || "[]");
       return Array.isArray(p) ? p : [];
     } catch {
       return [];
     }
+  }, [jsonValue]);
+
+  const updateItems = (newItems: Item[]) => {
+    setValue(name, JSON.stringify(sortItems(newItems)), {
+      shouldDirty: true,
+    });
   };
-
-  const syncFromField = useCallback(
-    (value: string) => setItems(parseItems(value)),
-    []
-  );
-
-  const pushToField = useCallback(
-    (onChange: (v: string) => void) => onChange(JSON.stringify(items)),
-    [items]
-  );
 
   const sortItems = (arr: Item[]) =>
     [...arr].sort((a, b) =>
@@ -123,34 +120,22 @@ export const CommonJsonListField = ({
     showToast(TEXT.REQUEST_SUCCESS, TOAST.SUCCESS);
     const idx = data.index;
     delete (data as any).index;
-
     const newItems = isExists(idx)
       ? items.map((it, i) => (i === idx ? data : it))
       : [...items, data];
-
-    setItems(sortItems(newItems));
+    updateItems(newItems);
   };
 
   const handleDelete = (idx: number) => {
     showToast(TEXT.DELETED, TOAST.SUCCESS);
-    setItems(sortItems(items.filter((_, i) => i !== idx)));
+    updateItems(items.filter((_, i) => i !== idx));
   };
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => {
-        useEffect(() => {
-          syncFromField(field.value ?? "[]");
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [field.value, syncFromField]);
-
-        useEffect(() => {
-          pushToField(field.onChange);
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [pushToField]);
-
+      render={({ fieldState: { error } }) => {
         return (
           <Box>
             {type === DIALOG_TYPE.FORM && (

@@ -41,6 +41,7 @@ export const AccountForm = () => {
     handleSubmit,
     control,
     reset,
+    setValue,
     formState: { isDirty },
   } = useForm<any>({
     resolver: yupResolver(schema),
@@ -108,7 +109,7 @@ export const AccountForm = () => {
   };
 
   return (
-    <CommonFormContainer loading={loading}>
+    <CommonFormContainer loading={loading} isDirty={isDirty}>
       <Stack rowGap={3} direction={"column"}>
         <FieldsContainer>
           {isLinkOrChildren && (
@@ -150,6 +151,7 @@ export const AccountForm = () => {
         />
         <CommonJsonListField
           control={control}
+          setValue={setValue}
           name={"codes"}
           label={"Mã khôi phục"}
         />

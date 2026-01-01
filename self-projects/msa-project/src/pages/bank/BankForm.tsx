@@ -38,6 +38,7 @@ export const BankForm = () => {
     handleSubmit,
     control,
     reset,
+    setValue,
     formState: { isDirty },
   } = useForm<any>({
     resolver: yupResolver(schema),
@@ -87,7 +88,7 @@ export const BankForm = () => {
   };
 
   return (
-    <CommonFormContainer loading={loading}>
+    <CommonFormContainer loading={loading} isDirty={isDirty}>
       <Stack rowGap={3} direction={"column"}>
         {isUpdate ? (
           <CommonDisplayField label={"Thẻ"} value={fetchData?.tag?.name} />
@@ -110,10 +111,16 @@ export const BankForm = () => {
         </FieldsContainer>
         <CommonJsonListField
           control={control}
+          setValue={setValue}
           name={"numbers"}
           label={"Số tài khoản"}
         />
-        <CommonJsonListField control={control} name={"pins"} label={"Mã PIN"} />
+        <CommonJsonListField
+          control={control}
+          setValue={setValue}
+          name={"pins"}
+          label={"Mã PIN"}
+        />
       </Stack>
       <CommonFormActions
         isDirty={isDirty}

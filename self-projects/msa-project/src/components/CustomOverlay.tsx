@@ -34,11 +34,12 @@ export const DeleteDialog = ({
   const handleSubmit = async () => {
     const res = await onDelete();
     onClose();
-    if (res.result) {
+    if (!res) return;
+    if (res?.result) {
       await refreshData();
       showToast(TEXT.REQUEST_SUCCESS, TOAST.SUCCESS);
     } else {
-      showToast(res.message || TEXT.REQUEST_FAILED, TOAST.ERROR);
+      showToast(res?.message || TEXT.REQUEST_FAILED, TOAST.ERROR);
     }
   };
 

@@ -1,13 +1,13 @@
 import { useCallback, useEffect } from "react";
 
-const MESSAGE = "Bạn có thay đổi chưa lưu, chắc chắn muốn rời đi?";
+export const BLOCK_MESSAGE = "Bạn có thay đổi chưa lưu, chắc chắn muốn rời đi?";
 
 export const useFormGuard = (isDirty: boolean, onClose: () => void) => {
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (!isDirty) return;
       e.preventDefault();
-      e.returnValue = MESSAGE;
+      e.returnValue = BLOCK_MESSAGE;
       return e.returnValue;
     };
 
@@ -21,7 +21,7 @@ export const useFormGuard = (isDirty: boolean, onClose: () => void) => {
         isDirty &&
         (reason === "backdropClick" || reason === "escapeKeyDown" || !reason)
       ) {
-        const confirmClose = window.confirm(MESSAGE);
+        const confirmClose = window.confirm(BLOCK_MESSAGE);
         if (!confirmClose) return;
       }
       onClose();

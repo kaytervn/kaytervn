@@ -31,6 +31,7 @@ import { ChangePassword } from "../pages/auth/ChangePassword";
 import { Profile } from "../pages/auth/Profile";
 import { usePageEncryption, usePageLabel } from "../hooks/usePageLabel";
 import InputKey from "../pages/others/InputKey";
+import { BLOCK_MESSAGE } from "../hooks/usePageBlocker";
 
 export const BasicAppBar = (props: AppBarProps) => {
   const { sessionKey } = useGlobalContext();
@@ -103,6 +104,13 @@ export const BasicAppBar = (props: AppBarProps) => {
     } else {
       showToast(res.message || TEXT.REQUEST_FAILED, TOAST.ERROR);
     }
+  };
+
+  const validateDirty = (): boolean => {
+    if (!props.isDirty) return true;
+    const confirmClose = window.confirm(BLOCK_MESSAGE);
+    if (confirmClose) return true;
+    return false;
   };
 
   return (
@@ -187,8 +195,11 @@ export const BasicAppBar = (props: AppBarProps) => {
                   <ListItem key={key} disablePadding>
                     <ListItemButton
                       onClick={() => {
-                        navigate(item.path!);
                         setDrawerOpen(false);
+                        const ok = validateDirty();
+                        if (ok) {
+                          navigate(item.path!);
+                        }
                       }}
                     >
                       <ListItemText

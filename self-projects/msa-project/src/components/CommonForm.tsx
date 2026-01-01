@@ -39,6 +39,7 @@ export const CommonDisplayField = ({
 interface CommonFormContainerProps {
   loading: boolean;
   children: React.ReactNode;
+  isDirty?: boolean;
 }
 
 interface FieldsContainerProps {
@@ -48,9 +49,10 @@ interface FieldsContainerProps {
 export const CommonFormContainer = ({
   loading,
   children,
+  isDirty,
 }: CommonFormContainerProps) => {
   return (
-    <BasicAppBar>
+    <BasicAppBar isDirty={isDirty}>
       <LoadingOverlay loading={loading} />
       <Box display="flex" sx={{ m: 2 }}>
         <Paper

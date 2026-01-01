@@ -12,4 +12,5 @@ export interface CreateProps {
 export interface AppBarProps {
   children: React.ReactNode;
   renderToolbar?: React.ReactNode;
+  isDirty?: boolean;
 }
