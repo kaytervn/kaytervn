@@ -2,7 +2,7 @@
 import pako from "pako";
 import * as CryptoJS from "crypto-js";
 import forge from "node-forge";
-import { ERROR_MESSAGE_MAP, TEXT } from "./constant";
+import { ERROR_MESSAGE_MAP, HOLIDAY_ICONS, TEXT } from "./constant";
 
 export const getErrorMessage = (err: any): string => {
   return (
@@ -183,8 +183,23 @@ export const unzipString = (input: string) => {
   }
 };
 
+export function getHolidayIcon(): string | undefined {
+  const now = new Date();
+  const vnDate = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(now);
+  const dateKey = vnDate.replace("/", "-");
+  return HOLIDAY_ICONS[dateKey];
+}
+
 export function getAvatarInitials(fullName?: string): string {
-  if (!fullName) return "";
+  const holidayIcon = getHolidayIcon();
+  if (holidayIcon) {
+    return holidayIcon;
+  }
+  if (!fullName) return "👤";
   const parts = fullName.trim().split(/\s+/);
   if (parts.length === 1) {
     return parts[0][0].toUpperCase();

@@ -100,6 +100,7 @@ export const CommonJsonListField = ({
   const updateItems = (newItems: Item[]) => {
     setValue(name, JSON.stringify(sortItems(newItems)), {
       shouldDirty: true,
+      shouldValidate: true,
     });
   };
 

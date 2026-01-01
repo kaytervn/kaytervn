@@ -158,3 +158,11 @@ export const USER_KIND = {
   ADMIN: 1,
   USER: 2,
 };
+
+// 'MM-DD'
+export const HOLIDAY_ICONS: Record<string, string> = {
+  "01-01": "🎉​",
+  "10-31": "🎃",
+  "12-24": "🎄",
+  "12-25": "🎁",
+};

@@ -90,8 +90,7 @@ const InputKeyDialog = ({
             required
             multiline
             value={form?.sessionKey}
-            minRows={4}
-            maxRows={10}
+            rows={4}
             onChange={(e) => handleChange("sessionKey", e.target.value)}
             error={Boolean(errors.sessionKey)}
             helperText={errors.sessionKey}
