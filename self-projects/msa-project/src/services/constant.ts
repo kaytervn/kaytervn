@@ -162,6 +162,9 @@ export const USER_KIND = {
 // 'MM-DD'
 export const HOLIDAY_ICONS: Record<string, string> = {
   "01-01": "🎉​",
+  "02-14": "💖",
+  "03-08": "🌹",
+  "06-01": "🎈",
   "10-31": "🎃",
   "12-24": "🎄",
   "12-25": "🎁",
