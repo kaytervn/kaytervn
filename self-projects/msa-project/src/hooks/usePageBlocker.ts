@@ -1,8 +1,11 @@
 import { useCallback, useEffect } from "react";
+import { useConfirm } from "../config/ConfirmProvider";
 
 export const BLOCK_MESSAGE = "Bạn có thay đổi chưa lưu, chắc chắn muốn rời đi?";
 
 export const useFormGuard = (isDirty: boolean, onClose: () => void) => {
+  const { confirm } = useConfirm();
+
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (!isDirty) return;
@@ -16,16 +19,17 @@ export const useFormGuard = (isDirty: boolean, onClose: () => void) => {
   }, [isDirty]);
 
   const handleClose = useCallback(
-    (_?: any, reason?: string) => {
+    async (_?: any, reason?: string) => {
       if (
         isDirty &&
         (reason === "backdropClick" || reason === "escapeKeyDown" || !reason)
       ) {
-        const confirmClose = window.confirm(BLOCK_MESSAGE);
+        const confirmClose = await confirm();
         if (!confirmClose) return;
       }
       onClose();
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [isDirty, onClose]
   );
 

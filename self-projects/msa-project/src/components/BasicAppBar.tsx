@@ -31,9 +31,10 @@ import { ChangePassword } from "../pages/auth/ChangePassword";
 import { Profile } from "../pages/auth/Profile";
 import { usePageEncryption, usePageLabel } from "../hooks/usePageLabel";
 import InputKey from "../pages/others/InputKey";
-import { BLOCK_MESSAGE } from "../hooks/usePageBlocker";
+import { useConfirm } from "../config/ConfirmProvider";
 
 export const BasicAppBar = (props: AppBarProps) => {
+  const { confirm } = useConfirm();
   const { sessionKey } = useGlobalContext();
   const encrypt = usePageEncryption();
   const label = usePageLabel();
@@ -106,9 +107,9 @@ export const BasicAppBar = (props: AppBarProps) => {
     }
   };
 
-  const validateDirty = (): boolean => {
+  const validateDirty = async (): Promise<boolean> => {
     if (!props.isDirty) return true;
-    const confirmClose = window.confirm(BLOCK_MESSAGE);
+    const confirmClose = await confirm();
     if (confirmClose) return true;
     return false;
   };
@@ -194,9 +195,9 @@ export const BasicAppBar = (props: AppBarProps) => {
                 return (
                   <ListItem key={key} disablePadding>
                     <ListItemButton
-                      onClick={() => {
+                      onClick={async () => {
                         setDrawerOpen(false);
-                        const ok = validateDirty();
+                        const ok = await validateDirty();
                         if (ok) {
                           navigate(item.path!);
                         }
