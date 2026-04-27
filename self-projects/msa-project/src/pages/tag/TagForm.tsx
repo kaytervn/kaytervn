@@ -1,68 +1,47 @@
-import * as yup from "yup";
-import { CommonFormDialog } from "../../components/CommonDialog";
-import { DEFAULT_COLOR, TEXT, TOAST } from "../../services/constant";
-import { useToast } from "../../config/ToastProvider";
-import useApi from "../../hooks/useApi";
-import { LoadingOverlay } from "../../components/CustomOverlay";
-import { useMemo } from "react";
-import { useDialogFormData } from "../../hooks/useFormData";
+import React from "react";
+import { FormDialog } from "@/shared/components/forms/FormDialog";
+import { FormTextField } from "@/shared/components/forms/FormFields";
+import { LoadingOverlay } from "@/shared/components/feedback/LoadingOverlay";
+import { TEXT } from "@/shared/constants";
+import { tagSchema, type TagForm as TagFormType } from "@/features/tag/types";
+import { useTagFormLogic } from "@/features/tag/hooks/useTagForm";
 
-const schema = yup.object().shape({
-  name: yup.string().required("Tên không hợp lệ"),
-});
+interface TagFormDialogProps {
+  open: boolean;
+  data?: { id?: number };
+  onClose: () => void;
+}
 
-export const TagForm = ({
+export const TagFormDialog: React.FC<TagFormDialogProps> = ({
   open,
   data,
   onClose,
-  refreshData,
-}: {
-  open: boolean;
-  data?: any;
-  onClose: () => void;
-  refreshData: () => void;
 }) => {
-  const { showToast } = useToast();
-  const { tag, loading } = useApi();
-  const isUpdate = !!data?.id;
-  const fetchData = useDialogFormData(open, data?.id, tag, onClose);
-
-  const handleSubmit = async (formData: any) => {
-    const kind = fetchData?.kind ?? 2;
-    const color = fetchData?.color ?? DEFAULT_COLOR;
-    const payload = isUpdate
-      ? { ...formData, color, kind, id: data.id }
-      : { ...formData, color, kind };
-    const action = isUpdate ? tag.update : tag.create;
-
-    const res = await action(payload);
-    if (res.result) {
-      await refreshData();
-      onClose();
-      showToast(TEXT.REQUEST_SUCCESS, TOAST.SUCCESS);
-    } else {
-      showToast(res.message || TEXT.REQUEST_FAILED, TOAST.ERROR);
-    }
-  };
-
-  const defaultValues = useMemo(
-    () => ({
-      name: fetchData?.name ?? "",
-    }),
-    [fetchData]
+  const { isUpdate, initialData, loading, handleSubmit } = useTagFormLogic(
+    data?.id,
+    onClose,
   );
 
   return (
     <>
       <LoadingOverlay loading={loading} />
-      <CommonFormDialog
+      <FormDialog<TagFormType>
         open={open}
         title={isUpdate ? TEXT.UPDATE_TAG : TEXT.CREATE_TAG}
-        schema={schema}
-        defaultValues={defaultValues}
-        fields={[{ name: "name", label: "Tên", required: true }]}
+        schema={tagSchema}
+        defaultValues={{
+          name: initialData?.name || "",
+        }}
         onClose={onClose}
         onSubmit={handleSubmit}
+        fields={[
+          {
+            name: "name",
+            render: ({ control }) => (
+              <FormTextField control={control} name="name" label="Tên" required />
+            ),
+          },
+        ]}
       />
     </>
   );

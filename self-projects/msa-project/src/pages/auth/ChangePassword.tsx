@@ -1,76 +1,69 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from "react";
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
-import { PasswordField } from "../../components/CustomTextField";
-import { TEXT } from "../../services/constant";
-import { useEffect } from "react";
-import useForm from "../../hooks/useForm";
+  FormPasswordField,
+} from "@/shared/components/forms/FormFields";
+import { FormDialog } from "@/shared/components/forms/FormDialog";
+import { TEXT } from "@/shared/constants";
+import { changePasswordSchema } from "@/features/auth/types";
+import { useChangePasswordForm } from "@/features/auth/hooks/useChangePasswordForm";
 
-export const ChangePassword = ({ isVisible, onClose, onSubmit }: any) => {
-  const validate = (form: any) => {
-    const newErrors: any = {};
-    if (!form.oldPassword.trim()) {
-      newErrors.oldPassword = "Mật khẩu hiện tại không hợp lệ";
-    }
-    if (!form.newPassword.trim()) {
-      newErrors.newPassword = "Mật khẩu mới không hợp lệ";
-    }
-    if (form.newPassword !== form.confirmPassword) {
-      newErrors.confirmPassword = "Mật khẩu xác nhận không trùng khớp";
-    }
-    return newErrors;
-  };
+interface ChangePasswordProps {
+  isVisible: boolean;
+  onClose: () => void;
+}
 
-  const { form, errors, resetForm, handleChange, isValidForm } = useForm(
-    { oldPassword: "", newPassword: "", confirmPassword: "" },
-    validate
-  );
+export const ChangePassword: React.FC<ChangePasswordProps> = ({
+  isVisible,
+  onClose,
+}) => {
+  const { form, handleSubmit } = useChangePasswordForm(onClose);
 
   useEffect(() => {
-    resetForm();
-  }, [isVisible]);
-
-  const handleSubmit = async () => {
-    if (isValidForm()) {
-      await onSubmit(form);
+    if (!isVisible) {
+      form.reset();
     }
-  };
+  }, [isVisible, form]);
 
   return (
-    <Dialog open={isVisible} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>{TEXT.CHANGE_PASSWORD}</DialogTitle>
-      <DialogContent>
-        <PasswordField
-          label={TEXT.CURRENT_PASSWORD}
-          value={form?.oldPassword}
-          onChange={(e: any) => handleChange("oldPassword", e.target.value)}
-          helperText={errors.oldPassword}
-        />
-        <PasswordField
-          label={TEXT.NEW_PASSWORD}
-          value={form?.newPassword}
-          onChange={(e: any) => handleChange("newPassword", e.target.value)}
-          helperText={errors.newPassword}
-        />
-        <PasswordField
-          label={TEXT.CONFIRM_PASSWORD}
-          onChange={(e: any) => handleChange("confirmPassword", e.target.value)}
-          helperText={errors.confirmPassword}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button size="large" onClick={onClose}>
-          {TEXT.CANCEL}
-        </Button>
-        <Button size="large" onClick={handleSubmit} variant="contained">
-          {TEXT.SAVE}
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <FormDialog
+      open={isVisible}
+      title={TEXT.CHANGE_PASSWORD}
+      schema={changePasswordSchema}
+      defaultValues={{ oldPassword: "", newPassword: "", confirmPassword: "" }}
+      onClose={onClose}
+      onSubmit={handleSubmit}
+      fields={[
+        {
+          name: "oldPassword",
+          render: ({ control }) => (
+            <FormPasswordField
+              control={control}
+              name="oldPassword"
+              label={TEXT.CURRENT_PASSWORD}
+            />
+          ),
+        },
+        {
+          name: "newPassword",
+          render: ({ control }) => (
+            <FormPasswordField
+              control={control}
+              name="newPassword"
+              label={TEXT.NEW_PASSWORD}
+            />
+          ),
+        },
+        {
+          name: "confirmPassword",
+          render: ({ control }) => (
+            <FormPasswordField
+              control={control}
+              name="confirmPassword"
+              label={TEXT.CONFIRM_PASSWORD}
+            />
+          ),
+        },
+      ]}
+    />
   );
 };

@@ -1,131 +1,89 @@
-import * as yup from "yup";
-import { useToast } from "../../config/ToastProvider";
-import useApi from "../../hooks/useApi";
-import { usePageFormData } from "../../hooks/useFormData";
-import { TEXT, TOAST } from "../../services/constant";
-import { useEffect } from "react";
-import {
-  CommonDisplayField,
-  CommonFormContainer,
-  CommonPasswordField,
-  CommonTextField,
-  FieldsContainer,
-} from "../../components/CommonForm";
-import { useParams } from "react-router-dom";
-import { PAGE_CONFIG } from "../../config/PageConfig";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import { CommonFormActions } from "../../components/Toolbar";
+import React from "react";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { Stack } from "@mui/material";
-import { SelectTagField } from "../../components/SelectBox";
-import useEncryption from "../../hooks/useEncryption";
-import { CommonJsonListField } from "../../components/JsonFieldList";
+import {
+  DisplayField as CommonDisplayField,
+  FormPageContainer as CommonFormContainer,
+  FieldsContainer,
+  FormPasswordField,
+  FormTextField,
+} from "@/shared/components/forms/FormFields";
+import { CommonJsonListField } from "@/shared/components/forms/JsonFieldList";
+import { SelectTagField } from "@/shared/components/forms/SelectBox";
+import { FormActions as CommonFormActions } from "@/shared/components/buttons/Buttons";
+import { PAGE_CONFIG } from "@/shared/constants";
+import { comparePath } from "@/shared/utils/validation";
+import { useBankFormLogic } from "@/features/bank/hooks/useBankForm";
 
-const schema = yup.object().shape({
-  tagId: yup.number().required("Thẻ không hợp lệ"),
-  username: yup.string().required("Tài khoản không hợp lệ"),
-  password: yup.string().required("Mật khẩu không hợp lệ"),
-});
+export const BankForm: React.FC = () => {
+  const { pathname } = useLocation();
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
-export const BankForm = () => {
-  const { id } = useParams();
-  const { showToast } = useToast();
-  const { bank, loading } = useApi();
-  const { userEncrypt, userDecrypt } = useEncryption();
-  const isUpdate = !!id;
+  const isUpdate = comparePath(pathname, PAGE_CONFIG.UPDATE_BANK.path);
 
-  const {
-    handleSubmit,
-    control,
-    reset,
-    setValue,
-    formState: { isDirty },
-  } = useForm<any>({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      tagId: undefined,
-      username: "",
-      password: "",
-      pins: "[]",
-      numbers: "[]",
-    },
-  });
-
-  const {
-    data: fetchData,
-    onClose,
-    forceBack,
-  } = usePageFormData(isDirty, PAGE_CONFIG.BANK.path, id, bank);
-
-  useEffect(() => {
-    if (fetchData) {
-      reset({
-        tagId: fetchData.tag?.id ?? undefined,
-        username: fetchData.username ?? "",
-        password: userDecrypt(fetchData.password) ?? "",
-        pins: userDecrypt(fetchData.pins) ?? "[]",
-        numbers: fetchData.numbers ?? "[]",
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchData]);
-
-  const onSubmit = async (formData: any) => {
-    const password = userEncrypt(formData.password);
-    const pins = userEncrypt(formData.pins);
-    const defaultFields = { password, pins };
-    const payload = isUpdate
-      ? { ...formData, ...defaultFields, id }
-      : { ...formData, ...defaultFields };
-    const action = isUpdate ? bank.update : bank.create;
-    const res = await action(payload);
-    if (res.result) {
-      forceBack();
-      showToast(TEXT.REQUEST_SUCCESS, TOAST.SUCCESS);
-    } else {
-      showToast(res.message || TEXT.REQUEST_FAILED, TOAST.ERROR);
-    }
+  const handleSuccess = () => {
+    navigate(-1);
   };
+
+  const {
+    form: {
+      control,
+      handleSubmit,
+      setValue,
+      formState: { isDirty },
+    },
+    fetchData,
+    loading,
+    handleSubmit: submitMutation,
+  } = useBankFormLogic(
+    isUpdate,
+    id ? parseInt(id, 10) : undefined,
+    handleSuccess
+  );
 
   return (
     <CommonFormContainer loading={loading} isDirty={isDirty}>
       <Stack rowGap={3} direction={"column"}>
-        {isUpdate ? (
-          <CommonDisplayField label={"Thẻ"} value={fetchData?.tag?.name} />
+        {isUpdate && fetchData?.tag ? (
+          <CommonDisplayField label={"Thẻ"} value={fetchData.tag.name} />
         ) : (
-          <SelectTagField control={control} />
+          <SelectTagField control={control as any} name="tagId" />
         )}
         <FieldsContainer>
-          <CommonTextField
+          <FormTextField
             control={control}
             name={"username"}
             label={"Tài khoản"}
             required
           />
-          <CommonPasswordField
+          <FormPasswordField
             control={control}
             name={"password"}
             label={"Mật khẩu"}
             required
           />
         </FieldsContainer>
+        
         <CommonJsonListField
-          control={control}
-          setValue={setValue}
+          control={control as any}
+          setValue={setValue as any}
           name={"numbers"}
           label={"Số tài khoản"}
         />
+        
         <CommonJsonListField
-          control={control}
-          setValue={setValue}
+          control={control as any}
+          setValue={setValue as any}
           name={"pins"}
           label={"Mã PIN"}
         />
       </Stack>
+      
       <CommonFormActions
         isDirty={isDirty}
-        onCancel={onClose}
-        onSubmit={handleSubmit(onSubmit)}
+        onCancel={() => navigate(-1)}
+        onSubmit={handleSubmit(submitMutation as any)}
       />
     </CommonFormContainer>
   );

@@ -1,17 +1,18 @@
 import { Typography } from "@mui/material";
-import { BasicAppBar } from "../../components/BasicAppBar";
-import { BasicListView } from "../../components/ListView";
-import useApi from "../../hooks/useApi";
-import { useGridView } from "../../hooks/useGridView";
-import { ITEMS_PER_PAGE, TEXT } from "../../services/constant";
-import { DeleteDialog, LoadingOverlay } from "../../components/CustomOverlay";
-import { DIALOG_TYPE, useDialogManager } from "../../hooks/useDialog";
-import { TagForm } from "./TagForm";
-import {
-  CreateFabButton,
-  SearchBar,
-  ToolbarContainer,
-} from "../../components/Toolbar";
+import { BasicAppBar } from "@/shared/components/layout/BasicAppBar";
+import { BasicListView } from "@/shared/components/data-display/BasicListView";
+import { useGridView } from "@/shared/hooks/useGridView";
+import { ITEMS_PER_PAGE, TEXT } from "@/shared/constants";
+import { DeleteDialog } from "@/shared/components/feedback/DeleteDialog";
+import { LoadingOverlay } from "@/shared/components/feedback/LoadingOverlay";
+import { useDialogManager } from "@/shared/hooks/useDialog";
+import { DIALOG_TYPE } from "@/shared/types/common.types";
+import { TagFormDialog } from "./TagForm";
+import { CreateFabButton, ToolbarContainer } from "@/shared/components/buttons/Buttons";
+import { SearchBar } from "@/shared/components/forms/SearchBar";
+import { fetchTagList } from "@/features/tag/services/tag.service";
+import { useTagFormLogic } from "@/features/tag/hooks/useTagForm";
+import type { Tag as TagType } from "@/features/tag/types";
 
 const initQuery = {
   name: "",
@@ -20,7 +21,6 @@ const initQuery = {
 };
 
 export const Tag = () => {
-  const { tag, loading } = useApi();
   const {
     data,
     query,
@@ -28,18 +28,26 @@ export const Tag = () => {
     totalPages,
     handlePageChange,
     handleSubmitQuery,
-  } = useGridView({
-    fetchListApi: tag.list,
+  } = useGridView<TagType>({
+    fetchListApi: fetchTagList,
     initQuery,
   });
+
   const { visible, type, data: formData, open, close } = useDialogManager();
+
+  // Re-use hook for delete mutation
+  const { handleDelete, loading: isDeleting } = useTagFormLogic(
+    formData?.id as number,
+    close,
+  );
+
   return (
     <BasicAppBar
       renderToolbar={
         <ToolbarContainer>
           <SearchBar
-            value={query.name}
-            onChange={(value: any) => setQuery({ ...query, name: value })}
+            value={(query.name as string) || ""}
+            onChange={(value) => setQuery({ ...query, name: value })}
             onSearch={async () => await handleSubmitQuery(query)}
             onClear={async () => await handleSubmitQuery(initQuery)}
           />
@@ -47,58 +55,53 @@ export const Tag = () => {
       }
     >
       <>
-        <LoadingOverlay loading={loading} />
+        <LoadingOverlay loading={isDeleting} />
         {type === DIALOG_TYPE.FORM && (
-          <TagForm
-            open={visible}
-            data={formData}
-            onClose={close}
-            refreshData={() => handleSubmitQuery(query)}
-          />
+          <TagFormDialog open={visible} data={formData} onClose={close} />
         )}
         {type === DIALOG_TYPE.DELETE && (
           <DeleteDialog
             open={visible}
             onClose={close}
-            onDelete={() => tag.del(formData?.id)}
-            refreshData={() => handleSubmitQuery(query)}
+            onDelete={async () => {
+              await handleDelete(formData?.id as number);
+              return undefined;
+            }}
             title={TEXT.DELETE_TAG}
           />
         )}
-        <BasicListView
-          onItemClick={(item: any) => open({ id: item.id })}
+        <BasicListView<TagType>
+          onItemClick={(item) => open({ id: item.id as number })}
           data={data}
           menu={[
-            { label: TEXT.UPDATE, onClick: (id) => open({ id }) },
+            { label: TEXT.UPDATE, onClick: (id) => open({ id: id as number }) },
             {
               label: TEXT.DELETE,
-              onClick: (id) => open({ id }, DIALOG_TYPE.DELETE),
+              onClick: (id) => open({ id: id as number }, DIALOG_TYPE.DELETE),
             },
           ]}
-          renderContent={function (item: any): React.ReactNode {
-            return (
-              <Typography
-                variant="h6"
-                noWrap
-                sx={{
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  display: "block",
-                  maxWidth: "100%",
-                }}
-              >
-                {item.name}
-              </Typography>
-            );
-          }}
+          renderContent={(item) => (
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "block",
+                maxWidth: "100%",
+              }}
+            >
+              {item.name}
+            </Typography>
+          )}
           pagination={{
-            page: query.page,
+            page: query.page || 0,
             totalPages: totalPages,
             onChange: handlePageChange,
           }}
         />
-        <CreateFabButton onClick={open} />
+        <CreateFabButton onClick={() => open()} />
       </>
     </BasicAppBar>
   );

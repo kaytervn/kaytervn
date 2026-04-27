@@ -1,99 +1,52 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Stack, TextField } from "@mui/material";
-import { TEXT, TINY_TEXT_MAX_LENGTH, TOAST, VALID_PATTERN } from "../../services/constant";
-import { BasicPaper } from "../../components/BasicPaper";
-import { useLocation, useNavigate } from "react-router-dom";
-import { AUTH_CONFIG } from "../../config/PageConfig";
-import { useToast } from "../../config/ToastProvider";
-import useApi from "../../hooks/useApi";
-import useForm from "../../hooks/useForm";
-import { LoadingOverlay } from "../../components/CustomOverlay";
-import { useEffect } from "react";
-import { PasswordField } from "../../components/CustomTextField";
+import React from "react";
+import { Box, Button, Stack } from "@mui/material";
+import { TEXT } from "@/shared/constants";
+import { LoadingOverlay } from "@/shared/components/feedback/LoadingOverlay";
+import {
+  FormPasswordField,
+  FormTextField,
+} from "@/shared/components/forms/FormFields";
+import { AuthLayout } from "@/shared/components/layout/AuthLayout";
+import { useResetPasswordForm } from "@/features/auth/hooks/useResetPasswordForm";
 
-export const ResetPassword = () => {
-  const { showToast } = useToast();
-  const { state } = useLocation();
-  const navigate = useNavigate();
-  const { user, loading } = useApi();
-
-  useEffect(() => {
-    if (!state?.userId) {
-      navigate(AUTH_CONFIG.FORGOT_PASSWORD.path);
-    }
-  }, [state]);
-
-  const validate = (form: any) => {
-    const newErrors: any = {};
-    if (!form.otp.trim()) {
-      newErrors.otp = "Mã xác thực không hợp lệ";
-    }
-    if (!VALID_PATTERN.PASSWORD.test(form.newPassword)) {
-      newErrors.newPassword = "Mật khẩu không hợp lệ";
-    }
-    if (form.newPassword !== form.confirmPassword) {
-      newErrors.confirmPassword = "Mật khẩu xác nhận không trùng khớp";
-    }
-    return newErrors;
-  };
-
-  const { form, errors, handleChange, isValidForm } = useForm(
-    { otp: "", newPassword: "", confirmPassword: "" },
-    validate
-  );
-
-  const handleSubmit = async () => {
-    if (isValidForm()) {
-      const res = await user.resetPassword({ userId: state.userId, ...form });
-      if (res.result) {
-        showToast(TEXT.REQUEST_SUCCESS, TOAST.SUCCESS);
-        navigate(AUTH_CONFIG.LOGIN.path);
-      } else {
-        showToast(res.message || TEXT.REQUEST_FAILED, TOAST.ERROR);
-      }
-    } else {
-      showToast(TEXT.INVALID_FORM, TOAST.ERROR);
-    }
-  };
+export const ResetPassword: React.FC = () => {
+  const { form, handleSubmit, handleBack, loading } = useResetPasswordForm();
 
   return (
     <>
       <LoadingOverlay loading={loading} />
-      <BasicPaper label={TEXT.RESET_PASSWORD.toUpperCase()}>
-        <TextField
+      <AuthLayout label={TEXT.RESET_PASSWORD}>
+        <FormTextField
+          control={form.control}
+          name="code"
           label={TEXT.VERIFY_CODE}
-          variant="outlined"
-          fullWidth
-          margin="normal"
           required
-          onChange={(e) => handleChange("otp", e.target.value)}
-          error={Boolean(errors.otp)}
-          helperText={errors.otp}
-          inputProps={{
-            maxLength: TINY_TEXT_MAX_LENGTH,
-          }}
         />
 
-        <PasswordField
-          label={TEXT.NEW_PASSWORD}
-          value={form.newPassword}
-          onChange={(e: any) => handleChange("newPassword", e.target.value)}
-          helperText={errors.newPassword}
-        />
+        <Box mt={2}>
+          <FormPasswordField
+            control={form.control}
+            name="newPassword"
+            label={TEXT.NEW_PASSWORD}
+            required
+          />
+        </Box>
 
-        <PasswordField
-          label={TEXT.CONFIRM_PASSWORD}
-          value={form.confirmPassword}
-          onChange={(e: any) => handleChange("confirmPassword", e.target.value)}
-          helperText={errors.confirmPassword}
-        />
+        <Box mt={2}>
+          <FormPasswordField
+            control={form.control}
+            name="confirmPassword"
+            label={TEXT.CONFIRM_PASSWORD}
+            required
+          />
+        </Box>
 
-        <Stack spacing={1} direction={"row"} mt={2}>
+        <Stack spacing={1} direction={"row"} mt={3}>
           <Button
             variant="outlined"
             fullWidth
             size="large"
-            onClick={() => navigate(AUTH_CONFIG.LOGIN.path)}
+            onClick={handleBack}
           >
             {TEXT.BACK}
           </Button>
@@ -101,12 +54,12 @@ export const ResetPassword = () => {
             variant="contained"
             fullWidth
             size="large"
-            onClick={handleSubmit}
+            onClick={form.handleSubmit(handleSubmit)}
           >
             {TEXT.CONTINUE}
           </Button>
         </Stack>
-      </BasicPaper>
+      </AuthLayout>
     </>
   );
 };

@@ -1,20 +1,22 @@
-import React from "react";
-import { ITEMS_PER_PAGE, TEXT } from "../../services/constant";
-import useApi from "../../hooks/useApi";
-import { useGridView } from "../../hooks/useGridView";
-import { DIALOG_TYPE, useDialogManager } from "../../hooks/useDialog";
-import { BasicAppBar } from "../../components/BasicAppBar";
-import { PAGE_CONFIG } from "../../config/PageConfig";
-import { DeleteDialog, LoadingOverlay } from "../../components/CustomOverlay";
-import { GroupedListView } from "../../components/ListView";
 import { Stack, Typography } from "@mui/material";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
-import {
-  CreateFabButton,
-  SearchBar,
-  ToolbarContainer,
-} from "../../components/Toolbar";
-import { SelectPlatform } from "../../components/SelectBox";
+import { BasicAppBar } from "@/shared/components/layout/BasicAppBar";
+import { GroupedListView } from "@/shared/components/data-display/BasicListView";
+import { useGridView } from "@/shared/hooks/useGridView";
+import { ITEMS_PER_PAGE, TEXT } from "@/shared/constants";
+import { DeleteDialog } from "@/shared/components/feedback/DeleteDialog";
+import { LoadingOverlay } from "@/shared/components/feedback/LoadingOverlay";
+import { useDialogManager } from "@/shared/hooks/useDialog";
+import { DIALOG_TYPE } from "@/shared/types/common.types";
+import { PAGE_CONFIG, TOAST } from "@/shared/constants";
+import { CreateFabButton, ToolbarContainer } from "@/shared/components/buttons/Buttons";
+import { SearchBar } from "@/shared/components/forms/SearchBar";
+import { SelectPlatform } from "@/shared/components/forms/SelectBox";
+import { fetchAccountList, useDeleteAccountMutation } from "@/features/account/services/account.service";
+import type { Account as AccountType } from "@/features/account/types";
+import { useToastStore } from "@/shared/stores/useToastStore";
+import { useQueryClient } from "@tanstack/react-query";
+import { accountKeys } from "@/features/account/services/account.service";
 
 const initQuery = {
   keyword: "",
@@ -25,7 +27,10 @@ const initQuery = {
 
 export const Account = () => {
   const { state } = useLocation();
-  const { account, loading } = useApi();
+  const navigate = useNavigate();
+  const showToast = useToastStore((s) => s.showToast);
+  const queryClient = useQueryClient();
+
   const {
     data,
     query,
@@ -33,12 +38,29 @@ export const Account = () => {
     totalPages,
     handlePageChange,
     handleSubmitQuery,
-  } = useGridView({
-    fetchListApi: account.list,
+  } = useGridView<AccountType>({
+    fetchListApi: fetchAccountList,
     initQuery: state?.query || initQuery,
   });
-  const navigate = useNavigate();
+
   const { visible, type, data: formData, open, close } = useDialogManager();
+  const deleteMutation = useDeleteAccountMutation();
+
+  const handleDelete = async () => {
+    if (!formData?.id) return;
+    try {
+      const res = await deleteMutation.mutateAsync(formData.id as number);
+      if (res?.result) {
+        showToast(TEXT.REQUEST_SUCCESS, TOAST.SUCCESS);
+        queryClient.invalidateQueries({ queryKey: accountKeys.lists() });
+        close();
+      } else {
+        showToast(res?.message || TEXT.REQUEST_FAILED, TOAST.ERROR);
+      }
+    } catch (e) {
+      showToast(TEXT.REQUEST_FAILED, TOAST.ERROR);
+    }
+  };
 
   return (
     <BasicAppBar
@@ -46,14 +68,12 @@ export const Account = () => {
         <ToolbarContainer>
           <Stack direction={{ xs: "column", md: "row", lg: "row" }} spacing={1}>
             <SelectPlatform
-              value={query.platformId}
-              onChange={(value: any) =>
-                setQuery({ ...query, platformId: value })
-              }
+              value={query.platformId as number | undefined}
+              onChange={(value: any) => setQuery({ ...query, platformId: value })}
             />
             <SearchBar
-              value={query.keyword}
-              onChange={(value: any) => setQuery({ ...query, keyword: value })}
+              value={(query.keyword as string) || ""}
+              onChange={(value) => setQuery({ ...query, keyword: value })}
               onSearch={async () => await handleSubmitQuery(query)}
               onClear={() => setQuery({ ...query, keyword: "" })}
             />
@@ -62,88 +82,83 @@ export const Account = () => {
       }
     >
       <>
-        <LoadingOverlay loading={loading} />
+        <LoadingOverlay loading={deleteMutation.isPending} />
         {type === DIALOG_TYPE.DELETE && (
           <DeleteDialog
             open={visible}
             onClose={close}
-            onDelete={() => account.del(formData?.id)}
-            refreshData={() => handleSubmitQuery(query)}
+            onDelete={async () => {
+              await handleDelete();
+              return undefined;
+            }}
             title={TEXT.DELETE_ACCOUNT}
           />
         )}
-        <GroupedListView
-          onItemClick={(item: any) =>
+        <GroupedListView<AccountType>
+          onItemClick={(item) =>
             navigate(
-              generatePath(PAGE_CONFIG.UPDATE_ACCOUNT.path, { id: item.id }),
-              {
-                state: { query },
-              }
+              generatePath(PAGE_CONFIG.UPDATE_ACCOUNT.path, { id: String(item.id) }),
+              { state: { query } }
             )
           }
-          groupBy={(item: any) => item.platform?.id}
-          getGroupLabel={(item: any) => item.platform?.name || "No Platform"}
+          groupBy={(item) => item.platform?.id as number}
+          getGroupLabel={(item) => item.platform?.name || "No Platform"}
           data={data}
           menu={[
             {
               label: TEXT.LINK,
-              visible: (item: any) => item.kind === 1,
+              visible: (item) => item.kind === 1,
               onClick: (id) =>
-                navigate(generatePath(PAGE_CONFIG.LINK_ACCOUNT.path, { id }), {
+                navigate(generatePath(PAGE_CONFIG.LINK_ACCOUNT.path, { id: String(id) }), {
                   state: { query },
                 }),
             },
             {
               label: TEXT.UPDATE,
               onClick: (id) =>
-                navigate(
-                  generatePath(PAGE_CONFIG.UPDATE_ACCOUNT.path, { id }),
-                  {
-                    state: { query },
-                  }
-                ),
+                navigate(generatePath(PAGE_CONFIG.UPDATE_ACCOUNT.path, { id: String(id) }), {
+                  state: { query },
+                }),
             },
             {
               label: TEXT.DELETE,
-              onClick: (id) => open({ id }, DIALOG_TYPE.DELETE),
+              onClick: (id) => open({ id: id as number }, DIALOG_TYPE.DELETE),
             },
           ]}
-          renderContent={function (item: any): React.ReactNode {
-            return (
-              <>
-                <Typography
-                  variant="h6"
-                  noWrap
-                  display={"flex"}
-                  sx={{
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "block",
-                    maxWidth: "100%",
-                  }}
-                >
-                  {item.username ?? item?.parent?.username}
-                </Typography>
-                <Typography
-                  noWrap
-                  variant="body2"
-                  sx={{
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "block",
-                    maxWidth: "100%",
-                  }}
-                  color="text.secondary"
-                >
-                  {item?.parent?.platform?.name}
-                </Typography>
-              </>
-            );
-          }}
+          renderContent={(item) => (
+            <>
+              <Typography
+                variant="h6"
+                noWrap
+                display={"flex"}
+                sx={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "block",
+                  maxWidth: "100%",
+                }}
+              >
+                {item.username ?? item?.parent?.username}
+              </Typography>
+              <Typography
+                noWrap
+                variant="body2"
+                sx={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "block",
+                  maxWidth: "100%",
+                }}
+                color="text.secondary"
+              >
+                {item?.parent?.platform?.name}
+              </Typography>
+            </>
+          )}
           pagination={{
-            page: query.page,
+            page: query.page || 0,
             totalPages: totalPages,
             onChange: handlePageChange,
           }}

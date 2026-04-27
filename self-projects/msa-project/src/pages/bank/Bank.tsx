@@ -1,19 +1,20 @@
-import React from "react";
-import { ITEMS_PER_PAGE, TEXT } from "../../services/constant";
-import useApi from "../../hooks/useApi";
-import { useGridView } from "../../hooks/useGridView";
-import { DIALOG_TYPE, useDialogManager } from "../../hooks/useDialog";
-import { BasicAppBar } from "../../components/BasicAppBar";
-import { PAGE_CONFIG } from "../../config/PageConfig";
-import { DeleteDialog, LoadingOverlay } from "../../components/CustomOverlay";
-import { BasicListView } from "../../components/ListView";
 import { Typography } from "@mui/material";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
-import {
-  CreateFabButton,
-  SearchBar,
-  ToolbarContainer,
-} from "../../components/Toolbar";
+import { BasicAppBar } from "@/shared/components/layout/BasicAppBar";
+import { BasicListView } from "@/shared/components/data-display/BasicListView";
+import { useGridView } from "@/shared/hooks/useGridView";
+import { ITEMS_PER_PAGE, TEXT, TOAST } from "@/shared/constants";
+import { DeleteDialog } from "@/shared/components/feedback/DeleteDialog";
+import { LoadingOverlay } from "@/shared/components/feedback/LoadingOverlay";
+import { useDialogManager } from "@/shared/hooks/useDialog";
+import { DIALOG_TYPE } from "@/shared/types/common.types";
+import { PAGE_CONFIG } from "@/shared/constants";
+import { CreateFabButton, ToolbarContainer } from "@/shared/components/buttons/Buttons";
+import { SearchBar } from "@/shared/components/forms/SearchBar";
+import { fetchBankList, useDeleteBankMutation, bankKeys } from "@/features/bank/services/bank.service";
+import type { Bank as BankType } from "@/features/bank/types";
+import { useToastStore } from "@/shared/stores/useToastStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 const initQuery = {
   keyword: "",
@@ -24,7 +25,10 @@ const initQuery = {
 
 export const Bank = () => {
   const { state } = useLocation();
-  const { bank, loading } = useApi();
+  const navigate = useNavigate();
+  const showToast = useToastStore((s) => s.showToast);
+  const queryClient = useQueryClient();
+
   const {
     data,
     query,
@@ -32,20 +36,37 @@ export const Bank = () => {
     totalPages,
     handlePageChange,
     handleSubmitQuery,
-  } = useGridView({
-    fetchListApi: bank.list,
+  } = useGridView<BankType>({
+    fetchListApi: fetchBankList,
     initQuery: state?.query || initQuery,
   });
-  const navigate = useNavigate();
+
   const { visible, type, data: formData, open, close } = useDialogManager();
+  const deleteMutation = useDeleteBankMutation();
+
+  const handleDelete = async () => {
+    if (!formData?.id) return;
+    try {
+      const res = await deleteMutation.mutateAsync(formData.id as number);
+      if (res?.result) {
+        showToast(TEXT.REQUEST_SUCCESS, TOAST.SUCCESS);
+        queryClient.invalidateQueries({ queryKey: bankKeys.lists() });
+        close();
+      } else {
+        showToast(res?.message || TEXT.REQUEST_FAILED, TOAST.ERROR);
+      }
+    } catch (e) {
+      showToast(TEXT.REQUEST_FAILED, TOAST.ERROR);
+    }
+  };
 
   return (
     <BasicAppBar
       renderToolbar={
         <ToolbarContainer>
           <SearchBar
-            value={query.keyword}
-            onChange={(value: any) => setQuery({ ...query, keyword: value })}
+            value={(query.keyword as string) || ""}
+            onChange={(value) => setQuery({ ...query, keyword: value })}
             onSearch={async () => await handleSubmitQuery(query)}
             onClear={async () => await handleSubmitQuery(initQuery)}
           />
@@ -53,23 +74,23 @@ export const Bank = () => {
       }
     >
       <>
-        <LoadingOverlay loading={loading} />
+        <LoadingOverlay loading={deleteMutation.isPending} />
         {type === DIALOG_TYPE.DELETE && (
           <DeleteDialog
             open={visible}
             onClose={close}
-            onDelete={() => bank.del(formData?.id)}
-            refreshData={() => handleSubmitQuery(query)}
+            onDelete={async () => {
+              await handleDelete();
+              return undefined;
+            }}
             title={TEXT.DELETE_BANK}
           />
         )}
-        <BasicListView
-          onItemClick={(item: any) =>
+        <BasicListView<BankType>
+          onItemClick={(item) =>
             navigate(
-              generatePath(PAGE_CONFIG.UPDATE_BANK.path, { id: item.id }),
-              {
-                state: { query },
-              }
+              generatePath(PAGE_CONFIG.UPDATE_BANK.path, { id: String(item.id) }),
+              { state: { query } }
             )
           }
           data={data}
@@ -77,50 +98,48 @@ export const Bank = () => {
             {
               label: TEXT.UPDATE,
               onClick: (id) =>
-                navigate(generatePath(PAGE_CONFIG.UPDATE_BANK.path, { id }), {
+                navigate(generatePath(PAGE_CONFIG.UPDATE_BANK.path, { id: String(id) }), {
                   state: { query },
                 }),
             },
             {
               label: TEXT.DELETE,
-              onClick: (id) => open({ id }, DIALOG_TYPE.DELETE),
+              onClick: (id) => open({ id: id as number }, DIALOG_TYPE.DELETE),
             },
           ]}
-          renderContent={function (item: any): React.ReactNode {
-            return (
-              <>
-                <Typography
-                  variant="h6"
-                  noWrap
-                  sx={{
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "block",
-                    maxWidth: "100%",
-                  }}
-                >
-                  {item?.tag?.name}
-                </Typography>
-                <Typography
-                  noWrap
-                  variant="body2"
-                  sx={{
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "block",
-                    maxWidth: "100%",
-                  }}
-                  color="text.secondary"
-                >
-                  {item.username}
-                </Typography>
-              </>
-            );
-          }}
+          renderContent={(item) => (
+            <>
+              <Typography
+                variant="h6"
+                noWrap
+                sx={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "block",
+                  maxWidth: "100%",
+                }}
+              >
+                {item?.tag?.name}
+              </Typography>
+              <Typography
+                noWrap
+                variant="body2"
+                sx={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "block",
+                  maxWidth: "100%",
+                }}
+                color="text.secondary"
+              >
+                {item.username}
+              </Typography>
+            </>
+          )}
           pagination={{
-            page: query.page,
+            page: query.page || 0,
             totalPages: totalPages,
             onChange: handlePageChange,
           }}

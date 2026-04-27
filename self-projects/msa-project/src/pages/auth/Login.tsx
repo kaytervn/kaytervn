@@ -1,129 +1,55 @@
-import { Box, Button, Link, Stack, TextField } from "@mui/material";
+import React from "react";
+import { Box, Button, Link, Stack } from "@mui/material";
+import { TEXT } from "@/shared/constants";
+import { LoadingOverlay } from "@/shared/components/feedback/LoadingOverlay";
 import {
-  GRANT_TYPE,
-  LOCAL_STORAGE,
-  TEXT,
-  TINY_TEXT_MAX_LENGTH,
-  TOAST,
-} from "../../services/constant";
-import { BasicPaper } from "../../components/BasicPaper";
-import { LoadingOverlay } from "../../components/CustomOverlay";
-import useApi from "../../hooks/useApi";
-import { useState } from "react";
-import { useToast } from "../../config/ToastProvider";
+  FormPasswordField,
+  FormTextField,
+} from "@/shared/components/forms/FormFields";
 import { useNavigate } from "react-router-dom";
-import useForm from "../../hooks/useForm";
-import { setStorageData } from "../../services/storages";
-import { PasswordField } from "../../components/CustomTextField";
-import { AUTH_CONFIG } from "../../config/PageConfig";
+import { AUTH_ROUTES } from "@/shared/constants";
+import { AuthLayout } from "@/shared/components/layout/AuthLayout";
+import { useLoginForm } from "@/features/auth/hooks/useLoginForm";
 
-export const Login = () => {
-  const { showToast } = useToast();
+export const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { user, loading } = useApi();
-  const [isMfa, setIsMfa] = useState(false);
-  const [qrUrl, setQrUrl] = useState<any>(null);
-
-  const validate = (form: any) => {
-    const newErrors: any = {};
-    if (!isMfa) {
-      if (!form.username.trim()) {
-        newErrors.username = "Tài khoản là bắt buộc";
-      }
-      if (!form.password) {
-        newErrors.password = "Mật khẩu là bắt buộc";
-      }
-    } else {
-      if (!form.totp) {
-        newErrors.totp = "Mã xác thực là bắt buộc";
-      }
-    }
-    return newErrors;
-  };
-
-  const { form, errors, resetForm, handleChange, isValidForm } = useForm(
-    { username: "", password: "", totp: "" },
-    validate
-  );
-
-  const handleSubmitLogin = async () => {
-    if (isValidForm()) {
-      const verify = await user.verifyCreditial({
-        username: form.username,
-        password: form.password,
-      });
-      if (!verify?.result) {
-        showToast(TEXT.LOGIN_FAILED, TOAST.ERROR);
-        return;
-      }
-      const data = verify.data;
-      setIsMfa(true);
-      if (data?.qrCodeUrl) {
-        setQrUrl(data.qrCodeUrl);
-      }
-    } else {
-      showToast(TEXT.INVALID_FORM, TOAST.ERROR);
-    }
-  };
-
-  const handleSubmitTOTP = async () => {
-    if (isValidForm()) {
-      const res = await user.login({
-        username: form.username,
-        password: form.password,
-        totp: form.totp,
-        grant_type: GRANT_TYPE.PASSWORD,
-      });
-      const accessToken = res?.access_token;
-      if (accessToken) {
-        showToast(TEXT.LOGGED_IN, TOAST.SUCCESS);
-        setStorageData(LOCAL_STORAGE.ACCESS_TOKEN, accessToken);
-        window.location.href = "/";
-      } else {
-        showToast(TEXT.INVALID_TOTP, TOAST.ERROR);
-      }
-    } else {
-      showToast(TEXT.INVALID_FORM, TOAST.ERROR);
-    }
-  };
-
-  const handleCancelSubmitOTP = () => {
-    setIsMfa(false);
-    setQrUrl(null);
-    resetForm();
-  };
+  const {
+    isMfa,
+    qrUrl,
+    loginForm,
+    totpForm,
+    handleVerifyCredential,
+    handleLogin,
+    handleCancelMfa,
+    loading,
+  } = useLoginForm();
 
   return (
     <>
       <LoadingOverlay loading={loading} />
       {!isMfa ? (
-        <BasicPaper label={TEXT.LOGIN}>
-          <TextField
+        <AuthLayout label={TEXT.LOGIN}>
+          <FormTextField
+            control={loginForm.control}
+            name="username"
             label={TEXT.USERNAME}
-            variant="outlined"
-            fullWidth
-            margin="normal"
             required
-            value={form.username}
-            onChange={(e) => handleChange("username", e.target.value)}
-            error={Boolean(errors.username)}
-            helperText={errors.username}
-            inputProps={{
-              maxLength: TINY_TEXT_MAX_LENGTH,
-            }}
           />
 
-          <PasswordField
-            value={form.password}
-            onChange={(e: any) => handleChange("password", e.target.value)}
-            helperText={errors.password}
-          />
+          <Box mt={2}>
+            <FormPasswordField
+              control={loginForm.control}
+              name="password"
+              label={TEXT.PASSWORD}
+              required
+            />
+          </Box>
 
           <Box textAlign="right" mt={1} mb={2}>
             <Link
               variant="body2"
               underline="hover"
-              onClick={() => navigate(AUTH_CONFIG.FORGOT_PASSWORD.path)}
+              onClick={() => navigate(AUTH_ROUTES.FORGOT_PASSWORD.path)}
               sx={{ cursor: "pointer" }}
             >
               {TEXT.FORGOT_PASSWORD}
@@ -135,13 +61,13 @@ export const Login = () => {
             fullWidth
             sx={{ mt: 2 }}
             size="large"
-            onClick={handleSubmitLogin}
+            onClick={loginForm.handleSubmit(handleVerifyCredential)}
           >
             {TEXT.CONTINUE}
           </Button>
-        </BasicPaper>
+        </AuthLayout>
       ) : (
-        <BasicPaper label={TEXT.VERIFY_MFA}>
+        <AuthLayout label={TEXT.VERIFY_MFA}>
           {qrUrl && (
             <Box textAlign="center" mt={2}>
               <Box
@@ -150,23 +76,16 @@ export const Login = () => {
                 width="100%"
                 bgcolor={"white"}
                 sx={{ borderRadius: 2, padding: 2 }}
+                alt="QR Code"
               />
             </Box>
           )}
 
-          <TextField
+          <FormTextField
+            control={totpForm.control}
+            name="totp"
             label={TEXT.VERIFY_CODE}
-            variant="outlined"
-            fullWidth
-            margin="normal"
             required
-            value={form.totp}
-            onChange={(e) => handleChange("totp", e.target.value)}
-            error={Boolean(errors.totp)}
-            helperText={errors.totp}
-            inputProps={{
-              maxLength: TINY_TEXT_MAX_LENGTH,
-            }}
           />
 
           <Stack spacing={1} direction={"row"} mt={2}>
@@ -174,7 +93,7 @@ export const Login = () => {
               variant="outlined"
               fullWidth
               size="large"
-              onClick={handleCancelSubmitOTP}
+              onClick={handleCancelMfa}
             >
               {TEXT.CANCEL}
             </Button>
@@ -182,12 +101,12 @@ export const Login = () => {
               variant="contained"
               fullWidth
               size="large"
-              onClick={handleSubmitTOTP}
+              onClick={totpForm.handleSubmit(handleLogin)}
             >
               {TEXT.SEND}
             </Button>
           </Stack>
-        </BasicPaper>
+        </AuthLayout>
       )}
     </>
   );

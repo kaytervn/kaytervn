@@ -1,119 +1,50 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import useApi from "../../hooks/useApi";
-import { LoadingOverlay } from "../../components/CustomOverlay";
-import { useDialogManager } from "../../hooks/useDialog";
-import useEncryption from "../../hooks/useEncryption";
-import { useGlobalContext } from "../../config/GlobalProvider";
-import { useToast } from "../../config/ToastProvider";
-import { useEffect, useState } from "react";
-import { decryptRSA } from "../../services/utils";
-import { TEXT, TEXT_MAX_LENGTH, TOAST } from "../../services/constant";
-import useForm from "../../hooks/useForm";
+import React from "react";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { FormDialog } from "@/shared/components/forms/FormDialog";
+import { FormTextAreaField } from "@/shared/components/forms/FormFields";
+import { useDialogManager } from "@/shared/hooks/useDialog";
+import { LoadingOverlay } from "@/shared/components/feedback/LoadingOverlay";
+import { TEXT } from "@/shared/constants";
+import { inputKeySchema } from "@/features/encryption/types";
+import { useInputKeyForm } from "@/features/encryption/hooks/useInputKeyForm";
 
-const InputKeyDialog = ({
+const InputKeyDialog: React.FC<{ open: boolean; onClose: () => void }> = ({
   open,
   onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
 }) => {
-  const { showToast } = useToast();
-  const { clientDecryptIgnoreNonce } = useEncryption();
-  const { user, loading } = useApi();
-  const { setSessionKey, refreshSessionTimeout } = useGlobalContext();
-  const [mySecretKey, setMySecretKey] = useState<any>(null);
-  const validate = (form: any) => {
-    const newErrors: any = {};
-    const decryptedKey = decryptRSA(
-      clientDecryptIgnoreNonce(form.sessionKey),
-      mySecretKey
-    );
-    if (!decryptedKey) {
-      newErrors.sessionKey = "Khoá giải mã không hợp lệ";
-    } else {
-      setSessionKey(decryptedKey);
-    }
-    return newErrors;
-  };
-
-  const { form, errors, resetForm, handleChange, isValidForm } = useForm(
-    { sessionKey: "" },
-    validate
-  );
-
-  useEffect(() => {
-    const getKey = async () => {
-      if (!open) {
-        return;
-      }
-      const res = await user.getMyKey();
-      if (!res.result) {
-        onClose();
-      }
-      const secretKey = res?.data?.secretKey;
-      setMySecretKey(secretKey);
-    };
-    getKey();
-    resetForm();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
-
-  const handleSubmit = async () => {
-    if (isValidForm()) {
-      onClose();
-      refreshSessionTimeout();
-      showToast(TEXT.REQUEST_SUCCESS, TOAST.SUCCESS);
-    }
-  };
+  const { handleSubmit, loading } = useInputKeyForm(onClose);
 
   return (
     <>
       <LoadingOverlay loading={loading} />
-      <Dialog fullWidth open={open} onClose={onClose} maxWidth="sm">
-        <DialogTitle>{"Nhập khoá giải mã"}</DialogTitle>
-        <DialogContent>
-          <TextField
-            label={"Khoá giải mã"}
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            required
-            multiline
-            value={form?.sessionKey}
-            rows={4}
-            onChange={(e) => handleChange("sessionKey", e.target.value)}
-            error={Boolean(errors.sessionKey)}
-            helperText={errors.sessionKey}
-            inputProps={{
-              maxLength: TEXT_MAX_LENGTH,
-            }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button size="large" onClick={onClose}>
-            {TEXT.CANCEL}
-          </Button>
-          <Button size="large" onClick={handleSubmit} variant="contained">
-            {TEXT.SUBMIT}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <FormDialog
+        open={open}
+        title={"Nhập khoá giải mã"}
+        schema={inputKeySchema}
+        defaultValues={{ sessionKey: "" }}
+        onClose={onClose}
+        onSubmit={handleSubmit}
+        fields={[
+          {
+            name: "sessionKey",
+            render: ({ control }) => (
+              <FormTextAreaField
+                control={control}
+                name="sessionKey"
+                label={"Khoá giải mã"}
+                required
+              />
+            ),
+          },
+        ]}
+      />
     </>
   );
 };
 
-const InputKey = () => {
+const InputKey: React.FC = () => {
   const { visible, open, close } = useDialogManager();
+  
   return (
     <Box
       display="flex"
@@ -145,8 +76,8 @@ const InputKey = () => {
           Vui lòng nhập lại mã để tiếp tục
         </Typography>
 
-        <Button variant="contained" size="large" onClick={open} sx={{ mt: 1 }}>
-          {"Nhập mã"}
+        <Button variant="contained" size="large" onClick={() => open()} sx={{ mt: 1 }}>
+          {TEXT.SUBMIT}
         </Button>
       </Stack>
     </Box>

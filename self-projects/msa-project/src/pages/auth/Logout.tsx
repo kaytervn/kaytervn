@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   Dialog,
@@ -6,10 +7,15 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { TEXT } from "../../services/constant";
-import { removeSessionCache } from "../../services/storages";
+import { TEXT } from "@/shared/constants";
+import { removeSessionCache } from "@/shared/services/storage";
 
-export const Logout = ({ isVisible, onClose }: any) => {
+interface LogoutProps {
+  isVisible: boolean;
+  onClose: () => void;
+}
+
+export const Logout: React.FC<LogoutProps> = ({ isVisible, onClose }) => {
   const handleSubmit = () => {
     removeSessionCache();
     window.location.href = "/";
