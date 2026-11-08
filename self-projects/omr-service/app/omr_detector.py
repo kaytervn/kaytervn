@@ -129,11 +129,10 @@ CONFIG = {
     "blur_ksize": 3,  # Gaussian blur on gray before marker detection
     "warp_blur_ksize": 5,  # light blur on warped gray (odd, keep small!)
     # marker detection (measured in work-image pixels)
-    "marker_min_area": 25,
-    "marker_max_area": 1500,
-    "marker_min_extent": 0.80,  # contour area / bounding-box area
-    "marker_max_aspect": 2.6,  # bbox long/short side
-    "marker_match_radius": 40.0,  # reference px; initial match tolerance
+    "marker_min_delta": 12,  # min gray drop vs paper to count as marker (faint squares)
+    "marker_min_extent": 0.65,  # contour area / bounding-box area
+    "marker_max_aspect": 2.2,  # bbox long/short side
+    "marker_match_radius": 60.0,  # reference px; initial match tolerance
     "marker_min_matches": 4,
     "marker_max_rms": 3.0,  # reference px; alignment rejected above this
     # bubble measurement
@@ -271,26 +270,31 @@ class OMRDetector:
     def _find_marker_candidates(
         self, work_gray: np.ndarray
     ) -> List[Tuple[float, float]]:
-        """Solid dark, roughly square blobs (alignment markers)."""
+        """Square blobs darker than the paper (solid or faint), sized like the corner markers."""
         k = self.cfg["blur_ksize"]
         g = cv2.GaussianBlur(work_gray, (k, k), 0)
-        otsu, _ = cv2.threshold(g, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-        thr = min(otsu, 150)  # never go above 150: keep markers solid
-        binary = (g < thr).astype(np.uint8) * 255
-        cnts, _ = cv2.findContours(
-            binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE
-        )  # markers may sit inside a block frame
+        bg = float(np.median(g))  # paper level (≈255 after flattening)
+        delta = max(self.cfg["marker_min_delta"], bg * 0.12)
+        binary = (g < bg - delta).astype(np.uint8) * 255
+        binary = cv2.morphologyEx(
+            binary, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8)
+        )  # fill pin-holes of faint squares
+
+        # Expected marker side in work px (input may be a crop of the sheet).
+        rx0, _, rx1, _ = self.region or (0.0, 0.0, float(self.ref_w), float(self.ref_h))
+        exp = self.layout["corner_marker_size"] * work_gray.shape[1] / float(rx1 - rx0)
+        min_area, max_area = (0.4 * exp) ** 2, (
+            2.5 * exp
+        ) ** 2  # also rejects bubbles / text
+
+        cnts, _ = cv2.findContours(binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         out = []
         for c in cnts:
             area = cv2.contourArea(c)
             x, y, w, h = cv2.boundingRect(c)
             if w == 0 or h == 0:
                 continue
-            if not (
-                self.cfg["marker_min_area"]
-                <= max(area, w * h * 0.5)
-                <= self.cfg["marker_max_area"]
-            ):
+            if not (min_area <= max(area, w * h * 0.5) <= max_area):
                 continue
             extent = max(area, 1) / float(w * h)
             aspect = max(w, h) / float(min(w, h))
@@ -299,10 +303,10 @@ class OMRDetector:
                 or aspect > self.cfg["marker_max_aspect"]
             ):
                 continue
-            # Must be SOLID dark inside (rejects holes of rings / frames).
+            # Must be darker than paper inside (rejects holes of rings / frames).
             mask = np.zeros(g.shape, np.uint8)
             cv2.drawContours(mask, [c], -1, 255, -1)
-            if g[mask > 0].mean() > thr * 0.8:
+            if bg - float(g[mask > 0].mean()) < 1.5 * delta:
                 continue
             m = cv2.moments(c)
             if m["m00"] > 0:
