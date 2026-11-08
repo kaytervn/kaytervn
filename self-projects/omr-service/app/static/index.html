@@ -1,0 +1,1649 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+    />
+    <meta name="theme-color" content="#0e1116" />
+    <title>Chấm phiếu trắc nghiệm</title>
+    <style>
+      :root {
+        --bg: #0e1116;
+        --surface: #171b22;
+        --surface2: #1f242d;
+        --line: #2a303a;
+        --text: #e6e9ef;
+        --muted: #8b94a3;
+        --accent: #3b82f6;
+        --ok: #22c55e;
+        --bad: #ef4444;
+        --warn: #eab308;
+        --header: 54px;
+        --safe-b: env(safe-area-inset-bottom, 0px);
+        --safe-t: env(safe-area-inset-top, 0px);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html,
+      body {
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          15px/1.45 system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        overflow: hidden;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        background: none;
+        border: 0;
+        cursor: pointer;
+      }
+      [hidden] {
+        display: none !important;
+      }
+
+      /* ---------- header + menu ---------- */
+      #header {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        z-index: 20;
+        height: calc(var(--header) + var(--safe-t));
+        padding-top: var(--safe-t);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-left: 8px;
+        background: var(--bg);
+        border-bottom: 1px solid var(--line);
+      }
+      body.on-scan #header {
+        background: transparent;
+        border-color: transparent;
+        pointer-events: none;
+      }
+      #menuBtn {
+        pointer-events: auto;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+      }
+      body.on-scan #menuBtn {
+        background: rgba(14, 17, 22, 0.65);
+      }
+      #menuBtn svg {
+        width: 22px;
+        height: 22px;
+        stroke: var(--text);
+      }
+      #title {
+        font-weight: 600;
+      }
+      body.on-scan #title {
+        display: none;
+      }
+      #menu {
+        position: fixed;
+        z-index: 30;
+        left: 8px;
+        top: calc(var(--header) + var(--safe-t) - 4px);
+        min-width: 200px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 6px;
+      }
+      #menu button {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 12px 14px;
+        border-radius: 8px;
+      }
+      #menu button.active {
+        background: var(--surface2);
+        color: var(--accent);
+      }
+      #scrim {
+        position: fixed;
+        inset: 0;
+        z-index: 25;
+      }
+
+      /* ---------- pages ---------- */
+      .page {
+        position: fixed;
+        inset: calc(var(--header) + var(--safe-t)) 0 0 0;
+        overflow-y: auto;
+        padding: 12px 12px 96px;
+      }
+      #page-scan {
+        inset: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #000;
+      }
+      .empty {
+        margin-top: 30vh;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      /* ---------- list rows ---------- */
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        text-align: left;
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 12px 8px 12px 14px;
+        margin-bottom: 8px;
+      }
+      .row .main {
+        flex: 1;
+        min-width: 0;
+      }
+      .row .t {
+        font-weight: 600;
+      }
+      .row .s {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .row .side {
+        color: var(--muted);
+        font-size: 13px;
+        text-align: right;
+        white-space: nowrap;
+      }
+      .icon-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        flex: none;
+      }
+      .icon-btn:active {
+        background: var(--surface2);
+      }
+      .icon-btn svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+      }
+      .fab {
+        position: fixed;
+        right: 16px;
+        bottom: calc(20px + var(--safe-b));
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--accent);
+        display: grid;
+        place-items: center;
+        z-index: 10;
+      }
+      .fab svg {
+        width: 26px;
+        height: 26px;
+        stroke: #fff;
+      }
+
+      /* ---------- scan page ---------- */
+      #video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background: #000;
+      }
+      #guide {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      #hint {
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        text-shadow: 0 1px 3px #000;
+      }
+      #shutter {
+        position: absolute;
+        left: 50%;
+        bottom: calc(26px + var(--safe-b));
+        transform: translateX(-50%);
+        width: 76px;
+        height: 76px;
+        border-radius: 50%;
+        border: 4px solid #fff;
+        display: grid;
+        place-items: center;
+        background: rgba(0, 0, 0, 0.25);
+        transition: opacity 0.15s;
+      }
+      #shutter i {
+        display: block;
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: #fff;
+        transition: background 0.15s;
+      }
+      #shutter:disabled {
+        opacity: 0.35;
+      }
+      #shutter:disabled i {
+        background: #9aa0a8;
+      }
+      #camMsg {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 32px;
+        background: var(--bg);
+      }
+      #busy {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+        z-index: 5;
+      }
+      .spin {
+        width: 34px;
+        height: 34px;
+        border: 3px solid #444;
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: sp 0.8s linear infinite;
+      }
+      @keyframes sp {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ---------- buttons / modal ---------- */
+      .btn {
+        padding: 11px 18px;
+        border-radius: 10px;
+        background: var(--surface2);
+        font-weight: 600;
+      }
+      .btn.primary {
+        background: var(--accent);
+        color: #fff;
+      }
+      .btn.danger {
+        background: var(--bad);
+        color: #fff;
+      }
+      .btn:active {
+        opacity: 0.8;
+      }
+      .modal-wrap {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: rgba(0, 0, 0, 0.65);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .modal {
+        width: 100%;
+        max-width: 560px;
+        max-height: 92vh;
+        display: flex;
+        flex-direction: column;
+        background: var(--surface);
+        border-radius: 16px 16px 0 0;
+        padding-bottom: var(--safe-b);
+      }
+      @media (min-width: 600px) {
+        .modal-wrap {
+          align-items: center;
+        }
+        .modal {
+          border-radius: 16px;
+          max-height: 88vh;
+        }
+      }
+      .modal h2 {
+        font-size: 17px;
+        padding: 16px 18px 8px;
+      }
+      .modal .body {
+        padding: 6px 18px 12px;
+        overflow-y: auto;
+        flex: 1;
+      }
+      .modal .foot {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 10px 18px 16px;
+        flex-wrap: wrap;
+      }
+      .modal .foot .msg {
+        flex: 1 0 100%;
+        color: var(--bad);
+        font-size: 13px;
+      }
+
+      /* ---------- result view ---------- */
+      .kv {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .kv div {
+        background: var(--surface2);
+        border-radius: 10px;
+        padding: 8px 10px;
+      }
+      .kv small {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .kv b {
+        font-size: 18px;
+      }
+      .ok {
+        color: var(--ok);
+      }
+      .bad {
+        color: var(--bad);
+      }
+      .warn {
+        color: var(--warn);
+      }
+      .orange {
+        color: #f97316;
+      }
+      .sec-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        margin: 4px 0 6px;
+      }
+      .when {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+      .imgbox {
+        overflow: auto;
+        border-radius: 10px;
+        background: #fff;
+        max-height: 50vh;
+      }
+      .imgbox img {
+        display: block;
+        width: 100%;
+        cursor: zoom-in;
+      }
+      .imgbox img.zoom {
+        width: 240%;
+        cursor: zoom-out;
+      }
+      .errlist {
+        list-style: none;
+        display: grid;
+        gap: 8px;
+      }
+      .errlist li {
+        background: var(--surface2);
+        border-radius: 10px;
+        padding: 10px 12px;
+      }
+
+      /* ---------- answer-key form ---------- */
+      .field label {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+      .field input[type="text"] {
+        width: 100%;
+        background: var(--surface2);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 12px;
+        color: var(--text);
+        font: inherit;
+        letter-spacing: 3px;
+        font-size: 18px;
+      }
+      .field input.invalid {
+        border-color: var(--bad);
+      }
+      .sec {
+        margin: 16px 0 6px;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+      @media (min-width: 520px) {
+        .grid.two {
+          grid-template-columns: 1fr 1fr;
+          column-gap: 16px;
+        }
+      }
+      .q {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 3px 6px;
+        border-radius: 8px;
+        border-left: 3px solid transparent;
+      }
+      .q.invalid {
+        border-left-color: var(--bad);
+        background: rgba(239, 68, 68, 0.08);
+      }
+      .q .n {
+        width: 34px;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .opts {
+        display: flex;
+        gap: 6px;
+        flex: 1;
+      }
+      .opts label {
+        flex: 1;
+      }
+      .opts input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .opts span {
+        display: block;
+        text-align: center;
+        padding: 7px 0;
+        border-radius: 8px;
+        background: var(--surface2);
+        font-weight: 600;
+      }
+      .opts input:checked + span {
+        background: var(--accent);
+        color: #fff;
+      }
+      .tfq {
+        margin-top: 10px;
+      }
+      .tfq h4 {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+
+      /* ---------- toast ---------- */
+      #toast {
+        position: fixed;
+        left: 50%;
+        bottom: calc(110px + var(--safe-b));
+        transform: translateX(-50%);
+        z-index: 80;
+        background: var(--surface2);
+        border: 1px solid var(--line);
+        padding: 10px 16px;
+        border-radius: 10px;
+        font-size: 14px;
+        max-width: 90%;
+      }
+    </style>
+  </head>
+  <body class="on-scan">
+    <div id="header">
+      <button id="menuBtn" aria-label="Menu">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+      <span id="title"></span>
+    </div>
+    <div id="scrim" hidden></div>
+    <div id="menu" hidden>
+      <button data-page="scan">Quét bài</button>
+      <button data-page="history">Kho lưu trữ</button>
+      <button data-page="keys">Nhập đáp án</button>
+    </div>
+
+    <!-- ============ Trang quét ============ -->
+    <section class="page" id="page-scan">
+      <video id="video" playsinline muted autoplay></video>
+      <canvas id="guide"></canvas>
+      <div id="hint"></div>
+      <button id="shutter" disabled aria-label="Chụp"><i></i></button>
+      <div id="camMsg" hidden>
+        <div id="camMsgText"></div>
+        <button class="btn primary" id="camRetry">Thử lại</button>
+      </div>
+      <div id="busy" hidden>
+        <div class="spin"></div>
+        <div>Đang xử lý…</div>
+      </div>
+    </section>
+
+    <!-- ============ Kho lưu trữ ============ -->
+    <section class="page" id="page-history" hidden>
+      <div id="historyList"></div>
+    </section>
+
+    <!-- ============ Nhập đáp án ============ -->
+    <section class="page" id="page-keys" hidden>
+      <div id="keysList"></div>
+      <button class="fab" id="addKey" aria-label="Thêm đáp án">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-width="2.4"
+          stroke-linecap="round"
+        >
+          <path d="M12 5v14M5 12h14" />
+        </svg>
+      </button>
+    </section>
+
+    <div id="toast" hidden></div>
+
+    <script>
+      "use strict";
+      const API_BASE = window.OMR_API_BASE || "";
+      const LS_KEYS = "omr.keys.v1";
+      const LS_HISTORY = "omr.history.v1";
+
+      let LAYOUT = {
+        corner_markers: [
+          [49.0, 109.9],
+          [553.0, 109.9],
+          [48.9, 368.0],
+          [553.5, 368.0],
+        ], // TL, TR, BL, BR
+        corner_marker_size: 15.0,
+        capture_region: [33.0, 94.0, 570.0, 384.0],
+        multiple_choice_questions: Array.from({ length: 20 }, (_, i) => i + 1),
+        true_false_questions: [1, 2, 3, 4],
+        true_false_rows: ["a", "b", "c", "d"],
+        exam_code_length: 3,
+      };
+
+      const $ = (s, r = document) => r.querySelector(s);
+      const el = (tag, attrs = {}, ...kids) => {
+        const e = document.createElement(tag);
+        for (const [k, v] of Object.entries(attrs)) {
+          if (k === "class") e.className = v;
+          else if (k === "html") e.innerHTML = v;
+          else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+          else e.setAttribute(k, v);
+        }
+        for (const c of kids.flat())
+          if (c != null) e.append(c.nodeType ? c : document.createTextNode(c));
+        return e;
+      };
+      const ICON_TRASH =
+        '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>';
+
+      const pad = (n) => String(n).padStart(2, "0");
+      function fmtTime(d) {
+        // HH:mm:ss DD/MM/YYYY
+        return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} ${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
+      }
+      function readLS(key) {
+        try {
+          const v = JSON.parse(localStorage.getItem(key) || "[]");
+          return Array.isArray(v) ? v : [];
+        } catch {
+          return [];
+        }
+      }
+      function writeLS(key, val) {
+        try {
+          localStorage.setItem(key, JSON.stringify(val));
+          return true;
+        } catch (e) {
+          toast(
+            "Bộ nhớ trình duyệt đã đầy. Hãy xóa bớt kết quả cũ trong Kho lưu trữ.",
+          );
+          return false;
+        }
+      }
+      const loadKeys = () => readLS(LS_KEYS);
+      const loadHistory = () => readLS(LS_HISTORY);
+      let toastTimer;
+      function toast(msg) {
+        const t = $("#toast");
+        t.textContent = msg;
+        t.hidden = false;
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => (t.hidden = true), 3200);
+      }
+
+      function openModal({ title, body, actions = [], onClose }) {
+        const msg = el("div", { class: "msg", hidden: "" });
+        const foot = el("div", { class: "foot" }, msg);
+        const wrap = el(
+          "div",
+          { class: "modal-wrap" },
+          el(
+            "div",
+            { class: "modal", role: "dialog" },
+            title ? el("h2", {}, title) : null,
+            el("div", { class: "body" }, body),
+            foot,
+          ),
+        );
+        const api = {
+          el: wrap,
+          msg: (t) => {
+            msg.textContent = t || "";
+            msg.hidden = !t;
+          },
+          close() {
+            wrap.remove();
+            onClose && onClose();
+          },
+        };
+        for (const a of actions) {
+          foot.append(
+            el(
+              "button",
+              {
+                class: "btn " + (a.kind || ""),
+                onclick: () => {
+                  if (a.onClick?.(api) !== false) api.close();
+                },
+              },
+              a.text,
+            ),
+          );
+        }
+        document.body.append(wrap);
+        return api;
+      }
+      function confirmDialog(text, okText, onOk) {
+        openModal({
+          title: text,
+          body: el("div"),
+          actions: [
+            { text: "Hủy" },
+            {
+              text: okText,
+              kind: "danger",
+              onClick: () => {
+                onOk();
+              },
+            },
+          ],
+        });
+      }
+
+      /* ======================================================================
+   Điều hướng + menu hamburger
+   ====================================================================== */
+      const PAGES = {
+        scan: "Quét bài",
+        history: "Kho lưu trữ",
+        keys: "Nhập đáp án",
+      };
+      let currentPage = "scan";
+      function toggleMenu(show) {
+        $("#menu").hidden = !show;
+        $("#scrim").hidden = !show;
+      }
+      $("#menuBtn").onclick = () => toggleMenu($("#menu").hidden);
+      $("#scrim").onclick = () => toggleMenu(false);
+      $("#menu").addEventListener("click", (e) => {
+        const b = e.target.closest("button[data-page]");
+        if (!b) return;
+        toggleMenu(false);
+        go(b.dataset.page);
+      });
+      function go(page) {
+        currentPage = page;
+        for (const p of Object.keys(PAGES)) $("#page-" + p).hidden = p !== page;
+        document.body.classList.toggle("on-scan", page === "scan");
+        $("#title").textContent = PAGES[page];
+        for (const b of $("#menu").querySelectorAll("button"))
+          b.classList.toggle("active", b.dataset.page === page);
+        if (page === "scan") Camera.start();
+        else Camera.stop();
+        if (page === "history") renderHistory();
+        if (page === "keys") renderKeys();
+      }
+
+      function resultView(rec) {
+        const s = rec.summary || {};
+        const idTxt = rec.student_id ?? (rec.student_raw || "?") + " (chưa rõ)";
+        const kv = (label, val, cls = "") =>
+          el(
+            "div",
+            {},
+            el("small", {}, label),
+            el("b", { class: cls }, String(val)),
+          );
+        const grid = el(
+          "div",
+          { class: "kv" },
+          kv("SBD", idTxt, rec.student_id ? "" : "warn"),
+          kv("Mã đề", rec.exam_code ?? "?"),
+          kv("Tổng số câu", s.total ?? 0),
+        );
+        const stats = (grp) => {
+          const st = { total: 0, correct: 0, wrong: 0, blank: 0 };
+          for (const a of rec.answers || [])
+            if (a.g === grp) {
+              st.total++;
+              if (a.r in st) st[a.r]++;
+            }
+          return st;
+        };
+        const section = (title, st) =>
+          el(
+            "div",
+            {},
+            el("div", { class: "sec-title" }, `${title} (${st.total} câu)`),
+            el(
+              "div",
+              { class: "kv" },
+              kv("Đúng", st.correct, "ok"),
+              kv("Sai", st.wrong, "bad"),
+              kv("Bỏ trống", st.blank, "orange"),
+            ),
+          );
+        const box = [
+          grid,
+          section("Trắc nghiệm", stats("MC")),
+          section("Đúng / Sai", stats("TF")),
+        ];
+        if ((s.needs_review || 0) > 0)
+          box.push(
+            el(
+              "p",
+              { class: "warn", style: "margin-bottom:10px" },
+              `Có ${s.needs_review} câu cần kiểm tra lại (màu vàng).`,
+            ),
+          );
+        if (rec.time) box.unshift(el("div", { class: "when" }, rec.time));
+        if (rec.image) {
+          const img = el("img", { src: rec.image, alt: "Kết quả chấm" });
+          img.onclick = () => img.classList.toggle("zoom");
+          box.push(el("div", { class: "imgbox" }, img));
+        }
+        return el("div", {}, box);
+      }
+
+      function renderHistory() {
+        const list = $("#historyList");
+        list.replaceChildren();
+        const items = loadHistory().sort((a, b) => b.ts - a.ts);
+        if (!items.length) {
+          list.append(
+            el("div", { class: "empty" }, "Chưa có kết quả nào được lưu."),
+          );
+          return;
+        }
+        for (const rec of items) {
+          const s = rec.summary || {};
+          const row = el(
+            "div",
+            {
+              class: "row",
+              role: "button",
+              onclick: () => showHistoryDetail(rec.id),
+            },
+            el(
+              "div",
+              { class: "main" },
+              el("div", { class: "s" }, rec.time),
+              el(
+                "div",
+                { class: "t" },
+                `SBD ${rec.student_id ?? rec.student_raw ?? "?"} - Mã đề ${rec.exam_code ?? "?"}`,
+              ),
+            ),
+            el(
+              "div",
+              { class: "side" },
+              el("span", { class: "ok" }, `${s.correct ?? 0} đúng`),
+              " - ",
+              el("span", { class: "bad" }, `${s.wrong ?? 0} sai`),
+            ),
+            el("button", {
+              class: "icon-btn",
+              html: ICON_TRASH,
+              "aria-label": "Xóa",
+              onclick: (e) => {
+                e.stopPropagation();
+                confirmDialog("Xóa kết quả này?", "Xóa", () => {
+                  writeLS(
+                    LS_HISTORY,
+                    loadHistory().filter((r) => r.id !== rec.id),
+                  );
+                  renderHistory();
+                });
+              },
+            }),
+          );
+          list.append(row);
+        }
+      }
+      function showHistoryDetail(id) {
+        const rec = loadHistory().find((r) => r.id === id);
+        if (!rec) return;
+        openModal({
+          title: "Chi tiết kết quả",
+          body: resultView(rec),
+          actions: [{ text: "Đóng" }],
+        });
+      }
+
+      function renderKeys() {
+        const list = $("#keysList");
+        list.replaceChildren();
+        const items = loadKeys().sort((a, b) =>
+          String(a.exam_code).localeCompare(String(b.exam_code)),
+        );
+        if (!items.length) {
+          list.append(
+            el("div", { class: "empty" }, "Chưa có đáp án nào. Bấm + để thêm."),
+          );
+          return;
+        }
+        for (const k of items) {
+          list.append(
+            el(
+              "div",
+              {
+                class: "row",
+                role: "button",
+                onclick: () => openKeyForm(k.exam_code),
+              },
+              el(
+                "div",
+                { class: "main" },
+                el("div", { class: "t" }, `Mã đề ${k.exam_code}`),
+                el(
+                  "div",
+                  { class: "s" },
+                  `${Object.keys(k.multiple_choice).length} câu trắc nghiệm - ${Object.keys(k.true_false).length} câu Đúng/Sai`,
+                ),
+              ),
+              el("button", {
+                class: "icon-btn",
+                html: ICON_TRASH,
+                "aria-label": "Xóa",
+                onclick: (e) => {
+                  e.stopPropagation();
+                  confirmDialog(
+                    `Xóa đáp án mã đề ${k.exam_code}?`,
+                    "Xóa",
+                    () => {
+                      writeLS(
+                        LS_KEYS,
+                        loadKeys().filter((x) => x.exam_code !== k.exam_code),
+                      );
+                      renderKeys();
+                    },
+                  );
+                },
+              }),
+            ),
+          );
+        }
+      }
+      $("#addKey").onclick = () => openKeyForm(null);
+
+      function radioGroup(name, values, labels, checked) {
+        return el(
+          "div",
+          { class: "opts" },
+          values.map((v, i) =>
+            el(
+              "label",
+              {},
+              el("input", {
+                type: "radio",
+                name,
+                value: v,
+                ...(checked === v ? { checked: "" } : {}),
+              }),
+              el("span", {}, labels[i]),
+            ),
+          ),
+        );
+      }
+      function openKeyForm(editCode) {
+        const existing = editCode
+          ? loadKeys().find((k) => k.exam_code === editCode)
+          : null;
+        const L = LAYOUT,
+          rows = L.true_false_rows;
+        const codeInput = el("input", {
+          type: "text",
+          inputmode: "numeric",
+          maxlength: String(L.exam_code_length),
+          autocomplete: "off",
+          placeholder: "0".repeat(L.exam_code_length),
+          value: existing ? existing.exam_code : "",
+        });
+        codeInput.addEventListener("input", () => {
+          codeInput.value = codeInput.value
+            .replace(/\D/g, "")
+            .slice(0, L.exam_code_length);
+        });
+
+        const mcGrid = el(
+          "div",
+          { class: "grid two" },
+          L.multiple_choice_questions.map((n) =>
+            el(
+              "div",
+              { class: "q", "data-key": "mc" + n },
+              el("span", { class: "n" }, String(n)),
+              radioGroup(
+                "mc" + n,
+                ["A", "B", "C", "D"],
+                ["A", "B", "C", "D"],
+                existing?.multiple_choice?.[n],
+              ),
+            ),
+          ),
+        );
+        const tfBox = el(
+          "div",
+          {},
+          L.true_false_questions.map((n) =>
+            el(
+              "div",
+              { class: "tfq" },
+              el("h4", {}, `Câu ${n}`),
+              el(
+                "div",
+                { class: "grid two" },
+                rows.map((r) =>
+                  el(
+                    "div",
+                    { class: "q", "data-key": `tf${n}${r}` },
+                    el("span", { class: "n" }, r + "."),
+                    radioGroup(
+                      `tf${n}${r}`,
+                      ["TRUE", "FALSE"],
+                      ["Đúng", "Sai"],
+                      existing?.true_false?.[n]?.[r],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        const body = el(
+          "div",
+          {},
+          el("div", { class: "field" }, el("label", {}, "Mã đề"), codeInput),
+          el("div", { class: "sec" }, "Trắc nghiệm"),
+          mcGrid,
+          el("div", { class: "sec" }, "Đúng / Sai"),
+          tfBox,
+        );
+
+        const modal = openModal({
+          title: existing
+            ? `Sửa đáp án mã đề ${existing.exam_code}`
+            : "Thêm đáp án",
+          body,
+          actions: [
+            { text: "Hủy" },
+            {
+              text: "Lưu",
+              kind: "primary",
+              onClick: (api) => {
+                // ----- validation -----
+                const errs = [];
+                const bad = new Set();
+                codeInput.classList.remove("invalid");
+                const code = codeInput.value.trim();
+                if (!code) {
+                  errs.push("Vui lòng nhập mã đề.");
+                  codeInput.classList.add("invalid");
+                } else if (code.length !== L.exam_code_length) {
+                  errs.push(
+                    `Mã đề phải gồm đúng ${L.exam_code_length} chữ số.`,
+                  );
+                  codeInput.classList.add("invalid");
+                } else if (
+                  loadKeys().some(
+                    (k) =>
+                      k.exam_code === code &&
+                      k.exam_code !== existing?.exam_code,
+                  )
+                ) {
+                  errs.push(`Mã đề ${code} đã tồn tại.`);
+                  codeInput.classList.add("invalid");
+                }
+                const mc = {},
+                  tf = {};
+                let missMC = 0,
+                  missTF = 0;
+                for (const n of L.multiple_choice_questions) {
+                  const c = body.querySelector(`input[name="mc${n}"]:checked`);
+                  if (c) mc[n] = c.value;
+                  else {
+                    missMC++;
+                    bad.add("mc" + n);
+                  }
+                }
+                for (const n of L.true_false_questions) {
+                  tf[n] = {};
+                  for (const r of rows) {
+                    const c = body.querySelector(
+                      `input[name="tf${n}${r}"]:checked`,
+                    );
+                    if (c) tf[n][r] = c.value;
+                    else {
+                      missTF++;
+                      bad.add(`tf${n}${r}`);
+                    }
+                  }
+                }
+                if (missMC)
+                  errs.push(`Còn ${missMC} câu trắc nghiệm chưa chọn đáp án.`);
+                if (missTF)
+                  errs.push(`Còn ${missTF} ý Đúng/Sai chưa chọn đáp án.`);
+                for (const q of body.querySelectorAll(".q"))
+                  q.classList.toggle("invalid", bad.has(q.dataset.key));
+                if (errs.length) {
+                  api.msg(errs.join(" "));
+                  (
+                    body.querySelector(".q.invalid") || codeInput
+                  ).scrollIntoView({ block: "center" });
+                  return false;
+                }
+                const all = loadKeys().filter(
+                  (k) => k.exam_code !== existing?.exam_code,
+                );
+                all.push({
+                  exam_code: code,
+                  multiple_choice: mc,
+                  true_false: tf,
+                });
+                if (!writeLS(LS_KEYS, all)) return false;
+                renderKeys();
+                toast("Đã lưu đáp án.");
+              },
+            },
+          ],
+        });
+        const refreshErr = () => {
+          if (
+            !codeInput.classList.contains("invalid") &&
+            !body.querySelector(".q.invalid")
+          )
+            modal.msg("");
+        };
+        codeInput.addEventListener("input", () => {
+          codeInput.classList.remove("invalid");
+          refreshErr();
+        });
+        body.addEventListener("change", (e) => {
+          e.target.closest(".q")?.classList.remove("invalid");
+          refreshErr();
+        });
+        if (!existing) setTimeout(() => codeInput.focus(), 50);
+        return modal;
+      }
+
+      function detectSquare(gray, N, expectedPx, boxPx) {
+        // Otsu
+        const hist = new Array(256).fill(0);
+        for (let i = 0; i < gray.length; i++) hist[gray[i]]++;
+        let sum = 0;
+        for (let i = 0; i < 256; i++) sum += i * hist[i];
+        let wB = 0,
+          sumB = 0,
+          best = -1,
+          thr = 128;
+        for (let t = 0; t < 256; t++) {
+          wB += hist[t];
+          if (!wB) continue;
+          const wF = gray.length - wB;
+          if (!wF) break;
+          sumB += t * hist[t];
+          const mB = sumB / wB,
+            mF = (sum - sumB) / wF,
+            v = wB * wF * (mB - mF) * (mB - mF);
+          if (v > best) {
+            best = v;
+            thr = t;
+          }
+        }
+        let acc = 0,
+          bg = 128;
+        for (let i = 0; i < 256; i++) {
+          acc += hist[i];
+          if (acc >= gray.length / 2) {
+            bg = i;
+            break;
+          }
+        }
+        thr = bg - Math.max(12, bg * 0.12);
+        let sd = 0,
+          nd = 0;
+        for (let i = 0; i < gray.length; i++)
+          if (gray[i] <= thr) {
+            sd += gray[i];
+            nd++;
+          }
+        if (!nd || bg - sd / nd < 12) return null;
+        const dark = new Uint8Array(N * N);
+        for (let i = 0; i < gray.length; i++) dark[i] = gray[i] <= thr ? 1 : 0;
+        const c0 = (N - 1) / 2,
+          bh = boxPx / 2;
+        const seen = new Uint8Array(N * N),
+          stack = [];
+        let bestBlob = null,
+          bestScore = 1e9;
+        for (let s = 0; s < N * N; s++) {
+          if (!dark[s] || seen[s]) continue;
+          let minX = N,
+            minY = N,
+            maxX = -1,
+            maxY = -1,
+            area = 0,
+            sx = 0,
+            sy = 0;
+          stack.push(s);
+          seen[s] = 1;
+          while (stack.length) {
+            const p = stack.pop(),
+              x = p % N,
+              y = (p - x) / N;
+            area++;
+            sx += x;
+            sy += y;
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+            if (x > 0 && dark[p - 1] && !seen[p - 1]) {
+              seen[p - 1] = 1;
+              stack.push(p - 1);
+            }
+            if (x < N - 1 && dark[p + 1] && !seen[p + 1]) {
+              seen[p + 1] = 1;
+              stack.push(p + 1);
+            }
+            if (y > 0 && dark[p - N] && !seen[p - N]) {
+              seen[p - N] = 1;
+              stack.push(p - N);
+            }
+            if (y < N - 1 && dark[p + N] && !seen[p + N]) {
+              seen[p + N] = 1;
+              stack.push(p + N);
+            }
+          }
+          const w = maxX - minX + 1,
+            h = maxY - minY + 1;
+          if (minX === 0 || minY === 0 || maxX === N - 1 || maxY === N - 1)
+            continue;
+          if (
+            area < 0.2 * expectedPx * expectedPx ||
+            area > 4 * expectedPx * expectedPx
+          )
+            continue;
+          const aspect = Math.max(w, h) / Math.min(w, h),
+            extent = area / (w * h);
+          if (aspect > 2.2 || extent < 0.5) continue;
+          const cx = sx / area,
+            cy = sy / area,
+            d = Math.hypot(cx - c0, cy - c0),
+            inside = Math.abs(cx - c0) <= bh && Math.abs(cy - c0) <= bh;
+          const score = d + (inside ? 0 : 1000);
+          if (score < bestScore) {
+            bestScore = score;
+            bestBlob = { cx, cy, size: Math.sqrt(area), dist: d, inside };
+          }
+        }
+        return bestBlob;
+      }
+      const Camera = (() => {
+        const video = $("#video"),
+          guide = $("#guide"),
+          gctx = guide.getContext("2d");
+        const shutter = $("#shutter"),
+          hint = $("#hint");
+        const N = 64,
+          patch = document.createElement("canvas");
+        patch.width = patch.height = N;
+        const pctx = patch.getContext("2d", { willReadFrequently: true });
+        let stream = null,
+          timer = null,
+          g = null,
+          states = ["miss", "miss", "miss", "miss"],
+          stable = 0,
+          busy = false;
+        const COLOR = { match: "#22c55e", near: "#eab308", miss: "#ef4444" };
+
+        function geometry() {
+          const cw = guide.clientWidth,
+            ch = guide.clientHeight;
+          const cm = LAYOUT.corner_markers;
+          const refW = cm[1][0] - cm[0][0],
+            refH = cm[2][1] - cm[0][1];
+          const gw = Math.min(cw * 0.9, (ch * 0.6 * refW) / refH),
+            k = gw / refW,
+            gh = refH * k;
+          const cx = cw / 2,
+            cy = Math.min(ch * 0.46, ch - gh / 2 - 130),
+            left = cx - gw / 2,
+            top = cy - gh / 2;
+          const corners = [
+            [left, top],
+            [left + gw, top],
+            [left, top + gh],
+            [left + gw, top + gh],
+          ];
+          const sq = LAYOUT.corner_marker_size * k;
+          const R = LAYOUT.capture_region;
+          const region = [
+            left - (cm[0][0] - R[0]) * k,
+            top - (cm[0][1] - R[1]) * k,
+            left + gw + (R[2] - cm[1][0]) * k,
+            top + gh + (R[3] - cm[2][1]) * k,
+          ];
+          return {
+            cw,
+            ch,
+            gw,
+            gh,
+            k,
+            left,
+            top,
+            corners,
+            sq,
+            box: Math.max(32, sq * 2.8),
+            region,
+          };
+        }
+        function coverMap() {
+          const vw = video.videoWidth,
+            vh = video.videoHeight,
+            cw = guide.clientWidth,
+            ch = guide.clientHeight;
+          if (!vw || !vh) return null;
+          const s = Math.max(cw / vw, ch / vh);
+          return { s, ox: (cw - vw * s) / 2, oy: (ch - vh * s) / 2 };
+        }
+
+        function resize() {
+          const dpr = window.devicePixelRatio || 1;
+          guide.width = guide.clientWidth * dpr;
+          guide.height = guide.clientHeight * dpr;
+          gctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          g = geometry();
+          hint.style.top = Math.min(g.top + g.gh + g.box, g.ch - 150) + "px";
+          draw();
+        }
+        function draw() {
+          if (!g) return;
+          const { cw, ch } = g;
+          gctx.clearRect(0, 0, cw, ch);
+          const pad = g.box * 0.9;
+          gctx.fillStyle = "rgba(0,0,0,.45)";
+          gctx.beginPath();
+          gctx.rect(0, 0, cw, ch);
+          gctx.rect(g.left - pad, g.top - pad, g.gw + 2 * pad, g.gh + 2 * pad);
+          gctx.fill("evenodd");
+          gctx.strokeStyle = "rgba(255,255,255,.35)";
+          gctx.lineWidth = 1;
+          gctx.strokeRect(g.left, g.top, g.gw, g.gh);
+          g.corners.forEach(([x, y], i) => {
+            const c = COLOR[states[i]],
+              b = g.box;
+            gctx.strokeStyle = c;
+            gctx.lineWidth = 3;
+            gctx.strokeRect(x - b / 2, y - b / 2, b, b);
+            gctx.fillStyle = c;
+            gctx.fillRect(x - 2, y - 2, 4, 4);
+          });
+        }
+
+        function evalCorner(i, m) {
+          const [sx, sy] = g.corners[i],
+            half = g.box * 1.6;
+          const vx = (sx - half - m.ox) / m.s,
+            vy = (sy - half - m.oy) / m.s,
+            vw = (2 * half) / m.s;
+          pctx.drawImage(video, vx, vy, vw, vw, 0, 0, N, N);
+          const d = pctx.getImageData(0, 0, N, N).data,
+            gray = new Uint8Array(N * N);
+          for (let p = 0; p < N * N; p++)
+            gray[p] =
+              (d[p * 4] * 77 + d[p * 4 + 1] * 150 + d[p * 4 + 2] * 29) >> 8;
+          const pxPerScreen = N / (2 * half),
+            exp = g.sq * pxPerScreen;
+          const b = detectSquare(
+            gray,
+            N,
+            Math.max(exp, 2),
+            g.box * pxPerScreen,
+          );
+          if (!b) return "miss";
+          const dist = b.dist / pxPerScreen,
+            ratio = b.size / Math.max(exp, 1e-6);
+          if (b.inside && ratio >= 0.4 && ratio <= 2.5) return "match";
+          if (dist <= g.box * 1.0 && ratio >= 0.3 && ratio <= 3.5)
+            return "near";
+          return "miss";
+        }
+        function tick() {
+          if (busy || !stream || video.readyState < 2 || document.hidden)
+            return;
+          const m = coverMap();
+          if (!m || !g) return;
+          try {
+            states = [0, 1, 2, 3].map((i) => evalCorner(i, m));
+          } catch {
+            return;
+          }
+          const all = states.every((s) => s === "match");
+          stable = all ? stable + 1 : 0;
+          shutter.disabled = !(stable >= 2);
+          const near = states.filter((s) => s !== "miss").length;
+          hint.textContent =
+            stable >= 2
+              ? "Đã khớp - bấm nút chụp"
+              : near >= 3
+                ? "Gần khớp - giữ yên và căn lại cho chính xác"
+                : "Canh 4 hình vuông ở góc phiếu vào 4 khung";
+          draw();
+        }
+
+        async function start() {
+          $("#camMsg").hidden = true;
+          if (stream) return;
+          if (!navigator.mediaDevices?.getUserMedia) {
+            return showMsg(
+              "Trình duyệt không hỗ trợ camera hoặc trang chưa chạy trên HTTPS.",
+            );
+          }
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({
+              audio: false,
+              video: {
+                facingMode: { ideal: "environment" },
+                width: { ideal: 1920 },
+                height: { ideal: 1080 },
+              },
+            });
+          } catch (e) {
+            stream = null;
+            return showMsg(
+              e && e.name === "NotAllowedError"
+                ? "Bạn chưa cấp quyền camera. Hãy cho phép truy cập camera rồi thử lại."
+                : "Không mở được camera. Hãy kiểm tra thiết bị và đảm bảo trang chạy trên HTTPS.",
+            );
+          }
+          if (currentPage !== "scan") {
+            stop();
+            return;
+          }
+          video.srcObject = stream;
+          await video.play().catch(() => {});
+          resize();
+          clearInterval(timer);
+          timer = setInterval(tick, 160);
+        }
+        function stop() {
+          clearInterval(timer);
+          timer = null;
+          if (stream) {
+            stream.getTracks().forEach((t) => t.stop());
+            stream = null;
+          }
+          video.srcObject = null;
+          shutter.disabled = true;
+          stable = 0;
+          states = ["miss", "miss", "miss", "miss"];
+        }
+        function showMsg(t) {
+          $("#camMsgText").textContent = t;
+          $("#camMsg").hidden = false;
+        }
+
+        // Cắt đúng vùng capture_region từ khung hình gốc rồi gửi lên server
+        function grabRegion() {
+          const m = coverMap();
+          if (!m || !g) return null;
+          const [x0, y0, x1, y1] = g.region;
+          const sx = (x0 - m.ox) / m.s,
+            sy = (y0 - m.oy) / m.s,
+            sw = (x1 - x0) / m.s,
+            sh = (y1 - y0) / m.s;
+          const c = document.createElement("canvas");
+          c.width = Math.round(sw);
+          c.height = Math.round(sh);
+          c.getContext("2d").drawImage(
+            video,
+            sx,
+            sy,
+            sw,
+            sh,
+            0,
+            0,
+            c.width,
+            c.height,
+          );
+          return new Promise((res) => c.toBlob(res, "image/jpeg", 0.92));
+        }
+
+        function setBusy(b) {
+          busy = b;
+          $("#busy").hidden = !b;
+          if (!b) {
+            stable = 0;
+            shutter.disabled = true;
+          }
+        }
+        shutter.onclick = async () => {
+          if (shutter.disabled) return;
+          if (!loadKeys().length) {
+            return openModal({
+              title: "Chưa có đáp án",
+              body: el(
+                "p",
+                {},
+                "Hãy thêm đáp án cho mã đề ở mục “Nhập đáp án” trước khi quét.",
+              ),
+              actions: [
+                { text: "Đóng" },
+                {
+                  text: "Nhập đáp án",
+                  kind: "primary",
+                  onClick: () => go("keys"),
+                },
+              ],
+            });
+          }
+          setBusy(true);
+          const blob = await grabRegion();
+          if (!blob) {
+            setBusy(false);
+            return toast("Không chụp được ảnh. Vui lòng thử lại.");
+          }
+          await submitScan(blob);
+        };
+        $("#camRetry").onclick = () => start();
+        window.addEventListener("resize", () => {
+          if (currentPage === "scan") resize();
+        });
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) stop();
+          else if (currentPage === "scan") start();
+        });
+        return { start, stop, setBusy };
+      })();
+
+      async function submitScan(blob) {
+        let env = null;
+        try {
+          const fd = new FormData();
+          fd.append("image", blob, "scan.jpg");
+          fd.append("answer_keys", JSON.stringify({ exams: loadKeys() }));
+          fd.append("mode", "camera");
+          const res = await fetch(API_BASE + "/api/scan", {
+            method: "POST",
+            body: fd,
+          });
+          env = await res.json();
+        } catch {
+          Camera.setBusy(false);
+          return showScanError("Không kết nối được máy chủ", [
+            "Kiểm tra kết nối mạng rồi thử lại.",
+          ]);
+        }
+        Camera.setBusy(false);
+        if (!env || !env.success) {
+          const err = env && env.error;
+          const msgs = (err?.errors || []).map((e) => e.message);
+          const needKey = (err?.errors || []).some(
+            (e) => e.code === "EXAM_CODE_NOT_IN_ANSWER_KEY",
+          );
+          return showScanError(
+            err?.title || "Không xử lý được phiếu",
+            msgs.length ? msgs : ["Đã xảy ra lỗi. Vui lòng thử lại."],
+            needKey,
+          );
+        }
+        showScanResult(env.result);
+      }
+      function showScanError(title, msgs, offerKeys = false) {
+        const shown = msgs.slice(0, 5),
+          more = msgs.length - shown.length;
+        const body = el(
+          "ul",
+          { class: "errlist" },
+          shown.map((m) => el("li", {}, m)),
+          more > 0 ? el("li", {}, `… và ${more} lỗi khác`) : null,
+        );
+        const actions = [];
+        if (offerKeys)
+          actions.push({ text: "Nhập đáp án", onClick: () => go("keys") });
+        actions.push({ text: "Thử lại", kind: "primary" });
+        openModal({ title, body, actions });
+      }
+      function compactAnswers(res) {
+        const out = [];
+        for (const [grp, list] of [
+          ["MC", res.answers.multiple_choice],
+          ["TF", res.answers.true_false],
+        ])
+          for (const a of list)
+            out.push({
+              g: grp,
+              n: a.question,
+              i: a.item,
+              e: a.expected,
+              d: a.detected,
+              r: a.result,
+            });
+        return out;
+      }
+      function showScanResult(res) {
+        const now = new Date();
+        const rec = {
+          id:
+            now.getTime().toString(36) + Math.random().toString(36).slice(2, 6),
+          ts: now.getTime(),
+          time: fmtTime(now),
+          student_id: res.student.student_id,
+          student_raw: res.student.raw,
+          exam_code: res.exam.exam_code,
+          summary: res.grading.summary,
+          needs_review: res.needs_review,
+          answers: compactAnswers(res),
+          image: res.images?.grading || null,
+        };
+        openModal({
+          title: "Kết quả quét",
+          body: resultView(rec),
+          actions: [
+            { text: "Hủy" },
+            {
+              text: "Lưu",
+              kind: "primary",
+              onClick: () => {
+                const all = loadHistory();
+                all.push(rec);
+                if (!writeLS(LS_HISTORY, all)) return false;
+                toast("Đã lưu vào kho lưu trữ.");
+              },
+            },
+          ],
+        });
+      }
+
+      fetch(API_BASE + "/api/layout")
+        .then((r) => r.json())
+        .then((j) => {
+          if (j && j.layout) LAYOUT = { ...LAYOUT, ...j.layout };
+        })
+        .catch(() => {})
+        .finally(() => go("scan"));
+    </script>
+  </body>
+</html>

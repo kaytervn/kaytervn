@@ -1,0 +1,9 @@
+services:
+  omr:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      OMR_CORS_ORIGINS: "*"
+      WEB_CONCURRENCY: "2"
+    restart: unless-stopped
