@@ -631,6 +631,93 @@
         font-size: 14px;
         max-width: 90%;
       }
+
+      .seg {
+        display: flex;
+        gap: 4px;
+        padding: 4px;
+        margin-bottom: 12px;
+        background: var(--surface);
+        border-radius: 12px;
+      }
+      .seg button {
+        flex: 1;
+        padding: 9px 0;
+        border-radius: 9px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .seg button.on {
+        background: var(--surface2);
+        color: var(--accent);
+      }
+      .import-card {
+        display: grid;
+        gap: 16px;
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 12px;
+      }
+      .import-card .step {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .import-card .no {
+        flex: none;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: var(--surface2);
+        color: var(--accent);
+        font-weight: 700;
+      }
+      .import-card .txt {
+        flex: 1;
+        display: grid;
+        gap: 2px;
+        font-size: 14px;
+      }
+      .import-card .txt small {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .import-card .txt .btn {
+        justify-self: start;
+        margin-top: 8px;
+      }
+      .fab[hidden] {
+        display: none;
+      }
+      .err-group + .err-group {
+        margin-top: 12px;
+      }
+
+      .modal .seg {
+        background: var(--surface2);
+        border: 1px solid var(--line);
+      }
+      .modal .seg button.on {
+        background: var(--line);
+        color: var(--accent);
+      }
+      .modal .import-card {
+        background: var(--surface2);
+        border: 1px solid var(--line);
+        margin-bottom: 0;
+      }
+      .modal .import-card .no {
+        background: var(--surface);
+        border: 1px solid var(--line);
+      }
+      .modal .import-card .btn:not(.primary) {
+        background: var(--line);
+        border: 1px solid #3a4150;
+        color: var(--text);
+      }
     </style>
   </head>
   <body class="on-scan">
@@ -1119,6 +1206,309 @@
       }
       $("#addKey").onclick = () => openKeyForm(null);
 
+      // ---------- Excel template / import ----------
+      const MAX_TEMPLATE_EXAMS = 50; // keep in sync with MAX_EXAM_SHEETS on the server
+
+      // Bulk insert/overwrite. Re-inserting moves a key to the end, so the last
+      // imported exam becomes the "most recent" source of default config.
+      function upsertKeys(list) {
+        const byCode = new Map(loadKeys().map((k) => [k.exam_code, k]));
+        let added = 0,
+          replaced = 0;
+        for (const k of list) {
+          if (byCode.delete(k.exam_code)) replaced++;
+          else added++;
+          byCode.set(k.exam_code, k);
+        }
+        return writeLS(LS_KEYS, [...byCode.values()])
+          ? { added, replaced }
+          : null;
+      }
+
+      const stamp = (d = new Date()) =>
+        `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+
+      async function downloadTemplate(examCount, config) {
+        let res;
+        try {
+          res = await fetch(API_BASE + "/api/answer-keys/template", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ exam_count: examCount, config }),
+          });
+        } catch {
+          throw new Error(
+            "Không kết nối được máy chủ. Kiểm tra kết nối mạng rồi thử lại.",
+          );
+        }
+        if (!res.ok) {
+          let msg = "Không tạo được tệp mẫu. Vui lòng thử lại.";
+          try {
+            const env = await res.json();
+            const m = (env.error?.errors || []).map((e) => e.message);
+            if (m.length) msg = m.join(" ");
+          } catch {}
+          throw new Error(msg);
+        }
+        const url = URL.createObjectURL(await res.blob());
+        // timestamp in the file name so repeated downloads never collide
+        const a = el("a", {
+          href: url,
+          download: `mau-dap-an-${stamp()}.xlsx`,
+        });
+        document.body.append(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+      }
+
+      function openTemplateDialog() {
+        const maxMc = LAYOUT.multiple_choice_questions.length,
+          maxTf = LAYOUT.true_false_questions.length;
+        const cfg0 = defaultKeyConfig(null); // same defaults as the manual form
+        const examCount = numInput(1, 2, "numeric"),
+          mcCount = numInput(cfg0.mc_count, String(maxMc).length, "numeric"),
+          tfCount = numInput(cfg0.tf_count, String(maxTf).length, "numeric"),
+          mcPts = numInput(fmtNum(cfg0.mc_points), 5, "decimal"),
+          tfPts = cfg0.tf_points.map((p) => numInput(fmtNum(p), 5, "decimal"));
+        limitInt(examCount, 1, MAX_TEMPLATE_EXAMS);
+        limitInt(mcCount, 1, maxMc);
+        limitInt(tfCount, 1, maxTf);
+        limitPts(mcPts);
+        tfPts.forEach(limitPts);
+
+        const body = el(
+          "div",
+          {},
+          el(
+            "div",
+            { class: "cfg" },
+            cfgField(
+              `Số lượng mã đề (1-${MAX_TEMPLATE_EXAMS})`,
+              examCount,
+              true,
+            ),
+          ),
+          el("div", { class: "sec" }, "Trắc nghiệm"),
+          el(
+            "div",
+            { class: "cfg" },
+            cfgField(`Số câu (1-${maxMc})`, mcCount),
+            cfgField("Tổng điểm", mcPts),
+          ),
+          el("div", { class: "sec" }, "Đúng / Sai"),
+          el(
+            "div",
+            { class: "cfg" },
+            cfgField(`Số câu (1-${maxTf})`, tfCount, true),
+          ),
+          el(
+            "div",
+            { class: "sec-title" },
+            el("span", {}, "Điểm mỗi câu theo số ý đúng"),
+          ),
+          el(
+            "div",
+            { class: "cfg four" },
+            tfPts.map((inp, i) => cfgField(`Đúng ${i + 1} ý`, inp)),
+          ),
+        );
+
+        const points = (input) => {
+          const s = input.value.trim(),
+            v = parseNum(s);
+          return PTS_RE.test(s) && v > 0 && v <= 10
+            ? Math.round(v * 100) / 100
+            : null;
+        };
+        let sending = false;
+        const modal = openModal({
+          title: "Tải tệp mẫu Excel",
+          body,
+          actions: [
+            { text: "Hủy" },
+            {
+              text: "Tải xuống",
+              kind: "primary",
+              onClick: (api) => {
+                if (sending) return false;
+                for (const i of body.querySelectorAll("input.invalid"))
+                  i.classList.remove("invalid");
+                const n = parseInt(examCount.value, 10),
+                  mc = parseInt(mcCount.value, 10),
+                  tf = parseInt(tfCount.value, 10);
+                const ptsInputs = [mcPts, ...tfPts],
+                  pv = ptsInputs.map(points);
+                const bad = [];
+                if (!(n >= 1 && n <= MAX_TEMPLATE_EXAMS)) bad.push(examCount);
+                if (!(mc >= 1 && mc <= maxMc)) bad.push(mcCount);
+                if (!(tf >= 1 && tf <= maxTf)) bad.push(tfCount);
+                ptsInputs.forEach((inp, i) => pv[i] === null && bad.push(inp));
+                if (bad.length) {
+                  for (const i of bad) i.classList.add("invalid");
+                  api.msg("Vui lòng kiểm tra lại các ô được đánh dấu đỏ.");
+                  return false;
+                }
+                sending = true;
+                downloadTemplate(n, {
+                  mc_count: mc,
+                  mc_points: pv[0],
+                  tf_count: tf,
+                  tf_points: pv.slice(1),
+                })
+                  .then(() => {
+                    api.close();
+                    toast("Đã tải tệp mẫu.");
+                  })
+                  .catch((e) => api.msg(e.message))
+                  .finally(() => (sending = false));
+                return false; // keep the dialog open until the download finishes
+              },
+            },
+          ],
+        });
+        body.addEventListener("input", (e) => {
+          e.target.classList.remove("invalid");
+          modal.msg("");
+        });
+      }
+
+      function showImportError(title, errors, pick) {
+        // group by sheet; the "[sheet] " prefix is redundant inside a group
+        const groups = new Map();
+        for (const e of errors) {
+          const key = e.sheet || "";
+          if (!groups.has(key)) groups.set(key, []);
+          groups.get(key).push(String(e.message).replace(/^\[[^\]]+\]\s*/, ""));
+        }
+        openModal({
+          title,
+          body: el(
+            "div",
+            {},
+            el(
+              "p",
+              { style: "margin-bottom:10px" },
+              `Phát hiện ${errors.length} lỗi. Hãy sửa lại tệp Excel rồi tải lên lại.`,
+            ),
+            [...groups].map(([sheet, msgs]) =>
+              el(
+                "div",
+                { class: "err-group" },
+                sheet
+                  ? el("div", { class: "sec-title" }, el("span", {}, sheet))
+                  : null,
+                el(
+                  "ul",
+                  { class: "errlist" },
+                  msgs.map((m) => el("li", {}, m)),
+                ),
+              ),
+            ),
+          ),
+          actions: [
+            { text: "Đóng" },
+            { text: "Chọn tệp khác", kind: "primary", onClick: () => pick() },
+          ],
+        });
+      }
+
+      // ctx: { modal: the "Thêm đáp án" dialog, pick: open file picker, button: import button }
+      async function importKeyFile(file, { modal, pick, button }) {
+        if (!file) return;
+        button.disabled = true;
+        try {
+          let env;
+          try {
+            const fd = new FormData();
+            fd.append("file", file, file.name);
+            const res = await fetch(API_BASE + "/api/answer-keys/import", {
+              method: "POST",
+              body: fd,
+            });
+            env = await res.json();
+          } catch {
+            return toast(
+              "Không kết nối được máy chủ. Kiểm tra kết nối mạng rồi thử lại.",
+            );
+          }
+          if (!env?.success) {
+            const errs = env?.error?.errors || [];
+            return showImportError(
+              env?.error?.title || "Tệp Excel không hợp lệ",
+              errs.length
+                ? errs
+                : [{ message: "Đã xảy ra lỗi. Vui lòng thử lại." }],
+              pick,
+            );
+          }
+          const r = upsertKeys(env.result.exams);
+          if (!r) return;
+          modal.close();
+          renderKeys();
+          toast(
+            r.replaced
+              ? `Đã tải lên ${env.result.count} mã đề (${r.added} thêm mới, ${r.replaced} ghi đè).`
+              : `Đã tải lên ${env.result.count} mã đề.`,
+          );
+        } finally {
+          button.disabled = false;
+        }
+      }
+
+      function createImportPanel(ctx) {
+        const fileInput = el("input", {
+          type: "file",
+          accept: ".xlsx",
+          hidden: "",
+        });
+        const pick = () => fileInput.click();
+        const importBtn = el(
+          "button",
+          { class: "btn primary", onclick: pick },
+          "Chọn tệp Excel",
+        );
+        fileInput.addEventListener("change", () => {
+          const f = fileInput.files[0];
+          fileInput.value = ""; // allow picking the same file again after fixing it
+          importKeyFile(f, { modal: ctx.modal, pick, button: importBtn });
+        });
+        const step = (no, title, hint, btn) =>
+          el(
+            "div",
+            { class: "step" },
+            el("span", { class: "no" }, String(no)),
+            el(
+              "div",
+              { class: "txt" },
+              el("b", {}, title),
+              el("small", {}, hint),
+              btn,
+            ),
+          );
+        return el(
+          "div",
+          { class: "import-card" },
+          step(
+            1,
+            "Tải xuống tệp mẫu",
+            "Chọn số mã đề và cấu hình điểm, tải về rồi điền đáp án.",
+            el(
+              "button",
+              { class: "btn", onclick: openTemplateDialog },
+              "Tải tệp",
+            ),
+          ),
+          step(
+            2,
+            "Tải lên tệp đã điền",
+            "Mã đề đã có sẽ bị ghi đè bằng dữ liệu trong tệp (.xlsx).",
+            importBtn,
+          ),
+          fileInput,
+        );
+      }
+
       const fmtNum = (v) => String(v).replace(".", ",");
       const parseNum = (s) => Number(String(s).trim().replace(",", "."));
       const PTS_RE = /^\d{1,2}([.,]\d{1,2})?$/;
@@ -1145,6 +1535,51 @@
           tf_points: src.tf_points ?? [0.1, 0.25, 0.5, 1],
         };
       }
+
+      const numInput = (value, maxlen, mode) =>
+        el("input", {
+          type: "text",
+          inputmode: mode,
+          maxlength: String(maxlen),
+          autocomplete: "off",
+          class: "num",
+          value: String(value),
+        });
+      const limitInt = (input, min, max) => {
+        let prev = input.value;
+        input.addEventListener("input", () => {
+          let v = input.value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
+          if (v !== "" && Number(v) > max) v = prev;
+          input.value = prev = v;
+        });
+        input.addEventListener("blur", () => {
+          if (input.value === "" || Number(input.value) < min)
+            input.value = prev = String(min);
+        });
+      };
+      const limitPts = (input) => {
+        const init = input.value;
+        let prev = init;
+        const ok = (s) =>
+          /^\d{0,2}([.,]\d{0,2})?$/.test(s) && !(parseNum(s) > 10);
+        input.addEventListener("input", () => {
+          let s = input.value.replace(/[^\d.,]/g, "");
+          if (!ok(s)) s = prev;
+          input.value = prev = s;
+        });
+        input.addEventListener("blur", () => {
+          let s = input.value.replace(/[.,]$/, "");
+          if (/^[.,]/.test(s)) s = "0" + s;
+          input.value = prev = s !== "" && parseNum(s) > 0 ? s : init;
+        });
+      };
+      const cfgField = (label, input, full = false) =>
+        el(
+          "div",
+          { class: full ? "field full" : "field" },
+          el("label", {}, label),
+          input,
+        );
 
       function radioGroup(name, values, labels, checked) {
         return el(
@@ -1188,16 +1623,6 @@
             .replace(/\D/g, "")
             .slice(0, L.exam_code_length);
         });
-
-        const numInput = (value, maxlen, mode) =>
-          el("input", {
-            type: "text",
-            inputmode: mode,
-            maxlength: String(maxlen),
-            autocomplete: "off",
-            class: "num",
-            value: String(value),
-          });
         const mcCount = numInput(
             cfg0.mc_count,
             String(maxMc).length,
@@ -1206,45 +1631,10 @@
           tfCount = numInput(cfg0.tf_count, String(maxTf).length, "numeric"),
           mcPts = numInput(fmtNum(cfg0.mc_points), 5, "decimal"),
           tfPts = cfg0.tf_points.map((p) => numInput(fmtNum(p), 5, "decimal"));
-        const limitInt = (input, min, max) => {
-          let prev = input.value;
-          input.addEventListener("input", () => {
-            let v = input.value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
-            if (v !== "" && Number(v) > max) v = prev;
-            input.value = prev = v;
-          });
-          input.addEventListener("blur", () => {
-            if (input.value === "" || Number(input.value) < min)
-              input.value = prev = String(min);
-          });
-        };
-        const limitPts = (input) => {
-          const init = input.value;
-          let prev = init;
-          const ok = (s) =>
-            /^\d{0,2}([.,]\d{0,2})?$/.test(s) && !(parseNum(s) > 10);
-          input.addEventListener("input", () => {
-            let s = input.value.replace(/[^\d.,]/g, "");
-            if (!ok(s)) s = prev;
-            input.value = prev = s;
-          });
-          input.addEventListener("blur", () => {
-            let s = input.value.replace(/[.,]$/, "");
-            if (/^[.,]/.test(s)) s = "0" + s;
-            input.value = prev = s !== "" && parseNum(s) > 0 ? s : init;
-          });
-        };
         limitInt(mcCount, 1, maxMc);
         limitInt(tfCount, 1, maxTf);
         limitPts(mcPts);
         tfPts.forEach(limitPts);
-        const cfgField = (label, input, full = false) =>
-          el(
-            "div",
-            { class: full ? "field full" : "field" },
-            el("label", {}, label),
-            input,
-          );
 
         const mcQs = L.multiple_choice_questions.map((n) =>
           el(
@@ -1326,11 +1716,42 @@
           tfBox,
         );
 
+        const ctx = {};
+        let content = body;
+        if (!existing) {
+          const importPanel = createImportPanel(ctx);
+          importPanel.hidden = true;
+          const seg = el(
+            "div",
+            { class: "seg" },
+            el(
+              "button",
+              { class: "on", "data-mode": "manual" },
+              "Nhập thủ công",
+            ),
+            el("button", { "data-mode": "import" }, "Nhập tệp Excel"),
+          );
+          content = el("div", {}, seg, body, importPanel);
+          seg.addEventListener("click", (e) => {
+            const b = e.target.closest("button[data-mode]");
+            if (!b) return;
+            const imp = b.dataset.mode === "import";
+            for (const x of seg.children) x.classList.toggle("on", x === b);
+            body.hidden = imp;
+            importPanel.hidden = !imp;
+            const [cancelBtn, saveBtn] =
+              ctx.modal.el.querySelectorAll(".foot .btn");
+            saveBtn.hidden = imp;
+            cancelBtn.textContent = imp ? "Đóng" : "Hủy";
+            ctx.modal.msg("");
+          });
+        }
+
         const modal = openModal({
           title: existing
             ? `Sửa đáp án mã đề ${existing.exam_code}`
             : "Thêm đáp án",
-          body,
+          body: content,
           actions: [
             { text: "Hủy" },
             {
@@ -1350,15 +1771,6 @@
                   errs.push(
                     `Mã đề phải gồm đúng ${L.exam_code_length} chữ số.`,
                   );
-                  codeInput.classList.add("invalid");
-                } else if (
-                  loadKeys().some(
-                    (k) =>
-                      k.exam_code === code &&
-                      k.exam_code !== existing?.exam_code,
-                  )
-                ) {
-                  errs.push(`Mã đề ${code} đã tồn tại.`);
                   codeInput.classList.add("invalid");
                 }
 
@@ -1436,9 +1848,13 @@
                     ?.scrollIntoView({ block: "center" });
                   return false;
                 }
-
+                const overwrote = loadKeys().some(
+                  (k) =>
+                    k.exam_code === code && k.exam_code !== existing?.exam_code,
+                );
                 const all = loadKeys().filter(
-                  (k) => k.exam_code !== existing?.exam_code,
+                  (k) =>
+                    k.exam_code !== existing?.exam_code && k.exam_code !== code,
                 );
                 all.push({
                   exam_code: code,
@@ -1453,12 +1869,17 @@
                 });
                 if (!writeLS(LS_KEYS, all)) return false;
                 renderKeys();
-                toast("Đã lưu đáp án.");
+                toast(
+                  overwrote
+                    ? `Đã ghi đè đáp án mã đề ${code}.`
+                    : "Đã lưu đáp án.",
+                );
               },
             },
           ],
         });
 
+        ctx.modal = modal;
         const refreshErr = () => {
           if (
             ![...body.querySelectorAll(".invalid")].some(

@@ -4,12 +4,14 @@
 import os
 from typing import Optional
 
-from fastapi import Body, FastAPI, File, Form, Request, UploadFile
+from fastapi import Body, FastAPI, File, Form, Request, Response, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
+
+from app import excel_io
 
 from . import service
 from .omr_detector import error_envelope, make_issue
@@ -116,6 +118,29 @@ def layout():
 def validate_answer_keys(payload=Body(...)):
     """Validate an answer-key document ({"exams": [...]})."""
     status, body = service.validate_keys(payload)
+    return _json(status, body)
+
+
+@app.post("/api/answer-keys/template")
+def answer_key_template(payload=Body(...)):
+    """Build the Excel answer-key template: {"exam_count": n, "config": {...}}."""
+    status, body = excel_io.build_template_response(payload)
+    if status != 200:
+        return _json(status, body)
+    return Response(
+        content=body,
+        media_type=excel_io.XLSX_MIME,
+        headers={"Content-Disposition": 'attachment; filename="mau-dap-an.xlsx"'},
+    )
+
+
+@app.post("/api/answer-keys/import")
+def import_answer_keys(
+    file: UploadFile = File(..., description="File Excel (.xlsx) từ mẫu")
+):
+    """Validate a filled template; returns every error (sheet + cell) or the parsed exams."""
+    data = file.file.read(excel_io.MAX_IMPORT_BYTES + 1)
+    status, body = excel_io.import_response(data)
     return _json(status, body)
 
 
