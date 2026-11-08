@@ -400,6 +400,9 @@
         color: #f97316;
       }
       .sec-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
         font-size: 13px;
         font-weight: 600;
         color: var(--muted);
@@ -456,6 +459,38 @@
       }
       .field input.invalid {
         border-color: var(--bad);
+      }
+      .field input.num {
+        letter-spacing: 0;
+        font-size: 16px;
+      }
+      .cfg {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 6px 0 10px;
+      }
+      .cfg .full {
+        grid-column: 1 / -1;
+      }
+      .cfg.four {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-top: 0;
+      }
+      .cfg .field input {
+        min-width: 0;
+      }
+      .q[hidden],
+      .tfq[hidden] {
+        display: none;
+      }
+      .kv.one {
+        grid-template-columns: 1fr;
+      }
+      .sec-score {
+        color: var(--text);
+        font-weight: 700;
       }
       .sec {
         margin: 16px 0 6px;
@@ -805,8 +840,8 @@
           );
         const box = [
           grid,
-          section("Trắc nghiệm", stats("MC")),
-          section("Đúng / Sai", stats("TF")),
+          section("Phần 1: Trắc nghiệm", stats("MC")),
+          section("Phần 2: Đúng / Sai", stats("TF")),
         ];
         if ((s.needs_review || 0) > 0)
           box.push(
@@ -836,7 +871,8 @@
           return;
         }
         for (const rec of items) {
-          const s = rec.summary || {};
+          const s = rec.summary || {},
+            sc = rec.scores;
           const row = el(
             "div",
             {
@@ -857,9 +893,13 @@
             el(
               "div",
               { class: "side" },
-              el("span", { class: "ok" }, `${s.correct ?? 0} đúng`),
-              " - ",
-              el("span", { class: "bad" }, `${s.wrong ?? 0} sai`),
+              sc
+                ? el(
+                    "b",
+                    { class: "ok" },
+                    `${fmtScore(sc.total.score)}/${fmtScore(sc.total.max)} điểm`,
+                  )
+                : el("span", { class: "ok" }, `${s.correct ?? 0} đúng`),
             ),
             el("button", {
               class: "icon-btn",
@@ -946,6 +986,33 @@
       }
       $("#addKey").onclick = () => openKeyForm(null);
 
+      const fmtNum = (v) => String(v).replace(".", ",");
+      const parseNum = (s) => Number(String(s).trim().replace(",", "."));
+      const PTS_RE = /^\d{1,2}([.,]\d{1,2})?$/;
+      const fmtScore = (n) =>
+        String(Math.round((Number(n) || 0) * 100) / 100).replace(".", ",");
+
+      function defaultKeyConfig(existing) {
+        const maxMc = LAYOUT.multiple_choice_questions.length,
+          maxTf = LAYOUT.true_false_questions.length;
+        const src =
+          existing?.config ||
+          [...loadKeys()].reverse().find((k) => k.config)?.config ||
+          {};
+        let mc = src.mc_count,
+          tf = src.tf_count;
+        if (existing && !existing.config) {
+          mc = Object.keys(existing.multiple_choice || {}).length || mc;
+          tf = Object.keys(existing.true_false || {}).length || tf;
+        }
+        return {
+          mc_count: mc || maxMc,
+          tf_count: tf || maxTf,
+          mc_points: src.mc_points ?? 6,
+          tf_points: src.tf_points ?? [0.1, 0.25, 0.5, 1],
+        };
+      }
+
       function radioGroup(name, values, labels, checked) {
         return el(
           "div",
@@ -971,6 +1038,10 @@
           : null;
         const L = LAYOUT,
           rows = L.true_false_rows;
+        const maxMc = L.multiple_choice_questions.length,
+          maxTf = L.true_false_questions.length;
+        const cfg0 = defaultKeyConfig(existing);
+
         const codeInput = el("input", {
           type: "text",
           inputmode: "numeric",
@@ -985,59 +1056,140 @@
             .slice(0, L.exam_code_length);
         });
 
-        const mcGrid = el(
-          "div",
-          { class: "grid two" },
-          L.multiple_choice_questions.map((n) =>
-            el(
-              "div",
-              { class: "q", "data-key": "mc" + n },
-              el("span", { class: "n" }, String(n)),
-              radioGroup(
-                "mc" + n,
-                ["A", "B", "C", "D"],
-                ["A", "B", "C", "D"],
-                existing?.multiple_choice?.[n],
-              ),
+        const numInput = (value, maxlen, mode) =>
+          el("input", {
+            type: "text",
+            inputmode: mode,
+            maxlength: String(maxlen),
+            autocomplete: "off",
+            class: "num",
+            value: String(value),
+          });
+        const mcCount = numInput(
+            cfg0.mc_count,
+            String(maxMc).length,
+            "numeric",
+          ),
+          tfCount = numInput(cfg0.tf_count, String(maxTf).length, "numeric"),
+          mcPts = numInput(fmtNum(cfg0.mc_points), 5, "decimal"),
+          tfPts = cfg0.tf_points.map((p) => numInput(fmtNum(p), 5, "decimal"));
+        const limitInt = (input, min, max) => {
+          let prev = input.value;
+          input.addEventListener("input", () => {
+            let v = input.value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
+            if (v !== "" && Number(v) > max) v = prev;
+            input.value = prev = v;
+          });
+          input.addEventListener("blur", () => {
+            if (input.value === "" || Number(input.value) < min)
+              input.value = prev = String(min);
+          });
+        };
+        const limitPts = (input) => {
+          const init = input.value;
+          let prev = init;
+          const ok = (s) =>
+            /^\d{0,2}([.,]\d{0,2})?$/.test(s) && !(parseNum(s) > 10);
+          input.addEventListener("input", () => {
+            let s = input.value.replace(/[^\d.,]/g, "");
+            if (!ok(s)) s = prev;
+            input.value = prev = s;
+          });
+          input.addEventListener("blur", () => {
+            let s = input.value.replace(/[.,]$/, "");
+            if (/^[.,]/.test(s)) s = "0" + s;
+            input.value = prev = s !== "" && parseNum(s) > 0 ? s : init;
+          });
+        };
+        limitInt(mcCount, 1, maxMc);
+        limitInt(tfCount, 1, maxTf);
+        limitPts(mcPts);
+        tfPts.forEach(limitPts);
+        const cfgField = (label, input, full = false) =>
+          el(
+            "div",
+            { class: full ? "field full" : "field" },
+            el("label", {}, label),
+            input,
+          );
+
+        const mcQs = L.multiple_choice_questions.map((n) =>
+          el(
+            "div",
+            { class: "q", "data-key": "mc" + n },
+            el("span", { class: "n" }, String(n)),
+            radioGroup(
+              "mc" + n,
+              ["A", "B", "C", "D"],
+              ["A", "B", "C", "D"],
+              existing?.multiple_choice?.[n],
             ),
           ),
         );
-        const tfBox = el(
-          "div",
-          {},
-          L.true_false_questions.map((n) =>
+        const mcGrid = el("div", { class: "grid two" }, mcQs);
+        const tfQs = L.true_false_questions.map((n) =>
+          el(
+            "div",
+            { class: "tfq" },
+            el("h4", {}, `Câu ${n}`),
             el(
               "div",
-              { class: "tfq" },
-              el("h4", {}, `Câu ${n}`),
-              el(
-                "div",
-                { class: "grid two" },
-                rows.map((r) =>
-                  el(
-                    "div",
-                    { class: "q", "data-key": `tf${n}${r}` },
-                    el("span", { class: "n" }, r + "."),
-                    radioGroup(
-                      `tf${n}${r}`,
-                      ["TRUE", "FALSE"],
-                      ["Đúng", "Sai"],
-                      existing?.true_false?.[n]?.[r],
-                    ),
+              { class: "grid two" },
+              rows.map((r) =>
+                el(
+                  "div",
+                  { class: "q", "data-key": `tf${n}${r}` },
+                  el("span", { class: "n" }, r + "."),
+                  radioGroup(
+                    `tf${n}${r}`,
+                    ["TRUE", "FALSE"],
+                    ["Đúng", "Sai"],
+                    existing?.true_false?.[n]?.[r],
                   ),
                 ),
               ),
             ),
           ),
         );
+        const tfBox = el("div", {}, tfQs);
+        const applyCounts = () => {
+          const mn = parseInt(mcCount.value, 10) || maxMc,
+            tn = parseInt(tfCount.value, 10) || maxTf;
+          L.multiple_choice_questions.forEach(
+            (n, i) => (mcQs[i].hidden = n > mn),
+          );
+          L.true_false_questions.forEach((n, i) => (tfQs[i].hidden = n > tn));
+        };
+        applyCounts();
 
         const body = el(
           "div",
           {},
           el("div", { class: "field" }, el("label", {}, "Mã đề"), codeInput),
-          el("div", { class: "sec" }, "Trắc nghiệm"),
+          el("div", { class: "sec" }, "Phần 1: Trắc nghiệm"),
+          el(
+            "div",
+            { class: "cfg" },
+            cfgField(`Số câu (1-${maxMc})`, mcCount),
+            cfgField("Tổng điểm", mcPts),
+          ),
           mcGrid,
-          el("div", { class: "sec" }, "Đúng / Sai"),
+          el("div", { class: "sec" }, "Phần 2: Đúng / Sai"),
+          el(
+            "div",
+            { class: "cfg" },
+            cfgField(`Số câu (1-${maxTf})`, tfCount, true),
+          ),
+          el(
+            "div",
+            { class: "sec-title" },
+            el("span", {}, "Điểm mỗi câu theo số ý đúng"),
+          ),
+          el(
+            "div",
+            { class: "cfg four" },
+            tfPts.map((inp, i) => cfgField(`Đúng ${i + 1} ý`, inp)),
+          ),
           tfBox,
         );
 
@@ -1052,10 +1204,11 @@
               text: "Lưu",
               kind: "primary",
               onClick: (api) => {
-                // ----- validation -----
                 const errs = [];
                 const bad = new Set();
-                codeInput.classList.remove("invalid");
+                for (const i of body.querySelectorAll("input.invalid"))
+                  i.classList.remove("invalid");
+
                 const code = codeInput.value.trim();
                 if (!code) {
                   errs.push("Vui lòng nhập mã đề.");
@@ -1075,11 +1228,46 @@
                   errs.push(`Mã đề ${code} đã tồn tại.`);
                   codeInput.classList.add("invalid");
                 }
+
+                const mn = parseInt(mcCount.value, 10),
+                  tn = parseInt(tfCount.value, 10);
+                if (!(mn >= 1 && mn <= maxMc)) {
+                  errs.push(`Số câu trắc nghiệm phải từ 1 đến ${maxMc}.`);
+                  mcCount.classList.add("invalid");
+                }
+                if (!(tn >= 1 && tn <= maxTf)) {
+                  errs.push(`Số câu Đúng/Sai phải từ 1 đến ${maxTf}.`);
+                  tfCount.classList.add("invalid");
+                }
+                const badPts = [];
+                const pts = (input, label) => {
+                  const s = input.value.trim(),
+                    v = parseNum(s);
+                  if (!PTS_RE.test(s) || !(v > 0 && v <= 10)) {
+                    badPts.push(label);
+                    input.classList.add("invalid");
+                    return null;
+                  }
+                  return Math.round(v * 100) / 100;
+                };
+                const mcPoints = pts(mcPts, "tổng điểm trắc nghiệm");
+                const tfPoints = tfPts.map((inp, i) =>
+                  pts(inp, `đúng ${i + 1} ý`),
+                );
+                if (badPts.length)
+                  errs.push(
+                    `Điểm không hợp lệ (${badPts.join(", ")}): nhập số dương, tối đa 2 chữ số thập phân, không quá 10.`,
+                  );
+
+                const mnE = mn >= 1 && mn <= maxMc ? mn : maxMc,
+                  tnE = tn >= 1 && tn <= maxTf ? tn : maxTf;
                 const mc = {},
                   tf = {};
                 let missMC = 0,
                   missTF = 0;
-                for (const n of L.multiple_choice_questions) {
+                for (const n of L.multiple_choice_questions.filter(
+                  (n) => n <= mnE,
+                )) {
                   const c = body.querySelector(`input[name="mc${n}"]:checked`);
                   if (c) mc[n] = c.value;
                   else {
@@ -1087,7 +1275,9 @@
                     bad.add("mc" + n);
                   }
                 }
-                for (const n of L.true_false_questions) {
+                for (const n of L.true_false_questions.filter(
+                  (n) => n <= tnE,
+                )) {
                   tf[n] = {};
                   for (const r of rows) {
                     const c = body.querySelector(
@@ -1108,16 +1298,23 @@
                   q.classList.toggle("invalid", bad.has(q.dataset.key));
                 if (errs.length) {
                   api.msg(errs.join(" "));
-                  (
-                    body.querySelector(".q.invalid") || codeInput
-                  ).scrollIntoView({ block: "center" });
+                  [...body.querySelectorAll(".invalid")]
+                    .find((e) => !e.closest("[hidden]"))
+                    ?.scrollIntoView({ block: "center" });
                   return false;
                 }
+
                 const all = loadKeys().filter(
                   (k) => k.exam_code !== existing?.exam_code,
                 );
                 all.push({
                   exam_code: code,
+                  config: {
+                    mc_count: mn,
+                    tf_count: tn,
+                    mc_points: mcPoints,
+                    tf_points: tfPoints,
+                  },
                   multiple_choice: mc,
                   true_false: tf,
                 });
@@ -1128,15 +1325,19 @@
             },
           ],
         });
+
         const refreshErr = () => {
           if (
-            !codeInput.classList.contains("invalid") &&
-            !body.querySelector(".q.invalid")
+            ![...body.querySelectorAll(".invalid")].some(
+              (e) => !e.closest("[hidden]"),
+            )
           )
             modal.msg("");
         };
-        codeInput.addEventListener("input", () => {
-          codeInput.classList.remove("invalid");
+        body.addEventListener("input", (e) => {
+          if (e.target.matches("input[type=text]"))
+            e.target.classList.remove("invalid");
+          if (e.target === mcCount || e.target === tfCount) applyCounts();
           refreshErr();
         });
         body.addEventListener("change", (e) => {
@@ -1614,6 +1815,7 @@
           student_raw: res.student.raw,
           exam_code: res.exam.exam_code,
           summary: res.grading.summary,
+          scores: res.grading.scores,
           needs_review: res.needs_review,
           answers: compactAnswers(res),
           image: res.images?.grading || null,

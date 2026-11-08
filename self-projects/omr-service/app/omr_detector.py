@@ -174,6 +174,10 @@ COLORS = {  # BGR
 
 EMPTY, FILLED, AMBIG = "EMPTY", "FILLED", "AMBIGUOUS"
 
+POINTS_MAX = 10.0
+DEFAULT_MC_POINTS = 6.0
+DEFAULT_TF_POINTS = [0.1, 0.25, 0.5, 1.0]
+
 
 # --------------------------------------------------------------------------- #
 # Data containers                                                              #
@@ -1138,6 +1142,95 @@ def load_json_file(path: str, what: str, code_prefix: str):
         ]
 
 
+def _points(v):
+    if isinstance(v, bool) or not isinstance(v, (int, float)):
+        return None
+    if not (0 < v <= POINTS_MAX) or abs(round(v, 2) - v) > 1e-9:
+        return None
+    return round(float(v), 2)
+
+
+def _parse_exam_config(exam, ep, max_mc, max_tf, n_items, issues):
+    cfg = {
+        "mc_count": max_mc,
+        "tf_count": max_tf,
+        "mc_points": DEFAULT_MC_POINTS,
+        "tf_points": list(DEFAULT_TF_POINTS),
+    }
+    raw = exam.get("config")
+    if raw is None:
+        return cfg
+    if not isinstance(raw, dict):
+        issues.append(
+            make_issue(
+                "INVALID_TYPE",
+                '"config" phải là đối tượng.',
+                f"{ep}/config",
+                expected="object",
+                actual=type(raw).__name__,
+            )
+        )
+        return cfg
+    for field, mx, label in (
+        ("mc_count", max_mc, "Số câu trắc nghiệm"),
+        ("tf_count", max_tf, "Số câu Đúng/Sai"),
+    ):
+        if field in raw:
+            v = raw[field]
+            if isinstance(v, bool) or not isinstance(v, int) or not (1 <= v <= mx):
+                issues.append(
+                    make_issue(
+                        "INVALID_CONFIG_VALUE",
+                        f"{label} phải là số nguyên từ 1 đến {mx}.",
+                        f"{ep}/config/{field}",
+                        value=v,
+                        min=1,
+                        max=mx,
+                    )
+                )
+            else:
+                cfg[field] = v
+    if "mc_points" in raw:
+        p = _points(raw["mc_points"])
+        if p is None:
+            issues.append(
+                make_issue(
+                    "INVALID_CONFIG_VALUE",
+                    f"Tổng điểm trắc nghiệm phải là số dương, tối đa 2 chữ số thập phân, không quá {POINTS_MAX:g}.",
+                    f"{ep}/config/mc_points",
+                    value=raw["mc_points"],
+                )
+            )
+        else:
+            cfg["mc_points"] = p
+    if "tf_points" in raw:
+        tp = raw["tf_points"]
+        if not isinstance(tp, list) or len(tp) != n_items:
+            issues.append(
+                make_issue(
+                    "INVALID_LENGTH",
+                    f"tf_points phải có đúng {n_items} giá trị (đúng 1..{n_items} ý).",
+                    f"{ep}/config/tf_points",
+                    expected=n_items,
+                )
+            )
+        else:
+            vals = [_points(x) for x in tp]
+            for k, p in enumerate(vals):
+                if p is None:
+                    issues.append(
+                        make_issue(
+                            "INVALID_CONFIG_VALUE",
+                            f"Điểm khi đúng {k + 1} ý phải là số dương, tối đa 2 chữ số thập phân, không quá {POINTS_MAX:g}.",
+                            f"{ep}/config/tf_points/{k}",
+                            value=tp[k],
+                        )
+                    )
+            if None not in vals:
+                cfg["tf_points"] = vals
+    return cfg
+
+
 def validate_answer_keys(data, layout: dict):
     """Validate the answer-key document against the sheet layout.
 
@@ -1151,10 +1244,10 @@ def validate_answer_keys(data, layout: dict):
     issues: List[dict] = []
     keys: Dict[str, dict] = {}
     code_len = len(layout["id_blocks"][-1]["x"])
-    mc_numbers = [
+    all_mc_numbers = [
         blk["first_q"] + i for blk in layout["mc_blocks"] for i in range(blk["n"])
     ]
-    tf_numbers = [blk["question"] for blk in layout["tf_blocks"]]
+    all_tf_numbers = [blk["question"] for blk in layout["tf_blocks"]]
     tf_rows = layout["tf_rows"]
 
     exams = data.get("exams") if isinstance(data, dict) else data
@@ -1229,7 +1322,12 @@ def validate_answer_keys(data, layout: dict):
                     )
                 )
                 code = None
-        entry = {"mc": {}, "tf": {}}
+        cfg = _parse_exam_config(
+            exam, ep, len(all_mc_numbers), len(all_tf_numbers), len(tf_rows), issues
+        )
+        mc_numbers = all_mc_numbers[: cfg["mc_count"]]
+        tf_numbers = all_tf_numbers[: cfg["tf_count"]]
+        entry = {"mc": {}, "tf": {}, "config": cfg}
 
         # ---- multiple choice
         mp = f"{ep}/multiple_choice"
@@ -1487,6 +1585,16 @@ def detected_value(q: Question) -> Optional[str]:
 
 def grade(det: "OMRDetector", key: dict) -> dict:
     """Compare detected answers with one exam's key. Fills q.expected / q.result."""
+    cfg = key["config"]
+    mc_n, tf_n = cfg["mc_count"], cfg["tf_count"]
+    det.questions = [
+        q
+        for q in det.questions
+        if q.group == "ID"
+        or (q.group == "MC" and q.number <= mc_n)
+        or (q.group == "TF" and q.number <= tf_n)
+    ]
+
     sections = {
         "multiple_choice": dict(total=0, correct=0, wrong=0, blank=0, needs_review=0),
         "true_false": dict(total=0, correct=0, wrong=0, blank=0, needs_review=0),
@@ -1509,7 +1617,28 @@ def grade(det: "OMRDetector", key: dict) -> dict:
     total = {
         k: sum(sec[k] for sec in sections.values()) for k in sections["multiple_choice"]
     }
-    return {"summary": total, "sections": sections}
+    r2 = lambda x: round(x + 1e-9, 2)
+    mc_score = r2(sections["multiple_choice"]["correct"] / mc_n * cfg["mc_points"])
+    items_ok: Dict[int, int] = {}
+    for q in det.questions:
+        if q.group == "TF" and q.result == "correct":
+            items_ok[q.number] = items_ok.get(q.number, 0) + 1
+    tf_pts = cfg["tf_points"]
+    by_q = {
+        n: {"correct_items": k, "score": tf_pts[k - 1]}
+        for n, k in sorted(items_ok.items())
+    }
+    tf_score = r2(sum(v["score"] for v in by_q.values()))
+    tf_max = r2(tf_pts[-1] * tf_n)
+    scores = {
+        "multiple_choice": {"score": mc_score, "max": cfg["mc_points"]},
+        "true_false": {"score": tf_score, "max": tf_max, "by_question": by_q},
+        "total": {
+            "score": r2(mc_score + tf_score),
+            "max": r2(cfg["mc_points"] + tf_max),
+        },
+    }
+    return {"summary": total, "sections": sections, "scores": scores, "config": cfg}
 
 
 def _question_json(det: "OMRDetector", q: Question) -> dict:
@@ -1648,6 +1777,8 @@ def build_result(
                 "needs_review": grading["summary"]["needs_review"],
             },
             "sections": grading["sections"],
+            "scores": grading["scores"],
+            "config": grading["config"],
             "definitions": {
                 "total": "multiple-choice questions + true/false sub-questions",
                 "wrong": "a single valid option was selected and it differs from the key",
@@ -1790,6 +1921,9 @@ def save_grading_image(
     )
     sm = grading["summary"] if grading else None
     line = f"SBD: {student_id or '?'}   Exam code: {exam_code or '?'}"
+    if grading:
+        t = grading["scores"]["total"]
+        line += f"   Score: {t['score']}/{t['max']}"
     if sm:
         line += f"   Correct: {sm['correct']}   Wrong: {sm['wrong']}   Blank: {sm['blank']}   Review: {sm['needs_review']}   Total: {sm['total']}"
     cv2.putText(
