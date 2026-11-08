@@ -248,6 +248,9 @@
         background: rgba(0, 0, 0, 0.25);
         transition: opacity 0.15s;
       }
+      #shutter[hidden] {
+        display: none;
+      }
       #shutter i {
         display: block;
         width: 58px;
@@ -945,11 +948,6 @@
                 `Đúng ${mcSt.correct}/${mcSt.total} câu × ${fmtScore(mcPart.max)} điểm`,
                 `= ${fmtScore(mcPart.score)}`,
               ],
-              [
-                "Điểm phần 1",
-                `${fmtScore(mcPart.score)}/${fmtScore(mcPart.max)}`,
-                "sum",
-              ],
             ]
           : [];
         const tfRows = tfPart
@@ -958,11 +956,6 @@
                 `Câu ${n}: đúng ${o.ok}/${o.all} ý`,
                 `${fmtScore(tfPart.by_question?.[n]?.score ?? 0)} điểm`,
               ]),
-              [
-                "Điểm phần 2",
-                `${fmtScore(tfPart.score)}/${fmtScore(tfPart.max)}`,
-                "sum",
-              ],
             ]
           : [];
 
@@ -979,11 +972,6 @@
                   "b",
                   { class: "ok" },
                   `${fmtScore(sc.total.score)} / ${fmtScore(sc.total.max)}`,
-                ),
-                el(
-                  "div",
-                  { class: "sub" },
-                  `Trắc nghiệm ${fmtScore(mcPart.score)} + Đúng/Sai ${fmtScore(tfPart.score)}`,
                 ),
               )
             : null,
@@ -1612,6 +1600,7 @@
           gctx = guide.getContext("2d");
         const shutter = $("#shutter"),
           hint = $("#hint");
+        const STABLE_FRAMES = 3;
         const N = 64,
           patch = document.createElement("canvas");
         patch.width = patch.height = N;
@@ -1688,6 +1677,7 @@
           if (!g) return;
           const { cw, ch } = g;
           gctx.clearRect(0, 0, cw, ch);
+          if (!stream) return;
           const pad = g.box * 0.9;
           gctx.fillStyle = "rgba(0,0,0,.45)";
           gctx.beginPath();
@@ -1746,22 +1736,29 @@
           } catch {
             return;
           }
-          const all = states.every((s) => s === "match");
-          stable = all ? stable + 1 : 0;
-          shutter.disabled = !(stable >= 2);
-          const near = states.filter((s) => s !== "miss").length;
-          hint.textContent =
-            stable >= 2
-              ? "Đã khớp - bấm nút chụp"
-              : near >= 3
-                ? "Gần khớp - giữ yên và căn lại cho chính xác"
-                : "Canh 4 hình vuông ở góc phiếu vào 4 khung";
+          const nMatch = states.filter((s) => s === "match").length;
+          const nMiss = states.filter((s) => s === "miss").length;
+          const canShoot = nMatch >= 2 && nMiss === 0;
+          const canAuto = nMatch >= 3 && nMiss === 0;
+          stable = canAuto ? stable + 1 : 0;
+          shutter.disabled = !canShoot;
+          const hasKeys = loadKeys().length > 0;
+          hint.textContent = !hasKeys
+            ? "Chưa có đáp án - hãy thêm đáp án ở mục “Nhập đáp án” trước khi quét"
+            : stable > 0
+              ? "Đã khớp - giữ yên, đang tự chụp…"
+              : canShoot
+                ? "Có thể bấm nút chụp, hoặc căn thêm để tự chụp"
+                : nMiss <= 1
+                  ? "Gần khớp - giữ yên và căn lại cho chính xác"
+                  : "Canh 4 hình vuông ở góc phiếu vào 4 khung";
           draw();
+          if (hasKeys && stable >= STABLE_FRAMES) capture();
         }
 
         async function start() {
           $("#camMsg").hidden = true;
-          if (stream) return;
+          if (busy || stream) return;
           if (!navigator.mediaDevices?.getUserMedia) {
             return showMsg(
               "Trình duyệt không hỗ trợ camera hoặc trang chưa chạy trên HTTPS.",
@@ -1803,6 +1800,7 @@
           }
           video.srcObject = null;
           shutter.disabled = true;
+          hint.textContent = "";
           stable = 0;
           states = ["miss", "miss", "miss", "miss"];
         }
@@ -1843,10 +1841,28 @@
           if (!b) {
             stable = 0;
             shutter.disabled = true;
+          } else {
+            stop();
+            gctx.clearRect(0, 0, guide.clientWidth, guide.clientHeight);
+            $("#shutter").hidden = true;
           }
         }
+
+        async function capture() {
+          if (busy) return;
+          busy = true;
+          const blob = await grabRegion();
+          if (!blob) {
+            busy = false;
+            stable = 0;
+            return toast("Không chụp được ảnh. Vui lòng thử lại.");
+          }
+          setBusy(true);
+          await submitScan(blob);
+        }
+
         shutter.onclick = async () => {
-          if (shutter.disabled) return;
+          if (shutter.disabled || busy) return;
           if (!loadKeys().length) {
             return openModal({
               title: "Chưa có đáp án",
@@ -1865,13 +1881,7 @@
               ],
             });
           }
-          setBusy(true);
-          const blob = await grabRegion();
-          if (!blob) {
-            setBusy(false);
-            return toast("Không chụp được ảnh. Vui lòng thử lại.");
-          }
-          await submitScan(blob);
+          await capture();
         };
         $("#camRetry").onclick = () => start();
         window.addEventListener("resize", () => {
@@ -1879,10 +1889,18 @@
         });
         document.addEventListener("visibilitychange", () => {
           if (document.hidden) stop();
-          else if (currentPage === "scan") start();
+          else if (currentPage === "scan" && !busy && !$(".modal-wrap"))
+            start();
         });
         return { start, stop, setBusy };
       })();
+
+      const resumeScan = () => {
+        if (currentPage === "scan") {
+          $("#shutter").hidden = false;
+          Camera.start();
+        }
+      };
 
       async function submitScan(blob) {
         let env = null;
@@ -1930,7 +1948,7 @@
         if (offerKeys)
           actions.push({ text: "Nhập đáp án", onClick: () => go("keys") });
         actions.push({ text: "Thử lại", kind: "primary" });
-        openModal({ title, body, actions });
+        openModal({ title, body, actions, onClose: resumeScan });
       }
       function compactAnswers(res) {
         const out = [];
@@ -1968,6 +1986,7 @@
         openModal({
           title: "Kết quả quét",
           body: resultView(rec),
+          onClose: resumeScan,
           actions: [
             { text: "Hủy" },
             {
