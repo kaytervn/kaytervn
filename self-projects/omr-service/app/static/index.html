@@ -8,6 +8,7 @@
     />
     <meta name="theme-color" content="#0e1116" />
     <title>Chấm phiếu trắc nghiệm</title>
+    <link rel="icon" type="image/png" href="icon.png" />
     <style>
       :root {
         --bg: #0e1116;
@@ -439,6 +440,60 @@
         padding: 10px 12px;
       }
 
+      .dl {
+        margin: -2px 0 12px;
+        background: var(--surface2);
+        border-radius: 10px;
+        padding: 4px 10px;
+        font-size: 13px;
+      }
+      .dl div {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 5px 0;
+      }
+      .dl div + div {
+        border-top: 1px solid var(--line);
+      }
+      .dl .sum {
+        font-weight: 700;
+      }
+      .total {
+        background: var(--surface2);
+        border-radius: 12px;
+        padding: 12px;
+        margin: 4px 0 12px;
+        text-align: center;
+      }
+      .total small {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .total b {
+        font-size: 26px;
+      }
+      .total .sub {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+      a.btn {
+        display: inline-block;
+        text-decoration: none;
+        text-align: center;
+      }
+      .tpl {
+        padding: 24px 8px;
+        text-align: center;
+        color: var(--muted);
+      }
+      .tpl p {
+        margin-bottom: 16px;
+        line-height: 1.5;
+      }
+
       /* ---------- answer-key form ---------- */
       .field label {
         display: block;
@@ -594,9 +649,9 @@
       <button data-page="scan">Quét bài</button>
       <button data-page="history">Kho lưu trữ</button>
       <button data-page="keys">Nhập đáp án</button>
+      <button data-page="template">Mẫu phiếu</button>
     </div>
 
-    <!-- ============ Trang quét ============ -->
     <section class="page" id="page-scan">
       <video id="video" playsinline muted autoplay></video>
       <canvas id="guide"></canvas>
@@ -612,12 +667,10 @@
       </div>
     </section>
 
-    <!-- ============ Kho lưu trữ ============ -->
     <section class="page" id="page-history" hidden>
       <div id="historyList"></div>
     </section>
 
-    <!-- ============ Nhập đáp án ============ -->
     <section class="page" id="page-keys" hidden>
       <div id="keysList"></div>
       <button class="fab" id="addKey" aria-label="Thêm đáp án">
@@ -630,6 +683,15 @@
           <path d="M12 5v14M5 12h14" />
         </svg>
       </button>
+    </section>
+
+    <section class="page" id="page-template" hidden>
+      <div class="tpl">
+        <p>Tải phiếu trả lời mẫu để in cho học sinh.</p>
+        <a class="btn primary" href="template.pdf" download="Mau-phieu.pdf"
+          >Tải mẫu phiếu (PDF)</a
+        >
+      </div>
     </section>
 
     <div id="toast" hidden></div>
@@ -765,13 +827,11 @@
         });
       }
 
-      /* ======================================================================
-   Điều hướng + menu hamburger
-   ====================================================================== */
       const PAGES = {
         scan: "Quét bài",
         history: "Kho lưu trữ",
         keys: "Nhập đáp án",
+        template: "Mẫu phiếu",
       };
       let currentPage = "scan";
       function toggleMenu(show) {
@@ -800,7 +860,8 @@
       }
 
       function resultView(rec) {
-        const s = rec.summary || {};
+        const s = rec.summary || {},
+          sc = rec.scores;
         const idTxt = rec.student_id ?? (rec.student_raw || "?") + " (chưa rõ)";
         const kv = (label, val, cls = "") =>
           el(
@@ -825,11 +886,46 @@
             }
           return st;
         };
-        const section = (title, st) =>
+        const tfPerQuestion = () => {
+          const m = new Map();
+          for (const a of rec.answers || [])
+            if (a.g === "TF") {
+              const o = m.get(a.n) || { ok: 0, all: 0 };
+              o.all++;
+              if (a.r === "correct") o.ok++;
+              m.set(a.n, o);
+            }
+          return [...m.entries()].sort((a, b) => a[0] - b[0]);
+        };
+        const detail = (rows) =>
+          el(
+            "div",
+            { class: "dl" },
+            rows.map(([l, r, cls]) =>
+              el(
+                "div",
+                { class: cls === "sum" ? "sum" : "" },
+                el("span", {}, l),
+                el("b", {}, r),
+              ),
+            ),
+          );
+        const section = (title, st, part, rows) =>
           el(
             "div",
             {},
-            el("div", { class: "sec-title" }, `${title} (${st.total} câu)`),
+            el(
+              "div",
+              { class: "sec-title" },
+              el("span", {}, `${title} (${st.total} câu)`),
+              part
+                ? el(
+                    "span",
+                    { class: "sec-score" },
+                    `${fmtScore(part.score)}/${fmtScore(part.max)} điểm`,
+                  )
+                : null,
+            ),
             el(
               "div",
               { class: "kv" },
@@ -837,12 +933,61 @@
               kv("Sai", st.wrong, "bad"),
               kv("Bỏ trống", st.blank, "orange"),
             ),
+            part ? detail(rows) : null,
           );
+
+        const mcSt = stats("MC"),
+          mcPart = sc?.multiple_choice,
+          tfPart = sc?.true_false;
+        const mcRows = mcPart
+          ? [
+              [
+                `Đúng ${mcSt.correct}/${mcSt.total} câu × ${fmtScore(mcPart.max)} điểm`,
+                `= ${fmtScore(mcPart.score)}`,
+              ],
+              [
+                "Điểm phần 1",
+                `${fmtScore(mcPart.score)}/${fmtScore(mcPart.max)}`,
+                "sum",
+              ],
+            ]
+          : [];
+        const tfRows = tfPart
+          ? [
+              ...tfPerQuestion().map(([n, o]) => [
+                `Câu ${n}: đúng ${o.ok}/${o.all} ý`,
+                `${fmtScore(tfPart.by_question?.[n]?.score ?? 0)} điểm`,
+              ]),
+              [
+                "Điểm phần 2",
+                `${fmtScore(tfPart.score)}/${fmtScore(tfPart.max)}`,
+                "sum",
+              ],
+            ]
+          : [];
+
         const box = [
           grid,
-          section("Phần 1: Trắc nghiệm", stats("MC")),
-          section("Phần 2: Đúng / Sai", stats("TF")),
-        ];
+          section("Phần 1: Trắc nghiệm", mcSt, mcPart, mcRows),
+          section("Phần 2: Đúng / Sai", stats("TF"), tfPart, tfRows),
+          sc
+            ? el(
+                "div",
+                { class: "total" },
+                el("small", {}, "ĐIỂM TỔNG"),
+                el(
+                  "b",
+                  { class: "ok" },
+                  `${fmtScore(sc.total.score)} / ${fmtScore(sc.total.max)}`,
+                ),
+                el(
+                  "div",
+                  { class: "sub" },
+                  `Trắc nghiệm ${fmtScore(mcPart.score)} + Đúng/Sai ${fmtScore(tfPart.score)}`,
+                ),
+              )
+            : null,
+        ].filter(Boolean);
         if ((s.needs_review || 0) > 0)
           box.push(
             el(
