@@ -1,272 +1,225 @@
-<!DOCTYPE html>
-<html lang="vi">
+<!doctype html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <title>Rubik Algorithms</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
+      :root {
+        --bg: #fff;
+        --fg: #222;
+        --mut: #777;
+        --bd: #ddd;
+        --card: #f6f6f6;
         box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
       }
-
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #161616;
+          --fg: #eee;
+          --mut: #999;
+          --bd: #333;
+          --card: #222;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #161616;
+        --fg: #eee;
+        --mut: #999;
+        --bd: #333;
+        --card: #222;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
       body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, sans-serif;
-        background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
-        min-height: 100vh;
-        color: #333;
-        line-height: 1.6;
-      }
-
-      .container {
-        max-width: 1000px;
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          15px/1.5 system-ui,
+          sans-serif;
+        max-width: 640px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 16px;
       }
-
-      .header {
-        text-align: center;
-        margin-bottom: 15px;
-        color: white;
+      h1 {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
       }
-
-      .header h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-      }
-
-      .category-filter {
+      .row {
         display: flex;
-        gap: 10px;
+        gap: 8px;
         flex-wrap: wrap;
-        justify-content: center;
-        margin-bottom: 30px;
+        margin-bottom: 12px;
       }
-
-      .category-btn {
-        padding: 10px 18px;
-        border: none;
-        border-radius: 25px;
-        background: rgba(255, 255, 255, 0.15);
-        color: white;
+      button {
+        font: inherit;
+        color: var(--fg);
+        background: var(--card);
+        border: 1px solid var(--bd);
+        border-radius: 6px;
+        padding: 6px 12px;
         cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 1.2rem;
-        backdrop-filter: blur(10px);
-        border: 2px solid transparent;
       }
-
-      .category-btn:hover {
-        background: rgba(255, 255, 255, 0.25);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      button.on {
+        background: var(--fg);
+        color: var(--bg);
       }
-
-      .category-btn.active {
-        background: rgba(255, 255, 255, 0.3);
-        border-color: rgba(255, 255, 255, 0.5);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      button:disabled {
+        opacity: 0.4;
+        cursor: default;
       }
-
-      .cheatsheet-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        margin-bottom: 40px;
-      }
-
-      .cheatsheet-card {
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 16px;
-        padding: 20px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        animation: fadeInUp 0.5s ease forwards;
-        opacity: 0;
-        transform: translateY(30px);
-      }
-
-      .cheatsheet-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-      }
-
-      .card-header {
-        margin-bottom: 15px;
-      }
-
-      .card-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #2d3748;
-        margin-bottom: 5px;
-      }
-
-      .card-category {
-        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-        color: white;
-        padding: 4px 12px;
-        border-radius: 12px;
-        font-size: 0.85rem;
-        font-weight: 500;
-        display: inline-block;
-      }
-
-      .card-steps {
-        max-height: 300px;
-        overflow-y: auto;
-      }
-
-      .step-item {
-        background: #f8f9fa;
+      #stage {
+        height: 320px;
+        perspective: 900px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--bd);
         border-radius: 8px;
-        padding: 8px;
+        touch-action: none;
+        cursor: grab;
+        user-select: none;
+      }
+      #scene,
+      .cubie {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform-style: preserve-3d;
+      }
+      #scene {
+        width: 0;
+        height: 0;
+      }
+      .face {
+        position: absolute;
+        left: 0;
+        top: 0;
+        border: 2px solid #111;
+        border-radius: 4px;
+      }
+      #title {
+        font-weight: 600;
+        margin: 14px 0 6px;
+      }
+      #code {
+        font-family: ui-monospace, Menlo, monospace;
+        background: var(--card);
+        border-radius: 6px;
+        padding: 10px;
+        margin-bottom: 12px;
+        line-height: 2;
+      }
+      #code span {
+        padding: 2px 4px;
+        border-radius: 4px;
+        margin-right: 2px;
+      }
+      #code span.cur {
+        background: var(--fg);
+        color: var(--bg);
+      }
+      #code span.done {
+        color: var(--mut);
+      }
+      #note {
+        color: var(--mut);
+        margin-bottom: 12px;
+      }
+      .hint {
+        color: var(--mut);
+        font-size: 0.85rem;
+        margin-top: 8px;
+      }
+      select {
+        font: inherit;
+        color: var(--fg);
+        background: var(--card);
+        border: 1px solid var(--bd);
+        border-radius: 6px;
+        padding: 6px;
+      }
+      #code span.next {
+        outline: 1px dashed var(--mut);
+      }
+      #step {
         margin-bottom: 10px;
-        border-left: 3px solid #ff6b6b;
-        transition: all 0.2s ease;
+        min-height: 1.5em;
+        font-weight: 500;
       }
-
-      .step-item:hover {
-        background: #e9ecef;
+      details {
+        margin-top: 14px;
+        color: var(--mut);
+        font-size: 0.9rem;
       }
-
-      .step-code {
-        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
-        font-size: 1rem;
-        color: #2d3748;
-        white-space: pre-wrap;
-        word-break: break-all;
+      summary {
+        cursor: pointer;
       }
-
-      .no-results {
-        text-align: center;
-        color: white;
-        font-size: 1.2rem;
-        margin-top: 60px;
-        opacity: 0.8;
-      }
-
-      .loading {
-        text-align: center;
-        color: white;
-        font-size: 1.1rem;
-        margin-top: 60px;
-      }
-
-      .spinner {
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        border: 4px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top-color: white;
-        animation: spin 1s ease-in-out infinite;
-        margin-bottom: 20px;
-      }
-
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      @keyframes fadeInUp {
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .card-steps::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      .card-steps::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-      }
-
-      .card-steps::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
-        border-radius: 3px;
-      }
-
-      .card-steps::-webkit-scrollbar-thumb:hover {
-        background: #a8a8a8;
-      }
-
-      @media (max-width: 768px) {
-        .container {
-          padding: 15px;
-        }
-
-        .header h1 {
-          font-size: 2rem;
-        }
-
-        .cheatsheet-grid {
-          grid-template-columns: 1fr;
-          gap: 20px;
-        }
-
-        .cheatsheet-card {
-          padding: 15px;
-        }
-
-        .category-btn {
-          font-size: 0.8rem;
-          padding: 8px 14px;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .header h1 {
-          font-size: 1.8rem;
-        }
-
-        .cheatsheet-card {
-          padding: 12px;
-        }
-
-        .card-title {
-          font-size: 1.3rem;
-        }
-
-        .step-code {
-          font-size: 0.9rem;
-        }
+      details p {
+        margin-top: 6px;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="header">
-        <h1>🧩 Rubik Algorithms</h1>
-      </div>
-
-      <div class="category-filter" id="categoryFilter"></div>
-
-      <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <p>Đang tải giải thuật...</p>
-      </div>
-
-      <div class="cheatsheet-grid" id="cheatsheetGrid"></div>
-
-      <div class="no-results" id="noResults" style="display: none">
-        <p>Không tìm thấy giải thuật nào phù hợp 😢</p>
-      </div>
+    <h1>🧩 Rubik Algorithms</h1>
+    <div class="row" id="tabs"></div>
+    <div class="row" id="list"></div>
+    <div id="stage"><div id="scene"></div></div>
+    <div class="hint">Drag to rotate the cube.</div>
+    <div id="title"></div>
+    <div id="code"></div>
+    <div id="step"></div>
+    <div class="row">
+      <button id="play">▶ Play</button>
+      <button id="next">Next step ▸</button>
+      <button id="reset">↺ Reset</button>
+      <label
+        >Speed
+        <select id="speed">
+          <option value="0.1">0.1x</option>
+          <option value="0.15">0.15x</option>
+          <option value="0.2">0.2x</option>
+          <option value="0.25">0.25x</option>
+          <option value="0.3">0.3x</option>
+          <option value="0.4">0.4x</option>
+          <option value="0.5">0.5x</option>
+          <option value="0.75">0.75x</option>
+          <option value="1" selected>1x</option>
+          <option value="2">2x</option>
+          <option value="4">4x</option>
+        </select></label
+      >
     </div>
+    <div id="note"></div>
+    <details>
+      <summary>Notation guide</summary>
+      <p>
+        <b>R L U D F B</b> = turn that face 90° clockwise, as if you were
+        looking straight at it (Right, Left, Up, Down, Front, Back).
+      </p>
+      <p>
+        <b>'</b> (e.g. R') = counter-clockwise. <b>2</b> (e.g. R2) = half turn,
+        180°.
+      </p>
+      <p>
+        <b>r</b> or <b>Rw</b> = turn the two outer layers on that side together
+        (same for l/Lw, u/Uw...).
+      </p>
+      <p>
+        <b>M E S</b> = middle layers: M is between L and R (turns like L), E is
+        between U and D (turns like D), S is between F and B (turns like F).
+      </p>
+      <p><b>x y z</b> = rotate the whole cube, like R, U, F respectively.</p>
+    </details>
 
     <script>
-      const allAlgorithms = [
+      const DATA = [
         {
           category: "3x3",
           title: "Light up squares under the yellow cross",
@@ -301,161 +254,408 @@
         {
           category: "SQ-1",
           subAlgorithms: [
-            {
-              title: "Edge Orientation",
-              steps: [{ code: "/ U' M2 U /" }],
-            },
+            { title: "Edge Orientation", steps: [{ code: "/ U' M2 U /" }] },
             {
               title: "Corner Permutation",
               steps: [{ code: "/ U /' U' D' / D /" }],
             },
-            {
-              title: "Edge Permutation",
-              steps: [{ code: "/ D M2 D' /" }],
-            },
-            {
-              title: "Middle Bar Flip",
-              steps: [{ code: "/ U2 / U2 /" }],
-            },
+            { title: "Edge Permutation", steps: [{ code: "/ D M2 D' /" }] },
+            { title: "Middle Bar Flip", steps: [{ code: "/ U2 / U2 /" }] },
           ],
         },
       ];
+      const ALGS = DATA.flatMap((a) =>
+        a.subAlgorithms
+          ? a.subAlgorithms.map((s) => ({
+              title: s.title,
+              category: a.category,
+              code: s.steps[0].code,
+            }))
+          : [{ title: a.title, category: a.category, code: a.steps[0].code }],
+      );
 
-      let filteredAlgorithms = [];
-      let currentCategory = "3x3";
+      const NOTES = {
+        "Light up squares under the yellow cross":
+          "Use this after the yellow cross is done, to turn all four yellow corners face up (this is the Sune algorithm). Hold a yellow corner at the front-left of the top layer. If it is not solved yet, repeat it until all four corners are yellow.",
+        "Edge Paring - Flip":
+          "Use this while pairing edges on 4x4 when a pair is made but flipped the wrong way. Put the pair at the front-right edge position, then run it to flip the pair.",
+        "Fix the yellow cross":
+          "OLL parity: use this when the yellow cross has an odd number of flipped edges, a case that is impossible on a 3x3. After it, continue with normal 3x3 steps.",
+        "Yellow Corners (2/4)":
+          "PLL parity: use this when the last layer looks like a 3x3 case that cannot happen, for example only 2 of the 4 yellow corners are in the right place. After it, continue with normal 3x3 steps.",
+        "Parity - Edge Paring":
+          "Edge parity on 5x5: use this when you reach the last edges and one pair cannot be completed because an edge is flipped. After it, finish pairing the edges as usual.",
+        "Edge Orientation": "SQ-1: fixes the orientation of the edges.",
+        "Corner Permutation":
+          "SQ-1: moves the corners into their correct positions.",
+        "Edge Permutation":
+          "SQ-1: moves the edges into their correct positions.",
+        "Middle Bar Flip":
+          "SQ-1: flips the middle bar so the two middle halves match.",
+      };
 
-      document.addEventListener("DOMContentLoaded", function () {
-        loadAlgorithms();
-      });
+      // ---------- cube ----------
+      const COL = {
+        U: "#f5d90a",
+        D: "#fff",
+        F: "#2ca02c",
+        B: "#1f5fd0",
+        R: "#f57c00",
+        L: "#d62728",
+      };
+      const FACES = {
+        F: { t: "", on: (i, j, k, n) => k == n - 1 },
+        B: { t: "rotateY(180deg)", on: (i, j, k) => k == 0 },
+        R: { t: "rotateY(90deg)", on: (i, j, k, n) => i == n - 1 },
+        L: { t: "rotateY(-90deg)", on: (i) => i == 0 },
+        U: { t: "rotateX(90deg)", on: (i, j) => j == 0 },
+        D: { t: "rotateX(-90deg)", on: (i, j, k, n) => j == n - 1 },
+      };
+      const AX = {
+        R: [0, 1],
+        L: [0, -1],
+        U: [1, -1],
+        D: [1, 1],
+        F: [2, 1],
+        B: [2, -1],
+        M: [0, -1],
+        E: [1, 1],
+        S: [2, 1],
+        x: [0, 1],
+        y: [1, -1],
+        z: [2, 1],
+      };
+      const I3 = () => [
+        [1, 0, 0],
+        [0, 1, 0],
+        [0, 0, 1],
+      ];
+      const $ = (id) => document.getElementById(id);
+      const scene = $("scene");
+      let N = 3,
+        S = 60,
+        cubies = [],
+        runId = 0,
+        busy = false,
+        finished = false;
 
-      function loadAlgorithms() {
-        filterAlgorithms(currentCategory);
-        hideLoading();
-        renderCategories();
-        renderAlgorithms();
-        animateCards();
+      function rot(a, t) {
+        const c = Math.cos(t),
+          s = Math.sin(t);
+        return [
+          [
+            [1, 0, 0],
+            [0, c, -s],
+            [0, s, c],
+          ],
+          [
+            [c, 0, s],
+            [0, 1, 0],
+            [-s, 0, c],
+          ],
+          [
+            [c, -s, 0],
+            [s, c, 0],
+            [0, 0, 1],
+          ],
+        ][a];
       }
-
-      function flattenAlgorithms(algorithms) {
-        const flattened = [];
-        algorithms.forEach((alg) => {
-          if (alg.subAlgorithms) {
-            alg.subAlgorithms.forEach((subAlg) => {
-              flattened.push({
-                title: subAlg.title,
-                category: alg.category,
-                steps: subAlg.steps,
-              });
-            });
-          } else {
-            flattened.push(alg);
-          }
-        });
-        return flattened;
-      }
-
-      function renderCategories() {
-        const categories = [
-          ...new Set(allAlgorithms.map((alg) => alg.category)),
-        ];
-        const categoryFilter = document.getElementById("categoryFilter");
-
-        categoryFilter.innerHTML = "";
-
-        categories.forEach((category, index) => {
-          const button = document.createElement("button");
-          button.className = `category-btn ${
-            category === currentCategory ? "active" : ""
-          }`;
-          button.textContent = category;
-          button.dataset.category = category;
-          button.addEventListener("click", () =>
-            handleCategoryFilter(category, button)
-          );
-          categoryFilter.appendChild(button);
-        });
-      }
-
-      function handleCategoryFilter(category, button) {
-        currentCategory = category;
-
-        document
-          .querySelectorAll("#categoryFilter .category-btn")
-          .forEach((btn) => btn.classList.remove("active"));
-        button.classList.add("active");
-
-        filterAlgorithms(category);
-      }
-
-      function filterAlgorithms(category) {
-        filteredAlgorithms = flattenAlgorithms(allAlgorithms).filter(
-          (alg) => alg.category === category
+      const mul = (A, B) =>
+        A.map((r) =>
+          [0, 1, 2].map(
+            (j) => r[0] * B[0][j] + r[1] * B[1][j] + r[2] * B[2][j],
+          ),
         );
+      const mulv = (A, v) =>
+        A.map((r) => r[0] * v[0] + r[1] * v[1] + r[2] * v[2]);
 
-        renderAlgorithms();
-        animateCards();
+      function build(n) {
+        N = n;
+        S = 180 / n;
+        scene.innerHTML = "";
+        cubies = [];
+        for (let i = 0; i < n; i++)
+          for (let j = 0; j < n; j++)
+            for (let k = 0; k < n; k++) {
+              const d = document.createElement("div");
+              d.className = "cubie";
+              d.style.cssText = `width:${S}px;height:${S}px;margin:${-S / 2}px 0 0 ${-S / 2}px`;
+              for (const f in FACES) {
+                const e = document.createElement("div");
+                e.className = "face";
+                e.style.cssText = `width:${S}px;height:${S}px;background:${FACES[f].on(i, j, k, n) ? COL[f] : "#111"};transform:${FACES[f].t} translateZ(${S / 2}px)`;
+                d.appendChild(e);
+              }
+              scene.appendChild(d);
+              const h = (n - 1) / 2;
+              cubies.push({ d, p: [i - h, j - h, k - h], m: I3() });
+            }
+        draw();
       }
 
-      function renderAlgorithms() {
-        const grid = document.getElementById("cheatsheetGrid");
-        const noResults = document.getElementById("noResults");
-
-        if (filteredAlgorithms.length === 0) {
-          grid.style.display = "none";
-          noResults.style.display = "block";
-          return;
+      function draw(mv, th) {
+        for (const c of cubies) {
+          let M = c.m,
+            p = c.p;
+          if (mv && mv.test(c.p[mv.axis])) {
+            const R = rot(mv.axis, th);
+            M = mul(R, M);
+            p = mulv(R, p);
+          }
+          c.d.style.transform = `matrix3d(${M[0][0]},${M[1][0]},${M[2][0]},0,${M[0][1]},${M[1][1]},${M[2][1]},0,${M[0][2]},${M[1][2]},${M[2][2]},0,${p[0] * S},${p[1] * S},${p[2] * S},1)`;
         }
-
-        grid.style.display = "grid";
-        noResults.style.display = "none";
-
-        grid.innerHTML = filteredAlgorithms
-          .map(
-            (alg) => `
-                <div class="cheatsheet-card">
-                    <div class="card-header">
-                        <h3 class="card-title">${alg.title}</h3>
-                    </div>
-                    <div class="card-steps">
-                        ${alg.steps
-                          .map(
-                            (step) => `
-                            <div class="step-item">
-                                <div class="step-code">${step.code}</div>
-                            </div>
-                        `
-                          )
-                          .join("")}
-                    </div>
-                </div>
-            `
-          )
-          .join("");
       }
 
-      function animateCards() {
-        const cards = document.querySelectorAll(".cheatsheet-card");
-        cards.forEach((card, index) => {
-          card.style.opacity = "0";
-          card.style.transform = "translateY(30px)";
-          setTimeout(() => {
-            card.style.opacity = "1";
-            card.style.transform = "translateY(0)";
-          }, index * 100);
+      function parse(tok) {
+        const m = tok.match(/^([URFLDBMESxyz]w?|[urfldb])(2'?|'2?|')?$/);
+        if (!m) return null;
+        let b = m[1],
+          suf = m[2] || "",
+          q = suf.includes("2") ? 2 : 1,
+          wide = false;
+        if (suf.includes("'")) q = -q;
+        if (b.length == 2) {
+          b = b[0];
+          wide = true;
+        } else if (/[urfldb]/.test(b)) {
+          b = b.toUpperCase();
+          wide = true;
+        }
+        const [axis, sign] = AX[b],
+          max = (N - 1) / 2;
+        const side = "RDF".includes(b) ? 1 : -1;
+        let test;
+        if ("xyz".includes(b)) test = () => true;
+        else if ("MES".includes(b)) test = (c) => Math.abs(c) < 0.51;
+        else test = (c) => c * side >= max - (wide ? 1 : 0) - 0.01;
+        return { axis, sign, q, test, b, wide };
+      }
+
+      function commit(mv) {
+        const R = rot(mv.axis, (mv.q * mv.sign * Math.PI) / 2);
+        const r = (x) => Math.round(x),
+          r2 = (x) => Math.round(x * 2) / 2;
+        for (const c of cubies)
+          if (mv.test(c.p[mv.axis])) {
+            c.m = mul(R, c.m).map((row) => row.map(r));
+            c.p = mulv(R, c.p).map(r2);
+          }
+        draw();
+      }
+
+      function runMove(mv, id) {
+        return new Promise((res) => {
+          const T = (mv.q * mv.sign * Math.PI) / 2,
+            D =
+              (Math.abs(mv.q) == 2 ? 550 : 380) / parseFloat($("speed").value),
+            t0 = performance.now();
+          (function step(now) {
+            if (id != runId) return res();
+            const u = Math.min(1, (now - t0) / D),
+              e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+            draw(mv, T * e);
+            if (u < 1) requestAnimationFrame(step);
+            else {
+              commit(mv);
+              res();
+            }
+          })(t0);
         });
       }
 
-      function hideLoading() {
-        document.getElementById("loading").style.display = "none";
+      // ---------- UI ----------
+      let cat = "3x3",
+        cur = null,
+        moves = [],
+        spans = [];
+
+      function renderTabs() {
+        $("tabs").innerHTML = "";
+        $("list").innerHTML = "";
+        [...new Set(ALGS.map((a) => a.category))].forEach((c) => {
+          const b = document.createElement("button");
+          b.textContent = c;
+          b.className = c == cat ? "on" : "";
+          b.onclick = () => {
+            cat = c;
+            renderTabs();
+            select(ALGS.find((a) => a.category == c));
+          };
+          $("tabs").appendChild(b);
+        });
+        ALGS.filter((a) => a.category == cat).forEach((a) => {
+          const b = document.createElement("button");
+          b.textContent = a.title;
+          b.className = a == cur ? "on" : "";
+          b.onclick = () => {
+            select(a);
+            renderTabs();
+          };
+          $("list").appendChild(b);
+        });
       }
 
-      function showNoResults(
-        message = "Không tìm thấy giải thuật nào phù hợp 😢"
-      ) {
-        const noResults = document.getElementById("noResults");
-        noResults.querySelector("p").textContent = message;
-        noResults.style.display = "block";
+      function select(a) {
+        cur = a;
+        renderTabs();
+        $("title").textContent = a.title;
+        const n = parseInt(a.category);
+        const ok = !isNaN(n);
+        $("stage").style.display = ok ? "" : "none";
+        document.querySelector(".hint").style.display = ok ? "" : "none";
+        $("play").disabled = $("reset").disabled = $("next").disabled = !ok;
+        $("note").textContent =
+          (NOTES[a.title] || "") +
+          (ok ? "" : " (3D simulation is not available for SQ-1.)");
+        if (ok) N = n;
+        $("code").innerHTML = "";
+        $("step").textContent = "";
+        spans = [];
+        moves = [];
+        a.code.split("\n").forEach((line, li) => {
+          if (li) $("code").appendChild(document.createElement("br"));
+          line
+            .split(/\s+/)
+            .filter(Boolean)
+            .forEach((t) => {
+              const s = document.createElement("span");
+              s.textContent = t;
+              $("code").appendChild(s);
+              if (ok) {
+                spans.push(s);
+              }
+            });
+        });
+        if (ok) reset();
       }
+
+      let pos = 0,
+        playing = false;
+      const DONE =
+        "Done: the cube is solved. Press Play or Next step to watch again.";
+
+      function mark(animating) {
+        spans.forEach(
+          (s, j) =>
+            (s.className =
+              j < pos ? "done" : j == pos ? (animating ? "cur" : "next") : ""),
+        );
+      }
+
+      function describe(m) {
+        const names = {
+          R: "right face",
+          L: "left face",
+          U: "top face",
+          D: "bottom face",
+          F: "front face",
+          B: "back face",
+          M: "middle layer between L and R",
+          E: "middle layer between U and D",
+          S: "middle layer between F and B",
+        };
+        const half = Math.abs(m.q) == 2;
+        if ("xyz".includes(m.b))
+          return `Rotate the whole cube ${half ? "180°" : m.q > 0 ? "90° like " + { x: "R", y: "U", z: "F" }[m.b] : "90° opposite to " + { x: "R", y: "U", z: "F" }[m.b]}`;
+        if ("MES".includes(m.b))
+          return `Turn the ${names[m.b]} ${half ? "180°" : "90°" + (m.q > 0 ? " like " : " opposite to ") + { M: "L", E: "D", S: "F" }[m.b]}`;
+        return `Turn the ${m.wide ? "two outer layers on the " : ""}${names[m.b]} ${half ? "180°" : m.q > 0 ? "90° clockwise" : "90° counter-clockwise"}`;
+      }
+
+      function reset() {
+        runId++;
+        busy = false;
+        playing = false;
+        pos = 0;
+        build(parseInt(cur.category));
+        moves = cur.code.split(/\s+/).filter(Boolean).map(parse);
+        // scramble = inverse of the algorithm, so the algorithm solves it
+        moves
+          .slice()
+          .reverse()
+          .forEach((m) => commit({ ...m, q: -m.q }));
+        $("step").textContent = "Ready. Press Play or Next step.";
+        $("play").textContent = "▶ Play";
+        $("play").disabled = $("next").disabled = false;
+        mark(false);
+      }
+
+      async function doOne(id) {
+        const i = pos;
+        mark(true);
+        $("step").textContent =
+          `Step ${i + 1}/${moves.length}: ${spans[i].textContent} — ${describe(moves[i])}`;
+        await runMove(moves[i], id);
+        if (id != runId) return false;
+        pos++;
+        mark(false);
+        return true;
+      }
+
+      async function play() {
+        if (playing) {
+          playing = false;
+          return;
+        } // pause after the current move
+        if (busy) return;
+        if (pos >= moves.length) reset();
+        playing = true;
+        busy = true;
+        $("play").textContent = "⏸ Pause";
+        $("next").disabled = true;
+        const id = runId;
+        while (playing && pos < moves.length) {
+          if (!(await doOne(id))) return;
+        }
+        busy = false;
+        playing = false;
+        $("play").textContent = "▶ Play";
+        $("next").disabled = false;
+        if (pos >= moves.length) $("step").textContent = DONE;
+      }
+
+      async function next() {
+        if (busy) return;
+        if (pos >= moves.length) reset();
+        busy = true;
+        $("play").disabled = $("next").disabled = true;
+        const id = runId;
+        if (!(await doOne(id))) return;
+        busy = false;
+        $("play").disabled = $("next").disabled = false;
+        if (pos >= moves.length) $("step").textContent = DONE;
+      }
+
+      $("play").onclick = play;
+      $("next").onclick = next;
+      $("reset").onclick = reset;
+
+      // ---------- drag to rotate ----------
+      let rx = -28,
+        ry = -35,
+        drag = null;
+      const view = () =>
+        (scene.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`);
+      const stage = $("stage");
+      stage.onpointerdown = (e) => {
+        drag = [e.clientX, e.clientY];
+        stage.setPointerCapture(e.pointerId);
+        stage.style.cursor = "grabbing";
+      };
+      stage.onpointermove = (e) => {
+        if (!drag) return;
+        ry += (e.clientX - drag[0]) * 0.5;
+        rx -= (e.clientY - drag[1]) * 0.5;
+        drag = [e.clientX, e.clientY];
+        view();
+      };
+      stage.onpointerup = () => {
+        drag = null;
+        stage.style.cursor = "grab";
+      };
+
+      view();
+      select(ALGS[0]);
     </script>
   </body>
 </html>
